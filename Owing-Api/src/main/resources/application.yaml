@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Owing-Api
+
+  profiles:
+    include:
+      - infrastructure
+      - domain-entity
+      - domain-node
+      - common
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

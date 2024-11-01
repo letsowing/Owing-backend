@@ -1,0 +1,13 @@
+rootProject.name = 'Owing-Backend'
+
+/* 포함하는 모듈들 */
+
+include 'Owing-Common'
+include 'Owing-Infrastructure'
+
+// 'Owing-Domain'
+include 'Owing-Domain:Owing-Entity'
+include 'Owing-Domain:Owing-Node'
+
+include 'Owing-Api'
+include 'Owing-Batch'
