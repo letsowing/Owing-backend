@@ -4,6 +4,7 @@ import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.ProjectInfoRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.entity.common.model.dto.ProjectShortInfoDto;
 import com.owing.entity.domains.member.model.Member;
@@ -11,6 +12,7 @@ import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,5 +54,10 @@ public class ProjectMapper {
     public ProjectShortInfoListResponse toListResponse(List<Project> projectList) {
         List<ProjectShortInfoDto> projectShortInfoDtoList = projectList.stream().map(ProjectShortInfoDto::from).toList();
         return new ProjectShortInfoListResponse(projectShortInfoDtoList);
+    }
+
+    public ProjectShortInfoPageResponse toPageResponse(Page<Project> projectPage) {
+        Page<ProjectShortInfoDto> projectShortInfoDtoPage = projectPage.map(ProjectShortInfoDto::from);
+        return new ProjectShortInfoPageResponse(projectShortInfoDtoPage);
     }
 }

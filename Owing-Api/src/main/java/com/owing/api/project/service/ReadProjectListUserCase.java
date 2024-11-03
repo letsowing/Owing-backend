@@ -2,11 +2,13 @@ package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.service.ProjectDomainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,5 +31,11 @@ public class ReadProjectListUserCase {
         Long memberId = memberUtils.getCurrentMemberId();
         List<Project> projectList = projectDomainService.getRecentlyAccessedProjectList(memberId);
         return projectMapper.toListResponse(projectList);
+    }
+
+    public ProjectShortInfoPageResponse executeLatestPage(int page, int size) {
+        Long memberId = memberUtils.getCurrentMemberId();
+        Page<Project> projectPage = projectDomainService.getLatestProjectList(memberId, page, size);
+        return projectMapper.toPageResponse(projectPage);
     }
 }

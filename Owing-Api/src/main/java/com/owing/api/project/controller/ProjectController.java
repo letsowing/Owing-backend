@@ -4,6 +4,7 @@ import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.project.service.DeleteProjectUseCase;
@@ -29,10 +30,19 @@ public class ProjectController {
         return ResponseEntity.ok(projectShortInfoResponse);
     }
 
-    @GetMapping
+    @GetMapping("/recent")
     public ResponseEntity<ProjectShortInfoListResponse> getProjectList() {
         ProjectShortInfoListResponse projectShortInfoListResponse = readProjectListUserCase.executeRecentlyAccessedList();
         return ResponseEntity.ok(projectShortInfoListResponse);
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ProjectShortInfoPageResponse projectShortInfoPageResponse = readProjectListUserCase.executeLatestPage(page, size);
+        return ResponseEntity.ok(projectShortInfoPageResponse);
     }
 
     @PutMapping("/{projectId}")
