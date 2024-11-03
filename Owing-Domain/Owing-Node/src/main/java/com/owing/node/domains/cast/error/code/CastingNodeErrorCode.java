@@ -1,28 +1,28 @@
 package com.owing.node.domains.cast.error.code;
 
-import com.owing.common.constant.OwingHttpStatus;
 import com.owing.common.error.code.OwingErrorCode;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CastingNodeErrorCode implements OwingErrorCode {
-	CASTING_NOT_FOUND(OwingHttpStatus.NOT_FOUND, "001", "캐릭터를 찾을 수 없습니다."),
-	CASTING_NODE_NOT_FOUND(OwingHttpStatus.NOT_FOUND, "002", "캐릭터 노드를 찾을 수 없습니다."),
-	INVALID_ARGS_FOR_UPDATE(OwingHttpStatus.BAD_REQUEST, "003", "업데이트 요청에 잘못된 데이터가 포함되었습니다."),
-	CONNECTION_NOT_FOUND(OwingHttpStatus.NOT_FOUND, "004", "관계를 찾을 수 없습니다."),
-	ILLEGAL_ARGS(OwingHttpStatus.BAD_REQUEST, "005", "올바르지 않은 인자값입니다."),
-	CONNECTION_NAME_UPDATE_FAIL(OwingHttpStatus.BAD_REQUEST, "006", "관계 이름 업데이트를 실패했습니다."),
-	INVALID_DELETE_COUNT(OwingHttpStatus.CONFLICT, "007", "올바르지 않은 관계 정보로 인해 삭제에 실패했습니다."),
-	ILLEGAL_HANDLE_ARGS(OwingHttpStatus.BAD_REQUEST, "008", "올바르지 않은 관계 Handle입니다."),
-	ILLEGAL_TYPE_ARGS(OwingHttpStatus.BAD_REQUEST, "009", "올바르지 않은 관계 Type입니다."),
-	INVALID_POSITION(OwingHttpStatus.BAD_REQUEST, "010", "캐릭터의 위치를 변경할 수 없습니다.");
+	CASTING_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "캐릭터를 찾을 수 없습니다."),
+	CASTING_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "002", "캐릭터 노드를 찾을 수 없습니다."),
+	INVALID_ARGS_FOR_UPDATE(HttpStatus.BAD_REQUEST, "003", "업데이트 요청에 잘못된 데이터가 포함되었습니다."),
+	CONNECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "004", "관계를 찾을 수 없습니다."),
+	ILLEGAL_ARGS(HttpStatus.BAD_REQUEST, "005", "올바르지 않은 인자값입니다."),
+	CONNECTION_NAME_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "006", "관계 이름 업데이트를 실패했습니다."),
+	INVALID_DELETE_COUNT(HttpStatus.CONFLICT, "007", "올바르지 않은 관계 정보로 인해 삭제에 실패했습니다."),
+	ILLEGAL_HANDLE_ARGS(HttpStatus.BAD_REQUEST, "008", "올바르지 않은 관계 Handle입니다."),
+	ILLEGAL_TYPE_ARGS(HttpStatus.BAD_REQUEST, "009", "올바르지 않은 관계 Type입니다."),
+	INVALID_POSITION(HttpStatus.BAD_REQUEST, "010", "캐릭터의 위치를 변경할 수 없습니다.");
 
 
-	private final OwingHttpStatus status;
+	private final HttpStatus status;
 	private final String code;
 	private final String message;
 
-	CastingNodeErrorCode(OwingHttpStatus status, String code, String message) {
+	CastingNodeErrorCode(HttpStatus status, String code, String message) {
 		this.status = status;
 		this.code = "CAST" + code;
 		this.message = message;

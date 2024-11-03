@@ -1,9 +1,9 @@
 package com.owing.common.error.code;
 
-import com.owing.common.constant.OwingHttpStatus;
+import org.springframework.http.HttpStatus;
 
 public interface OwingErrorCode{
-	OwingHttpStatus getStatus();
+	HttpStatus getStatus();
 	String getCode();
 	String getMessage();
 }
