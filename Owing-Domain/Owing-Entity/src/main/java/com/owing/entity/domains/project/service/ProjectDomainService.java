@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +31,16 @@ public class ProjectDomainService {
         oldProject.getProjectInfo().updateGenres(projectInfo.getGenres());
         oldProject.getProjectInfo().updateCoverUrl(projectInfo.getCoverUrl());
         return projectAdaptor.save(oldProject);
+    }
+
+    public List<Project> getRecentlyAccessedProjectList(Long memberId) {
+        List<Project> projectList = projectAdaptor.findRecentlyAccessedProjectList(memberId);
+
+        projectList.sort(
+                Comparator.comparing(Project::getAccessedAt, Comparator.reverseOrder())
+                        .thenComparing(project -> project.getProjectInfo().getTitle()));
+
+        return projectList;
     }
 
     @Transactional

@@ -12,4 +12,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findById(Long id);
 
     List<Project> findAllByMember_Id(Long id);
+
+    List<Project> findTop10ByMember_IdOrderByAccessedAtDesc(Long id);
 }

@@ -27,6 +27,10 @@ public class ProjectAdaptor {
         return projectRepository.findAllByMember_Id(memberId);
     }
 
+    public List<Project> findRecentlyAccessedProjectList(Long memberId) {
+        return projectRepository.findTop10ByMember_IdOrderByAccessedAtDesc(memberId);
+    }
+
     public void deleteProject(Project project) {
         projectRepository.delete(project);
     }
