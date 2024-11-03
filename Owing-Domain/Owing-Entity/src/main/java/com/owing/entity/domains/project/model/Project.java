@@ -7,7 +7,6 @@ import com.owing.entity.folders.story.model.StoryFolder;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.SqlTypes;
@@ -66,6 +65,26 @@ public class Project extends BaseTimeEntity {
             LocalDateTime now = LocalDateTime.now();
             accessedAt = now;
         }
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateCategory(Category category) {
+        this.category = category;
+    }
+
+    public void updateGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public void updateCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
 }
