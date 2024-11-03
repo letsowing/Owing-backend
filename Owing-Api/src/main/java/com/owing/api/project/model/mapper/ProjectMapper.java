@@ -2,7 +2,7 @@ package com.owing.api.project.model.mapper;
 
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectDetailResponse;
+import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.entity.common.model.dto.ProjectShortInfoDto;
@@ -42,7 +42,7 @@ public class ProjectMapper {
                 .build();
     }
 
-    public ProjectDetailResponse toDetailResponse(Project project) {
+    public ProjectInfoResponse toInfoResponse(Project project) {
         Long projectId = project.getId();
         ProjectInfoDto projectInfoDto = ProjectInfoDto.builder()
                 .title(project.getTitle())
@@ -51,7 +51,7 @@ public class ProjectMapper {
                 .genres(project.getGenres())
                 .coverUrl(project.getCoverUrl())
                 .build();
-        return new ProjectDetailResponse(projectId, projectInfoDto);
+        return new ProjectInfoResponse(projectId, projectInfoDto);
     }
 
     public ProjectShortInfoResponse toShortInfoResponse(Project project) {

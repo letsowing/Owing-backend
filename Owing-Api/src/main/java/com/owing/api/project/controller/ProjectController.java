@@ -2,7 +2,7 @@ package com.owing.api.project.controller;
 
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectDetailResponse;
+import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.service.CreateProjectUseCase;
@@ -34,11 +34,11 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}")
-    public ResponseEntity<ProjectDetailResponse> updateProject(
+    public ResponseEntity<ProjectInfoResponse> updateProject(
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest updateProjectRequest
     ) {
-        ProjectDetailResponse projectDetailResponse = updateProjectUseCase.execute(projectId, updateProjectRequest);
-        return ResponseEntity.ok(projectDetailResponse);
+        ProjectInfoResponse projectInfoResponse = updateProjectUseCase.execute(projectId, updateProjectRequest);
+        return ResponseEntity.ok(projectInfoResponse);
     }
 }

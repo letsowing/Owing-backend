@@ -2,7 +2,7 @@ package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectDetailResponse;
+import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.entity.common.model.dto.ProjectInfoDto;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
@@ -23,7 +23,7 @@ public class UpdateProjectUseCase {
     private final ProjectAdaptor projectAdaptor;
 
     @Transactional
-    public ProjectDetailResponse execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
+    public ProjectInfoResponse execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
         Long memberId = memberUtils.getCurrentMemberId();
         Project oldProject = projectAdaptor.findById(projectId);
 
@@ -34,7 +34,7 @@ public class UpdateProjectUseCase {
 
         ProjectInfoDto updateInfo = projectMapper.toProjectInfo(updateProjectRequest);
         Project updateProject = projectDomainService.updateProject(oldProject, updateInfo);
-        return projectMapper.toDetailResponse(updateProject);
+        return projectMapper.toInfoResponse(updateProject);
     }
 
 }
