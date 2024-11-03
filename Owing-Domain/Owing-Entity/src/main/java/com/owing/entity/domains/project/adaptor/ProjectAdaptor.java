@@ -7,6 +7,8 @@ import com.owing.entity.domains.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ProjectAdaptor {
@@ -19,5 +21,9 @@ public class ProjectAdaptor {
     public Project findById(Long projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(() -> ProjectException.of(ProjectErrorCode.PROJECT_NOT_FOUND, "요청된 Project ID: %d".formatted(projectId)));
+    }
+
+    public List<Project> findAllByMemberId(Long memberId) {
+        return projectRepository.findAllByMember_Id(memberId);
     }
 }
