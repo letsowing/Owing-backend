@@ -9,7 +9,7 @@ public enum ProjectErrorCode implements OwingErrorCode {
 
     PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "프로젝트를 찾을 수 없습니다."),
     INVALID_GENRE_COUNT(HttpStatus.BAD_REQUEST, "002", "장르의 개수가 유효하지 않습니다."),
-    PROJECT_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "003", "프로젝트 노드를 찾을 수 없습니다.");
+    ILLEGAL_ACCESS(HttpStatus.BAD_REQUEST, "003", "유효하지 않은 유저의 접근입니다.");
 
     private final HttpStatus status;
     private final String code;
