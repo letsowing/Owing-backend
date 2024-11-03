@@ -24,7 +24,7 @@ public class ProjectMapper {
                 .description(addProjectRequest.description())
                 .category(addProjectRequest.category())
                 .genres(addProjectRequest.genres())
-                .coverUrl(addProjectRequest.imageUrl())
+                .coverUrl(addProjectRequest.coverUrl())
                 .member(member)
                 .build();
     }
