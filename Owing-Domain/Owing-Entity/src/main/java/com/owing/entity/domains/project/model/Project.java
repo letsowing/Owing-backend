@@ -28,23 +28,8 @@ public class Project extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = OwingPersistenceConst.TITLE_LEN, nullable = false)
-    private String title;
-
-    @Column(length = OwingPersistenceConst.DESC_LEN, nullable = false)
-    private String description;
-
-    @Column(length = OwingPersistenceConst.CATEGORY_LEN, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
-    @Column(name = "genres", columnDefinition = "varchar[]")
-    @JdbcTypeCode(SqlTypes.ARRAY)
-    @Enumerated(EnumType.STRING)
-    private Set<Genre> genres;
-
-    @Column(length = OwingPersistenceConst.URL_LEN)
-    private String coverUrl;
+    @Embedded
+    private ProjectInfo projectInfo;
 
     @Column(nullable = false)
     private LocalDateTime accessedAt;
@@ -66,25 +51,4 @@ public class Project extends BaseTimeEntity {
             accessedAt = now;
         }
     }
-
-    public void updateTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
-    }
-
-    public void updateCategory(Category category) {
-        this.category = category;
-    }
-
-    public void updateGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public void updateCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
-    }
-
 }

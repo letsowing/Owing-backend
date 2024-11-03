@@ -11,5 +11,5 @@ public record UpdateProjectRequest(
         Category category,
         Set<Genre> genres,
         String coverUrl
-) {
+) implements ProjectInfoRequest {
 }

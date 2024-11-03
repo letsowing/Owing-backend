@@ -18,8 +18,8 @@ public record ProjectShortInfoDto(
     public static ProjectShortInfoDto from(Project project) {
         return ProjectShortInfoDto.builder()
                 .id(project.getId())
-                .title(project.getTitle())
-                .coverUrl(project.getCoverUrl())
+                .title(project.getProjectInfo().getTitle())
+                .coverUrl(project.getProjectInfo().getCoverUrl())
                 .accessedAt(project.getAccessedAt())
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())

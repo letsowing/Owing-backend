@@ -1,8 +1,8 @@
 package com.owing.entity.domains.project.service;
 
-import com.owing.entity.common.model.dto.ProjectInfoDto;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +21,12 @@ public class ProjectDomainService {
     }
 
     @Transactional
-    public Project updateProject(Project oldProject, ProjectInfoDto projectInfoDto) {
-        oldProject.updateTitle(projectInfoDto.title());
-        oldProject.updateDescription(projectInfoDto.description());
-        oldProject.updateCategory(projectInfoDto.category());
-        oldProject.updateGenres(projectInfoDto.genres());
-        oldProject.updateCoverUrl(projectInfoDto.coverUrl());
+    public Project updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
+        oldProject.getProjectInfo().updateTitle(projectInfo.getTitle());
+        oldProject.getProjectInfo().updateDescription(projectInfo.getDescription());
+        oldProject.getProjectInfo().updateCategory(projectInfo.getCategory());
+        oldProject.getProjectInfo().updateGenres(projectInfo.getGenres());
+        oldProject.getProjectInfo().updateCoverUrl(projectInfo.getCoverUrl());
         return projectAdaptor.save(oldProject);
     }
 }
