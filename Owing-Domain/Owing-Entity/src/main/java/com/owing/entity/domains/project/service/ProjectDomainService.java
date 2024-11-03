@@ -47,7 +47,7 @@ public class ProjectDomainService {
         return projectList;
     }
 
-    public Page<Project> getLatestProjectList(Long memberId, int page, int size) {
+    public Page<Project> getLatestProjectPage(Long memberId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         return projectAdaptor.findAllByMemberId(memberId, pageable);
     }

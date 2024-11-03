@@ -30,13 +30,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectShortInfoResponse);
     }
 
-    @GetMapping("/recent")
+    @GetMapping("/accessed")
     public ResponseEntity<ProjectShortInfoListResponse> getProjectList() {
         ProjectShortInfoListResponse projectShortInfoListResponse = readProjectListUserCase.executeRecentlyAccessedList();
         return ResponseEntity.ok(projectShortInfoListResponse);
     }
 
-    @GetMapping("/latest")
+    @GetMapping("/created")
     public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size

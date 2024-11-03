@@ -35,7 +35,7 @@ public class ReadProjectListUserCase {
 
     public ProjectShortInfoPageResponse executeLatestPage(int page, int size) {
         Long memberId = memberUtils.getCurrentMemberId();
-        Page<Project> projectPage = projectDomainService.getLatestProjectList(memberId, page, size);
+        Page<Project> projectPage = projectDomainService.getLatestProjectPage(memberId, page, size);
         return projectMapper.toPageResponse(projectPage);
     }
 }
