@@ -31,7 +31,7 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<ProjectShortInfoListResponse> getProjectList() {
-        ProjectShortInfoListResponse projectShortInfoListResponse = readProjectListUserCase.execute();
+        ProjectShortInfoListResponse projectShortInfoListResponse = readProjectListUserCase.executeRecentlyAccessedList();
         return ResponseEntity.ok(projectShortInfoListResponse);
     }
 
