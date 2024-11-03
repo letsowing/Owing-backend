@@ -1,4 +1,4 @@
-package com.owing.entity.common.vo;
+package com.owing.entity.common.model.dto;
 
 import com.owing.entity.domains.project.model.Project;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ProjectBasicVo(
+public record ProjectBasicDto(
         Long id,
         String title,
         String coverUrl,
@@ -15,8 +15,8 @@ public record ProjectBasicVo(
         LocalDateTime updatedAt
 ) {
 
-    public static ProjectBasicVo from(Project project) {
-        return ProjectBasicVo.builder()
+    public static ProjectBasicDto from(Project project) {
+        return ProjectBasicDto.builder()
                 .id(project.getId())
                 .title(project.getTitle())
                 .coverUrl(project.getCoverUrl())
