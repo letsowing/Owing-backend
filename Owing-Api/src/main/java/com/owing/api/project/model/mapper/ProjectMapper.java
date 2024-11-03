@@ -3,9 +3,9 @@ package com.owing.api.project.model.mapper;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectDetailResponse;
-import com.owing.api.project.model.dto.response.ProjectListResponse;
-import com.owing.api.project.model.dto.response.ProjectResponse;
-import com.owing.entity.common.model.dto.ProjectBasicDto;
+import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
+import com.owing.entity.common.model.dto.ProjectShortInfoDto;
 import com.owing.entity.common.model.dto.ProjectInfoDto;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
@@ -54,13 +54,13 @@ public class ProjectMapper {
         return new ProjectDetailResponse(projectId, projectInfoDto);
     }
 
-    public ProjectResponse toResponse(Project project) {
-        ProjectBasicDto projectBasicDto = ProjectBasicDto.from(project);
-        return new ProjectResponse(projectBasicDto);
+    public ProjectShortInfoResponse toShortInfoResponse(Project project) {
+        ProjectShortInfoDto projectShortInfoDto = ProjectShortInfoDto.from(project);
+        return new ProjectShortInfoResponse(projectShortInfoDto);
     }
 
-    public ProjectListResponse toListResponse(List<Project> projectList) {
-        List<ProjectBasicDto> projectBasicDtoList = projectList.stream().map(ProjectBasicDto::from).toList();
-        return new ProjectListResponse(projectBasicDtoList);
+    public ProjectShortInfoListResponse toListResponse(List<Project> projectList) {
+        List<ProjectShortInfoDto> projectShortInfoDtoList = projectList.stream().map(ProjectShortInfoDto::from).toList();
+        return new ProjectShortInfoListResponse(projectShortInfoDtoList);
     }
 }

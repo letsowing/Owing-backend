@@ -1,7 +1,7 @@
 package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
-import com.owing.api.project.model.dto.response.ProjectListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
@@ -17,7 +17,7 @@ public class ReadProjectListUserCase {
     private final ProjectAdaptor projectAdaptor;
     private final ProjectMapper projectMapper;
 
-    public ProjectListResponse execute() {
+    public ProjectShortInfoListResponse execute() {
         Long memberId = memberUtils.getCurrentMemberId();
         List<Project> projectList = projectAdaptor.findAllByMemberId(memberId);
         return projectMapper.toListResponse(projectList);

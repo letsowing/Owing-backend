@@ -2,7 +2,7 @@ package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.project.model.Project;
@@ -19,11 +19,11 @@ public class CreateProjectUseCase {
     private final ProjectMapper projectMapper;
 
     @Transactional
-    public ProjectResponse execute(AddProjectRequest addProjectRequest) {
+    public ProjectShortInfoResponse execute(AddProjectRequest addProjectRequest) {
         Member memberReference = memberUtils.getCurrentMemberReference();
         Project project = projectMapper.toEntity(addProjectRequest, memberReference);
         Project savedProject = projectDomainService.createProject(project);
-        return projectMapper.toResponse(savedProject);
+        return projectMapper.toShortInfoResponse(savedProject);
     }
 
 }

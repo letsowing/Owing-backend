@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ProjectBasicDto(
+public record ProjectShortInfoDto(
         Long id,
         String title,
         String coverUrl,
@@ -15,8 +15,8 @@ public record ProjectBasicDto(
         LocalDateTime updatedAt
 ) {
 
-    public static ProjectBasicDto from(Project project) {
-        return ProjectBasicDto.builder()
+    public static ProjectShortInfoDto from(Project project) {
+        return ProjectShortInfoDto.builder()
                 .id(project.getId())
                 .title(project.getTitle())
                 .coverUrl(project.getCoverUrl())
