@@ -5,6 +5,8 @@ import com.owing.entity.domains.project.error.exception.ProjectNotFoundException
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +27,10 @@ public class ProjectAdaptor {
 
     public List<Project> findAllByMemberId(Long memberId) {
         return projectRepository.findAllByMember_Id(memberId);
+    }
+
+    public Page<Project> findAllByMemberId(Long memberId, Pageable pageable) {
+        return projectRepository.findAllByMember_Id(memberId, pageable);
     }
 
     public List<Project> findRecentlyAccessedProjectList(Long memberId) {

@@ -4,6 +4,10 @@ import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +45,11 @@ public class ProjectDomainService {
                         .thenComparing(project -> project.getProjectInfo().getTitle()));
 
         return projectList;
+    }
+
+    public Page<Project> getLatestProjectList(Long memberId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return projectAdaptor.findAllByMemberId(memberId, pageable);
     }
 
     @Transactional
