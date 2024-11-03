@@ -1,6 +1,5 @@
 package com.owing.node.config;
 
-import com.owing.node.NodePackageLocation;
 import org.neo4j.cypherdsl.core.renderer.Dialect;
 import org.neo4j.driver.Driver;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableNeo4jAuditing
-@EnableNeo4jRepositories(basePackageClasses = NodePackageLocation.class)
+@EnableNeo4jRepositories("com.owing.node")
 public class Neo4jConfig {
 
     @Bean
