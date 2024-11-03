@@ -26,4 +26,8 @@ public class MemberAdaptor {
         return memberRepository.findByEmail(phoneNumber)
                 .orElseThrow(() -> MemberException.of(MemberErrorCode.MEMBER_NOT_FOUND, "요청된 Member phone number: %s".formatted(phoneNumber)));
     }
+
+    public Member getReferenceById(Long memberId) {
+        return memberRepository.getReferenceById(memberId);
+    }
 }
