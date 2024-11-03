@@ -7,6 +7,7 @@ import com.owing.entity.folders.story.model.StoryFolder;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.SqlTypes;
@@ -46,7 +47,7 @@ public class Project extends BaseTimeEntity {
     @Column(length = OwingPersistenceConst.URL_LEN)
     private String coverUrl;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private LocalDateTime accessedAt;
 
     @ManyToOne
@@ -58,5 +59,13 @@ public class Project extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UniverseFolder> universeFolderList = new ArrayList<>();
+
+    @PrePersist
+    protected void prePersist() {
+        if (accessedAt == null) {
+            LocalDateTime now = LocalDateTime.now();
+            accessedAt = now;
+        }
+    }
 
 }
