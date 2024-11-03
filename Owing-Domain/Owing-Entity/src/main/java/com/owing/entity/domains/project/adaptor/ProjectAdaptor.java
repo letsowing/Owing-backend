@@ -26,4 +26,8 @@ public class ProjectAdaptor {
     public List<Project> findAllByMemberId(Long memberId) {
         return projectRepository.findAllByMember_Id(memberId);
     }
+
+    public void deleteProject(Project project) {
+        projectRepository.delete(project);
+    }
 }

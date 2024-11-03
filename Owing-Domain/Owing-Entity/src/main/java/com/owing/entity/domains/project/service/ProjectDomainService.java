@@ -29,4 +29,10 @@ public class ProjectDomainService {
         oldProject.getProjectInfo().updateCoverUrl(projectInfo.getCoverUrl());
         return projectAdaptor.save(oldProject);
     }
+
+    @Transactional
+    public void deleteProject(Project project) {
+        projectAdaptor.deleteProject(project);
+    }
+
 }
