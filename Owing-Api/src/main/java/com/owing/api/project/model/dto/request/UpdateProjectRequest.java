@@ -5,11 +5,11 @@ import com.owing.entity.domains.project.model.Genre;
 
 import java.util.Set;
 
-public record AddProjectRequest(
+public record UpdateProjectRequest(
         String title,
         String description,
         Category category,
         Set<Genre> genres,
         String coverUrl
-) implements ProjectInfoRequest{
+) implements ProjectInfoRequest {
 }
