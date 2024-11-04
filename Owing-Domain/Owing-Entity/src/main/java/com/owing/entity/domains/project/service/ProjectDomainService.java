@@ -32,7 +32,7 @@ public class ProjectDomainService {
         return projectAdaptor.save(oldProject);
     }
 
-    public Page<Project> getOrderedProjectPage(Long memberId, Pageable pageable) {
+    public Page<Project> getSortedProjectPage(Long memberId, Pageable pageable) {
         return projectAdaptor.findAllByMemberId(memberId, pageable);
     }
 

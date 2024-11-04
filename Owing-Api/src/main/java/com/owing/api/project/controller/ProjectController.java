@@ -1,6 +1,6 @@
 package com.owing.api.project.controller;
 
-import com.owing.api.common.constant.ProjectOrder;
+import com.owing.api.common.constant.ProjectSort;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
@@ -10,10 +10,12 @@ import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.project.service.DeleteProjectUseCase;
 import com.owing.api.project.service.ReadProjectListUserCase;
 import com.owing.api.project.service.UpdateProjectUseCase;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.owing.api.common.constant.OwingApiConst.*;
@@ -37,9 +39,9 @@ public class ProjectController {
     public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
             @RequestParam(defaultValue = pageDefault) @Min(pageMin) int page,
             @RequestParam(defaultValue = pageSizeDefault) @Min(pageSizeMin) @Max(pageSizeMax) int size,
-            ProjectOrder projectOrder
+            @RequestParam ProjectSort projectSort
     ) {
-        return ResponseEntity.ok(readProjectListUserCase.execute(page, size, projectOrder));
+        return ResponseEntity.ok(readProjectListUserCase.execute(page, size, projectSort));
     }
 
     @PutMapping("/{projectId}")

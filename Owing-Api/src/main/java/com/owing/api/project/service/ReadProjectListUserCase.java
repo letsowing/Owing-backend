@@ -1,7 +1,7 @@
 package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
-import com.owing.api.common.constant.ProjectOrder;
+import com.owing.api.common.constant.ProjectSort;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.entity.domains.project.model.Project;
@@ -20,12 +20,12 @@ public class ReadProjectListUserCase {
     private final ProjectDomainService projectDomainService;
     private final ProjectMapper projectMapper;
 
-    public ProjectShortInfoPageResponse execute(int page, int size, ProjectOrder projectOrder) {
+    public ProjectShortInfoPageResponse execute(int page, int size, ProjectSort projectSort) {
         Long memberId = memberUtils.getCurrentMemberId();
-        Sort sort = projectOrder.getSort();
+        Sort sort = projectSort.getSort();
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Project> projectPage = projectDomainService.getOrderedProjectPage(memberId, pageable);
+        Page<Project> projectPage = projectDomainService.getSortedProjectPage(memberId, pageable);
         return projectMapper.toPageResponse(projectPage);
     }
 }
