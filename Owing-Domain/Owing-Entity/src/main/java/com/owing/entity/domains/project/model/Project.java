@@ -28,25 +28,10 @@ public class Project extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = OwingPersistenceConst.TITLE_LEN, nullable = false)
-    private String title;
+    @Embedded
+    private ProjectInfo projectInfo;
 
-    @Column(length = OwingPersistenceConst.DESC_LEN, nullable = false)
-    private String description;
-
-    @Column(length = OwingPersistenceConst.CATEGORY_LEN, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
-    @Column(name = "genres", columnDefinition = "varchar[]")
-    @JdbcTypeCode(SqlTypes.ARRAY)
-    @Enumerated(EnumType.STRING)
-    private Set<Genre> genres;
-
-    @Column(length = OwingPersistenceConst.URL_LEN)
-    private String coverUrl;
-
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private LocalDateTime accessedAt;
 
     @ManyToOne
@@ -59,4 +44,11 @@ public class Project extends BaseTimeEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UniverseFolder> universeFolderList = new ArrayList<>();
 
+    @PrePersist
+    protected void prePersist() {
+        if (accessedAt == null) {
+            LocalDateTime now = LocalDateTime.now();
+            accessedAt = now;
+        }
+    }
 }
