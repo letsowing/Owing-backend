@@ -1,15 +1,15 @@
 package com.owing.entity.domains.project.service;
 
+import com.owing.common.annotation.DomainService;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectDomainService {

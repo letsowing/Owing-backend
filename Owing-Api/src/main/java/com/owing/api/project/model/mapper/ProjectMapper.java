@@ -6,6 +6,7 @@ import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
+import com.owing.common.annotation.Mapper;
 import com.owing.entity.common.model.dto.ProjectShortInfoDto;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
@@ -13,11 +14,10 @@ import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Mapper
 @RequiredArgsConstructor
 public class ProjectMapper {
 

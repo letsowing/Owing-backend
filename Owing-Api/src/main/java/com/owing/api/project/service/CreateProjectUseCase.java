@@ -4,14 +4,14 @@ import com.owing.api.common.MemberUtils;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
+import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.service.ProjectDomainService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class CreateProjectUseCase {
     private final MemberUtils memberUtils;

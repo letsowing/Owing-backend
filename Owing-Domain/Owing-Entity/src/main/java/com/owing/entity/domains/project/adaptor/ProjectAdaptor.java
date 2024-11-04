@@ -1,5 +1,6 @@
 package com.owing.entity.domains.project.adaptor;
 
+import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.error.exception.ProjectNotFoundException;
 import com.owing.entity.domains.project.model.Project;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Adaptor
 @RequiredArgsConstructor
 public class ProjectAdaptor {
     private final ProjectRepository projectRepository;
