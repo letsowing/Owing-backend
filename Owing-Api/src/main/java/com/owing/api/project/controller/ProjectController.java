@@ -1,18 +1,22 @@
 package com.owing.api.project.controller;
 
+import com.owing.api.common.constant.ProjectOrder;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
-import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.project.service.DeleteProjectUseCase;
 import com.owing.api.project.service.ReadProjectListUserCase;
 import com.owing.api.project.service.UpdateProjectUseCase;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.owing.api.common.constant.OwingApiConst.*;
 
 @RestController
 @RequestMapping("/v1/projects")
@@ -29,17 +33,13 @@ public class ProjectController {
         return ResponseEntity.ok(createProjectUseCase.execute(addProjectRequest));
     }
 
-    @GetMapping("/accessed")
-    public ResponseEntity<ProjectShortInfoListResponse> getProjectList() {
-        return ResponseEntity.ok(readProjectListUserCase.executeRecentlyAccessedList());
-    }
-
-    @GetMapping("/created")
+    @GetMapping
     public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = pageDefault) @Min(pageMin) int page,
+            @RequestParam(defaultValue = pageSizeDefault) @Min(pageSizeMin) @Max(pageSizeMax) int size,
+            ProjectOrder projectOrder
     ) {
-        return ResponseEntity.ok(readProjectListUserCase.executeLatestPage(page, size));
+        return ResponseEntity.ok(readProjectListUserCase.execute(page, size, projectOrder));
     }
 
     @PutMapping("/{projectId}")
