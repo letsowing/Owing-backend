@@ -26,14 +26,12 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectShortInfoResponse> createProject(@RequestBody AddProjectRequest addProjectRequest) {
-        ProjectShortInfoResponse projectShortInfoResponse = createProjectUseCase.execute(addProjectRequest);
-        return ResponseEntity.ok(projectShortInfoResponse);
+        return ResponseEntity.ok(createProjectUseCase.execute(addProjectRequest));
     }
 
     @GetMapping("/accessed")
     public ResponseEntity<ProjectShortInfoListResponse> getProjectList() {
-        ProjectShortInfoListResponse projectShortInfoListResponse = readProjectListUserCase.executeRecentlyAccessedList();
-        return ResponseEntity.ok(projectShortInfoListResponse);
+        return ResponseEntity.ok(readProjectListUserCase.executeRecentlyAccessedList());
     }
 
     @GetMapping("/created")
@@ -41,8 +39,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        ProjectShortInfoPageResponse projectShortInfoPageResponse = readProjectListUserCase.executeLatestPage(page, size);
-        return ResponseEntity.ok(projectShortInfoPageResponse);
+        return ResponseEntity.ok(readProjectListUserCase.executeLatestPage(page, size));
     }
 
     @PutMapping("/{projectId}")
@@ -50,8 +47,7 @@ public class ProjectController {
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest updateProjectRequest
     ) {
-        ProjectInfoResponse projectInfoResponse = updateProjectUseCase.execute(projectId, updateProjectRequest);
-        return ResponseEntity.ok(projectInfoResponse);
+        return ResponseEntity.ok(updateProjectUseCase.execute(projectId, updateProjectRequest));
     }
 
     @DeleteMapping("/{projectId}")
