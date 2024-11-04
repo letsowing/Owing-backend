@@ -5,14 +5,9 @@ import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,19 +32,7 @@ public class ProjectDomainService {
         return projectAdaptor.save(oldProject);
     }
 
-    public List<Project> getRecentlyAccessedProjectList(Long memberId) {
-        List<Project> projectList = projectAdaptor.findRecentlyAccessedProjectList(memberId);
-
-        projectList.sort(
-                Comparator.comparing(Project::getAccessedAt, Comparator.reverseOrder())
-                        .thenComparing(project -> project.getProjectInfo().getTitle())
-        );
-
-        return projectList;
-    }
-
-    public Page<Project> getLatestProjectPage(Long memberId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+    public Page<Project> getOrderedProjectPage(Long memberId, Pageable pageable) {
         return projectAdaptor.findAllByMemberId(memberId, pageable);
     }
 
