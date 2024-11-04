@@ -42,7 +42,8 @@ public class ProjectDomainService {
 
         projectList.sort(
                 Comparator.comparing(Project::getAccessedAt, Comparator.reverseOrder())
-                        .thenComparing(project -> project.getProjectInfo().getTitle()));
+                        .thenComparing(project -> project.getProjectInfo().getTitle())
+        );
 
         return projectList;
     }

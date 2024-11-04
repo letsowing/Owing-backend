@@ -52,7 +52,10 @@ public class ProjectMapper {
     }
 
     public ProjectShortInfoListResponse toListResponse(List<Project> projectList) {
-        List<ProjectShortInfoDto> projectShortInfoDtoList = projectList.stream().map(ProjectShortInfoDto::from).toList();
+        List<ProjectShortInfoDto> projectShortInfoDtoList =
+                projectList.stream()
+                        .map(ProjectShortInfoDto::from)
+                        .toList();
         return new ProjectShortInfoListResponse(projectShortInfoDtoList);
     }
 
