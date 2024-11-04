@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReadProjectListUserCase {
+public class ReadProjectListUseCase {
     private final MemberUtils memberUtils;
     private final ProjectDomainService projectDomainService;
     private final ProjectMapper projectMapper;
