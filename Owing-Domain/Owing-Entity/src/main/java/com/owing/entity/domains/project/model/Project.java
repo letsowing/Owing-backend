@@ -5,6 +5,7 @@ import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.folders.story.model.StoryFolder;
 import com.owing.entity.folders.universe.model.UniverseFolder;
+import com.owing.entity.domains.trashcan.model.TrashCan;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -58,5 +59,8 @@ public class Project extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UniverseFolder> universeFolderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<TrashCan> trashCanList = new ArrayList<>();
 
 }

@@ -2,6 +2,8 @@ package com.owing.entity.domains.trashcan.model;
 
 import com.owing.entity.common.constant.OwingPersistenceConst;
 import com.owing.entity.common.model.BaseTimeEntity;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 import org.hibernate.annotations.SoftDelete;
 import jakarta.persistence.Column;
@@ -42,4 +44,7 @@ public class TrashCan {
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
 	private LocalDateTime createdAt;
 
+	@ManyToOne
+	@JoinColumn(name = "project_id", nullable = false)
+	private Project project;
 }
