@@ -14,7 +14,12 @@ public class ProjectNodeDomainService {
     private final ProjectNodeRepository projectNodeRepository;
 
     @Transactional
-    public ProjectNode createProjectNode(ProjectNode projectNode) {
-        return projectNodeRepository.save(projectNode);
+    public void createProjectNode(ProjectNode projectNode) {
+        projectNodeRepository.save(projectNode);
+    }
+
+    @Transactional
+    public void deleteProjectNode(ProjectNode projectNode) {
+        projectNodeRepository.delete(projectNode);
     }
 }
