@@ -6,7 +6,6 @@ import com.owing.entity.folders.universe.model.UniverseFolder;
 import org.hibernate.annotations.SoftDelete;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,4 +44,12 @@ public class Universe extends BaseTimeEntity {
 	@JoinColumn(name = "universe_folder_id") // todo: 폴더 생긴 후 nullable = false 추가
 	// @JoinColumn(name = "universe_folder_id", nullable = false)
 	private UniverseFolder universeFolder;
+
+	public Universe updateUniverse(Universe newUniverse) {
+		this.name = newUniverse.name;
+		this.description = newUniverse.description;
+		this.imageUrl = newUniverse.imageUrl;
+		return this;
+	}
+
 }

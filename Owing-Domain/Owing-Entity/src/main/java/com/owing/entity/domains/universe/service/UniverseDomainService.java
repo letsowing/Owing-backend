@@ -23,6 +23,10 @@ public class UniverseDomainService {
 		return savedUniverse;
 	}
 
-
+	@Transactional
+	public Universe updateUniverse(Universe oldUniverse, Universe newUniverse) {
+		Universe updatedUniverse = oldUniverse.updateUniverse(newUniverse);
+		return updatedUniverse;
+	}
 
 }
