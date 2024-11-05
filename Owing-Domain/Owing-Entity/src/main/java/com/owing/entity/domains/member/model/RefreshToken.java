@@ -22,7 +22,7 @@ public class RefreshToken {
     private Long ttl;
 
     @Builder
-    private RefreshToken(String token, String memberId, Long ttl) {
+    public RefreshToken(String token, String memberId, Long ttl) {
         this.token = token;
         this.memberId = memberId;
         this.ttl = ttl;
