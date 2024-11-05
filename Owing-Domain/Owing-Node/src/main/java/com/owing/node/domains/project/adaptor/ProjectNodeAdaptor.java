@@ -2,7 +2,7 @@ package com.owing.node.domains.project.adaptor;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.node.domains.project.error.code.ProjectNodeErrorCode;
-import com.owing.node.domains.project.error.exception.ProjectNodeException;
+import com.owing.node.domains.project.error.exception.ProjectNodeNotFoundException;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,6 @@ public class ProjectNodeAdaptor {
 
     public ProjectNode findById(Long projectId) {
         return projectNodeRepository.findById(projectId)
-                .orElseThrow(() -> ProjectNodeException.of(ProjectNodeErrorCode.PROJECT_NODE_NOT_FOUND, "Project Node Id: %d".formatted(projectId)));
+                .orElseThrow(() -> ProjectNodeNotFoundException.of(ProjectNodeErrorCode.PROJECT_NODE_NOT_FOUND, "Project Node Id: %d".formatted(projectId)));
     }
 }
