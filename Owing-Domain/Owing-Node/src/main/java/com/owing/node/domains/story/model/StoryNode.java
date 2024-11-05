@@ -31,7 +31,7 @@ public class StoryNode extends BaseTimeNeo4j implements FileNode<StoryFolderNode
 
     @Override
     public void connectFolder(StoryFolderNode storyFolderNode) {
-        if (ObjectUtils.isEmpty(this.storyFolder)) {
+        if (!ObjectUtils.isEmpty(this.storyFolder)) {
             throw StoryNodeRelationshipException.of(
                     StoryNodeErrorCode.RELATED_FOLDER_ALREADY_EXISTS,
                     "StoryFolder Id: %d, Connected Project Id: %d, Requested Project Id: %d"

@@ -15,7 +15,6 @@ import org.springframework.util.ObjectUtils;
 
 @Node("CastFolder")
 @Getter
-
 public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
 
     @Id
@@ -34,16 +33,12 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
         this.description = description;
     }
 
-    public void updatePosition(Long position) {
-        this.position = position;
-    }
-
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
     private ProjectNode project;
 
     @Override
     public void connectProject(ProjectNode projectNode) {
-        if (ObjectUtils.isEmpty(this.project)) {
+        if (!ObjectUtils.isEmpty(this.project)) {
             throw CastFolderNodeRelationshipException.of(
                     CastFolderNodeErrorCode.RELATIONSHIP_ALREADY_EXISTS,
                     "CastFolder Id: %d, Connected Project Id: %d, Requested Project Id: %d"
@@ -52,5 +47,9 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
         }
 
         this.project = projectNode;
+    }
+
+    public void updatePosition(Long position) {
+        this.position = position;
     }
 }
