@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class UniverseDomainService {
 
-	private final UniverseAdaptor universeAdaptor;
 	private final UniverseRepository universeRepository;
 
 	@Transactional
@@ -29,4 +28,8 @@ public class UniverseDomainService {
 		return updatedUniverse;
 	}
 
+	@Transactional
+	public void deleteUniverse(Universe universe) {
+		universeRepository.delete(universe);
+	}
 }
