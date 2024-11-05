@@ -42,6 +42,7 @@ public class Universe extends BaseTimeEntity {
 	private String imageUrl;
 
 	@ManyToOne
-	@JoinColumn(name = "universe_folder_id", nullable = false)
+	@JoinColumn(name = "universe_folder_id") // todo: 폴더 생긴 후 nullable = false 추가
+	// @JoinColumn(name = "universe_folder_id", nullable = false)
 	private UniverseFolder universeFolder;
 }
