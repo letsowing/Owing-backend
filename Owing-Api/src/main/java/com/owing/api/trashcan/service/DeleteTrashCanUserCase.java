@@ -14,8 +14,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DeleteTrashCanUserCase {
 	private final TrashCanFolderDomainService trashCanFolderDomainService;
+	private final TrashCanDomainService trashCanDomainService;
 
-	public void execute(Long projectId) {
+	public void executeAll(Long projectId) {
 		trashCanFolderDomainService.deleteAllTrashCan(projectId);
+	}
+
+	public void execute(Long trashId) {
+		trashCanDomainService.deleteTrashCan(trashId);
 	}
 }

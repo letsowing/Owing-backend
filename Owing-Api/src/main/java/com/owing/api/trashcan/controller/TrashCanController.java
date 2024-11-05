@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,14 @@ public class TrashCanController {
 	}
 
 	@DeleteMapping("")
-	public ResponseEntity<?> deleteTrashCan(@RequestParam("projectId") Long projectId) {
-		deleteTrashCanUserCase.execute(projectId);
+	public ResponseEntity<?> deleteAllTrashCan(@RequestParam("projectId") Long projectId) {
+		deleteTrashCanUserCase.executeAll(projectId);
 		return ResponseEntity.noContent().build();
 	}
 
-
+	@DeleteMapping("/{trashId}")
+	public ResponseEntity<?> deleteTrashCan(@PathVariable Long trashId) {
+		deleteTrashCanUserCase.execute(trashId);
+		return ResponseEntity.noContent().build();
+	}
 }
