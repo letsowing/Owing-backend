@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 
 @Node("CastFolder")
 @Getter
+
 public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
 
     @Id
@@ -27,6 +28,15 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
     private String name;
     private String description;
     private Long position;
+
+    public CastFolderNode(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public void updatePosition(Long position) {
+        this.position = position;
+    }
 
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
     private ProjectNode project;

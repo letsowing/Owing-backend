@@ -17,9 +17,11 @@ public class CastFolderNodeDomainService {
     private final CastFolderNodeAdaptor castFolderNodeAdaptor;
 
     @Transactional
-    public void createCastFolderNode(CastFolderNode castFolderNode, ProjectNode projectNode) {
+    public CastFolderNode createCastFolderNode(CastFolderNode castFolderNode, ProjectNode projectNode) {
         castFolderNode.connectProject(projectNode);
-        castFolderNodeRepository.save(castFolderNode);
+        // TODO: folder 로직 추가
+        castFolderNode.updatePosition(0L);
+        return castFolderNodeRepository.save(castFolderNode);
     }
 
     @Transactional
