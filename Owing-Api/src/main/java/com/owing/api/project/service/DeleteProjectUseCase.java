@@ -1,12 +1,15 @@
 package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
+import com.owing.api.project.model.mapper.ProjectNodeMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.error.exception.ProjectIllegalAccessException;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.service.ProjectDomainService;
+import com.owing.node.domains.project.model.ProjectNode;
+import com.owing.node.domains.project.service.ProjectNodeDomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,9 @@ public class DeleteProjectUseCase {
     private final MemberUtils memberUtils;
     private final ProjectDomainService projectDomainService;
     private final ProjectAdaptor projectAdaptor;
+
+    private final ProjectNodeMapper projectMapper;
+    private final ProjectNodeDomainService projectNodeDomainService;
 
     @Transactional
     public void execute(Long projectId) {
@@ -28,6 +34,8 @@ public class DeleteProjectUseCase {
         }
 
         projectDomainService.deleteProject(project);
-    }
 
+        ProjectNode projectNode = projectMapper.toNode(project.getId());
+        projectNodeDomainService.deleteProjectNode(projectNode);
+    }
 }
