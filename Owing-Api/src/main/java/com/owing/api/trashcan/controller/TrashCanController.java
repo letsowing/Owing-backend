@@ -1,7 +1,9 @@
 package com.owing.api.trashcan.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +27,15 @@ public class TrashCanController {
 	private final DeleteTrashCanUserCase deleteTrashCanUserCase;
 
 	@GetMapping("")
-	public ResponseEntity<TrashCanFolderResponse> getTrashCan(@RequestParam("project") Long projectId) {
+	public ResponseEntity<TrashCanFolderResponse> getTrashCan(@RequestParam("projectId") Long projectId) {
 		return ResponseEntity.ok(readTrashCanUserCase.execute(projectId));
 	}
+
+	@DeleteMapping("")
+	public ResponseEntity<?> deleteTrashCan(@RequestParam("projectId") Long projectId) {
+		deleteTrashCanUserCase.execute(projectId);
+		return ResponseEntity.noContent().build();
+	}
+
 
 }

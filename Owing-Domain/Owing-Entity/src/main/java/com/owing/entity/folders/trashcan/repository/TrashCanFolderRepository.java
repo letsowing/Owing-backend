@@ -10,4 +10,6 @@ import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, Long> {
 
 	List<TrashCanFolder> findAllByProject_Id(Long projectId);
+
+	void deleteAllByProject_Id(Long projectId);
 }
