@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum StoryNodeErrorCode implements OwingErrorCode {
 
     STORY_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "스토리 노드를 찾을 수 없습니다."),
+    RELATED_FOLDER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "002", "소속된 폴더가 존재합니다.")
     ;
 
     private final HttpStatus status;
