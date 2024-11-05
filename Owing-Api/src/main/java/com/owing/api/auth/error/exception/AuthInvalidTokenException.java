@@ -10,7 +10,7 @@ public class AuthInvalidTokenException extends OwingException  {
     }
 
     public static AuthInvalidTokenException of(AuthErrorCode errorCode) {
-        return new AuthInvalidTokenException(errorCode, errorCode.getCode());
+        return new AuthInvalidTokenException(errorCode, null);
     }
 
     public static AuthInvalidTokenException of(AuthErrorCode errorCode, String description) {
