@@ -12,6 +12,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // google oauth
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.29.0'
 }
 
 test {
