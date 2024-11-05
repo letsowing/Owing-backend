@@ -4,6 +4,7 @@ import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.trashcan.model.TrashCan;
 import com.owing.entity.folders.story.model.StoryFolder;
+import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,7 +43,7 @@ public class Project extends BaseTimeEntity {
     private List<UniverseFolder> universeFolderList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<TrashCan> trashCanList = new ArrayList<>();
+    private List<TrashCanFolder> trashCanFolderList = new ArrayList<>();
 
     @PrePersist
     protected void prePersist() {
