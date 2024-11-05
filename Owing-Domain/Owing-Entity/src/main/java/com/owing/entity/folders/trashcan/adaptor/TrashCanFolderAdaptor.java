@@ -3,6 +3,10 @@ package com.owing.entity.folders.trashcan.adaptor;
 import java.util.List;
 
 import com.owing.common.annotation.Adaptor;
+import com.owing.entity.domains.trashcan.error.TrashCanErrorCode;
+import com.owing.entity.domains.trashcan.error.exception.TrashCanException;
+import com.owing.entity.folders.trashcan.error.TrashCanFolderErrorCode;
+import com.owing.entity.folders.trashcan.error.exception.TrashCanFolderException;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
 
@@ -17,4 +21,8 @@ public class TrashCanFolderAdaptor {
 		return trashCanFolderRepository.findAllByProject_Id(projectId);
 	}
 
+	public TrashCanFolder findById(Long trashId) {
+		return trashCanFolderRepository.findById(trashId).orElseThrow(() -> TrashCanFolderException.of(
+			TrashCanFolderErrorCode.TRASH_CAN_FOLDER_NOT_FOUND, "요청된 TrashCanFolder Id: %d".formatted(trashId)));
+	}
 }

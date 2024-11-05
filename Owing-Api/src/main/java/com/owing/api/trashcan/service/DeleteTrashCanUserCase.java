@@ -23,4 +23,8 @@ public class DeleteTrashCanUserCase {
 	public void execute(Long trashId) {
 		trashCanDomainService.deleteTrashCan(trashId);
 	}
+
+	public void executeFolder(Long trashId) {
+		trashCanFolderDomainService.deleteTrashCanFolder(trashId);
+	}
 }

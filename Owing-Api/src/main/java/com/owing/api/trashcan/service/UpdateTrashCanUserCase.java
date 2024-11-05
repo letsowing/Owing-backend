@@ -13,8 +13,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateTrashCanUserCase {
 	private final TrashCanDomainService trashCanDomainService;
+	private final TrashCanFolderDomainService trashCanFolderDomainService;
 
 	public void executeRestore(Long trashId) {
 		trashCanDomainService.restoreTrashCan(trashId);
+	}
+
+	public void executeRestoreFolder(Long trashId) {
+		trashCanFolderDomainService.restoreTrashCan(trashId);
 	}
 }
