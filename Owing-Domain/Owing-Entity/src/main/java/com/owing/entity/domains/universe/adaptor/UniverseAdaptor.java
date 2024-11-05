@@ -1,6 +1,7 @@
 package com.owing.entity.domains.universe.adaptor;
 
 import com.owing.common.annotation.Adaptor;
+
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
