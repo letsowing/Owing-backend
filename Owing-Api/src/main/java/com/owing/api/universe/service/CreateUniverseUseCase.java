@@ -1,20 +1,18 @@
 package com.owing.api.universe.service;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
-import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.project.model.ProjectInfo;
+import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class CreateUniverseUseCase {
 

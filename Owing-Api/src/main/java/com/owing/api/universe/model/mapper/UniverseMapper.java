@@ -1,17 +1,16 @@
 package com.owing.api.universe.model.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
+import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.universe.adaptor.UniverseAdaptor;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Mapper
 @RequiredArgsConstructor
 public class UniverseMapper {
 

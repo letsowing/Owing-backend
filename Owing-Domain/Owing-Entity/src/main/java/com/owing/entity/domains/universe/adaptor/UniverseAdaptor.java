@@ -1,7 +1,6 @@
 package com.owing.entity.domains.universe.adaptor;
 
-import org.springframework.stereotype.Component;
-
+import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
@@ -9,7 +8,7 @@ import com.owing.entity.domains.universe.repository.UniverseRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Adaptor
 @RequiredArgsConstructor
 public class UniverseAdaptor {
 	private final UniverseRepository universeRepository;
