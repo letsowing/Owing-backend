@@ -1,11 +1,6 @@
 package com.owing.entity.domains.trashcan.adaptor;
 
-import org.springframework.stereotype.Component;
-
-import com.owing.entity.domains.member.error.MemberErrorCode;
-import com.owing.entity.domains.member.error.exception.MemberException;
-import com.owing.entity.domains.member.model.Member;
-import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.trashcan.error.TrashCanErrorCode;
 import com.owing.entity.domains.trashcan.error.exception.TrashCanException;
 import com.owing.entity.domains.trashcan.model.TrashCan;
@@ -13,7 +8,7 @@ import com.owing.entity.domains.trashcan.repository.TrashCanRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Adaptor
 @RequiredArgsConstructor
 public class TrashCanAdaptor {
     private final TrashCanRepository trashCanRepository;

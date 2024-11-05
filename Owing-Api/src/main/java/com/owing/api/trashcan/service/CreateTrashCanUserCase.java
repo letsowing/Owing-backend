@@ -1,10 +1,10 @@
 package com.owing.api.trashcan.service;
 
-import org.springframework.stereotype.Service;
+import com.owing.common.annotation.UseCase;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class CreateTrashCanUserCase {
 }

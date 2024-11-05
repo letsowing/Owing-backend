@@ -1,19 +1,16 @@
 package com.owing.api.trashcan.service;
 
-import org.springframework.stereotype.Service;
-
 import com.owing.api.common.MemberUtils;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
-import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
+import com.owing.common.annotation.UseCase;
 import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class ReadTrashCanUserCase {
-	private final MemberUtils memberUtils;
 	private final TrashCanFolderDomainService trashCanFolderDomainService;
 	private final TrashCanMapper trashCanMapper;
 

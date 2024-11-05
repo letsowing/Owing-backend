@@ -2,7 +2,6 @@ package com.owing.entity.domains.trashcan.error.exception;
 
 import com.owing.common.error.exception.OwingException;
 import com.owing.entity.domains.trashcan.error.TrashCanErrorCode;
-import com.owing.entity.domains.universe.error.UniverseErrorCode;
 
 public class TrashCanException extends OwingException {
 
