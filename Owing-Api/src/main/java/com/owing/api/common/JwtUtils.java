@@ -3,6 +3,7 @@ package com.owing.api.common;
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -45,10 +46,13 @@ public class JwtUtils {
                 .build();
     }
 
-    public boolean validateToken(String token) {
+    public Long parseAccessToken(String accessToken) {
+        return Long.parseLong(validateToken(accessToken).getSubject());
+    }
+
+    public Claims validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             throw AuthInvalidTokenException.of(UNAUTHORIZED_ACCESS);
         } catch (Exception e) {
