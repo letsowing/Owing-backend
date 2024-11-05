@@ -18,7 +18,7 @@ import com.owing.api.trashcan.service.UpdateTrashCanUserCase;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/v1/trashCans")
+@RequestMapping("/v1/trashcans")
 @RequiredArgsConstructor
 public class TrashCanController {
 
