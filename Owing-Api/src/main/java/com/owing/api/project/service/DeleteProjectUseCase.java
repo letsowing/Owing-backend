@@ -1,16 +1,16 @@
 package com.owing.api.project.service;
 
 import com.owing.api.common.MemberUtils;
+import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.error.exception.ProjectIllegalAccessException;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.service.ProjectDomainService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class DeleteProjectUseCase {
     private final MemberUtils memberUtils;
