@@ -31,7 +31,7 @@ public class GoogleOauthLoginUseCase {
     private final JwtUtils jwtUtils;
 
     @Transactional
-    public TokenResponse oauthLogin(String idToken) {
+    public TokenResponse execute(String idToken) {
         Payload payload = validateGoogleIdToken(idToken);
         Member member = memberAdaptor.findByEmailAndProvider(payload.get(GOOGLE_CLAIM_EMAIL).toString(), GOOGLE)
                 .orElseGet(() -> memberDomainService.createMember(memberMapper.toEntity(payload, GOOGLE)));
