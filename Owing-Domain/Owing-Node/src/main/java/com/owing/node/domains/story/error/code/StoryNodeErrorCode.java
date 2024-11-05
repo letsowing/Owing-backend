@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum StoryNodeErrorCode implements OwingErrorCode {
 
-    STORY_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "프로젝트 노드를 찾을 수 없습니다."),
+    STORY_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "스토리 노드를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus status;
