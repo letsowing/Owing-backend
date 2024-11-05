@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum UniverseErrorCode implements OwingErrorCode {
 
-    CAST_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "등장인물을 찾을 수 없습니다.");
+    UNIVERSE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "세계관을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
@@ -15,7 +15,7 @@ public enum UniverseErrorCode implements OwingErrorCode {
 
     UniverseErrorCode(HttpStatus status, String code, String message) {
         this.status = status;
-        this.code = "MEMBER" + code;
+        this.code = "UNIVERSE" + code;
         this.message = message;
     }
 }
