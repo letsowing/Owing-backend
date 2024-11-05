@@ -12,10 +12,8 @@ import java.util.List;
 import static com.owing.entity.common.constant.OwingPersistenceConst.*;
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @SoftDelete
 public class Member extends BaseTimeEntity {
 	@Id
@@ -25,7 +23,7 @@ public class Member extends BaseTimeEntity {
 	@Column(length = EMAIL_LEN, nullable = false)
 	private String email;
 
-	@Column(length = PASSWORD_LEN, nullable = false)
+	@Column(nullable = false)
 	private String password;
 
 	@Column(length = NAME_LEN, nullable = false)
@@ -55,5 +53,19 @@ public class Member extends BaseTimeEntity {
 		if (aiPoint == null) {
 			aiPoint = 0L;
 		}
+	}
+
+	@Builder
+	public Member(Long id, String email, String password, String name, String nickname, String phoneNumber,
+				  String profileUrl, OauthProvider provider) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.nickname = nickname;
+		this.phoneNumber = phoneNumber;
+		this.profileUrl = profileUrl;
+		this.provider = provider;
+		this.aiPoint = 0L;
 	}
 }
