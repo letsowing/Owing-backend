@@ -20,7 +20,6 @@ public class DeleteProjectUseCase {
     private final ProjectDomainService projectDomainService;
     private final ProjectAdaptor projectAdaptor;
 
-    private final ProjectNodeMapper projectMapper;
     private final ProjectNodeDomainService projectNodeDomainService;
 
     @Transactional
@@ -34,8 +33,6 @@ public class DeleteProjectUseCase {
         }
 
         projectDomainService.deleteProject(project);
-
-        ProjectNode projectNode = projectMapper.toNode(project.getId());
-        projectNodeDomainService.deleteProjectNode(projectNode);
+        projectNodeDomainService.deleteProjectNode(project.getId());
     }
 }
