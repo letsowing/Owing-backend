@@ -20,8 +20,10 @@ public class CastingNode extends BaseTimeNeo4j {
     private Long age;
     private String gender;
     private String role;
+    private String description;
     private String imageUrl;
-    private Coord coord;
+    private Coordinate coordinate;
+    private Long position;
 
     @Relationship(type = "CONNECTION", direction = Relationship.Direction.OUTGOING)
     private Set<CastingRelationship> outConnections;

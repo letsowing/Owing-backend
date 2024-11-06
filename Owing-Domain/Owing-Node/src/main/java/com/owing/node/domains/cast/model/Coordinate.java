@@ -1,6 +1,6 @@
 package com.owing.node.domains.cast.model;
 
-public record Coord(
+public record Coordinate(
         Integer x,
         Integer y
 ) {
