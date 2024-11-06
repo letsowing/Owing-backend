@@ -12,12 +12,42 @@ import java.util.Optional;
 @Repository
 public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
 
-    @Query("MATCH (n1:Cast{id: $id}) " +
-            "WHERE n1.deletedAt IS NULL " +
-            "OPTIONAL MATCH (n1)-[r]-(n2) " +
-            "WHERE n2 IS NULL OR n2.deletedAt IS NULL " +
-            "RETURN n1, collect(r), collect(n2)")
-    Optional<CastNode> findById(Long id);
+//    @Query("MATCH (n1:Cast{id: $id}) " +
+//            "WHERE n1.deletedAt IS NULL " +
+//            "OPTIONAL MATCH (n1)-[r]-(n2) " +
+//            "WHERE n2 IS NULL OR n2.deletedAt IS NULL " +
+//            "RETURN n1, collect(r), collect(n2)")
+//    Optional<CastNode> findById(Long id);
+
+    @Query("""
+            match
+              (n1:Cast)-[r:CONNECTION]->(n2:Cast)
+            where
+              id(n1)=$sourceId and id(n2)=$targetId
+            return
+              distinct split(elementId(r), ":")[1] as id,
+              r.label as label,
+              r.sourceId as sourceId,
+              r.sourceHandle as sourceHandle,
+              r.targetId as targetId,
+              r.targetHandle as targetHandle
+            """)
+    Optional<CastRelationship> findConnection(Long sourceId, Long targetId);
+
+    @Query("""
+            match
+              (n1:Cast)-[r:BI_CONNECTION]-(n2:Cast)
+            where
+              id(n1)=$sourceId and id(n2)=$targetId
+            return
+              distinct split(elementId(r), ":")[1] as id,
+              r.label as label,
+              r.sourceId as sourceId,
+              r.sourceHandle as sourceHandle,
+              r.targetId as targetId,
+              r.targetHandle as targetHandle
+            """)
+    Optional<CastRelationship> findBiconnection(Long sourceId, Long targetId);
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
