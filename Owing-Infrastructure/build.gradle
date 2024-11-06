@@ -10,6 +10,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     implementation project(':Owing-Common')
+
+    // 모니터링
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // health-check
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 bootJar.enabled = false
