@@ -1,5 +1,6 @@
 package com.owing.entity.folders.trashcan.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, 
 	List<TrashCanFolder> findAllByProject_Id(Long projectId);
 
 	void deleteAllByProject_Id(Long projectId);
+
+	int deleteByCreatedAtBefore(LocalDateTime cutoffDateTime);
 }
