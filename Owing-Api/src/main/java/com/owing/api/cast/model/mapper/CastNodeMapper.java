@@ -2,6 +2,7 @@ package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
+import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.common.annotation.Mapper;
@@ -59,6 +60,16 @@ public class CastNodeMapper {
                 relationship.sourceHandle(),
                 relationship.targetId(),
                 relationship.targetHandle()
+        );
+    }
+
+    public CastFileResponse toFileResponse(CastNode castNode) {
+        return new CastFileResponse(
+                castNode.getId(),
+                castNode.getName(),
+                castNode.getDescription(),
+                castNode.getImageUrl(),
+                castNode.getPosition()
         );
     }
 }
