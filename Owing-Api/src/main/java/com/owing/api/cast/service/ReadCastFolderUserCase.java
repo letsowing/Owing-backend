@@ -21,10 +21,15 @@ public class ReadCastFolderUserCase {
     private final CastFolderNodeAdaptor castFolderNodeAdaptor;
     private final CastNodeMapper castNodeMapper;
 
-    public List<CastFolderResponse> execute(Long projectId) {
+    public List<CastFolderResponse> executeGetList(Long projectId) {
         ProjectNode projectNode = projectNodeAdaptor.findById(projectId);
         List<CastFolderNode> castFolderNodeList = castFolderNodeAdaptor.findAllByProjectId(projectNode.getId());
         return getSortedCastFolderResponse(castFolderNodeList);
+    }
+
+    public CastFolderResponse executeGetOne(Long folderId) {
+        CastFolderNode castFolderNode = castFolderNodeAdaptor.findById(folderId);
+        return getSortedCastFolderResponse(List.of(castFolderNode)).getFirst();
     }
 
     private List<CastFolderResponse> getSortedCastFolderResponse(List<CastFolderNode> castFolderNodeList) {
