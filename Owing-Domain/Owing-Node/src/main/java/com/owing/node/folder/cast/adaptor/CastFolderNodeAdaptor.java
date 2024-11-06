@@ -7,6 +7,8 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Adaptor
 @RequiredArgsConstructor
 public class CastFolderNodeAdaptor {
@@ -19,5 +21,9 @@ public class CastFolderNodeAdaptor {
                         CastFolderNodeErrorCode.NODE_NOT_FOUND,
                         "cast folder id: %d".formatted(castFolderNodeId)
                 ));
+    }
+
+    public List<CastFolderNode> findAllByProjectId(Long projectId) {
+        return castFolderNodeRepository.findAllByProjectId(projectId);
     }
 }
