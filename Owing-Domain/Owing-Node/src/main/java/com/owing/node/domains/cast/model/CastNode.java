@@ -1,11 +1,9 @@
 package com.owing.node.domains.cast.model;
 
+import com.owing.node.common.converter.CoordinateConverter;
 import com.owing.node.common.model.BaseTimeNeo4j;
 import lombok.*;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.Set;
 
@@ -23,6 +21,8 @@ public class CastNode extends BaseTimeNeo4j {
     private String role;
     private String description;
     private String imageUrl;
+
+    @CompositeProperty(converter = CoordinateConverter.class)
     private Coordinate coordinate;
     private Long position;
 
@@ -52,5 +52,9 @@ public class CastNode extends BaseTimeNeo4j {
 //
 //    @Relationship(type = "INCLUDED", direction = Relationship.Direction.INCOMING)
 //    private ProjectNode projectNode;
+
+    public void updatePosition(Long position) {
+        this.position = position;
+    }
 
 }
