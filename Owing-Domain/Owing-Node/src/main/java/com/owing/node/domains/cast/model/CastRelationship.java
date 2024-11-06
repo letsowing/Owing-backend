@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CastRelationship {
 
     @RelationshipId
-    private UUID id;
+    private String id;
 
     private String label;
     private Long sourceId;
