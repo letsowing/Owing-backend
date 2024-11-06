@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CastNodeErrorCode implements OwingErrorCode {
-	CASTING_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "인물을 찾을 수 없습니다."),
+	CAST_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "인물을 찾을 수 없습니다."),
 	INVALID_ARGS_FOR_UPDATE(HttpStatus.BAD_REQUEST, "002", "업데이트 요청에 잘못된 데이터가 포함되었습니다."),
 	CONNECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "003", "관계를 찾을 수 없습니다."),
 	ILLEGAL_ARGS(HttpStatus.BAD_REQUEST, "004", "올바르지 않은 인자값입니다."),
