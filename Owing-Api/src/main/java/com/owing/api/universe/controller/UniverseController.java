@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.owing.api.file.service.CreatePresignedUrlUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
@@ -29,6 +30,7 @@ public class UniverseController {
 	private final UpdateUniverseUseCase updateUniverseUseCase;
 	private final ReadUniverseUseCase readUniverseUseCase;
 	private final DeleteUniverseUseCase deleteUniverseUseCase;
+	private final CreatePresignedUrlUseCase createPresignedUrlUseCase;
 
 	@PostMapping
 	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@RequestBody AddUniverseRequest addUniverseRequest) {
@@ -52,5 +54,12 @@ public class UniverseController {
 		deleteUniverseUseCase.execute(universeId);
 		return ResponseEntity.ok("삭제되었습니다.");
 	}
+
+	/* presigned url 생성 */
+	@GetMapping("/file/{filename}")
+	public ResponseEntity<?> getFile(@PathVariable(value = "filename") String fileName) {
+		return ResponseEntity.ok(createPresignedUrlUseCase.execute(fileName));
+	}
+
 
 }
