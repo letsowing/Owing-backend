@@ -15,8 +15,7 @@ public class CastFolderNodeMapper {
         return new CastFolderInfoResponse(
                 castFolderNode.getId(),
                 castFolderNode.getName(),
-                castFolderNode.getDescription(),
-                castFolderNode.getPosition()
+                castFolderNode.getDescription()
         );
     }
 }
