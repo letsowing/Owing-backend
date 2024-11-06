@@ -71,6 +71,68 @@ public class CastNode extends BaseTimeNeo4j implements FileNode<CastFolderNode> 
         this.castFolder = castFolderNode;
     }
 
+    /**
+     * 단방향 관계를 추가하는 메서드<p>
+     * (A)-->(B)
+     * @param relationship
+     */
+    public void connectCast(CastRelationship relationship) {
+        if (!isConnectable(relationship)) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS,
+                    "Connection Type: %s, Source Id: %d, Target Id: %d"
+                            .formatted(ConnectionType.DIRECTIONAL, relationship.getSourceId(), relationship.getTargetId())
+            );
+        }
+        outConnections.add(relationship);
+    }
+
+    /**
+     * 양방향 관계를 추가하는 메서드<p>
+     * (A)<-->(B)
+     * @param relationship
+     */
+    public void biconnectCast(CastRelationship relationship) {
+        if (!isBiconnectable(relationship)) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS,
+                    "Requested Connection Type: %s, Source Id: %d, Target Id: %d"
+                            .formatted(ConnectionType.BIDIRECTIONAL, relationship.getSourceId(), relationship.getTargetId()));
+        }
+
+        outBiConnections.add(relationship);
+    }
+
+    /**
+     * (A)<-->(B) 양방향 연결이 가능한지 확인하는 메서드<p>
+     * 1. (A)-->(B) 단방향 연결, <p>
+     * 2. (A)<--(B) 단방향 연결, <p>
+     * 3. (A)<-->(B) 양방향 연결을 확인한다
+     * @param relationship
+     * @return
+     */
+    private boolean isBiconnectable(CastRelationship relationship) {
+        Set<CastRelationship> inConnections = relationship.getTargetNode().outConnections;
+        return isConnectable(relationship)
+                && !isDuplicateConnection(this, inConnections);
+    }
+
+    /**
+     * (A)-->(B) 단방향 연결이 가능한지 확인하는 메서드 <p>
+     * 1. (A)-->(B) 단방향 연결, <p>
+     * 2. (A)<-->(B) 양방향 연결을 확인한다.
+     * @param relationship
+     * @return
+     */
+    private boolean isConnectable(CastRelationship relationship) {
+        return !(isDuplicateConnection(relationship.getTargetNode(), outConnections)
+                || isDuplicateConnection(relationship.getTargetNode(), outBiConnections)
+                || isDuplicateConnection(this, inBiConnections));
+    }
+
+    private boolean isDuplicateConnection(CastNode target, Set<CastRelationship> connections) {
+        return connections.stream()
+                .anyMatch(conn -> conn.getTargetId().equals(target.getId()));
+    }
+
     public void updatePosition(Long position) {
         this.position = position;
     }
