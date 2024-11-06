@@ -69,17 +69,4 @@ public class JwtUtils {
                 .compact();
     }
 
-    //todo memberId token에서 가져오는거 구현 필요함, 여기서 가져와야 하나? 이렇게??
-    public Long getInfoId(String token) {
-        return parseJson(token).getLong("id");
-    }
-
-    private JSONObject parseJson(String token) {
-        Claims claims = Jwts.parserBuilder()
-            .setSigningKey(this.key)
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
-        return new JSONObject(claims);
-    }
 }

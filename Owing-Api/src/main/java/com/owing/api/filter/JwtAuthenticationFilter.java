@@ -54,8 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throw AuthInvalidTokenException.of(INVALID_REFRESH_TOKEN);
 		}
 
-		//todo memberId token에서 가져오는거 구현 필요함
-		Long userId = jwtUtils.getInfoId(accessToken);
+		Long userId = jwtUtils.parseAccessToken(accessToken);
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 			userId,
