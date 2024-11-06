@@ -22,12 +22,12 @@ public class CastingRelationship {
     private ConnectionHandle targetHandle;
 
     @TargetNode
-    private CastingNode castingNode;
+    private CastNode castNode;
 
-    CastingRelationship(String uuid, String label, CastingNode castingNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
+    CastingRelationship(String uuid, String label, CastNode castNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
         this.uuid = uuid;
         this.label = label;
-        this.castingNode = castingNode;
+        this.castNode = castNode;
 
         this.sourceId = sourceId;
         this.sourceHandle = sourceHandle;
