@@ -1,6 +1,7 @@
 package com.owing.node.domains.cast.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
@@ -24,7 +25,8 @@ public class CastRelationship {
     @TargetNode
     private CastNode targetNode;
 
-    CastRelationship(String label, CastNode targetNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
+    @Builder
+    public CastRelationship(String label, CastNode targetNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
         this.label = label;
         this.targetNode = targetNode;
 

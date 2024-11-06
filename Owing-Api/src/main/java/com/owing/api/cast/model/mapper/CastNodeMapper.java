@@ -1,9 +1,12 @@
 package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.ConnectionHandle;
 
 @Mapper
 public class CastNodeMapper {
@@ -17,6 +20,17 @@ public class CastNodeMapper {
                 .description(createCastRequest.description())
                 .imageUrl(createCastRequest.imageUrl())
                 .coordinate(createCastRequest.coordinate())
+                .build();
+    }
+
+    public CastRelationship toRelationship(CreateConnectionRequest createConnectionRequest, CastNode target) {
+        return CastRelationship.builder()
+                .label(createConnectionRequest.label())
+                .sourceId(createConnectionRequest.sourceId())
+                .sourceHandle(createConnectionRequest.sourceHandle())
+                .targetId(createConnectionRequest.targetId())
+                .targetHandle(createConnectionRequest.targetHandle())
+                .targetNode(target)
                 .build();
     }
 
