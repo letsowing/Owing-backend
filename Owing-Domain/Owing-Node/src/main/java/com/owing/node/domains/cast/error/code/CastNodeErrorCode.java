@@ -16,6 +16,8 @@ public enum CastNodeErrorCode implements OwingErrorCode {
 	ILLEGAL_TYPE_ARGS(HttpStatus.BAD_REQUEST, "008", "올바르지 않은 관계 Type입니다."),
 	INVALID_POSITION(HttpStatus.BAD_REQUEST, "009", "인물의 위치를 변경할 수 없습니다."),
 	RELATED_FOLDER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "010", "이미 소속된 폴더가 존재합니다."),
+	CONNECTION_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "010", "이미 연결된 관계가 존재합니다."),
+	RELATIONSHIP_NOT_FOUND(HttpStatus.BAD_REQUEST, "011", "관계를 찾을 수 없습니다."),
 	;
 
 
