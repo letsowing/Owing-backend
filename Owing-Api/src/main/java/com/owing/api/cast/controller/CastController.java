@@ -18,9 +18,4 @@ public class CastController {
     public ResponseEntity<CastInfoResponse> createCast(@RequestBody CreateCastRequest createCastRequest) {
         return ResponseEntity.ok(createCastUserCase.execute(createCastRequest));
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CastInfoResponse> createCast(@PathVariable Long id) {
-        return ResponseEntity.ok(createCastUserCase.executeTemp(id));
-    }
 }
