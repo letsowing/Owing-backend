@@ -1,6 +1,6 @@
 package com.owing.node.domains.cast.repository;
 
-import com.owing.node.domains.cast.model.CastingNode;
+import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastingRelationship;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CastingNodeRepository extends Neo4jRepository<CastingNode, Long> {
+public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
 
     @Query("MATCH (n1:Cast{id: $id}) " +
             "WHERE n1.deletedAt IS NULL " +
             "OPTIONAL MATCH (n1)-[r]-(n2) " +
             "WHERE n2 IS NULL OR n2.deletedAt IS NULL " +
             "RETURN n1, collect(r), collect(n2)")
-    Optional<CastingNode> findById(Long id);
+    Optional<CastNode> findById(Long id);
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
@@ -46,7 +46,7 @@ public interface CastingNodeRepository extends Neo4jRepository<CastingNode, Long
             "WHERE n1.deletedAt IS NULL " +
                 "AND n2.deletedAt IS NULL " +
             "RETURN n2")
-    List<CastingNode> findAllByProjectId(Long projectId);
+    List<CastNode> findAllByProjectId(Long projectId);
 
 //    @Query("MATCH (n1:Project{id: $projectId})-[r1:INCLUDED]->(n2:Cast)-[r2]-(n3:Cast) " +
 //            "WHERE n1.deletedAt IS NULL " +

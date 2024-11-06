@@ -2,6 +2,7 @@ package com.owing.node.domains.cast.model;
 
 import com.owing.node.common.model.BaseTimeNeo4j;
 import lombok.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -10,12 +11,12 @@ import java.util.Set;
 
 @Node("Cast")
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CastingNode extends BaseTimeNeo4j {
+public class CastNode extends BaseTimeNeo4j {
     @Id
+    @GeneratedValue
     private Long id;
+
     private String name;
     private Long age;
     private String gender;
@@ -24,6 +25,18 @@ public class CastingNode extends BaseTimeNeo4j {
     private String imageUrl;
     private Coordinate coordinate;
     private Long position;
+
+    @Builder
+    public CastNode(String name, Long age, String gender, String role, String description, String imageUrl, Coordinate coordinate, Long position) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.role = role;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.coordinate = coordinate;
+        this.position = position;
+    }
 
     @Relationship(type = "CONNECTION", direction = Relationship.Direction.OUTGOING)
     private Set<CastingRelationship> outConnections;
