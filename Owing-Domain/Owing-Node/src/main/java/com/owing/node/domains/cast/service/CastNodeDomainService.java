@@ -4,6 +4,9 @@ import com.owing.common.annotation.DomainService;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.ConnectionHandle;
+import com.owing.node.domains.cast.model.ConnectionType;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +30,17 @@ public class CastNodeDomainService {
         );
         castNode.connectFolder(castFolderNode);
         return castNodeRepository.save(castNode);
+    }
+
+    @Transactional
+    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.connectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    @Transactional
+    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.biconnectCast(relationship);
+        return castNodeRepository.save(sourceCast);
     }
 }
