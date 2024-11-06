@@ -2,6 +2,7 @@ package com.owing.node.folder.cast.model;
 
 import com.owing.node.common.model.BaseTimeNeo4j;
 import com.owing.node.common.model.FolderNode;
+import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeRelationshipException;
@@ -12,6 +13,8 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Set;
 
 @Node("CastFolder")
 @Getter
@@ -28,13 +31,16 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
     private String description;
     private Long position;
 
+    @Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
+    private ProjectNode project;
+
+    @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
+    private Set<CastNode> cast;
+
     public CastFolderNode(String name, String description) {
         this.name = name;
         this.description = description;
     }
-
-    @Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
-    private ProjectNode project;
 
     @Override
     public void connectProject(ProjectNode projectNode) {
