@@ -7,14 +7,16 @@ import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
+import java.util.UUID;
+
 @RelationshipProperties
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CastingRelationship {
-    @RelationshipId
-    private Long id;
+public class CastRelationship {
 
-    private String uuid;
+    @RelationshipId
+    private UUID id;
+
     private String label;
     private Long sourceId;
     private Long targetId;
@@ -24,8 +26,7 @@ public class CastingRelationship {
     @TargetNode
     private CastNode castNode;
 
-    CastingRelationship(String uuid, String label, CastNode castNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
-        this.uuid = uuid;
+    CastRelationship(String label, CastNode castNode, Long sourceId, ConnectionHandle sourceHandle, Long targetId, ConnectionHandle targetHandle) {
         this.label = label;
         this.castNode = castNode;
 

@@ -1,7 +1,7 @@
 package com.owing.node.domains.cast.repository;
 
 import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastingRelationship;
+import com.owing.node.domains.cast.model.CastRelationship;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             "SET r.targetHandle = $targetHandle " +
             "RETURN r.uuid AS uuid, r.label AS label, r.sourceId AS sourceId, r.targetId AS targetId, " +
             "r.sourceHandle AS sourceHandle, r.targetHandle AS targetHandle")
-    Optional<CastingRelationship> updateDirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
+    Optional<CastRelationship> updateDirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:BI_CONNECTION{uuid: $uuid}]-(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
@@ -35,7 +35,7 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             "SET r.targetHandle = $targetHandle " +
             "RETURN r.uuid AS uuid, r.label AS label, r.sourceId AS sourceId, r.targetId AS targetId, " +
             "r.sourceHandle AS sourceHandle, r.targetHandle AS targetHandle")
-    Optional<CastingRelationship> updateBidirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
+    Optional<CastRelationship> updateBidirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
 
     @Query("MATCH (n1:Cast)-[r:CONNECTION|BI_CONNECTION{uuid: $uuid}]-(n2:Cast) " +
             "DELETE r " +
@@ -55,11 +55,11 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
 //            "RETURN DISTINCT " +
 //                "type(r2) as type, r2.uuid AS uuid, r2.label AS label, r2.sourceId AS sourceId, " +
 //                "r2.targetId AS targetId, r2.sourceHandle AS sourceHandle, r2.targetHandle AS targetHandle")
-//    List<CastingRelationshipInfoDto> findAllConnectionByProjectId(Long projectId);
+//    List<CastRelationshipInfoDto> findAllConnectionByProjectId(Long projectId);
 //
 //    @Query("MATCH (n1:Project{id: $projectId})-[r1:INCLUDED]->(n2:Cast) " +
 //            "WHERE n1.deletedAt IS NULL " +
 //            "AND n2.deletedAt IS NULL " +
 //            "RETURN n2.id AS id, n2.name AS name, n2.gender AS gender")
-//    List<CastingSummaryDto> findAllSummaryByProjectId(Long projectId);
+//    List<CastSummaryDto> findAllSummaryByProjectId(Long projectId);
 }

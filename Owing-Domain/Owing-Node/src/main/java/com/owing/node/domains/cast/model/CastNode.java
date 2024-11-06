@@ -39,13 +39,13 @@ public class CastNode extends BaseTimeNeo4j {
     }
 
     @Relationship(type = "CONNECTION", direction = Relationship.Direction.OUTGOING)
-    private Set<CastingRelationship> outConnections;
+    private Set<CastRelationship> outConnections;
 
     @Relationship(type = "BI_CONNECTION", direction = Relationship.Direction.OUTGOING)
-    private Set<CastingRelationship> outBiConnections;
+    private Set<CastRelationship> outBiConnections;
 
     @Relationship(type = "BI_CONNECTION", direction = Relationship.Direction.INCOMING)
-    private Set<CastingRelationship> inBiConnections;
+    private Set<CastRelationship> inBiConnections;
 
 //    @Relationship(type = "APPEARED",  direction = Relationship.Direction.OUTGOING)
 //    private Set<StoryPlotNode> episodes;
