@@ -1,5 +1,6 @@
 package com.owing.node.domains.cast.repository;
 
+import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -25,14 +26,14 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             where
               id(n1)=$sourceId and id(n2)=$targetId
             return
-              distinct split(elementId(r), ":")[1] as id,
+              distinct split(elementId(r), ":")[1] as relationshipId,
               r.label as label,
               r.sourceId as sourceId,
               r.sourceHandle as sourceHandle,
               r.targetId as targetId,
               r.targetHandle as targetHandle
             """)
-    Optional<CastRelationship> findConnection(Long sourceId, Long targetId);
+    Optional<CastRelationshipProjection> findConnection(Long sourceId, Long targetId);
 
     @Query("""
             match
@@ -40,14 +41,14 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             where
               id(n1)=$sourceId and id(n2)=$targetId
             return
-              distinct split(elementId(r), ":")[1] as id,
+              distinct split(elementId(r), ":")[1] as relationshipId,
               r.label as label,
               r.sourceId as sourceId,
               r.sourceHandle as sourceHandle,
               r.targetId as targetId,
               r.targetHandle as targetHandle
             """)
-    Optional<CastRelationship> findBiconnection(Long sourceId, Long targetId);
+    Optional<CastRelationshipProjection> findBiconnection(Long sourceId, Long targetId);
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +

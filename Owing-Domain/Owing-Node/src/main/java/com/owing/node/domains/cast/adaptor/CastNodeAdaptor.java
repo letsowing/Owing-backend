@@ -1,11 +1,11 @@
 package com.owing.node.domains.cast.adaptor;
 
 import com.owing.common.annotation.Adaptor;
+import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ public class CastNodeAdaptor {
                 ));
     }
 
-    public CastRelationship findConnection(Long sourceId, Long targetId) {
+    public CastRelationshipProjection findConnection(Long sourceId, Long targetId) {
         return castNodeRepository.findConnection(sourceId, targetId)
                 .orElseThrow(() -> CastRelationshipNotFoundException.of(
                         CastNodeErrorCode.RELATIONSHIP_NOT_FOUND,
@@ -31,7 +31,7 @@ public class CastNodeAdaptor {
                 ));
     }
 
-    public CastRelationship findBiconnection(Long sourceId, Long targetId) {
+    public CastRelationshipProjection findBiconnection(Long sourceId, Long targetId) {
         return castNodeRepository.findBiconnection(sourceId, targetId)
                 .orElseThrow(() -> CastRelationshipNotFoundException.of(
                         CastNodeErrorCode.RELATIONSHIP_NOT_FOUND,
