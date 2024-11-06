@@ -3,10 +3,12 @@ package com.owing.api.cast.model.mapper;
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
+import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.common.annotation.Mapper;
+import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
-import com.owing.node.domains.cast.model.ConnectionHandle;
+import com.owing.node.domains.cast.model.ConnectionType;
 
 @Mapper
 public class CastNodeMapper {
@@ -45,6 +47,18 @@ public class CastNodeMapper {
                 castNode.getImageUrl(),
                 castNode.getCoordinate(),
                 castNode.getPosition()
+        );
+    }
+
+    public CastRelationshipInfoResponse toInfoResponse(CastRelationshipProjection relationship, ConnectionType type) {
+        return new CastRelationshipInfoResponse(
+                relationship.relationshipId(),
+                relationship.label(),
+                type,
+                relationship.sourceId(),
+                relationship.sourceHandle(),
+                relationship.targetId(),
+                relationship.targetHandle()
         );
     }
 }
