@@ -1,0 +1,36 @@
+package com.owing.api.cast.model.mapper;
+
+import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.cast.model.dto.response.CastInfoResponse;
+import com.owing.common.annotation.Mapper;
+import com.owing.node.domains.cast.model.CastNode;
+
+@Mapper
+public class CastNodeMapper {
+
+    public CastNode toEntity(CreateCastRequest createCastRequest) {
+        return CastNode.builder()
+                .name(createCastRequest.name())
+                .age(createCastRequest.age())
+                .gender(createCastRequest.gender())
+                .role(createCastRequest.role())
+                .description(createCastRequest.description())
+                .imageUrl(createCastRequest.imageUrl())
+                .coordinate(createCastRequest.coordinate())
+                .build();
+    }
+
+    public CastInfoResponse toInfoResponse(CastNode castNode) {
+        return new CastInfoResponse(
+                castNode.getId(),
+                castNode.getName(),
+                castNode.getAge(),
+                castNode.getGender(),
+                castNode.getRole(),
+                castNode.getDescription(),
+                castNode.getImageUrl(),
+                castNode.getCoordinate(),
+                castNode.getPosition()
+        );
+    }
+}
