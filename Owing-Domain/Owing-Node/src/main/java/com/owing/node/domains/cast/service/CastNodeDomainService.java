@@ -1,6 +1,7 @@
 package com.owing.node.domains.cast.service;
 
 import com.owing.common.annotation.DomainService;
+import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
@@ -17,7 +18,12 @@ public class CastNodeDomainService {
 
     @Transactional
     public CastNode createCastNode(CastNode castNode) {
+        // TODO position 기본값으로 변경
+        castNode.updatePosition(0L);
+        castNode.updateCoordinate(
+                CastConstant.DEFAULT_COORDINATE_X,
+                CastConstant.DEFAULT_COORDINATE_Y
+        );
         return castNodeRepository.save(castNode);
     }
-
 }

@@ -57,4 +57,12 @@ public class CastNode extends BaseTimeNeo4j {
         this.position = position;
     }
 
+    public void updateCoordinate(Integer x, Integer y) {
+        this.updateCoordinate(new Coordinate(x, y));
+    }
+
+    public void updateCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
 }
