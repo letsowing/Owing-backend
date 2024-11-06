@@ -3,7 +3,7 @@ services:
     build:
       context: ../Owing-Api
       dockerfile: Dockerfile
-    container_name: spring-container
+    container_name: owing-backend-dev
     ports:
       - "8080:8080"
     env_file:
