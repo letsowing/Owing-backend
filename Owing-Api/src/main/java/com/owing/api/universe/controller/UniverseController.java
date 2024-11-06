@@ -61,5 +61,8 @@ public class UniverseController {
 		return ResponseEntity.ok(createPresignedUrlUseCase.execute(fileName));
 	}
 
+	/* todo presigned url 로 업로드 후 image url 변경 요청 */
+
+
 
 }
