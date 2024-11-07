@@ -2,6 +2,7 @@ package com.owing.api.filter;
 
 import static com.owing.api.auth.error.AuthErrorCode.*;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,19 +36,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String accessToken = "";
 
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			throw AuthInvalidTokenException.of(INVALID_AUTH_TOKEN);
+			throw AuthInvalidTokenException.of(INVALID_ACCESS_TOKEN);
 		}
 
 		try {
 			accessToken = authHeader.split(" ")[1].trim();
 		} catch (Exception e) {
-			throw AuthInvalidTokenException.of(INVALID_AUTH_TOKEN);
+			throw AuthInvalidTokenException.of(INVALID_ACCESS_TOKEN);
 		}
 
 		try {
 			jwtUtils.validateToken(accessToken);
+		} catch (ExpiredJwtException e) {
+			throw AuthInvalidTokenException.of(EXPIRE_ACCESS_TOKEN);
 		} catch (Exception e){
-			throw AuthInvalidTokenException.of(INVALID_REFRESH_TOKEN);
+			throw AuthInvalidTokenException.of(INVALID_ACCESS_TOKEN);
 		}
 
 		Long userId = jwtUtils.parseAccessToken(accessToken);
