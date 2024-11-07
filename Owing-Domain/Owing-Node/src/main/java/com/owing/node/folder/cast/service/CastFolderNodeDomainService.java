@@ -1,12 +1,14 @@
 package com.owing.node.folder.cast.service;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.node.common.model.projection.CastFolderNodeWithInfo;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
+import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
+import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
@@ -16,6 +18,7 @@ public class CastFolderNodeDomainService {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
     private final CastFolderNodeAdaptor castFolderNodeAdaptor;
+    private final Neo4jTemplate neo4jTemplate;
 
     @Transactional
     public CastFolderNode createCastFolderNode(CastFolderNode castFolderNode, ProjectNode projectNode) {
@@ -37,7 +40,8 @@ public class CastFolderNodeDomainService {
         boolean isUpdated = castFolderNode.updatePosition(position);
 
         if (isUpdated) {
-            castFolderNodeRepository.save(castFolderNode);
+            CastFolderPositionProjection castFolderPositionProjection = CastFolderPositionProjection.from(castFolderNode);
+            neo4jTemplate.save(CastFolderNode.class).one(castFolderPositionProjection);
         }
     }
 
@@ -47,7 +51,8 @@ public class CastFolderNodeDomainService {
         boolean isDescriptionUpdated = castFolderNode.updateDescription(description);
 
         if (isNameUpdated || isDescriptionUpdated) {
-            castFolderNodeRepository.save(castFolderNode);
+            CastFolderInfoProjection castFolderInfoProjection = CastFolderInfoProjection.from(castFolderNode);
+            neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
         }
     }
 
