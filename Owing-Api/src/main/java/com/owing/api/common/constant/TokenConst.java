@@ -8,6 +8,8 @@ public interface TokenConst {
     String CLAIM_NICKNAME = "nickname";
     String CLAIM_PROFILE_URL = "profileUrl";
     String BEARER_TYPE = "Bearer";
+    String BEARER_TYPE_SPACE = "Bearer ";
+    String REQUEST_HEADER_AUTH = "Authorization";
 
     long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
     long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
