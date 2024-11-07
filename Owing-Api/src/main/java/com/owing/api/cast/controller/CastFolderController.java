@@ -4,9 +4,9 @@ import com.owing.api.cast.model.dto.request.CreateCastFolderRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
 import com.owing.api.cast.model.dto.response.CastFolderInfoResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
-import com.owing.api.cast.service.CreateCastFolderUserCase;
+import com.owing.api.cast.service.CreateCastFolderUseCase;
 import com.owing.api.cast.service.DeleteCastFolderUseCase;
-import com.owing.api.cast.service.ReadCastFolderUserCase;
+import com.owing.api.cast.service.ReadCastFolderUseCase;
 import com.owing.api.cast.service.UpdateCastFolderUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +19,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CastFolderController {
 
-    private final CreateCastFolderUserCase createCastFolderUserCase;
-    private final ReadCastFolderUserCase readCastFolderUserCase;
+    private final CreateCastFolderUseCase createCastFolderUseCase;
+    private final ReadCastFolderUseCase readCastFolderUseCase;
     private final UpdateCastFolderUseCase updateCastFolderUseCase;
     private final DeleteCastFolderUseCase deleteCastFolderUseCase;
 
     @PostMapping
     public ResponseEntity<CastFolderInfoResponse> createCastFolder(@RequestBody CreateCastFolderRequest createCastFolderRequest) {
-        return ResponseEntity.ok(createCastFolderUserCase.execute(createCastFolderRequest));
+        return ResponseEntity.ok(createCastFolderUseCase.execute(createCastFolderRequest));
     }
 
     @GetMapping
     public ResponseEntity<List<CastFolderResponse>> getCastFolderList(@RequestParam Long projectId) {
-        return ResponseEntity.ok(readCastFolderUserCase.executeGetList(projectId));
+        return ResponseEntity.ok(readCastFolderUseCase.executeGetList(projectId));
     }
 
     @GetMapping("/{folderId}")
     public ResponseEntity<CastFolderResponse> getCastFolder(@PathVariable Long folderId) {
-        return ResponseEntity.ok(readCastFolderUserCase.executeGetOne(folderId));
+        return ResponseEntity.ok(readCastFolderUseCase.executeGetOne(folderId));
     }
 
     @PutMapping("/{folderId}")

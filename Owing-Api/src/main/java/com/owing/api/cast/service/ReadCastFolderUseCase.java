@@ -1,6 +1,5 @@
 package com.owing.api.cast.service;
 
-import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
 import com.owing.common.annotation.UseCase;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @UseCase
 @RequiredArgsConstructor
-public class ReadCastFolderUserCase {
+public class ReadCastFolderUseCase {
 
     private final ProjectNodeAdaptor projectNodeAdaptor;
     private final CastFolderNodeAdaptor castFolderNodeAdaptor;

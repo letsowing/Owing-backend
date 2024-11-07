@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateCastFolderUserCase {
+public class CreateCastFolderUseCase {
 
     private final ProjectNodeAdaptor projectNodeAdaptor;
     private final CastFolderNodeMapper castFolderNodeMapper;
