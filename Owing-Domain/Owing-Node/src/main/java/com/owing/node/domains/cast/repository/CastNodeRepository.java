@@ -17,7 +17,7 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             MATCH
                 (c:Cast{deleted:false})
             WHERE
-                id(c)=20
+                id(c)=$castId
             RETURN
                 c
             """)
