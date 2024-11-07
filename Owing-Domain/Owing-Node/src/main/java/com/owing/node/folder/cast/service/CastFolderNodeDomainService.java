@@ -31,4 +31,10 @@ public class CastFolderNodeDomainService {
         castFolderNodeRepository.save(castFolderNode);
     }
 
+    @Transactional
+    public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
+        castFolderNode.updateName(name);
+        castFolderNode.updateDescription(description);
+    }
+
 }

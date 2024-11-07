@@ -7,6 +7,7 @@ import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeRelationshipException;
 import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -57,5 +58,19 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
 
     public void updatePosition(Long position) {
         this.position = position;
+    }
+
+    public void updateName(String name) {
+        if (ObjectUtils.isEmpty(name)) {
+            return;
+        }
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        if (ObjectUtils.isEmpty(description)) {
+            return;
+        }
+        this.description = description;
     }
 }
