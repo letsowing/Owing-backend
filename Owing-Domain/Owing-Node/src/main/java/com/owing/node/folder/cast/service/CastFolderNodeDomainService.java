@@ -32,6 +32,11 @@ public class CastFolderNodeDomainService {
     }
 
     @Transactional
+    public void updatePosition(CastFolderNode castFolderNode, Long position) {
+        castFolderNode.updatePosition(position);
+    }
+
+    @Transactional
     public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
         castFolderNode.updateName(name);
         castFolderNode.updateDescription(description);
