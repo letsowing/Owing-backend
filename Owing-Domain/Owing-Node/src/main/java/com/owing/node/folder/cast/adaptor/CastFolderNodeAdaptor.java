@@ -31,7 +31,7 @@ public class CastFolderNodeAdaptor {
                 ));
     }
 
-    public List<CastFolderNode> findOneAllWithRelationshipByProjectId(Long projectId) {
-        return castFolderNodeRepository.findOneAllWithRelationshipByProjectId(projectId);
+    public List<CastFolderNode> findAllWithRelationshipByProjectId(Long projectId) {
+        return castFolderNodeRepository.findAllWithRelationshipByProjectId(projectId);
     }
 }

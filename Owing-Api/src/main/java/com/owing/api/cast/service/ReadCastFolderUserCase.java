@@ -23,7 +23,7 @@ public class ReadCastFolderUserCase {
 
     public List<CastFolderResponse> executeGetList(Long projectId) {
         ProjectNode projectNode = projectNodeAdaptor.findById(projectId);
-        List<CastFolderNode> castFolderNodeList = castFolderNodeAdaptor.findOneAllWithRelationshipByProjectId(projectNode.getId());
+        List<CastFolderNode> castFolderNodeList = castFolderNodeAdaptor.findAllWithRelationshipByProjectId(projectNode.getId());
         return getSortedCastFolderResponse(castFolderNodeList);
     }
 

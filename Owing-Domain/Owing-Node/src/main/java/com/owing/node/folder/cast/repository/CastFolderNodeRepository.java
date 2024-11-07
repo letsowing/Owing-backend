@@ -11,12 +11,13 @@ public interface CastFolderNodeRepository extends Neo4jRepository<CastFolderNode
 
     @Query("""
             MATCH
-              (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]
-              ->(cf:CastFolder{deleted:false})-[r2:INCLUDE]->(c:Cast{deleted:false})
+              (p:Project{id:20, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
+            OPTIONAL MATCH
+              (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
             RETURN
               cf, collect(r2), collect(c)
             """)
-    List<CastFolderNode> findOneAllWithRelationshipByProjectId(Long projectId);
+    List<CastFolderNode> findAllWithRelationshipByProjectId(Long projectId);
 
     /**
      * 단일 노드를 조회하는 메서드입니다. <p>
