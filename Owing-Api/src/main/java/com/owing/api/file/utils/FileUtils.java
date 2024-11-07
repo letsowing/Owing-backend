@@ -1,7 +1,7 @@
-package com.owing.infrastructure.config.s3;
+package com.owing.api.file.utils;
 
 /* 파일 이름을 설정해주는 클래스 */
-public class S3Utils {
+public class FileUtils {
 	public static final String FILE_EXTENSION_SEPARATOR = ".";
 
 	public static String getFileName(String originalFileName) {

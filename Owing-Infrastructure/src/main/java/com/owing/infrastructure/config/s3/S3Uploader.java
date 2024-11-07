@@ -1,13 +1,9 @@
-package com.owing.entity.domains.file.service;
+package com.owing.infrastructure.config.s3;
 
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.owing.common.annotation.DomainService;
-import com.owing.entity.domains.file.error.FileErrorCode;
+import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,15 +12,12 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
-@DomainService
+@Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class FileDomainService {
-
+public class S3Uploader {
 	private final S3Client s3Client;
 	private final S3Presigner s3Presigner;
-	@Value("${cloud.s3.bucket}")
-	private String bucketName;
+	private final S3Properties s3Properties;
 
 	// 파일 업로드용 Presigned URL 반환 (PUT 메서드)
 	public String getPresignUrl(String filename) {
@@ -39,7 +32,7 @@ public class FileDomainService {
 			? "jpeg" : splittedFileName[splittedFileName.length - 1].toLowerCase();
 
 		// 허용된 이미지 확장자 확인
-		String regExp = "^(jpeg|png|gif|bmp)$";
+		String regExp = "^(jpeg|png|gif|bmp|svg|webp)$";
 		if (!Pattern.matches(regExp, extension)) {
 			throw new IllegalArgumentException("올바르지 않은 이미지 확장자입니다."); // todo: 변경
 			// throw FileNotValidException.of(FileErrorCode.FILE_NOT_VALID);
@@ -49,7 +42,7 @@ public class FileDomainService {
 		String contentType = "image/" + extension;
 
 		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-			.bucket(bucketName)
+			.bucket(s3Properties.s3().bucket())
 			.key(filename)
 			.contentType(contentType) // contentType 추가
 			.build();
@@ -67,3 +60,4 @@ public class FileDomainService {
 	}
 
 }
+

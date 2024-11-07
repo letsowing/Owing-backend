@@ -56,13 +56,9 @@ public class UniverseController {
 	}
 
 	/* presigned url 생성 */
-	@GetMapping("/file/{filename}")
+	@GetMapping("/files/{filename}")
 	public ResponseEntity<?> getFile(@PathVariable(value = "filename") String fileName) {
 		return ResponseEntity.ok(createPresignedUrlUseCase.execute(fileName));
 	}
-
-	/* todo presigned url 로 업로드 후 image url 변경 요청 */
-
-
 
 }
