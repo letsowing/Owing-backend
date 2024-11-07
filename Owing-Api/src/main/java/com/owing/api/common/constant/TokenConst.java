@@ -5,6 +5,8 @@ public interface TokenConst {
     String GOOGLE_CLAIM_EMAIL = "email";
     String GOOGLE_CLAIM_NAME = "name";
     String GOOGLE_CLAIM_PICTURE = "picture";
+    String CLAIM_EMAIL = "email";
+    String CLAIM_NAME = "name";
     String CLAIM_NICKNAME = "nickname";
     String CLAIM_PROFILE_URL = "profileUrl";
     String BEARER_TYPE = "Bearer";

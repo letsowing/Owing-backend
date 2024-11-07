@@ -45,7 +45,7 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "bigint default 0")
 	private Long aiPoint;
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Project> projectList = new ArrayList<>();
 
 	@PrePersist
