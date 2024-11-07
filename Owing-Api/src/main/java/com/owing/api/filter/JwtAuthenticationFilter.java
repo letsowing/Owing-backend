@@ -20,6 +20,8 @@ import java.util.List;
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
 import com.owing.api.common.JwtUtils;
 
+import static com.owing.api.common.constant.TokenConst.*;
+
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtUtils jwtUtils;
@@ -31,11 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		final String authHeader = request.getHeader("Authorization");
+		final String authHeader = request.getHeader(REQUEST_HEADER_AUTH);
 
 		String accessToken = "";
 
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+		if (authHeader == null || !authHeader.startsWith(BEARER_TYPE_SPACE)) {
 			throw AuthInvalidTokenException.of(INVALID_ACCESS_TOKEN);
 		}
 
