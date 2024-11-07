@@ -2,8 +2,8 @@ package com.owing.node.folder.cast.service;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.node.domains.project.model.ProjectNode;
-import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
+import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CastFolderNodeDomainService {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
-    private final CastFolderNodeAdaptor castFolderNodeAdaptor;
     private final Neo4jTemplate neo4jTemplate;
 
     @Transactional
@@ -29,10 +28,10 @@ public class CastFolderNodeDomainService {
     }
 
     @Transactional
-    public void deleteCastFolderNode(Long castFolderId) {
-        CastFolderNode castFolderNode = castFolderNodeAdaptor.findOneById(castFolderId);
+    public void deleteCastFolderNode(CastFolderNode castFolderNode) {
         castFolderNode.delete();
-        castFolderNodeRepository.save(castFolderNode);
+        CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(castFolderNode);
+        neo4jTemplate.save(CastFolderNode.class).one(deleteProjection);
     }
 
     @Transactional
