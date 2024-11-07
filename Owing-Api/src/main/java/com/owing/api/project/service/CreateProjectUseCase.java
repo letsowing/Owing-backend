@@ -1,6 +1,6 @@
 package com.owing.api.project.service;
 
-import com.owing.api.common.MemberUtils;
+import com.owing.api.common.util.MemberUtils;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;

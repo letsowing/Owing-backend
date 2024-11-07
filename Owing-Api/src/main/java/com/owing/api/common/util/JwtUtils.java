@@ -1,6 +1,7 @@
-package com.owing.api.common;
+package com.owing.api.common.util;
 
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
+import com.owing.api.common.properties.JwtProperties;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
 import io.jsonwebtoken.Claims;

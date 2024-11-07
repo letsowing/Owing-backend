@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
-import com.owing.api.common.JwtUtils;
+import com.owing.api.common.util.JwtUtils;
 
 import static com.owing.api.common.constant.TokenConst.*;
 
