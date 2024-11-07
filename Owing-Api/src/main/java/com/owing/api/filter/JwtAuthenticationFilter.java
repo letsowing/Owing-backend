@@ -38,17 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String accessToken = "";
 
-		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			throw AuthInvalidTokenException.of(INVALID_AUTH_TOKEN);
 		}
 
-		try{
+		try {
 			accessToken = authHeader.split(" ")[1].trim();
 		} catch (Exception e) {
 			throw AuthInvalidTokenException.of(INVALID_AUTH_TOKEN);
 		}
 
-		try{
+		try {
 			jwtUtils.validateToken(accessToken);
 		} catch (Exception e){
 			throw AuthInvalidTokenException.of(INVALID_REFRESH_TOKEN);
