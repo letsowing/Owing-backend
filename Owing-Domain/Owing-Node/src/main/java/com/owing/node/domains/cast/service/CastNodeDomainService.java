@@ -3,13 +3,12 @@ package com.owing.node.domains.cast.service;
 import com.owing.common.annotation.DomainService;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastRelationship;
-import com.owing.node.domains.cast.model.ConnectionHandle;
-import com.owing.node.domains.cast.model.ConnectionType;
+import com.owing.node.domains.cast.model.*;
+import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
@@ -19,6 +18,7 @@ public class CastNodeDomainService {
 
     private final CastNodeRepository castNodeRepository;
     private final CastNodeAdaptor castNodeAdaptor;
+    private final Neo4jTemplate neo4jTemplate;
 
     @Transactional
     public CastNode createCastNode(CastNode castNode, CastFolderNode castFolderNode) {
@@ -42,5 +42,17 @@ public class CastNodeDomainService {
     public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
         sourceCast.biconnectCast(relationship);
         return castNodeRepository.save(sourceCast);
+    }
+
+    @Transactional
+    public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
+        castNode.updateName(castNodeInfo.name());
+        castNode.updateAge(castNodeInfo.age());
+        castNode.updateGender(castNodeInfo.gender());
+        castNode.updateRole(castNodeInfo.role());
+        castNode.updateDescription(castNodeInfo.description());
+        castNode.updateImageUrl(castNodeInfo.imageUrl());
+
+        neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
     }
 }
