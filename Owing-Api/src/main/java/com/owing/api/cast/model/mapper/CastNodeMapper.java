@@ -46,8 +46,7 @@ public class CastNodeMapper {
                 castNode.getRole(),
                 castNode.getDescription(),
                 castNode.getImageUrl(),
-                castNode.getCoordinate(),
-                castNode.getPosition()
+                castNode.getCoordinate()
         );
     }
 
@@ -68,8 +67,7 @@ public class CastNodeMapper {
                 castNode.getId(),
                 castNode.getName(),
                 castNode.getDescription(),
-                castNode.getImageUrl(),
-                castNode.getPosition()
+                castNode.getImageUrl()
         );
     }
 }

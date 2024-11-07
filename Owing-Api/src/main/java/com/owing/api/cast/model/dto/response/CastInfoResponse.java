@@ -11,7 +11,6 @@ public record CastInfoResponse(
         String role,
         String description,
         String imageUrl,
-        Coordinate coordinate,
-        Long position
+        Coordinate coordinate
 ) {
 }

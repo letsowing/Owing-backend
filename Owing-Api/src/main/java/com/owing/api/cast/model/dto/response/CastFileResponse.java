@@ -4,7 +4,6 @@ public record CastFileResponse(
         Long id,
         String name,
         String description,
-        String imageUrl,
-        Long position
+        String imageUrl
 ) {
 }

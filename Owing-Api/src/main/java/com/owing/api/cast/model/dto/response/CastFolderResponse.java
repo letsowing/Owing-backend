@@ -6,7 +6,6 @@ public record CastFolderResponse(
         Long id,
         String name,
         String description,
-        Long position,
         List<CastFileResponse> files
 ) {
 }

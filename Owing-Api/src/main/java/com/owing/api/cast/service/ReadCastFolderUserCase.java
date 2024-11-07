@@ -4,6 +4,7 @@ import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
 import com.owing.common.annotation.UseCase;
+import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.project.adaptor.ProjectNodeAdaptor;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
@@ -34,17 +35,16 @@ public class ReadCastFolderUserCase {
 
     private List<CastFolderResponse> getSortedCastFolderResponse(List<CastFolderNode> castFolderNodeList) {
         return castFolderNodeList.stream()
+                .sorted(Comparator.comparingLong(CastFolderNode::getPosition))
                 .map(folder -> new CastFolderResponse(
                         folder.getId(),
                         folder.getName(),
                         folder.getDescription(),
-                        folder.getPosition(),
                         folder.getCast().stream()
+                                .sorted(Comparator.comparingLong(CastNode::getPosition))
                                 .map(castNodeMapper::toFileResponse)
-                                .sorted(Comparator.comparingLong(CastFileResponse::position))
                                 .toList()
                 ))
-                .sorted(Comparator.comparingLong(CastFolderResponse::position))
                 .toList();
     }
 }
