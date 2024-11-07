@@ -25,7 +25,7 @@ public enum AuthErrorCode implements OwingErrorCode {
 
     AuthErrorCode(HttpStatus status, String code, String message) {
         this.status = status;
-        this.code = "GLOBAL"+code;
+        this.code = "AUTH" + code;
         this.message = message;
     }
 }

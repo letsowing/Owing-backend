@@ -5,6 +5,7 @@ import com.owing.api.auth.model.dto.request.RefreshTokenRequest;
 import com.owing.api.auth.model.dto.response.TokenResponse;
 import com.owing.api.auth.service.GoogleOauthLoginUseCase;
 import com.owing.api.auth.service.RefreshTokenUseCase;
+import com.owing.entity.domains.member.model.OauthProvider;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.owing.entity.domains.member.model.OauthProvider.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
@@ -26,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/oauth")
     ResponseEntity<TokenResponse> oauthLogin(@Valid @RequestBody OauthLoginRequest oauthLoginRequest) {
-        if (oauthLoginRequest.provider() == GOOGLE) {
+        if (OauthProvider.isGoogle(oauthLoginRequest.provider())) {
             return ResponseEntity.ok(googleOauthLoginUsecase.execute(oauthLoginRequest.idToken()));
         }
         return ResponseEntity.status(UNAUTHORIZED).build();

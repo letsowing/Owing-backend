@@ -13,34 +13,30 @@ import java.util.Optional;
 
 @Adaptor
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberAdaptor {
 
     private final MemberRepository memberRepository;
 
-    @Transactional(readOnly = true)
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> MemberException.of(MemberErrorCode.MEMBER_NOT_FOUND, "요청된 Member Id: %d".formatted(memberId)));
     }
 
-    @Transactional(readOnly = true)
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> MemberException.of(MemberErrorCode.MEMBER_NOT_FOUND, "요청된 Member email: %s".formatted(email)));
     }
 
-    @Transactional(readOnly = true)
     public Member findByPhoneNumber(String phoneNumber) {
         return memberRepository.findByEmail(phoneNumber)
                 .orElseThrow(() -> MemberException.of(MemberErrorCode.MEMBER_NOT_FOUND, "요청된 Member phone number: %s".formatted(phoneNumber)));
     }
 
-    @Transactional(readOnly = true)
     public Member getReferenceById(Long memberId) {
         return memberRepository.getReferenceById(memberId);
     }
 
-    @Transactional(readOnly = true)
     public Optional<Member> findByEmailAndProvider(String email, OauthProvider provider) {
         return memberRepository.findByEmailAndProvider(email, provider);
     }
