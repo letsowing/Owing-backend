@@ -1,6 +1,7 @@
 package com.owing.node.folder.cast.service;
 
 import com.owing.common.annotation.DomainService;
+import com.owing.node.common.model.projection.CastFolderNodeWithInfo;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -26,7 +27,7 @@ public class CastFolderNodeDomainService {
 
     @Transactional
     public void deleteCastFolderNode(Long castFolderId) {
-        CastFolderNode castFolderNode = castFolderNodeAdaptor.findById(castFolderId);
+        CastFolderNode castFolderNode = castFolderNodeAdaptor.findOneById(castFolderId);
         castFolderNode.delete();
         castFolderNodeRepository.save(castFolderNode);
     }

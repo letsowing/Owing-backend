@@ -15,15 +15,23 @@ public class CastFolderNodeAdaptor {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
 
-    public CastFolderNode findById(Long castFolderNodeId) {
-        return castFolderNodeRepository.findById(castFolderNodeId)
+    public CastFolderNode findOneById(Long castFolderNodeId) {
+        return castFolderNodeRepository.findOneById(castFolderNodeId)
                 .orElseThrow(() -> CastFolderNodeNotFoundException.of(
                         CastFolderNodeErrorCode.NODE_NOT_FOUND,
                         "cast folder id: %d".formatted(castFolderNodeId)
                 ));
     }
 
-    public List<CastFolderNode> findAllByProjectId(Long projectId) {
-        return castFolderNodeRepository.findAllByProjectId(projectId);
+    public CastFolderNode findOneWithRelationshipById(Long castFolderNodeId) {
+        return castFolderNodeRepository.findOneWithRelationshipById(castFolderNodeId)
+                .orElseThrow(() -> CastFolderNodeNotFoundException.of(
+                        CastFolderNodeErrorCode.NODE_NOT_FOUND,
+                        "cast folder id: %d".formatted(castFolderNodeId)
+                ));
+    }
+
+    public List<CastFolderNode> findOneAllWithRelationshipByProjectId(Long projectId) {
+        return castFolderNodeRepository.findOneAllWithRelationshipByProjectId(projectId);
     }
 }
