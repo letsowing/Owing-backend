@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateCastUserCase {
+public class CreateCastUseCase {
 
     private final CastNodeDomainService castNodeDomainService;
     private final CastNodeMapper castNodeMapper;

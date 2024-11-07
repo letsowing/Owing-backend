@@ -15,6 +15,15 @@ public class CastNodeAdaptor {
 
     private final CastNodeRepository castNodeRepository;
 
+    @Deprecated
+    public CastNode findById(Long castId) {
+        return castNodeRepository.findById(castId)
+                .orElseThrow(() -> CastNodeNotFoundException.of(
+                        CastNodeErrorCode.CAST_NODE_NOT_FOUND,
+                        "Requested Cast Node Id: %d".formatted(castId)
+                ));
+    }
+
     public CastNode findOneById(Long castId) {
         return castNodeRepository.findOneById(castId)
                 .orElseThrow(() -> CastNodeNotFoundException.of(

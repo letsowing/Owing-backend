@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateConnectionUserCase {
+public class CreateConnectionUseCase {
 
     private final CastNodeDomainService castNodeDomainService;
     private final CastNodeAdaptor castNodeAdaptor;
