@@ -1,6 +1,5 @@
 package com.owing.entity.domains.member.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
 import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.domains.project.model.Project;
 import jakarta.persistence.*;
@@ -10,36 +9,37 @@ import org.hibernate.annotations.SoftDelete;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.owing.entity.common.constant.OwingPersistenceConst.*;
+
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @SoftDelete
 public class Member extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = OwingPersistenceConst.EMAIL_LEN, nullable = false)
+	@Column(length = EMAIL_LEN, nullable = false)
 	private String email;
 
-	@Column(length = OwingPersistenceConst.PASSWORD_LEN, nullable = false)
+	@Column(nullable = false)
 	private String password;
 
-	@Column(length = OwingPersistenceConst.NAME_LEN, nullable = false)
+	@Column(length = NAME_LEN, nullable = false)
 	private String name;
 
-	@Column(length = OwingPersistenceConst.NICKNAME_LEN, nullable = false)
+	@Column(length = NICKNAME_LEN, nullable = false)
 	private String nickname;
 
-	@Column(length = OwingPersistenceConst.PHONE_NUM_LEN, nullable = false)
+	@Column(length = PHONE_NUM_LEN)
 	private String phoneNumber;
 
-	@Column(length = OwingPersistenceConst.URL_LEN)
+	@Column(length = URL_LEN)
 	private String profileUrl;
 
-	@Column(length = OwingPersistenceConst.OAUTH_PROVIDER_LEN)
+	@Column(length = OAUTH_PROVIDER_LEN)
+	@Enumerated(EnumType.STRING)
 	private OauthProvider provider;
 
 	@Column(nullable = false, columnDefinition = "bigint default 0")
@@ -55,4 +55,17 @@ public class Member extends BaseTimeEntity {
 		}
 	}
 
+	@Builder
+	public Member(Long id, String email, String password, String name, String nickname, String phoneNumber,
+				  String profileUrl, OauthProvider provider) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.nickname = nickname;
+		this.phoneNumber = phoneNumber;
+		this.profileUrl = profileUrl;
+		this.provider = provider;
+		this.aiPoint = 0L;
+	}
 }
