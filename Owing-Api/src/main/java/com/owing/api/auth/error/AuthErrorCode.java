@@ -19,7 +19,8 @@ public enum AuthErrorCode implements OwingErrorCode {
     GOOGLE_SERVER_ERROR(BAD_REQUEST, "008", "Google Server 에러입니다."),
     INVALID_ID_TOKEN(UNAUTHORIZED, "009", "ID 토큰 검증에 실패했습니다."),
     INVALID_ACCESS_TOKEN(UNAUTHORIZED, "010", "Access Token이 유효하지 않습니다."),
-    EXPIRE_ACCESS_TOKEN(UNAUTHORIZED, "011", "Access Token의 유효기간이 만료되었습니다.");
+    EXPIRE_ACCESS_TOKEN(UNAUTHORIZED, "011", "Access Token의 유효기간이 만료되었습니다."),
+    NOT_TOKEN_USERID(UNAUTHORIZED, "012", "토큰에 유저아이디가 없습니다.");
 
     private final HttpStatus status;
     private final String code;
