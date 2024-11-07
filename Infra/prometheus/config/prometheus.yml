@@ -27,8 +27,8 @@ scrape_configs:
 
     static_configs:
       - targets: ["localhost:9090"]
-  - job_name: 'apigateway-service'
+  - job_name: 'owing-backend-dev'
     scrape_interval: 15s
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['apigateway-container:8000']
+      - targets: ['owing-backend-dev:8080']
