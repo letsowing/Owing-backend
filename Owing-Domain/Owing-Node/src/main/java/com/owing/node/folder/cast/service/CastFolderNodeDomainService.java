@@ -33,13 +33,21 @@ public class CastFolderNodeDomainService {
 
     @Transactional
     public void updatePosition(CastFolderNode castFolderNode, Long position) {
-        castFolderNode.updatePosition(position);
+        boolean isUpdated = castFolderNode.updatePosition(position);
+
+        if (isUpdated) {
+            castFolderNodeRepository.save(castFolderNode);
+        }
     }
 
     @Transactional
     public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
-        castFolderNode.updateName(name);
-        castFolderNode.updateDescription(description);
+        boolean isNameUpdated = castFolderNode.updateName(name);
+        boolean isDescriptionUpdated = castFolderNode.updateDescription(description);
+
+        if (isNameUpdated || isDescriptionUpdated) {
+            castFolderNodeRepository.save(castFolderNode);
+        }
     }
 
 }

@@ -56,24 +56,27 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
         this.project = projectNode;
     }
 
-    public void updatePosition(Long position) {
+    public boolean updatePosition(Long position) {
         if (position == null || position < 0) {
-            return;
+            return false;
         }
         this.position = position;
+        return true;
     }
 
-    public void updateName(String name) {
+    public boolean updateName(String name) {
         if (ObjectUtils.isEmpty(name)) {
-            return;
+            return false;
         }
         this.name = name;
+        return true;
     }
 
-    public void updateDescription(String description) {
+    public boolean updateDescription(String description) {
         if (ObjectUtils.isEmpty(description)) {
-            return;
+            return false;
         }
         this.description = description;
+        return true;
     }
 }
