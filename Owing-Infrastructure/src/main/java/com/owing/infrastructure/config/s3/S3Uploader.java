@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
+import com.owing.infrastructure.config.s3.error.S3ErrorCode;
+import com.owing.infrastructure.config.s3.error.exception.S3InvalidFileException;
+
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -34,8 +37,7 @@ public class S3Uploader {
 		// 허용된 이미지 확장자 확인
 		String regExp = "^(jpeg|png|gif|bmp|svg|webp)$";
 		if (!Pattern.matches(regExp, extension)) {
-			throw new IllegalArgumentException("올바르지 않은 이미지 확장자입니다."); // todo: 변경
-			// throw FileNotValidException.of(FileErrorCode.FILE_NOT_VALID);
+			throw S3InvalidFileException.of(S3ErrorCode.INVALID_EXTENSION);
 		}
 
 		// contentType 생성
