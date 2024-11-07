@@ -1,6 +1,5 @@
 package com.owing.api.auth.service;
 
-import com.owing.api.auth.model.dto.request.RefreshTokenRequest;
 import com.owing.api.auth.model.dto.response.TokenResponse;
 import com.owing.api.auth.model.mapper.AuthMapper;
 import com.owing.api.common.util.JwtUtils;
@@ -24,8 +23,8 @@ public class RefreshTokenUseCase {
     private final AuthMapper authMapper;
     private final JwtUtils jwtUtils;
 
-    public TokenResponse execute(RefreshTokenRequest refreshTokenRequest) {
-        RefreshToken existedRefreshToken = validateRefreshToken(refreshTokenRequest.refreshToken());
+    public TokenResponse execute(String refreshToken) {
+        RefreshToken existedRefreshToken = validateRefreshToken(refreshToken);
         Member member = memberAdaptor.findById(Long.parseLong(existedRefreshToken.getMemberId()));
         refreshTokenDomainService.deleteRefreshToken(existedRefreshToken);
         return createTokens(member);

@@ -12,7 +12,11 @@ public interface TokenConst {
     String BEARER_TYPE = "Bearer";
     String BEARER_TYPE_SPACE = "Bearer ";
     String REQUEST_HEADER_AUTH = "Authorization";
+    String REFRESH_TOKEN = "refresh_token";
+    String SAME_SITE_NONE = "None";
+    String COOKIE_PATH = "/";
 
+    long ZERO_TIME = 0;
     long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
     long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;
 }
