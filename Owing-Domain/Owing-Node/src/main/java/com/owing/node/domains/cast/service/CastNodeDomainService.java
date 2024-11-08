@@ -5,6 +5,7 @@ import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.model.projection.CastCoordinateProjection;
+import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -63,5 +64,12 @@ public class CastNodeDomainService {
         if (isUpdated) {
             neo4jTemplate.save(CastNode.class).one(castNode);
         }
+    }
+
+    @Transactional
+    public void deleteCastNode(CastNode castNode) {
+        castNode.delete();
+        CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
+        neo4jTemplate.save(CastNode.class).one(deleteProjection);
     }
 }
