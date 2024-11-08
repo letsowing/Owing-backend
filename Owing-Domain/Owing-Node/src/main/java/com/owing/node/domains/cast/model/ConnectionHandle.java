@@ -2,8 +2,8 @@ package com.owing.node.domains.cast.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.owing.node.domains.cast.error.code.CastingNodeErrorCode;
-import com.owing.node.domains.cast.error.exception.CastingException;
+import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
+import com.owing.node.domains.cast.error.exception.CastException;
 
 public enum ConnectionHandle {
     TOP("top"), BOTTOM("bottom"), RIGHT("right"), LEFT("left");
@@ -22,7 +22,7 @@ public enum ConnectionHandle {
                 return handle;
             }
         }
-        throw CastingException.of(CastingNodeErrorCode.ILLEGAL_HANDLE_ARGS);
+        throw CastException.of(CastNodeErrorCode.ILLEGAL_HANDLE_ARGS);
     }
 
     @JsonValue

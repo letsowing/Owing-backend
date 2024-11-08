@@ -7,6 +7,8 @@ import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.error.exception.ProjectIllegalAccessException;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.service.ProjectDomainService;
+import com.owing.node.domains.project.model.ProjectNode;
+import com.owing.node.domains.project.service.ProjectNodeDomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ public class DeleteProjectUseCase {
     private final MemberUtils memberUtils;
     private final ProjectDomainService projectDomainService;
     private final ProjectAdaptor projectAdaptor;
+
+    private final ProjectNodeDomainService projectNodeDomainService;
 
     @Transactional
     public void execute(Long projectId) {
@@ -28,6 +32,6 @@ public class DeleteProjectUseCase {
         }
 
         projectDomainService.deleteProject(project);
+        projectNodeDomainService.deleteProjectNode(project.getId());
     }
-
 }
