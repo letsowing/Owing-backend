@@ -1,7 +1,8 @@
 dependencies {
 
     // for s3
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
+//    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
+    implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
 
     // for redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -10,6 +11,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     implementation project(':Owing-Common')
+
+    // 모니터링
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // health-check
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // logstash logging
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
 }
 
 bootJar.enabled = false
