@@ -155,30 +155,35 @@ public class CastNode extends BaseTimeNeo4j implements FileNode<CastFolderNode> 
         }
         this.name = name;
     }
+
     public void updateAge(Long age) {
         if (ObjectUtils.isEmpty(age) || age < 0) {
             return;
         }
         this.age = age;
     }
+
     public void updateGender(String gender) {
         if (ObjectUtils.isEmpty(gender)) {
             return;
         }
         this.gender = gender;
     }
+
     public void updateRole(String role) {
         if (ObjectUtils.isEmpty(role)) {
             return;
         }
         this.role = role;
     }
+
     public void updateDescription(String description) {
         if (ObjectUtils.isEmpty(description)) {
             return;
         }
         this.description = description;
     }
+
     public void updateImageUrl(String imageUrl) {
         if (ObjectUtils.isEmpty(imageUrl)) {
             return;
