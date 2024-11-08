@@ -2,16 +2,14 @@ package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastNodeInfo;
-import com.owing.node.domains.cast.model.CastRelationship;
-import com.owing.node.domains.cast.model.ConnectionType;
+import com.owing.node.domains.cast.model.*;
 
 @Mapper
 public class CastNodeMapper {
@@ -36,6 +34,13 @@ public class CastNodeMapper {
                 updateCastInfoRequest.role(),
                 updateCastInfoRequest.description(),
                 updateCastInfoRequest.imageUrl()
+        );
+    }
+
+    public Coordinate toCoordinate(UpdateCastCoordinateRequest updateCastCoordinateRequest) {
+        return new Coordinate(
+                updateCastCoordinateRequest.x(),
+                updateCastCoordinateRequest.y()
         );
     }
 
