@@ -1,15 +1,24 @@
 package com.owing.infrastructure.config.s3;
 
+import static org.springframework.web.servlet.function.RequestPredicates.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
+import com.owing.infrastructure.config.s3.dto.AiImageToS3Request;
 import com.owing.infrastructure.config.s3.error.S3ErrorCode;
 import com.owing.infrastructure.config.s3.error.exception.S3InvalidFileException;
 
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -60,6 +69,42 @@ public class S3Uploader {
 		}
 
 		return "image/" + extension; // contentType 생성
+	}
+
+	/* Base64 이미지를 S3에 업로드  */
+	public String uploadBase64ImageToS3(AiImageToS3Request aiImageToS3Request) {
+
+		String fileName = "sample.png"; // todo : 랜덤 이름 생성 (하지만 FileUtil은 사용하지 못한다..)
+		// String fileName = FileUtils.buildFileName("sample.png");
+
+		// Base64 문자열을 바이트 배열로 디코딩
+		byte[] decodedBytes = Base64.getDecoder().decode(aiImageToS3Request.b64Json());
+
+		// 바이트 배열을 InputStream으로 변환
+		InputStream inputStream = new ByteArrayInputStream(decodedBytes);
+
+		return uploadFileToS3(fileName, inputStream, decodedBytes.length);
+	}
+
+	private String uploadFileToS3(String fileName, InputStream inputStream, long contentLength) {
+
+		UUID randomUUID = UUID.randomUUID();
+
+		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+			.bucket(s3Properties.s3().bucket())
+			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
+			.contentType(getContentType(fileName))
+			.build();
+
+		s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, contentLength));
+
+		GetUrlRequest getUrlRequest = GetUrlRequest.builder()
+			.bucket(s3Properties.s3().bucket())
+			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
+			.build();
+
+		return s3Client.utilities().getUrl(getUrlRequest).toString();
+
 	}
 
 }
