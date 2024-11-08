@@ -14,6 +14,10 @@ public interface CastFolderNodeRepository extends Neo4jRepository<CastFolderNode
               (p:Project{id:20, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
             OPTIONAL MATCH
               (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
+            WITH
+              cf, r2, c
+            ORDER BY
+              cf.position, c.position
             RETURN
               cf, collect(r2), collect(c)
             """)

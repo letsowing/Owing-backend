@@ -15,6 +15,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
 import java.util.Set;
 
 @Node("CastFolder")
@@ -36,7 +37,7 @@ public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
     private ProjectNode project;
 
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
-    private Set<CastNode> cast;
+    private List<CastNode> cast;
 
     public CastFolderNode(String name, String description) {
         this.name = name;
