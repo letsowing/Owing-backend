@@ -1,49 +1,46 @@
 package com.owing.entity.domains.story.model;
 
+import org.hibernate.annotations.SoftDelete;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
-import com.owing.entity.common.model.BaseTimeEntity;
-import com.owing.entity.folders.story.model.StoryFolder;
-import jakarta.persistence.*;
+import com.owing.entity.dnd.base.model.DndEntity;
+import com.owing.entity.dnd.file.model.BaseFileEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SoftDelete;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SoftDelete
-public class Story extends BaseTimeEntity {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
-	private String title;
-
-	@Column(length = OwingPersistenceConst.DESC_LEN)
-	private String description;
+public class Story extends BaseFileEntity<StoryFolder> {
 
 	@Column(columnDefinition = "int default 0", nullable = false)
-	private Integer textCount;
-
-	@Column(nullable = false)
-	private Long position;
-
-	@ManyToOne
-	@JoinColumn(name = "story_folder_id", nullable = false)
-	private StoryFolder storyFolder;
+	private int textCount;
 
 	@Builder
-	Story(String title, String description, Long position, Integer textCount, StoryFolder storyFolder) {
+	Story(String title, String description, Long position, int textCount, StoryFolder folder) {
 		this.title = title;
 		this.description = description;
 		this.position = position;
 		this.textCount = textCount;
-		this.storyFolder = storyFolder;
+		this.folder = folder;
+	}
+
+	@Override
+	public void update(DndEntity newEntity) {
+		this.title = ((Story) newEntity).getTitle();
+		this.description = newEntity.getDescription();
+	}
+
+	public void updateTextCount(int textCount){
+		if(textCount < 0){
+			throw new IllegalArgumentException("Text count must be non-negative.");
+		}
+		this.textCount = textCount;
 	}
 
 }
