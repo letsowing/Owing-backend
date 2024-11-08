@@ -6,10 +6,7 @@ import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
-import com.owing.api.cast.service.CreateCastUseCase;
-import com.owing.api.cast.service.CreateConnectionUseCase;
-import com.owing.api.cast.service.ReadCastUseCase;
-import com.owing.api.cast.service.UpdateCastUseCase;
+import com.owing.api.cast.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +20,7 @@ public class CastController {
     private final CreateConnectionUseCase createConnectionUseCase;
     private final ReadCastUseCase readCastUseCase;
     private final UpdateCastUseCase updateCastUseCase;
+    private final DeleteCastUseCase deleteCastUseCase;
 
     @GetMapping("/{castId}")
     public ResponseEntity<CastInfoResponse> getCast(@PathVariable Long castId) {
@@ -49,5 +47,11 @@ public class CastController {
     @PostMapping("/relationships")
     public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@RequestBody CreateConnectionRequest createConnectionRequest) {
         return ResponseEntity.ok(createConnectionUseCase.execute(createConnectionRequest));
+    }
+
+    @DeleteMapping("/{castId}")
+    public ResponseEntity<Void> deleteCast(@PathVariable Long castId) {
+        deleteCastUseCase.execute(castId);
+        return ResponseEntity.ok().build();
     }
 }
