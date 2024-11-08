@@ -29,24 +29,10 @@ public class S3Uploader {
 			return null;
 		}
 
-		// 파일 확장자를 추출하고 contentType 설정
-		String[] splittedFileName = filename.split("\\.");
-		String extension = splittedFileName[splittedFileName.length - 1].equalsIgnoreCase("jpg")
-			? "jpeg" : splittedFileName[splittedFileName.length - 1].toLowerCase();
-
-		// 허용된 이미지 확장자 확인
-		String regExp = "^(jpeg|png|gif|bmp|svg|webp)$";
-		if (!Pattern.matches(regExp, extension)) {
-			throw S3InvalidFileException.of(S3ErrorCode.INVALID_EXTENSION);
-		}
-
-		// contentType 생성
-		String contentType = "image/" + extension;
-
 		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(s3Properties.s3().bucket())
 			.key(filename)
-			.contentType(contentType) // contentType 추가
+			.contentType(getContentType(filename)) // contentType 추가
 			.build();
 
 		PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
@@ -59,6 +45,21 @@ public class S3Uploader {
 
 		s3Presigner.close(); // presigner를 닫고 획득한 모든 리소스를 해제
 		return url;
+	}
+
+	private String getContentType(String fileName) {
+		// 파일 확장자를 추출하고 contentType 설정
+		String[] splittedFileName = fileName.split("\\.");
+		String extension = splittedFileName[splittedFileName.length - 1].equalsIgnoreCase("jpg")
+			? "jpeg" : splittedFileName[splittedFileName.length - 1].toLowerCase();
+
+		// 허용된 이미지 확장자 확인
+		String regExp = "^(jpeg|png|gif|bmp|svg|webp)$";
+		if (!Pattern.matches(regExp, extension)) {
+			throw S3InvalidFileException.of(S3ErrorCode.INVALID_EXTENSION);
+		}
+
+		return "image/" + extension; // contentType 생성
 	}
 
 }
