@@ -1,4 +1,4 @@
-package com.owing.api.common;
+package com.owing.api.common.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

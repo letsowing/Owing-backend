@@ -1,4 +1,4 @@
-package com.owing.api.auth.service.helper;
+package com.owing.api.common.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

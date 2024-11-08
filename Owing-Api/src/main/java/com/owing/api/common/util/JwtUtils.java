@@ -1,6 +1,7 @@
-package com.owing.api.common;
+package com.owing.api.common.util;
 
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
+import com.owing.api.common.properties.JwtProperties;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
 import io.jsonwebtoken.Claims;
@@ -31,6 +32,8 @@ public class JwtUtils {
         long now = (new Date()).getTime();
         return Jwts.builder()
                 .setSubject(member.getId().toString())
+                .claim(CLAIM_EMAIL, member.getEmail())
+                .claim(CLAIM_NAME, member.getName())
                 .claim(CLAIM_NICKNAME, member.getNickname())
                 .claim(CLAIM_PROFILE_URL, member.getProfileUrl())
                 .setExpiration(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))
@@ -67,5 +70,4 @@ public class JwtUtils {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
-
 }
