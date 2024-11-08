@@ -191,4 +191,13 @@ public class CastNode extends BaseTimeNeo4j implements FileNode<CastFolderNode> 
         this.imageUrl = imageUrl;
     }
 
+    public void updateInfo(CastNodeInfo castNodeInfo) {
+        this.updateName(castNodeInfo.name());
+        this.updateAge(castNodeInfo.age());
+        this.updateGender(castNodeInfo.gender());
+        this.updateRole(castNodeInfo.role());
+        this.updateDescription(castNodeInfo.description());
+        this.updateImageUrl(castNodeInfo.imageUrl());
+    }
+
 }

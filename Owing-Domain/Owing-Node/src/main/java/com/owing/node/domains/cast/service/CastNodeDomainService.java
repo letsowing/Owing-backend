@@ -48,13 +48,7 @@ public class CastNodeDomainService {
 
     @Transactional
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
-        castNode.updateName(castNodeInfo.name());
-        castNode.updateAge(castNodeInfo.age());
-        castNode.updateGender(castNodeInfo.gender());
-        castNode.updateRole(castNodeInfo.role());
-        castNode.updateDescription(castNodeInfo.description());
-        castNode.updateImageUrl(castNodeInfo.imageUrl());
-
+        castNode.updateInfo(castNodeInfo);
         neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
     }
 
