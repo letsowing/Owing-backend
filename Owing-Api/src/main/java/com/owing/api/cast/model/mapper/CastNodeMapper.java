@@ -2,12 +2,14 @@ package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.CastNodeInfo;
 import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.domains.cast.model.ConnectionType;
 
@@ -24,6 +26,17 @@ public class CastNodeMapper {
                 .imageUrl(createCastRequest.imageUrl())
                 .coordinate(createCastRequest.coordinate())
                 .build();
+    }
+
+    public CastNodeInfo toCastNodeInfo(UpdateCastInfoRequest updateCastInfoRequest) {
+        return new CastNodeInfo(
+                updateCastInfoRequest.name(),
+                updateCastInfoRequest.age(),
+                updateCastInfoRequest.gender(),
+                updateCastInfoRequest.role(),
+                updateCastInfoRequest.description(),
+                updateCastInfoRequest.imageUrl()
+        );
     }
 
     public CastRelationship toRelationship(CreateConnectionRequest createConnectionRequest, CastNode target) {
