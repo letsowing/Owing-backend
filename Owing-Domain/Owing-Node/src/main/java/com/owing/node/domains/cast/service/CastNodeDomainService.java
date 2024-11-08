@@ -4,6 +4,7 @@ import com.owing.common.annotation.DomainService;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
 import com.owing.node.domains.cast.model.*;
+import com.owing.node.domains.cast.model.projection.CastCoordinateProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -54,5 +55,13 @@ public class CastNodeDomainService {
         castNode.updateImageUrl(castNodeInfo.imageUrl());
 
         neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
+    }
+
+    @Transactional
+    public void updateCastNodeCoordinate(CastNode castNode, Coordinate coordinate) {
+        boolean isUpdated = castNode.updateCoordinate(coordinate);
+        if (isUpdated) {
+            neo4jTemplate.save(CastNode.class).one(castNode);
+        }
     }
 }

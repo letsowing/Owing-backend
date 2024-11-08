@@ -141,8 +141,12 @@ public class CastNode extends BaseTimeNeo4j implements FileNode<CastFolderNode> 
         this.updateCoordinate(new Coordinate(x, y));
     }
 
-    public void updateCoordinate(Coordinate coordinate) {
+    public boolean updateCoordinate(Coordinate coordinate) {
+        if (coordinate == null || coordinate.x() == null || coordinate.y() == null) {
+            return false;
+        }
         this.coordinate = coordinate;
+        return true;
     }
 
     public void updateName(String name) {
