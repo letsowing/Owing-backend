@@ -8,10 +8,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import com.owing.entity.dnd.base.repository.DndRepository;
 import com.owing.entity.dnd.file.model.BaseFileEntity;
+import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 
 @NoRepositoryBean
-public interface BaseFileRepository<T extends BaseFileEntity> extends DndRepository<T> {
-	@Query("select f from #{#entityName} f where f.folder.id = :folderId order by f.position")
+public interface BaseFileRepository<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends DndRepository<T> {
+	@Query(value = "select f from #{#entityName} f where f.folder_id = :folderId order by f.position", nativeQuery = true)
 	List<T> findByParentId(Long folderId);
 
 	List<T> findAllByFolderIdOrderByPositionAsc(Long folderId);

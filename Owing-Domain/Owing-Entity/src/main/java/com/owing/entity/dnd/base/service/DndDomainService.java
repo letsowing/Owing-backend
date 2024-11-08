@@ -24,6 +24,7 @@ public abstract class DndDomainService<T extends DndEntity>{
 	}
 
 	public T createEntity(T entity) {
+		System.out.println(entity.toString());
 		long position = orderingStrategy.getNewEntityPosition(entity.getParentId());
 		entity.updatePosition(position);
 		return dndRepository.save(entity);

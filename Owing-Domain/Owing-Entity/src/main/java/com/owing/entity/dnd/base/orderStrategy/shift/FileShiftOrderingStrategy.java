@@ -7,9 +7,9 @@ import com.owing.entity.dnd.file.model.BaseFileEntity;
 import com.owing.entity.dnd.file.repository.BaseFileRepository;
 import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 
-public abstract class FileShiftOrderingStrategy<T extends BaseFileEntity> extends ShiftOrderingStrategy<T>{
+public abstract class FileShiftOrderingStrategy<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends ShiftOrderingStrategy<T>{
 
-	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T> dndRepository) {
+	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T, F> dndRepository) {
 		super(dndAdapter, dndRepository);
 	}
 
@@ -33,7 +33,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFileEntity> extend
 
 	}
 
-	private void updatePositionInDifferentFolder(T entity, long newPosition, BaseFolderEntity oldFolder, BaseFolderEntity newFolder){
+	private void updatePositionInDifferentFolder(T entity, long newPosition, F oldFolder, F newFolder){
         shiftFolderUp(entity.getPosition(), entity.getFolder().getId());
 		shiftFolderDown(newPosition, newFolder.getId());
 		entity.updateFolder(newFolder);

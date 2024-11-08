@@ -5,10 +5,11 @@ import com.owing.entity.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.entity.dnd.file.adapter.BaseFileAdapter;
 import com.owing.entity.dnd.file.model.BaseFileEntity;
 import com.owing.entity.dnd.file.repository.BaseFileRepository;
+import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 
-public abstract class BaseFileDomainService<T extends BaseFileEntity> extends DndDomainService<T> {
+public abstract class BaseFileDomainService<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends DndDomainService<T> {
 
-	public BaseFileDomainService(BaseFileRepository<T> dndRepository,
+	public BaseFileDomainService(BaseFileRepository<T, F> dndRepository,
 		BaseFileAdapter<T> dndAdapter,
 		OrderingStrategy<T> orderingStrategy) {
 		super(dndRepository, dndAdapter, orderingStrategy);
