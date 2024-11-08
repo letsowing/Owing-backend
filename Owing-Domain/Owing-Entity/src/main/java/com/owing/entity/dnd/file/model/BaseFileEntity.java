@@ -7,8 +7,10 @@ import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
+@MappedSuperclass
 @Getter
 public abstract class BaseFileEntity<T extends BaseFolderEntity> extends DndEntity {
 	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)

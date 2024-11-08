@@ -2,7 +2,7 @@ package com.owing.api.dnd.file.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.common.MemberUtils;
+import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;

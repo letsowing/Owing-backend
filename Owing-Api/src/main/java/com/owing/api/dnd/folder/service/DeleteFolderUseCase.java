@@ -2,7 +2,7 @@ package com.owing.api.dnd.folder.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.common.MemberUtils;
+import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
 import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 import com.owing.entity.dnd.base.service.DndDomainService;
