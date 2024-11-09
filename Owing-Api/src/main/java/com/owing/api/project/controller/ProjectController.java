@@ -41,7 +41,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectInfoResponse> getProject(@RequestParam Long projectId) {
+    public ResponseEntity<ProjectInfoResponse> getProject(@PathVariable Long projectId) {
         return ResponseEntity.ok(readProjectUseCase.execute(projectId));
     }
 
