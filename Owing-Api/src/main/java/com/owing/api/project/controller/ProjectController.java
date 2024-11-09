@@ -35,8 +35,8 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
-            @RequestParam(defaultValue = pageDefault) @Min(pageMin) int page,
-            @RequestParam(defaultValue = pageSizeDefault) @Min(pageSizeMin) @Max(pageSizeMax) int size,
+            @RequestParam(defaultValue = PAGE_DEFAULT) @Min(PAGE_MIN) int page,
+            @RequestParam(defaultValue = PAGE_SIZE_DEFAULT) @Min(PAGE_SIZE_MIN) @Max(PAGE_SIZE_MAX) int size,
             @RequestParam ProjectSort projectSort
     ) {
         return ResponseEntity.ok(readProjectListUseCase.execute(page, size, projectSort));
