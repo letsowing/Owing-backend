@@ -1,20 +1,21 @@
 package com.owing.entity.domains.project.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
-import com.owing.entity.common.model.BaseTimeEntity;
-import com.owing.entity.domains.member.model.Member;
-import com.owing.entity.folders.story.model.StoryFolder;
-import com.owing.entity.folders.universe.model.UniverseFolder;
-import jakarta.persistence.*;
-import lombok.*;
+import java.util.Set;
+
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.owing.entity.common.constant.OwingPersistenceConst;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Builder
