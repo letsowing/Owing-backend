@@ -7,4 +7,5 @@ public interface BaseFile<T extends BaseFolder> extends BaseDnd {
 	String getTitle();
 	void updateFolder(T folder);
 	T getFolder();
+	void updateTitle(String newTitle);
 }

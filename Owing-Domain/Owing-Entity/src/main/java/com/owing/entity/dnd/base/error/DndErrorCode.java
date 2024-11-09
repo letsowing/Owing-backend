@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum DndErrorCode implements OwingErrorCode {
 
 	DND_NOT_FOUND(HttpStatus.NOT_FOUND, "001", "아이템을 찾을 수 없습니다."),
-	INVALID_POSITION(HttpStatus.BAD_REQUEST, "002", "올바르지 않은 위치입니다.");
+	INVALID_POSITION(HttpStatus.BAD_REQUEST, "002", "올바르지 않은 위치입니다."),
+	INVALID_TITLE(HttpStatus.BAD_REQUEST, "003", "제목을 입력해 주세요.");
 
 	private final HttpStatus status;
 	private final String code;
