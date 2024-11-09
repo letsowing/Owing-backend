@@ -1,11 +1,6 @@
 package com.owing.entity.dnd.file.model;
 
-import org.springframework.util.StringUtils;
-
 import com.owing.entity.common.constant.OwingPersistenceConst;
-import com.owing.entity.dnd.base.error.DndErrorCode;
-import com.owing.entity.dnd.base.error.exception.DndException;
-import com.owing.entity.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Column;
@@ -14,19 +9,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
-@MappedSuperclass
 @Getter
-public abstract class BaseFileEntity<T extends BaseFolderEntity> implements BaseFile<T>{
+public abstract class BaseFileNode<T extends BaseFolderEntity> implements BaseFile<T>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
 	protected Long position;
-
 	@Column(length = OwingPersistenceConst.DESC_LEN)
 	protected String description;
 
@@ -37,22 +29,7 @@ public abstract class BaseFileEntity<T extends BaseFolderEntity> implements Base
 	@JoinColumn(name = "folder_id", nullable = false)
 	protected T folder;
 
-
-	public void updatePosition(long newPosition) {
-		if(!validatePosition(newPosition)){
-			throw DndInvalidPositionException.of(DndErrorCode.INVALID_POSITION);
-		}
-		this.position = newPosition;
-	}
-
-	public void updateTitle(String newTitle) {
-		if (!StringUtils.hasText(newTitle)) {
-            throw DndException.of(DndErrorCode.INVALID_TITLE);
-        }
-        this.title = newTitle;
-	}
-
-	public void update(BaseFileEntity<T> newFile){
+	public void update(BaseFileNode<T> newFile){
 		this.title = newFile.getTitle();
 		this.description = newFile.getDescription();
 	}

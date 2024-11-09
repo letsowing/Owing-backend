@@ -1,13 +1,14 @@
 package com.owing.entity.dnd.file.service;
 
-import com.owing.entity.dnd.base.service.DndDomainService;
 import com.owing.entity.dnd.base.orderStrategy.OrderingStrategy;
+import com.owing.entity.dnd.base.service.BaseDndDomainService;
 import com.owing.entity.dnd.file.adapter.BaseFileAdapter;
-import com.owing.entity.dnd.file.model.BaseFileEntity;
+import com.owing.entity.dnd.file.model.BaseFile;
 import com.owing.entity.dnd.file.repository.BaseFileRepository;
-import com.owing.entity.dnd.folder.model.BaseFolderEntity;
+import com.owing.entity.dnd.folder.model.BaseFolder;
 
-public abstract class BaseFileDomainService<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends DndDomainService<T> {
+public abstract class BaseFileDomainService<T extends BaseFile<F>, F extends BaseFolder> extends
+	BaseDndDomainService<T> {
 
 	public BaseFileDomainService(BaseFileRepository<T, F> dndRepository,
 		BaseFileAdapter<T> dndAdapter,
