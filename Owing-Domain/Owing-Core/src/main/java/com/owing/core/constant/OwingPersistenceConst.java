@@ -1,4 +1,4 @@
-package com.owing.entity.common.constant;
+package com.owing.core.constant;
 
 public interface OwingPersistenceConst {
     // Common

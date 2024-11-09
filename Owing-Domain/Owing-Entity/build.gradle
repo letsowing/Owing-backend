@@ -1,6 +1,7 @@
 dependencies {
     implementation project(':Owing-Common')
     implementation project(':Owing-Infrastructure')
+    implementation project(':Owing-Domain:Owing-Core')
 
     // AWS S3
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'

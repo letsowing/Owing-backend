@@ -9,7 +9,7 @@ import org.hibernate.annotations.SoftDelete;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.owing.entity.common.constant.OwingPersistenceConst.*;
+import static com.owing.core.constant.OwingPersistenceConst.*;
 
 @Entity
 @Getter

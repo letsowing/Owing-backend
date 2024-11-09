@@ -1,12 +1,19 @@
 package com.owing.entity.domains.project.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
-import jakarta.persistence.*;
-import lombok.*;
+import com.owing.core.constant.OwingPersistenceConst;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.util.ObjectUtils;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Embeddable
