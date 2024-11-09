@@ -22,7 +22,7 @@ public interface BaseFileEntityRepository<T extends BaseFile<F>, F extends BaseF
 	@Query("update #{#entityName} T set T.position = T.position - 1 where T.position > :position and T.folder.id = :folderId")
 	void decrementPositionAfter(Long position, Long folderId);
 
-	@Query("SELECT COALESCE(MAX(T.position), 0) FROM #{#entityName} T WHERE T.folder.id = :folderId")
+	@Query("SELECT COALESCE(MAX(T.position), '-1') FROM #{#entityName} T WHERE T.folder.id = :folderId")
 	Long getMaxPositionByParentId(Long folderId);
 
 	@Modifying
