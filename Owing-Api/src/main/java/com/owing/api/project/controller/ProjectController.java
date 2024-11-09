@@ -6,10 +6,7 @@ import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
-import com.owing.api.project.service.CreateProjectUseCase;
-import com.owing.api.project.service.DeleteProjectUseCase;
-import com.owing.api.project.service.ReadProjectListUseCase;
-import com.owing.api.project.service.UpdateProjectUseCase;
+import com.owing.api.project.service.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ public class ProjectController {
 
     private final CreateProjectUseCase createProjectUseCase;
     private final ReadProjectListUseCase readProjectListUseCase;
+    private final ReadProjectUseCase readProjectUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
@@ -40,6 +38,11 @@ public class ProjectController {
             @RequestParam ProjectSort projectSort
     ) {
         return ResponseEntity.ok(readProjectListUseCase.execute(page, size, projectSort));
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectInfoResponse> getProject(@RequestParam Long projectId) {
+        return ResponseEntity.ok(readProjectUseCase.execute(projectId));
     }
 
     @PutMapping("/{projectId}")
