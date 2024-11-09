@@ -2,9 +2,7 @@ package com.owing.node.domains.cast.service;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.node.common.constant.CastConstant;
-import com.owing.node.domains.cast.adaptor.CastNodeAdaptor;
 import com.owing.node.domains.cast.model.*;
-import com.owing.node.domains.cast.model.projection.CastCoordinateProjection;
 import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CastNodeDomainService {
 
     private final CastNodeRepository castNodeRepository;
-    private final CastNodeAdaptor castNodeAdaptor;
     private final Neo4jTemplate neo4jTemplate;
 
     @Transactional
@@ -30,8 +27,8 @@ public class CastNodeDomainService {
                 CastConstant.DEFAULT_COORDINATE_X,
                 CastConstant.DEFAULT_COORDINATE_Y
         );
-        castNode.connectFolder(castFolderNode);
-        return castNodeRepository.save(castNode);
+        CastNode savedCastNode = castNodeRepository.save(castNode);
+        return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
     }
 
     @Transactional

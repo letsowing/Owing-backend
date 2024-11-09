@@ -53,6 +53,22 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             """)
     Optional<CastRelationshipProjection> findBiconnection(Long sourceId, Long targetId);
 
+    @Query("""
+            MATCH
+              (cf:CastFolder{deleted:false})
+            WHERE
+              id(cf)=$castFolderId
+            MATCH
+              (c:Cast{deleted:false})
+            WHERE
+              id(c)=$castId
+            MERGE
+              (cf)-[r:INCLUDE]->(c)
+            RETURN
+              c
+            """)
+    CastNode connectFolder(Long castId, Long castFolderId);
+
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
             "SET r.label = $label " +
