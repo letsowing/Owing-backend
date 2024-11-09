@@ -23,9 +23,9 @@ public class ProjectDomainService {
     }
 
     @Transactional
-    public Project updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
+    public void updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
         oldProject.getProjectInfo().updateProjectInfo(projectInfo);
-        return projectAdaptor.save(oldProject);
+        projectAdaptor.save(oldProject);
     }
 
     public Page<Project> getSortedProjectPage(Long memberId, Pageable pageable) {

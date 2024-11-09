@@ -46,11 +46,12 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}")
-    public ResponseEntity<ProjectInfoResponse> updateProject(
+    public ResponseEntity<Void> updateProject(
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest updateProjectRequest
     ) {
-        return ResponseEntity.ok(updateProjectUseCase.execute(projectId, updateProjectRequest));
+        updateProjectUseCase.execute(projectId, updateProjectRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{projectId}")
