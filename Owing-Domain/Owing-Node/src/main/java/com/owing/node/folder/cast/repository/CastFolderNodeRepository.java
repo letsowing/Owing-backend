@@ -11,7 +11,7 @@ public interface CastFolderNodeRepository extends Neo4jRepository<CastFolderNode
 
     @Query("""
             MATCH
-              (p:Project{id:20, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
+              (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
             OPTIONAL MATCH
               (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
             WITH
