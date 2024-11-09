@@ -2,11 +2,11 @@ package com.owing.api.common.constant;
 
 public interface OwingApiConst {
     // project
-    int pageMin = 0;
-    String pageDefault = "0";
+    int PAGE_MIN = 0;
+    String PAGE_DEFAULT = "0";
 
-    int pageSizeMin = 0;
-    int pageSizeMax = 10;
-    String pageSizeDefault = "10";
+    int PAGE_SIZE_MIN = 0;
+    int PAGE_SIZE_MAX = 10;
+    String PAGE_SIZE_DEFAULT = "10";
 
 }

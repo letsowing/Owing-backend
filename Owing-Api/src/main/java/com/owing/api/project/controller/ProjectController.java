@@ -6,10 +6,7 @@ import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
-import com.owing.api.project.service.CreateProjectUseCase;
-import com.owing.api.project.service.DeleteProjectUseCase;
-import com.owing.api.project.service.ReadProjectListUseCase;
-import com.owing.api.project.service.UpdateProjectUseCase;
+import com.owing.api.project.service.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ public class ProjectController {
 
     private final CreateProjectUseCase createProjectUseCase;
     private final ReadProjectListUseCase readProjectListUseCase;
+    private final ReadProjectUseCase readProjectUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
 
@@ -35,19 +33,25 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<ProjectShortInfoPageResponse> getProjectPage(
-            @RequestParam(defaultValue = pageDefault) @Min(pageMin) int page,
-            @RequestParam(defaultValue = pageSizeDefault) @Min(pageSizeMin) @Max(pageSizeMax) int size,
+            @RequestParam(defaultValue = PAGE_DEFAULT) @Min(PAGE_MIN) int page,
+            @RequestParam(defaultValue = PAGE_SIZE_DEFAULT) @Min(PAGE_SIZE_MIN) @Max(PAGE_SIZE_MAX) int size,
             @RequestParam ProjectSort projectSort
     ) {
         return ResponseEntity.ok(readProjectListUseCase.execute(page, size, projectSort));
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectInfoResponse> getProject(@PathVariable Long projectId) {
+        return ResponseEntity.ok(readProjectUseCase.execute(projectId));
+    }
+
     @PutMapping("/{projectId}")
-    public ResponseEntity<ProjectInfoResponse> updateProject(
+    public ResponseEntity<Void> updateProject(
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest updateProjectRequest
     ) {
-        return ResponseEntity.ok(updateProjectUseCase.execute(projectId, updateProjectRequest));
+        updateProjectUseCase.execute(projectId, updateProjectRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{projectId}")

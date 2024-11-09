@@ -23,7 +23,7 @@ public class UpdateProjectUseCase {
     private final ProjectAdaptor projectAdaptor;
 
     @Transactional
-    public ProjectInfoResponse execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
+    public void execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
         Long memberId = memberUtils.getCurrentMemberId();
         Project oldProject = projectAdaptor.findById(projectId);
 
@@ -33,8 +33,7 @@ public class UpdateProjectUseCase {
         }
 
         ProjectInfo updateInfo = projectMapper.toProjectInfo(updateProjectRequest);
-        Project updateProject = projectDomainService.updateProjectInfo(oldProject, updateInfo);
-        return projectMapper.toInfoResponse(updateProject);
+        projectDomainService.updateProjectInfo(oldProject, updateInfo);
     }
 
 }
