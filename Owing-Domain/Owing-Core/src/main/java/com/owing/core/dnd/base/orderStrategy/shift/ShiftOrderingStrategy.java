@@ -1,5 +1,7 @@
 package com.owing.core.dnd.base.orderStrategy.shift;
 
+import java.util.Objects;
+
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.error.DndErrorCode;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
