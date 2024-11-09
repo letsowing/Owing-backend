@@ -2,7 +2,6 @@ package com.owing.entity.domains.story.model;
 
 import org.hibernate.annotations.SoftDelete;
 
-import com.owing.entity.dnd.base.model.DndEntity;
 import com.owing.entity.dnd.file.model.BaseFileEntity;
 
 import jakarta.persistence.Column;
@@ -28,12 +27,6 @@ public class Story extends BaseFileEntity<StoryFolder> {
 		this.position = position;
 		this.textCount = textCount;
 		this.folder = folder;
-	}
-
-	@Override
-	public void update(DndEntity newEntity) {
-		this.title = ((Story) newEntity).getTitle();
-		this.description = newEntity.getDescription();
 	}
 
 	public void updateTextCount(int textCount){

@@ -5,12 +5,12 @@ import com.owing.entity.dnd.file.service.BaseFileDomainService;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.repository.StoryRepositoryBase;
+import com.owing.entity.domains.story.repository.StoryRepository;
 
 @DomainService
 public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder> {
 
-	public StoryDomainService(StoryRepositoryBase dndRepository,
+	public StoryDomainService(StoryRepository dndRepository,
 		StoryAdapter dndAdapter,
 		StoryShiftOrderingStrategy orderingStrategy) {
 		super(dndRepository, dndAdapter, orderingStrategy);
