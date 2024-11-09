@@ -12,4 +12,10 @@ public abstract class BaseFolderDomainService<T extends BaseFolder> extends Base
 		OrderingStrategy<T> orderingStrategy) {
 		super(dndRepository, dndAdapter, orderingStrategy);
 	}
+
+	public T updateTitle(T entity, T newEntity) {
+		entity.updateTitle(newEntity.getName());
+		dndRepository.save(entity);
+		return entity;
+	}
 }
