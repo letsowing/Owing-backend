@@ -1,10 +1,10 @@
 package com.owing.entity.dnd.base.orderStrategy.shift;
 
 import com.owing.entity.dnd.folder.adapter.BaseFolderAdapter;
-import com.owing.entity.dnd.folder.model.BaseFolderEntity;
+import com.owing.entity.dnd.folder.model.BaseFolder;
 import com.owing.entity.dnd.folder.repository.BaseFolderRepository;
 
-public abstract class FolderShiftOrderingStrategy<T extends BaseFolderEntity> extends ShiftOrderingStrategy<T>{
+public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends ShiftOrderingStrategy<T>{
 
 	public FolderShiftOrderingStrategy(BaseFolderAdapter<T> dndAdapter, BaseFolderRepository<T> dndRepository) {
 		super(dndAdapter, dndRepository);

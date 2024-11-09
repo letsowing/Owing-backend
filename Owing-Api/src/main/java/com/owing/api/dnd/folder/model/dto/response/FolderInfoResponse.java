@@ -1,7 +1,7 @@
 package com.owing.api.dnd.folder.model.dto.response;
 
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
-import com.owing.entity.dnd.folder.model.BaseFolderEntity;
+import com.owing.entity.dnd.folder.model.BaseFolder;
 
 import lombok.Builder;
 
@@ -12,7 +12,7 @@ public record FolderInfoResponse(
 	String description,
 	Long projectId
 ) implements DndInfoResponse {
-	public static FolderInfoResponse from(BaseFolderEntity entity) {
+	public static FolderInfoResponse from(BaseFolder entity) {
 		return FolderInfoResponse.builder()
 			.id(entity.getId())
 			.name(entity.getName())

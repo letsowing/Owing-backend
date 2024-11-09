@@ -7,9 +7,9 @@ import com.owing.api.dnd.folder.service.CreateFolderUseCase;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
 import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 import com.owing.api.dnd.folder.service.UpdateFolderUseCase;
-import com.owing.entity.dnd.folder.model.BaseFolderEntity;
+import com.owing.entity.dnd.folder.model.BaseFolder;
 
-public abstract class BaseFolderController<T extends BaseFolderEntity> extends DndController<AddFolderRequest, UpdateFolderRequest, UpdateFolderPositionRequest>{
+public abstract class BaseFolderController<T extends BaseFolder> extends DndController<AddFolderRequest, UpdateFolderRequest, UpdateFolderPositionRequest>{
 
 	public BaseFolderController(
 		CreateFolderUseCase<T> createDndUseCase,
