@@ -41,7 +41,7 @@ public abstract class DndController<A, U, P>{
     }
 
     @PutMapping("/{dndId}")
-    public ResponseEntity<?> updateDnd(@PathVariable Long dndId, @RequestBody U updateDndRequest) {
+    public ResponseEntity<?> updateDndTitle(@PathVariable Long dndId, @RequestBody U updateDndRequest) {
         return ResponseEntity.ok(updateDndUseCase.execute(dndId, updateDndRequest));
     }
 

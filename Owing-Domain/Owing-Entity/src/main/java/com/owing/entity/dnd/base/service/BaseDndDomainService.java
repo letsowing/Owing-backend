@@ -2,38 +2,34 @@ package com.owing.entity.dnd.base.service;
 
 import java.util.List;
 
-import com.owing.entity.dnd.base.adapter.DndAdapter;
-import com.owing.entity.dnd.base.model.DndEntity;
-import com.owing.entity.dnd.base.repository.DndRepository;
+import com.owing.entity.dnd.base.adapter.BaseDndAdapter;
+import com.owing.entity.dnd.base.model.BaseDnd;
 import com.owing.entity.dnd.base.orderStrategy.OrderingStrategy;
+import com.owing.entity.dnd.base.repository.BaseDndRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class DndDomainService<T extends DndEntity>{
-	protected final DndRepository<T> dndRepository;
-	protected final DndAdapter<T> dndAdapter;
+public abstract class BaseDndDomainService<T extends BaseDnd>{
+	protected final BaseDndRepository<T> dndRepository;
+	protected final BaseDndAdapter<T> dndEntityAdapter;
 	protected final OrderingStrategy<T> orderingStrategy;
 
 	public T getEntity(Long id) {
-		return dndAdapter.findById(id);
+		return dndEntityAdapter.findById(id);
 	}
 
 	public List<T> getEntityList(Long parentId) {
-		return dndAdapter.findAllByParentId(parentId);
+		return dndEntityAdapter.findAllByParentId(parentId);
 	}
 
 	public T createEntity(T entity) {
-		System.out.println(entity.toString());
 		long position = orderingStrategy.getNewEntityPosition(entity.getParentId());
 		entity.updatePosition(position);
 		return dndRepository.save(entity);
 	}
 
-	public T updateEntity(T entity, T newEntity) {
-		entity.update(newEntity);
-		return dndRepository.save(entity);
-	}
+	public abstract T updateTitle(T entity, T newEntity);
 
 	public void deleteEntity(T entity) {
 		orderingStrategy.reorderEntity(entity);

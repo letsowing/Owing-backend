@@ -2,18 +2,16 @@ package com.owing.entity.dnd.base.adapter;
 
 import java.util.List;
 
-import com.owing.common.annotation.Adaptor;
 import com.owing.entity.dnd.base.error.DndErrorCode;
 import com.owing.entity.dnd.base.error.exception.DndNotFoundException;
-import com.owing.entity.dnd.base.model.DndEntity;
-import com.owing.entity.dnd.base.repository.DndRepository;
+import com.owing.entity.dnd.base.model.BaseDnd;
+import com.owing.entity.dnd.base.repository.BaseDndRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Adaptor
 @RequiredArgsConstructor
-public abstract class DndAdapter<T extends DndEntity> {
-	protected final DndRepository<T> dndRepository;
+public abstract class BaseDndAdapter<T extends BaseDnd> {
+	protected final BaseDndRepository<T> dndRepository;
 
 	public T findById(Long id) {
 		return dndRepository.findById(id).orElseThrow(() -> DndNotFoundException.of(DndErrorCode.DND_NOT_FOUND));
