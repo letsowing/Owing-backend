@@ -1,12 +1,12 @@
 package com.owing.api.dnd.file.service;
 
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.entity.dnd.base.service.BaseDndDomainService;
-import com.owing.entity.dnd.file.model.BaseFile;
-import com.owing.entity.dnd.folder.model.BaseFolder;
 
 import lombok.RequiredArgsConstructor;
 

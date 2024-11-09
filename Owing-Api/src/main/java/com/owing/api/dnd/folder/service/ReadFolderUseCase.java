@@ -6,9 +6,9 @@ import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoListResponse;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
-import com.owing.entity.dnd.base.service.BaseDndDomainService;
-import com.owing.entity.dnd.folder.model.BaseFolder;
 
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

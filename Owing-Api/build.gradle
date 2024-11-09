@@ -3,6 +3,7 @@ bootJar.enabled = true
 jar.enabled = false
 
 dependencies {
+    implementation project(':Owing-Domain:Owing-Core')
     implementation project(':Owing-Domain:Owing-Entity')
     implementation project(':Owing-Domain:Owing-Node')
     implementation project(':Owing-Common')

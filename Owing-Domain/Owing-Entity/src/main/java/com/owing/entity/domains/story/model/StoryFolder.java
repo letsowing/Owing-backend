@@ -2,7 +2,7 @@ package com.owing.entity.domains.story.model;
 
 import org.hibernate.annotations.SoftDelete;
 
-import com.owing.entity.dnd.folder.model.BaseFolderEntity;
+import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;

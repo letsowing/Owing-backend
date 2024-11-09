@@ -4,7 +4,7 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.UpdateFileUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
 

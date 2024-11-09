@@ -7,8 +7,8 @@ import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
 import com.owing.api.dnd.file.model.dto.response.FileInfoListResponse;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
-import com.owing.entity.dnd.file.model.BaseFile;
-import com.owing.entity.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class BaseFileMapper<T extends BaseFile<F>, F extends BaseFolder> implements
 	DndMapper<T, AddFileRequest, UpdateFileRequest> {

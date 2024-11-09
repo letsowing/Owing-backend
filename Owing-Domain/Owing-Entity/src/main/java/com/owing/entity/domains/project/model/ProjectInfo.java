@@ -1,6 +1,6 @@
 package com.owing.entity.domains.project.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
+import com.owing.core.constant.OwingPersistenceConst;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.util.ObjectUtils;

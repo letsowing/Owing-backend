@@ -2,7 +2,7 @@ package com.owing.entity.domains.story.model;
 
 import org.hibernate.annotations.SoftDelete;
 
-import com.owing.entity.dnd.file.model.BaseFileEntity;
+import com.owing.core.dnd.file.model.BaseFileEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

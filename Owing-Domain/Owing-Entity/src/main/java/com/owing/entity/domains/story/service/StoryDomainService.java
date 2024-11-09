@@ -1,7 +1,7 @@
 package com.owing.entity.domains.story.service;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.entity.dnd.file.service.BaseFileDomainService;
+import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;

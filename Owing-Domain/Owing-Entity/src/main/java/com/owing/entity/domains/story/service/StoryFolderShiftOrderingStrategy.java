@@ -2,7 +2,7 @@ package com.owing.entity.domains.story.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.entity.dnd.base.orderStrategy.shift.FolderShiftOrderingStrategy;
+import com.owing.core.dnd.base.orderStrategy.shift.FolderShiftOrderingStrategy;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.repository.StoryFolderRepository;

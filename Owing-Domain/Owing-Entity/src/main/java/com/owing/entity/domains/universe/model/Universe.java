@@ -1,6 +1,6 @@
 package com.owing.entity.domains.universe.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
+import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.folders.universe.model.UniverseFolder;
 import org.hibernate.annotations.SoftDelete;

@@ -1,5 +1,7 @@
 package com.owing.api.dnd.folder.service;
 
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.common.util.MemberUtils;
@@ -8,9 +10,6 @@ import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
-import com.owing.entity.dnd.base.service.BaseDndDomainService;
-import com.owing.entity.dnd.folder.model.BaseFolder;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -3,7 +3,7 @@ package com.owing.entity.folders.universe.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
+import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.universe.model.Universe;

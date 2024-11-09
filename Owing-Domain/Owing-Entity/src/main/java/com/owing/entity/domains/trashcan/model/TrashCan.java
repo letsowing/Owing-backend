@@ -1,21 +1,12 @@
 package com.owing.entity.domains.trashcan.model;
 
-import com.owing.entity.common.constant.OwingPersistenceConst;
-import com.owing.entity.common.model.BaseTimeEntity;
-import com.owing.entity.folders.universe.model.UniverseFolder;
-import org.hibernate.annotations.SoftDelete;
+import com.owing.core.constant.OwingPersistenceConst;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

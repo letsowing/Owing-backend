@@ -1,5 +1,8 @@
 package com.owing.api.dnd.file.service;
 
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.common.util.MemberUtils;
@@ -8,9 +11,6 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
-import com.owing.entity.dnd.base.service.BaseDndDomainService;
-import com.owing.entity.dnd.file.model.BaseFile;
-import com.owing.entity.dnd.folder.model.BaseFolder;
 
 import lombok.RequiredArgsConstructor;
 

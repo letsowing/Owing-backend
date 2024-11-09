@@ -1,8 +1,8 @@
 package com.owing.api.dnd.folder.model.dto.response;
 
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
-import com.owing.entity.dnd.folder.model.BaseFolder;
 
+import com.owing.core.dnd.folder.model.BaseFolder;
 import lombok.Builder;
 
 @Builder

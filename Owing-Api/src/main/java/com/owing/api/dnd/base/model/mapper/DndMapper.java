@@ -7,7 +7,7 @@ import com.owing.api.dnd.base.model.dto.request.UpdateDndRequest;
 import com.owing.api.dnd.base.model.dto.response.DndInfoListResponse;
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
 import com.owing.common.annotation.Mapper;
-import com.owing.entity.dnd.base.model.BaseDnd;
+import com.owing.core.dnd.base.model.BaseDnd;
 
 @Mapper
 public interface DndMapper<T extends BaseDnd, R extends AddDndRequest, U extends UpdateDndRequest> {

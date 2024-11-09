@@ -7,8 +7,8 @@ import com.owing.api.dnd.file.service.CreateFileUseCase;
 import com.owing.api.dnd.file.service.DeleteFileUseCase;
 import com.owing.api.dnd.file.service.ReadFileUseCase;
 import com.owing.api.dnd.file.service.UpdateFileUseCase;
-import com.owing.entity.dnd.file.model.BaseFile;
-import com.owing.entity.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class BaseFileController<T extends BaseFile<F>, F extends BaseFolder>
 	extends DndController<AddFileRequest, UpdateFileRequest, UpdateFilePositionRequest>{

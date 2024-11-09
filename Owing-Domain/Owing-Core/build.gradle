@@ -1,6 +1,8 @@
 dependencies {
     implementation project(':Owing-Common')
     implementation project(':Owing-Infrastructure')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 bootJar.enabled = false
