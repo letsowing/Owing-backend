@@ -24,11 +24,7 @@ public class ProjectDomainService {
 
     @Transactional
     public Project updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
-        oldProject.getProjectInfo().updateTitle(projectInfo.getTitle());
-        oldProject.getProjectInfo().updateDescription(projectInfo.getDescription());
-        oldProject.getProjectInfo().updateCategory(projectInfo.getCategory());
-        oldProject.getProjectInfo().updateGenres(projectInfo.getGenres());
-        oldProject.getProjectInfo().updateCoverUrl(projectInfo.getCoverUrl());
+        oldProject.getProjectInfo().updateProjectInfo(projectInfo);
         return projectAdaptor.save(oldProject);
     }
 

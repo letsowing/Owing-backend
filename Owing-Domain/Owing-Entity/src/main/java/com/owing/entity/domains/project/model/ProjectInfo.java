@@ -1,19 +1,12 @@
 package com.owing.entity.domains.project.model;
 
 import com.owing.entity.common.constant.OwingPersistenceConst;
-import com.owing.entity.common.model.BaseTimeEntity;
-import com.owing.entity.domains.member.model.Member;
-import com.owing.entity.folders.story.model.StoryFolder;
-import com.owing.entity.folders.universe.model.UniverseFolder;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.SqlTypes;
+import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Embeddable
@@ -43,14 +36,23 @@ public class ProjectInfo {
 
 
     public void updateTitle(String title) {
+        if (ObjectUtils.isEmpty(title)) {
+            return;
+        }
         this.title = title;
     }
 
     public void updateDescription(String description) {
+        if (ObjectUtils.isEmpty(description)) {
+            return;
+        }
         this.description = description;
     }
 
     public void updateCategory(Category category) {
+        if (ObjectUtils.isEmpty(category)) {
+            return;
+        }
         this.category = category;
     }
 
@@ -59,7 +61,17 @@ public class ProjectInfo {
     }
 
     public void updateCoverUrl(String coverUrl) {
+        if (ObjectUtils.isEmpty(coverUrl)) {
+            return;
+        }
         this.coverUrl = coverUrl;
     }
 
+    public void updateProjectInfo(ProjectInfo projectInfo) {
+        this.updateTitle(projectInfo.getTitle());
+        this.updateDescription(projectInfo.getDescription());
+        this.updateCategory(projectInfo.getCategory());
+        this.updateGenres(projectInfo.getGenres());
+        this.updateCoverUrl(projectInfo.getCoverUrl());
+    }
 }
