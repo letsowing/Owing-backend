@@ -5,6 +5,6 @@ import java.util.List;
 import com.owing.api.dnd.base.model.dto.response.DndInfoListResponse;
 
 public record FileInfoListResponse(
-        List<FileInfoResponse> folderList
+        List<FileInfoResponse> fileList
 ) implements DndInfoListResponse {
 }

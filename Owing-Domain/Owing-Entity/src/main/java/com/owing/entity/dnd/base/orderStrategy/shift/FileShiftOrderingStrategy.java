@@ -4,12 +4,12 @@ import java.util.Objects;
 
 import com.owing.entity.dnd.file.adapter.BaseFileAdapter;
 import com.owing.entity.dnd.file.model.BaseFileEntity;
-import com.owing.entity.dnd.file.repository.BaseFileRepository;
+import com.owing.entity.dnd.file.repository.BaseFileEntityRepository;
 import com.owing.entity.dnd.folder.model.BaseFolderEntity;
 
 public abstract class FileShiftOrderingStrategy<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends ShiftOrderingStrategy<T>{
 
-	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T, F> dndRepository) {
+	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileEntityRepository<T, F> dndRepository) {
 		super(dndAdapter, dndRepository);
 	}
 
