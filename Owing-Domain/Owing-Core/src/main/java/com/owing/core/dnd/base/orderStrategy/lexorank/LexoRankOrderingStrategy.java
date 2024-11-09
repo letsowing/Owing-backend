@@ -13,7 +13,7 @@ public class LexoRankOrderingStrategy<T extends BaseDnd> implements OrderingStra
 	protected final BaseDndRepository<T> dndEntityRepository;
 
 	@Override
-	public long getNewEntityPosition(Long parentId) {
+	public long getNewPosition(Long parentId) {
 		return 0;
 	}
 
@@ -23,7 +23,18 @@ public class LexoRankOrderingStrategy<T extends BaseDnd> implements OrderingStra
 	}
 
 	@Override
-	public T updatePosition(T dndEntity, long newPosition) {
+	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity) {
 		return null;
 	}
+
+	@Override
+	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, BaseDnd newParent) {
+		return null;
+	}
+
+	@Override
+	public long getUpdatePosition(T entity, T beforeEntity, T afterEntity) {
+		return 0;
+	}
+
 }
