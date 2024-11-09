@@ -30,7 +30,9 @@ public abstract class UpdateFolderUseCase<T extends BaseFolder> implements
     @Transactional
     public FolderInfoResponse executeUpdatePosition(Long id, UpdateFolderPositionRequest dto) {
         T entity = baseDndDomainService.getEntity(id);
-        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, dto.position());
+        T beforeEntity = baseDndDomainService.getOptionalEntity(dto.beforeId());
+        T afterEntity = baseDndDomainService.getOptionalEntity(dto.afterId());
+        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, beforeEntity, afterEntity);
         return dndMapper.toInfoResponse(updatedEntity);
     }
 

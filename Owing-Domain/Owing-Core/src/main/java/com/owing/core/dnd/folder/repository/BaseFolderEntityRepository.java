@@ -20,7 +20,7 @@ public interface BaseFolderEntityRepository<T extends BaseFolderEntity> extends 
 	@Query("update #{#entityName} T set T.position = T.position - 1 where T.position > :position and T.projectId = :projectId")
 	void decrementPositionAfter(Long position, Long projectId);
 
-	@Query("SELECT COALESCE(MAX(T.position), 0) FROM #{#entityName} T WHERE T.projectId = :projectId")
+	@Query("SELECT COALESCE(MAX(T.position), '-1') FROM #{#entityName} T WHERE T.projectId = :projectId")
 	Long getMaxPositionByParentId(Long projectId);
 
 	@Modifying

@@ -10,8 +10,26 @@ public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends 
 		super(dndAdapter, dndRepository);
 	}
 
+	protected boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity) {
+		if (beforeEntity == null && afterEntity == null) {
+			return false;
+		}
+
+		if (beforeEntity == null) {
+			// isFirstPosition(afterEntity);
+			return hasSameParentFolder(entity, afterEntity);
+		}
+		if (afterEntity == null) {
+			// isLastPosition(beforeEntity);
+			return hasSameParentFolder(entity, beforeEntity);
+		}
+		return isSequentialPosition(beforeEntity, afterEntity);
+	}
+
 	@Override
-	protected T handleEntityUpdate(T entity, long newPosition) {
+	protected T handleEntityUpdate(T entity, T beforeEntity, T afterEntity) {
+		long newPosition = getUpdatePosition(entity, beforeEntity, afterEntity);
+
 		if (entity.getPosition() < newPosition) {
 			moveFolderDown(newPosition, entity.getPosition(), entity.getParentId());
 		} else {

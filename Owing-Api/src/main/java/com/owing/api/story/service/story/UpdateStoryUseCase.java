@@ -10,9 +10,11 @@ import com.owing.entity.domains.story.model.StoryFolder;
 
 @UseCase
 public class UpdateStoryUseCase extends UpdateFileUseCase<Story, StoryFolder> {
-    public UpdateStoryUseCase(MemberUtils memberUtils, BaseDndDomainService<Story> baseDndDomainService,
+    public UpdateStoryUseCase(MemberUtils memberUtils,
+        BaseDndDomainService<Story> baseDndDomainService,
+        BaseDndDomainService<StoryFolder> folderBaseDndDomainService,
         BaseFileMapper<Story, StoryFolder> dndMapper) {
-        super(memberUtils, baseDndDomainService, dndMapper);
+        super(memberUtils, baseDndDomainService, folderBaseDndDomainService, dndMapper);
     }
 
 }

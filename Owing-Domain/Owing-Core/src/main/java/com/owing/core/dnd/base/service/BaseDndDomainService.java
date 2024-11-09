@@ -19,12 +19,19 @@ public abstract class BaseDndDomainService<T extends BaseDnd>{
 		return dndEntityAdapter.findById(id);
 	}
 
+	public T getOptionalEntity(Long id){
+		if(id == null){
+			return null;
+		}
+		return dndEntityAdapter.findById(id);
+	}
+
 	public List<T> getEntityList(Long parentId) {
 		return dndEntityAdapter.findAllByParentId(parentId);
 	}
 
 	public T createEntity(T entity) {
-		long position = orderingStrategy.getNewEntityPosition(entity.getParentId());
+		long position = orderingStrategy.getNewPosition(entity.getParentId());
 		entity.updatePosition(position);
 		return dndRepository.save(entity);
 	}
@@ -36,8 +43,11 @@ public abstract class BaseDndDomainService<T extends BaseDnd>{
 		dndRepository.delete(entity);
 	}
 
-	public T updateEntityPosition(T entity, Long newPosition) {
-		return orderingStrategy.updatePosition(entity, newPosition);
+	public T updateEntityPosition(T entity, T beforeEntity, T afterEntity) {
+		return orderingStrategy.updatePosition(entity, beforeEntity, afterEntity);
+	}
+	public T updateEntityPosition(T entity, T beforeEntity, T afterEntity, BaseDnd newFolder) {
+		return orderingStrategy.updatePosition(entity, beforeEntity, afterEntity, newFolder);
 	}
 
 }

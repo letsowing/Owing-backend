@@ -19,6 +19,7 @@ public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFol
     UpdateDndUseCase<FileInfoResponse, UpdateFileRequest, UpdateFilePositionRequest> {
     protected final MemberUtils memberUtils;
     protected final BaseDndDomainService<T> baseDndDomainService;
+    protected final BaseDndDomainService<F> fBaseDndDomainService;
     protected final BaseFileMapper<T, F> dndMapper;
 
     @Transactional
@@ -32,7 +33,10 @@ public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFol
     @Transactional
     public FileInfoResponse executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
         T entity = baseDndDomainService.getEntity(id);
-        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, dto.position());
+        T beforeEntity = baseDndDomainService.getOptionalEntity(dto.beforeId());
+        T afterEntity = baseDndDomainService.getOptionalEntity(dto.afterId());
+        F folder = fBaseDndDomainService.getOptionalEntity(dto.folderId());
+        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, beforeEntity, afterEntity, folder);
         return dndMapper.toInfoResponse(updatedEntity);
     }
 
