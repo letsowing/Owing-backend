@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.owing.entity.domains.project.model.ProjectInfo;
 
 public record ProjectInfoResponse(
-        Long projectId,
+        Long id,
         @JsonUnwrapped
         ProjectInfo projectInfoDto
 ) {
