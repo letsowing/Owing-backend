@@ -102,12 +102,12 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
     @Override
     @Query("""
 			MATCH
-			  (t:CastFolder{deleted:false})
+				(p:Project{deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
 			WHERE
-			  t.projectId = $projectId
+				p.id = $projectId
 			RETURN
-			  COALESCE(MAX(t.position), -1)
+				COALESCE(MAX(t.position), -1)
 			""")
-    Long getMaxPositionByParentId(Long parentId);
+	Long getMaxPositionByParentId(Long projectId);
 
 }
