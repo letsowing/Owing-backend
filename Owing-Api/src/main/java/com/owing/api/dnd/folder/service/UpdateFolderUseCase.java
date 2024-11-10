@@ -1,7 +1,5 @@
 package com.owing.api.dnd.folder.service;
 
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.folder.model.BaseFolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.common.util.MemberUtils;
@@ -10,30 +8,30 @@ import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
-import lombok.RequiredArgsConstructor;
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.folder.model.BaseFolder;
 
-@RequiredArgsConstructor
 public abstract class UpdateFolderUseCase<T extends BaseFolder> implements
     UpdateDndUseCase<FolderInfoResponse, UpdateFolderRequest, UpdateFolderPositionRequest> {
-    protected final MemberUtils memberUtils;
-    protected final BaseDndDomainService<T> baseDndDomainService;
-    protected final BaseFolderMapper<T> dndMapper;
+    protected abstract MemberUtils memberUtils();
+    protected abstract BaseDndDomainService<T> baseDndDomainService();
+    protected abstract BaseFolderMapper<T> dndMapper();
 
     @Transactional
-    public FolderInfoResponse execute(Long id, UpdateFolderRequest dto) {
-        T entity = baseDndDomainService.getEntity(id);
-        T newEntity = dndMapper.toEntity(dto);
-        T updatedEntity = baseDndDomainService.updateTitle(entity, newEntity);
-        return dndMapper.toInfoResponse(updatedEntity);
+    public FolderInfoResponse executeUpdateTitle(Long id, UpdateFolderRequest dto) {
+        T entity = baseDndDomainService().getEntity(id);
+        T newEntity = dndMapper().toEntity(dto);
+        T updatedEntity = baseDndDomainService().updateTitle(entity, newEntity);
+        return dndMapper().toInfoResponse(updatedEntity);
     }
 
     @Transactional
     public FolderInfoResponse executeUpdatePosition(Long id, UpdateFolderPositionRequest dto) {
-        T entity = baseDndDomainService.getEntity(id);
-        T beforeEntity = baseDndDomainService.getOptionalEntity(dto.beforeId());
-        T afterEntity = baseDndDomainService.getOptionalEntity(dto.afterId());
-        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, beforeEntity, afterEntity);
-        return dndMapper.toInfoResponse(updatedEntity);
+        T entity = baseDndDomainService().getEntity(id);
+        T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
+        T afterEntity = baseDndDomainService().getOptionalEntity(dto.afterId());
+        T updatedEntity = baseDndDomainService().updateEntityPosition(entity, beforeEntity, afterEntity);
+        return dndMapper().toInfoResponse(updatedEntity);
     }
 
 }

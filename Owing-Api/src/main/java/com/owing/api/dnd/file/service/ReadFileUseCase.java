@@ -9,22 +9,20 @@ import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.folder.model.BaseFolder;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public abstract class ReadFileUseCase<T extends BaseFile<F>, F extends BaseFolder> implements
 	ReadDndUseCase<FileInfoResponse, FileInfoListResponse> {
-	protected final BaseFileMapper<T, F> dndMapper;
-	protected final BaseDndDomainService<T> baseDndDomainService;
+	protected abstract BaseFileMapper<T, F> dndMapper();
+	protected abstract BaseDndDomainService<T> baseDndDomainService();
 
 	public FileInfoResponse executeRetrieve(Long dndId){
-		T entity = baseDndDomainService.getEntity(dndId);
-		return dndMapper.toInfoResponse(entity);
+		T entity = baseDndDomainService().getEntity(dndId);
+		return dndMapper().toInfoResponse(entity);
 	}
 
 	public FileInfoListResponse executeList(Long dndId) {
-		List<T> entityList = baseDndDomainService.getEntityList(dndId);
-		return dndMapper.toListResponse(entityList);
+		List<T> entityList = baseDndDomainService().getEntityList(dndId);
+		return dndMapper().toListResponse(entityList);
 	}
 
 }
