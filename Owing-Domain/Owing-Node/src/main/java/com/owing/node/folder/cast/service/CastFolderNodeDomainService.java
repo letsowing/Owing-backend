@@ -2,7 +2,6 @@ package com.owing.node.folder.cast.service;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.folder.service.BaseFolderDomainService;
@@ -10,7 +9,6 @@ import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
-import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderTitleProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +49,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     }
 
     @Transactional
-    public void updatePosition(CastFolderNode castFolderNode, Long position) {
-        castFolderNode.updatePosition(position);
-
-        CastFolderPositionProjection castFolderPositionProjection = CastFolderPositionProjection.from(castFolderNode);
-        neo4jTemplate.save(CastFolderNode.class).one(castFolderPositionProjection);
-    }
-
-    @Transactional
     public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
         castFolderNode.updateTitle(name);
         castFolderNode.updateDescription(description);
@@ -67,18 +57,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
     }
 
-    @Override
-    public CastFolderNode updateEntityPosition(CastFolderNode entity, CastFolderNode beforeEntity, CastFolderNode afterEntity) {
-        return super.updateEntityPosition(entity, beforeEntity, afterEntity);
-    }
-
-    @Override
-    public CastFolderNode updateEntityPosition(CastFolderNode entity, CastFolderNode beforeEntity, CastFolderNode afterEntity, BaseDnd newFolder) {
-        return super.updateEntityPosition(entity, beforeEntity, afterEntity, newFolder);
-    }
-
-
-    // Bean
+    // Bean Setting
     @Override
     protected BaseDndRepository<CastFolderNode> dndRepository() {
         return this.castFolderNodeRepository;
