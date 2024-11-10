@@ -36,23 +36,19 @@ public class CastFolderNodeDomainService {
 
     @Transactional
     public void updatePosition(CastFolderNode castFolderNode, Long position) {
-        boolean isUpdated = castFolderNode.updatePosition(position);
+        castFolderNode.updatePosition(position);
 
-        if (isUpdated) {
-            CastFolderPositionProjection castFolderPositionProjection = CastFolderPositionProjection.from(castFolderNode);
-            neo4jTemplate.save(CastFolderNode.class).one(castFolderPositionProjection);
-        }
+        CastFolderPositionProjection castFolderPositionProjection = CastFolderPositionProjection.from(castFolderNode);
+        neo4jTemplate.save(CastFolderNode.class).one(castFolderPositionProjection);
     }
 
     @Transactional
     public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
-        boolean isNameUpdated = castFolderNode.updateName(name);
-        boolean isDescriptionUpdated = castFolderNode.updateDescription(description);
+        castFolderNode.updateTitle(name);
+        castFolderNode.updateDescription(description);
 
-        if (isNameUpdated || isDescriptionUpdated) {
-            CastFolderInfoProjection castFolderInfoProjection = CastFolderInfoProjection.from(castFolderNode);
-            neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
-        }
+        CastFolderInfoProjection castFolderInfoProjection = CastFolderInfoProjection.from(castFolderNode);
+        neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
     }
 
 }
