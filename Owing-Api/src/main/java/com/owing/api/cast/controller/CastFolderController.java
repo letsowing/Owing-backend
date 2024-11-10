@@ -1,13 +1,13 @@
 package com.owing.api.cast.controller;
 
-import com.owing.api.cast.model.dto.request.CreateCastFolderRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
-import com.owing.api.cast.model.dto.response.CastFolderInfoResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.cast.service.CreateCastFolderUseCase;
 import com.owing.api.cast.service.DeleteCastFolderUseCase;
 import com.owing.api.cast.service.ReadCastFolderUseCase;
 import com.owing.api.cast.service.UpdateCastFolderUseCase;
+import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ public class CastFolderController {
     private final DeleteCastFolderUseCase deleteCastFolderUseCase;
 
     @PostMapping
-    public ResponseEntity<CastFolderInfoResponse> createCastFolder(@RequestBody CreateCastFolderRequest createCastFolderRequest) {
-        return ResponseEntity.ok(createCastFolderUseCase.execute(createCastFolderRequest));
+    public ResponseEntity<FolderInfoResponse> createCastFolder(@RequestBody AddFolderRequest addFolderRequest) {
+        return ResponseEntity.ok(createCastFolderUseCase.execute(addFolderRequest));
     }
 
     @GetMapping
