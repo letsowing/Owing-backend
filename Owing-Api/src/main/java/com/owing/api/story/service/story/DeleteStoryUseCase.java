@@ -7,10 +7,22 @@ import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
 
+import lombok.RequiredArgsConstructor;
+
 @UseCase
+@RequiredArgsConstructor
 public class DeleteStoryUseCase extends DeleteFileUseCase<Story, StoryFolder> {
 
-    public DeleteStoryUseCase(MemberUtils memberUtils, BaseDndDomainService<Story> baseDndDomainService) {
-        super(memberUtils, baseDndDomainService);
+    private final MemberUtils memberUtils;
+    private final BaseDndDomainService<Story> baseDndDomainService;
+
+    @Override
+    protected MemberUtils memberUtils() {
+        return memberUtils;
+    }
+
+    @Override
+    protected BaseDndDomainService<Story> baseDndDomainService() {
+        return baseDndDomainService;
     }
 }
