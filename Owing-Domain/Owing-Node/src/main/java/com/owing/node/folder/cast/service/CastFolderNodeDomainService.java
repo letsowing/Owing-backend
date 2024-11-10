@@ -16,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -67,11 +65,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     @Override
     public CastFolderNode getOptionalEntity(Long id) {
         return super.getOptionalEntity(id);
-    }
-
-    @Override
-    public List<CastFolderNode> getEntityList(Long parentId) {
-        return super.getEntityList(parentId);
     }
 
     @Override
