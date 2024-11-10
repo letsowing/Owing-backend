@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record UniverseShortInfoResponse (
 	Long id,
-	String name,
+	String title,
 	String description,
 	String imageUrl
 ) { }
