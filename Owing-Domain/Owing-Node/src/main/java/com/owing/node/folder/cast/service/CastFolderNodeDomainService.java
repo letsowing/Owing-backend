@@ -11,6 +11,7 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
+import com.owing.node.folder.cast.model.projection.CastFolderTitleProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
@@ -40,6 +41,15 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(deleteProjection);
     }
 
+    @Override
+    @Transactional
+    public CastFolderNode updateTitle(CastFolderNode entity, CastFolderNode newEntity) {
+        entity.updateTitle(newEntity.getName());
+        CastFolderTitleProjection titleProjection = CastFolderTitleProjection.from(entity);
+        neo4jTemplate.save(CastFolderNode.class).one(titleProjection);
+        return entity;
+    }
+
     @Transactional
     public void updatePosition(CastFolderNode castFolderNode, Long position) {
         castFolderNode.updatePosition(position);
@@ -58,16 +68,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     }
 
     @Override
-    public CastFolderNode updateTitle(CastFolderNode entity, CastFolderNode newEntity) {
-        return super.updateTitle(entity, newEntity);
-    }
-
-    @Override
-    public CastFolderNode getOptionalEntity(Long id) {
-        return super.getOptionalEntity(id);
-    }
-
-    @Override
     public CastFolderNode updateEntityPosition(CastFolderNode entity, CastFolderNode beforeEntity, CastFolderNode afterEntity) {
         return super.updateEntityPosition(entity, beforeEntity, afterEntity);
     }
@@ -77,6 +77,8 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         return super.updateEntityPosition(entity, beforeEntity, afterEntity, newFolder);
     }
 
+
+    // Bean
     @Override
     protected BaseDndRepository<CastFolderNode> dndRepository() {
         return this.castFolderNodeRepository;
