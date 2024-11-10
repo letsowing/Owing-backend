@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 
 @Getter
-public abstract class BaseFileNode<T extends BaseFolderEntity> implements BaseFile<T>{
+public abstract class BaseFileNode<T extends BaseFolderEntity> extends BaseTimeNeo4j implements BaseFile<T>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
