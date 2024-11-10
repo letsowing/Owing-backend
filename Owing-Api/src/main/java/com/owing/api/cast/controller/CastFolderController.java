@@ -6,6 +6,7 @@ import com.owing.api.cast.service.DeleteCastFolderUseCase;
 import com.owing.api.cast.service.ReadCastFolderUseCase;
 import com.owing.api.cast.service.UpdateCastFolderUseCase;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoListResponse;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
@@ -48,6 +49,12 @@ public class CastFolderController {
     public ResponseEntity<Void> updateCastFolderTitle(@PathVariable Long folderId, @RequestBody UpdateFolderRequest updateFolderRequest) {
         updateCastFolderUseCase.executeUpdateTitle(folderId, updateFolderRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{folderId}")
+    public ResponseEntity<Void> updateDndPosition(@PathVariable Long folderId, @RequestBody UpdateFolderPositionRequest updateDndPositionRequest) {
+        updateCastFolderUseCase.executeUpdatePosition(folderId, updateDndPositionRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{folderId}")
