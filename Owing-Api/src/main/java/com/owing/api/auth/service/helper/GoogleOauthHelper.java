@@ -17,7 +17,7 @@ public class GoogleOauthHelper {
 
     public JsonWebToken.Payload verifyGoogleIdToken(String idToken) {
         try {
-            TokenVerifier tokenVerifier = new TokenVerifier.Builder()
+            TokenVerifier tokenVerifier = TokenVerifier.newBuilder()
                     .setAudience(googleOauthProperties.audience())
                     .build();
             return tokenVerifier.verify(idToken).getPayload();
