@@ -1,4 +1,4 @@
-package com.owing.api.story.mapper;
+package com.owing.api.story.model.mapper;
 
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;

@@ -18,8 +18,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CreateStoryUseCase extends CreateFileUseCase<Story, StoryFolder> {
     private final MemberUtils memberUtils;
-    private final StoryDomainService dndDomainService;
-    private final StoryMapper dndMapper;
+    private final StoryDomainService storyDomainService;
+    private final StoryMapper storyMapper;
+    private final StoryTextMapper storyTextMapper;
     private final StoryFolderAdapter folderAdapter;
 
     @Override
@@ -29,12 +30,12 @@ public class CreateStoryUseCase extends CreateFileUseCase<Story, StoryFolder> {
 
     @Override
     protected BaseDndDomainService<Story> baseDndDomainService() {
-        return dndDomainService;
+        return storyDomainService;
     }
 
     @Override
     protected BaseFileMapper<Story, StoryFolder> dndMapper() {
-        return dndMapper;
+        return storyMapper;
     }
 
     @Override

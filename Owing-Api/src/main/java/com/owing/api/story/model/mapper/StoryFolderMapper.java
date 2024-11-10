@@ -1,4 +1,4 @@
-package com.owing.api.story.mapper;
+package com.owing.api.story.model.mapper;
 
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
