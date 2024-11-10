@@ -31,11 +31,11 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
      */
     @Query("""
             MATCH
-              (cf:CastFolder{deleted:false})
+              (cf:CastFolder{deleted:false})<-[r:INCLUDE]-(p:Project)
             WHERE
               id(cf)=$folderId
             RETURN
-              cf
+              cf, r, p
             """)
     Optional<CastFolderNode> findOneById(Long folderId);
 
@@ -69,9 +69,9 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
     @Override
     @Query("""
 			MATCH
-			  (t:CastFolder{deleted:false})
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
 			WHERE
-			  t.position > $position AND t.projectId = $projectId
+			  t.position > $position
 			SET
 			  t.position = t.position - 1
 			""")
