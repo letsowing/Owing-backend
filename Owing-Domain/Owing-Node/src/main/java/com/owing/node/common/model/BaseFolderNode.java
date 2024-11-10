@@ -7,19 +7,16 @@ import com.owing.core.dnd.base.error.exception.DndException;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.core.dnd.folder.model.BaseFolder;
 import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
-@MappedSuperclass
 @Getter
 public abstract class BaseFolderNode extends BaseTimeNeo4j implements BaseFolder {
 	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
 	protected String name;
 
-	protected Long projectId;
-
 	protected Long position;
+	protected Long projectId;
 
 	@Override
 	public Long getParentId() {

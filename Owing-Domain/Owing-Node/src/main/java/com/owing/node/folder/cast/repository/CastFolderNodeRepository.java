@@ -55,4 +55,59 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
             """)
     Optional<CastFolderNode> findOneWithRelationshipById(Long folderId);
 
+    @Override
+    @Query("""
+        MATCH
+          (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]->(f:CastFolder{deleted:false})
+        ORDER BY
+          f.position
+        RETURN
+          f
+        """)
+    List<CastFolderNode> findByParentId(Long parentId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (t:CastFolder{deleted:false})
+			WHERE
+			  t.position > $position AND t.projectId = $projectId
+			SET
+			  t.position = t.position - 1
+			""")
+    void decrementPositionAfter(Long position, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (t:CastFolder{deleted:false})
+			WHERE
+			  t.projectId = $projectId
+			RETURN
+			  COALESCE(MAX(t.position), -1)
+			""")
+    void decrementPositionBetween(Long start, Long end, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (t:CastFolder{deleted:false})
+			WHERE
+			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
+			SET
+			  t.position = t.position - 1
+			""")
+    void incrementPositionBetween(Long start, Long end, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (t:CastFolder{deleted:false})
+			WHERE
+			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
+			SET
+			  t.position = t.position + 1
+			""")
+    Long getMaxPositionByParentId(Long parentId);
+
 }
