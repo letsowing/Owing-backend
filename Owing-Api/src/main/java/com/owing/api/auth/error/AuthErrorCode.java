@@ -11,7 +11,7 @@ public enum AuthErrorCode implements OwingErrorCode {
 
     UNAUTHORIZED_ACCESS(UNAUTHORIZED, "001", "권한이 없습니다."),
     FORBIDDEN_USER(FORBIDDEN, "002", "권한이 없는 유저 입니다"),
-    INVALID_TOKEN(BAD_REQUEST, "003", "유효하지 않은 토큰 입니다"),
+    INVALID_TOKEN(UNAUTHORIZED, "003", "유효하지 않은 토큰 입니다"),
     LOGIN_FAILED(UNAUTHORIZED, "004", "로그인에 실패했습니다"),
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "005", "권한 정보가 없는 토큰 입니다"),
     INVALID_REFRESH_TOKEN(BAD_REQUEST, "006", "Refresh Token이 유효하지 않습니다"),
