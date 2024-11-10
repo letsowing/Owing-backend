@@ -4,20 +4,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.dnd.base.controller.BaseFolderController;
-import com.owing.api.dnd.folder.service.CreateFolderUseCase;
-import com.owing.api.dnd.folder.service.ReadFolderUseCase;
+import com.owing.api.dnd.base.service.CreateDndUseCase;
+import com.owing.api.dnd.base.service.DeleteDndUseCase;
+import com.owing.api.dnd.base.service.ReadDndUseCase;
+import com.owing.api.dnd.base.service.UpdateDndUseCase;
+import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
+import com.owing.api.story.service.folder.CreateStoryFolderUseCase;
 import com.owing.api.story.service.folder.DeleteStoryFolderUseCase;
+import com.owing.api.story.service.folder.ReadStoryFolderUseCase;
 import com.owing.api.story.service.folder.UpdateStoryFolderUseCase;
-import com.owing.entity.domains.story.model.StoryFolder;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/stories/folders")
-public class StoryFolderController extends BaseFolderController<StoryFolder> {
-	public StoryFolderController(
-		CreateFolderUseCase<StoryFolder> createDndUseCase,
-		ReadFolderUseCase<StoryFolder> readDndUseCase,
-		DeleteStoryFolderUseCase deleteDndUseCase,
-		UpdateStoryFolderUseCase updateDndUseCase) {
-		super(createDndUseCase, readDndUseCase, deleteDndUseCase, updateDndUseCase);
+@RequiredArgsConstructor
+public class StoryFolderController extends BaseFolderController {
+	private final CreateStoryFolderUseCase createDndUseCase;
+	private final ReadStoryFolderUseCase readDndUseCase;
+	private final DeleteStoryFolderUseCase deleteDndUseCase;
+	private final UpdateStoryFolderUseCase updateDndUseCase;
+
+	@Override
+	protected CreateDndUseCase<?, AddFolderRequest> createDndUseCase() {
+		return createDndUseCase;
+	}
+
+	@Override
+	protected ReadDndUseCase<?, ?> readDndUseCase() {
+		return readDndUseCase;
+	}
+
+	@Override
+	protected DeleteDndUseCase deleteDndUseCase() {
+		return deleteDndUseCase;
+	}
+
+	@Override
+	protected UpdateDndUseCase<?, UpdateFolderRequest, UpdateFolderPositionRequest> updateDndUseCase() {
+		return updateDndUseCase;
 	}
 }

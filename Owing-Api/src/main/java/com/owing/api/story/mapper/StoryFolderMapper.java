@@ -7,7 +7,7 @@ import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.story.model.StoryFolder;
 
 @Mapper
-public class StoryBaseFolderMapper extends BaseFolderMapper<StoryFolder> {
+public class StoryFolderMapper extends BaseFolderMapper<StoryFolder> {
 	public StoryFolder toEntity(AddFolderRequest addFolderRequest) {
 		return StoryFolder.builder()
 			.name(addFolderRequest.name())

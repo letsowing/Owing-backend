@@ -1,8 +1,5 @@
 package com.owing.api.dnd.file.service;
 
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.file.model.BaseFile;
-import com.owing.core.dnd.folder.model.BaseFolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.common.util.MemberUtils;
@@ -11,33 +8,33 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFolder> implements
     UpdateDndUseCase<FileInfoResponse, UpdateFileRequest, UpdateFilePositionRequest> {
-    protected final MemberUtils memberUtils;
-    protected final BaseDndDomainService<T> baseDndDomainService;
-    protected final BaseDndDomainService<F> fBaseDndDomainService;
-    protected final BaseFileMapper<T, F> dndMapper;
+    protected abstract MemberUtils memberUtils();
+    protected abstract BaseDndDomainService<T> baseDndDomainService();
+    protected abstract BaseDndDomainService<F> fBaseDndDomainService();
+    protected abstract BaseFileMapper<T, F> dndMapper();
 
     @Transactional
-    public FileInfoResponse execute(Long id, UpdateFileRequest dto) {
-        T entity = baseDndDomainService.getEntity(id);
-        T newEntity = dndMapper.toEntity(dto);
-        T updatedEntity = baseDndDomainService.updateTitle(entity, newEntity);
-        return dndMapper.toInfoResponse(updatedEntity);
+    public FileInfoResponse executeUpdateTitle(Long id, UpdateFileRequest dto) {
+        T entity = baseDndDomainService().getEntity(id);
+        T newEntity = dndMapper().toEntity(dto);
+        T updatedEntity = baseDndDomainService().updateTitle(entity, newEntity);
+        return dndMapper().toInfoResponse(updatedEntity);
     }
 
     @Transactional
     public FileInfoResponse executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
-        T entity = baseDndDomainService.getEntity(id);
-        T beforeEntity = baseDndDomainService.getOptionalEntity(dto.beforeId());
-        T afterEntity = baseDndDomainService.getOptionalEntity(dto.afterId());
-        F folder = fBaseDndDomainService.getOptionalEntity(dto.folderId());
-        T updatedEntity = baseDndDomainService.updateEntityPosition(entity, beforeEntity, afterEntity, folder);
-        return dndMapper.toInfoResponse(updatedEntity);
+        T entity = baseDndDomainService().getEntity(id);
+        T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
+        T afterEntity = baseDndDomainService().getOptionalEntity(dto.afterId());
+        F folder = fBaseDndDomainService().getOptionalEntity(dto.folderId());
+        T updatedEntity = baseDndDomainService().updateEntityPosition(entity, beforeEntity, afterEntity, folder);
+        return dndMapper().toInfoResponse(updatedEntity);
     }
 
 }

@@ -8,18 +8,12 @@ import com.owing.core.dnd.base.error.exception.DndException;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
 @MappedSuperclass
 @Getter
 public abstract class BaseFolderEntity implements BaseFolder {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
 	@Column(nullable = false)
 	protected Long position;
