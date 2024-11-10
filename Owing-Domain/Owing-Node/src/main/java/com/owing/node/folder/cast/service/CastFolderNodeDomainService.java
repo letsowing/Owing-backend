@@ -6,7 +6,6 @@ import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.folder.service.BaseFolderDomainService;
-import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
@@ -29,10 +28,12 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     private final CastFolderNodeAdaptor castFolderNodeAdaptor;
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;
 
+    @Override
     @Transactional
-    public void deleteCastFolderNode(CastFolderNode castFolderNode) {
-        castFolderNode.delete();
-        CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(castFolderNode);
+    public void deleteEntity(CastFolderNode entity) {
+        orderingStrategy().reorderEntity(entity);
+        entity.delete();
+        CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(entity);
         neo4jTemplate.save(CastFolderNode.class).one(deleteProjection);
     }
 
@@ -74,11 +75,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     }
 
     @Override
-    public void deleteEntity(CastFolderNode entity) {
-        super.deleteEntity(entity);
-    }
-
-    @Override
     public CastFolderNode updateEntityPosition(CastFolderNode entity, CastFolderNode beforeEntity, CastFolderNode afterEntity) {
         return super.updateEntityPosition(entity, beforeEntity, afterEntity);
     }
@@ -102,4 +98,5 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     protected OrderingStrategy<CastFolderNode> orderingStrategy() {
         return this.castFolderShiftOrderingStrategy;
     }
+
 }
