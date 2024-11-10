@@ -29,6 +29,11 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;
 
     @Override
+    public CastFolderNode getEntity(Long folderId) {
+        return castFolderNodeAdaptor.findOneById(folderId);
+    }
+
+    @Override
     @Transactional
     public void deleteEntity(CastFolderNode entity) {
         orderingStrategy().reorderEntity(entity);
@@ -57,11 +62,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     @Override
     public CastFolderNode updateTitle(CastFolderNode entity, CastFolderNode newEntity) {
         return super.updateTitle(entity, newEntity);
-    }
-
-    @Override
-    public CastFolderNode getEntity(Long id) {
-        return super.getEntity(id);
     }
 
     @Override
