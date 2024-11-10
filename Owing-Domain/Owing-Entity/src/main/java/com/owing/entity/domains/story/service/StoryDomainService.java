@@ -10,6 +10,7 @@ import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.model.StoryText;
 import com.owing.entity.domains.story.repository.StoryRepository;
+import com.owing.entity.domains.story.textCount.TextCounter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,8 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 
 	public void updateContent(Story story, StoryText storyText) {
 		story.createOrUpdateStoryText(storyText);
+		int textCnt = TextCounter.countText(storyText.getContent(), false, true);
+		story.updateTextCount(textCnt);
 		storyRepository.save(story);
 	}
 }
