@@ -1,7 +1,8 @@
-package com.owing.core.dnd.folder.model;
+package com.owing.node.common.model;
 
 
 import com.owing.core.constant.OwingPersistenceConst;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
