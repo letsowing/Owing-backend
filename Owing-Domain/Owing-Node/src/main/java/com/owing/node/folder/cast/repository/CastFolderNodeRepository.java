@@ -55,16 +55,21 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
             """)
     Optional<CastFolderNode> findOneWithRelationshipById(Long folderId);
 
+	/**
+	 * projectId를 기준으로 하위 폴더를 모두 가져온는 메서드
+	 * @param projectId
+	 * @return
+	 */
     @Override
     @Query("""
         MATCH
-          (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]->(f:CastFolder{deleted:false})
+          (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(f:CastFolder{deleted:false})
         ORDER BY
           f.position
         RETURN
-          f
+          f, r, p
         """)
-    List<CastFolderNode> findByParentId(Long parentId);
+    List<CastFolderNode> findByParentId(Long projectId);
 
     @Override
     @Query("""
