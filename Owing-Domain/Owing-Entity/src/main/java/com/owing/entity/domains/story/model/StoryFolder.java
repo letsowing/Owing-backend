@@ -5,6 +5,9 @@ import org.hibernate.annotations.SoftDelete;
 import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SoftDelete
 public class StoryFolder extends BaseFolderEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Builder
 	StoryFolder(Long projectId, String name, String description, Long position) {
