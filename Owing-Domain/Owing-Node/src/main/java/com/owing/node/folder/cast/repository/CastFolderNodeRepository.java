@@ -82,9 +82,9 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
 			MATCH
 			  (t:CastFolder{deleted:false})
 			WHERE
-			  t.projectId = $projectId
-			RETURN
-			  COALESCE(MAX(t.position), -1)
+			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
+			SET
+			  t.position = t.position - 1
 			""")
     void decrementPositionBetween(Long start, Long end, Long projectId);
 
@@ -95,7 +95,7 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
 			WHERE
 			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
 			SET
-			  t.position = t.position - 1
+			  t.position = t.position + 1
 			""")
     void incrementPositionBetween(Long start, Long end, Long projectId);
 
@@ -104,9 +104,9 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
 			MATCH
 			  (t:CastFolder{deleted:false})
 			WHERE
-			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
-			SET
-			  t.position = t.position + 1
+			  t.projectId = $projectId
+			RETURN
+			  COALESCE(MAX(t.position), -1)
 			""")
     Long getMaxPositionByParentId(Long parentId);
 
