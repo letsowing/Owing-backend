@@ -60,4 +60,14 @@ public class CastFolderNode extends BaseFolderNode implements FolderNode {
         this.description = description;
         return true;
     }
+
+    @Override
+    public Long getProjectId() {
+        return this.getParentId();
+    }
+
+    @Override
+    public Long getParentId() {
+        return this.project.getId();
+    }
 }

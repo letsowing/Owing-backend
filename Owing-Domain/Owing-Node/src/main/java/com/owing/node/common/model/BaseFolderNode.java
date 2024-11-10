@@ -16,12 +16,6 @@ public abstract class BaseFolderNode extends BaseTimeNeo4j implements BaseFolder
 	protected String name;
 
 	protected Long position;
-	protected Long projectId;
-
-	@Override
-	public Long getParentId() {
-		return this.projectId;
-	}
 
 	@Override
 	public boolean validatePosition(long newPosition) {
