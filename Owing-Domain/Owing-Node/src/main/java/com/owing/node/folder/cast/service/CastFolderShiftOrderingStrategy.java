@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CastFolderShiftOrderingStrategy extends FolderShiftOrderingStrategy<CastFolderNode> {
-	public CastFolderShiftOrderingStrategy(CastFolderNodeAdaptor dndAdapter,
-										   CastFolderNodeRepository dndRepository) {
+	public CastFolderShiftOrderingStrategy(
+			CastFolderNodeAdaptor dndAdapter,
+			CastFolderNodeRepository dndRepository
+	) {
 		super(dndAdapter, dndRepository);
 	}
 }
