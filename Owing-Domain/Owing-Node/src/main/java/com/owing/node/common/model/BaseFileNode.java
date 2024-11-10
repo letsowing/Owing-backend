@@ -1,6 +1,7 @@
-package com.owing.core.dnd.file.model;
+package com.owing.node.common.model;
 
 import com.owing.core.constant.OwingPersistenceConst;
+import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Column;
