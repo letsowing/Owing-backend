@@ -5,7 +5,4 @@ import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 
 public abstract class BaseFileAdapter<T extends BaseDnd> extends BaseDndAdapter<T> {
-	public BaseFileAdapter(BaseDndRepository<T> dndRepository) {
-		super(dndRepository);
-	}
 }

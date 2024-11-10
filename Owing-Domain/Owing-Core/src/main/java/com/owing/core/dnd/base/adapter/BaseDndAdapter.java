@@ -7,33 +7,30 @@ import com.owing.core.dnd.base.error.exception.DndNotFoundException;
 import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public abstract class BaseDndAdapter<T extends BaseDnd> {
-	protected final BaseDndRepository<T> dndRepository;
+	protected abstract BaseDndRepository<T> dndRepository();
 
 	public T findById(Long id) {
-		return dndRepository.findById(id).orElseThrow(() -> DndNotFoundException.of(DndErrorCode.DND_NOT_FOUND));
+		return dndRepository().findById(id).orElseThrow(() -> DndNotFoundException.of(DndErrorCode.DND_NOT_FOUND));
 	}
 
 	public List<T> findAllByParentId(Long parentId){
-		return dndRepository.findByParentId(parentId);
+		return dndRepository().findByParentId(parentId);
 	}
 
 	public long getMaxPositionByParentId(Long parentId){
-		return dndRepository.getMaxPositionByParentId(parentId);
+		return dndRepository().getMaxPositionByParentId(parentId);
 	}
 
 	public void decrementPositionAfter(long position, Long parentId) {
-		dndRepository.decrementPositionAfter(position, parentId);
+		dndRepository().decrementPositionAfter(position, parentId);
 	}
 
 	public void decrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
-		dndRepository.decrementPositionBetween(fromPosition, toPosition, parentId);
+		dndRepository().decrementPositionBetween(fromPosition, toPosition, parentId);
 	}
 
 	public void incrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
-		dndRepository.incrementPositionBetween(fromPosition, toPosition, parentId);
+		dndRepository().incrementPositionBetween(fromPosition, toPosition, parentId);
 	}
 }

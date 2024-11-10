@@ -1,17 +1,14 @@
 package com.owing.core.dnd.file.model;
 
-import com.owing.core.constant.OwingPersistenceConst;
 import org.springframework.util.StringUtils;
 
+import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.core.dnd.base.error.DndErrorCode;
 import com.owing.core.dnd.base.error.exception.DndException;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
@@ -20,9 +17,6 @@ import lombok.Getter;
 @MappedSuperclass
 @Getter
 public abstract class BaseFileEntity<T extends BaseFolderEntity> implements BaseFile<T>{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
 	@Column(nullable = false)
 	protected Long position;

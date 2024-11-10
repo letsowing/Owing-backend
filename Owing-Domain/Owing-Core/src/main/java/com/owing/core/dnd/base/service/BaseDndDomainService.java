@@ -7,47 +7,44 @@ import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public abstract class BaseDndDomainService<T extends BaseDnd>{
-	protected final BaseDndRepository<T> dndRepository;
-	protected final BaseDndAdapter<T> dndEntityAdapter;
-	protected final OrderingStrategy<T> orderingStrategy;
+	protected abstract BaseDndRepository<T> dndRepository();
+	protected abstract BaseDndAdapter<T> dndEntityAdapter();
+	protected abstract OrderingStrategy<T> orderingStrategy();
 
 	public T getEntity(Long id) {
-		return dndEntityAdapter.findById(id);
+		return dndEntityAdapter().findById(id);
 	}
 
 	public T getOptionalEntity(Long id){
 		if(id == null){
 			return null;
 		}
-		return dndEntityAdapter.findById(id);
+		return dndEntityAdapter().findById(id);
 	}
 
 	public List<T> getEntityList(Long parentId) {
-		return dndEntityAdapter.findAllByParentId(parentId);
+		return dndEntityAdapter().findAllByParentId(parentId);
 	}
 
 	public T createEntity(T entity) {
-		long position = orderingStrategy.getNewPosition(entity.getParentId());
+		long position = orderingStrategy().getNewPosition(entity.getParentId());
 		entity.updatePosition(position);
-		return dndRepository.save(entity);
+		return dndRepository().save(entity);
 	}
 
 	public abstract T updateTitle(T entity, T newEntity);
 
 	public void deleteEntity(T entity) {
-		orderingStrategy.reorderEntity(entity);
-		dndRepository.delete(entity);
+		orderingStrategy().reorderEntity(entity);
+		dndRepository().delete(entity);
 	}
 
 	public T updateEntityPosition(T entity, T beforeEntity, T afterEntity) {
-		return orderingStrategy.updatePosition(entity, beforeEntity, afterEntity);
+		return orderingStrategy().updatePosition(entity, beforeEntity, afterEntity);
 	}
 	public T updateEntityPosition(T entity, T beforeEntity, T afterEntity, BaseDnd newFolder) {
-		return orderingStrategy.updatePosition(entity, beforeEntity, afterEntity, newFolder);
+		return orderingStrategy().updatePosition(entity, beforeEntity, afterEntity, newFolder);
 	}
 
 }
