@@ -3,18 +3,25 @@ package com.owing.entity.domains.universe.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
-
+import com.owing.core.dnd.base.adapter.BaseDndAdapter;
+import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.core.dnd.file.service.BaseFileDomainService;
+import com.owing.entity.domains.universe.adaptor.UniverseAdaptor;
 import com.owing.entity.domains.universe.model.Universe;
+import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @DomainService
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UniverseDomainService {
+@RequiredArgsConstructor
+public class UniverseDomainService extends BaseFileDomainService<Universe, UniverseFolder> {
 
 	private final UniverseRepository universeRepository;
+	private final UniverseAdaptor universeAdaptor;
+	private final UniverseShiftOrderingStrategy orderingStrategy;
 
 	@Transactional
 	public Universe createUniverse(Universe universe) {
@@ -28,8 +35,18 @@ public class UniverseDomainService {
 		return updatedUniverse;
 	}
 
-	@Transactional
-	public void deleteUniverse(Universe universe) {
-		universeRepository.delete(universe);
+	@Override
+	protected BaseDndRepository<Universe> dndRepository() {
+		return universeRepository;
+	}
+
+	@Override
+	protected BaseDndAdapter<Universe> dndEntityAdapter() {
+		return universeAdaptor;
+	}
+
+	@Override
+	protected OrderingStrategy<Universe> orderingStrategy() {
+		return orderingStrategy;
 	}
 }

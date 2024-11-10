@@ -3,6 +3,7 @@ package com.owing.api.universe.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,14 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
+import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
 import com.owing.api.file.service.CreatePresignedUrlUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
-import com.owing.api.universe.service.CreateUniverseUseCase;
-import com.owing.api.universe.service.DeleteUniverseUseCase;
-import com.owing.api.universe.service.ReadUniverseUseCase;
-import com.owing.api.universe.service.UpdateUniverseUseCase;
+import com.owing.api.universe.service.universe.CreateUniverseUseCase;
+import com.owing.api.universe.service.universe.DeleteUniverseUseCase;
+import com.owing.api.universe.service.universe.ReadUniverseUseCase;
+import com.owing.api.universe.service.universe.UpdateUniverseUseCase;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,6 +45,13 @@ public class UniverseController {
 		@PathVariable Long universeId,
 		@RequestBody UpdateUniverseRequest updateUniverseRequest) {
 		return ResponseEntity.ok(updateUniverseUseCase.execute(universeId, updateUniverseRequest));
+	}
+
+	@PatchMapping("/{universeId}")
+	public ResponseEntity<FileInfoResponse> updateUniversePosition(
+		@PathVariable Long universeId,
+		@RequestBody UpdateFilePositionRequest updateUniverseRequest) {
+		return ResponseEntity.ok(updateUniverseUseCase.executeUpdatePosition(universeId, updateUniverseRequest));
 	}
 
 	@GetMapping("/{universeId}")
