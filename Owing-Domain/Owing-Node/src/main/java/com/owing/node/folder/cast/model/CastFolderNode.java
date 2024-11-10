@@ -1,5 +1,6 @@
 package com.owing.node.folder.cast.model;
 
+import com.owing.node.common.model.BaseFolderNode;
 import com.owing.node.common.model.BaseTimeNeo4j;
 import com.owing.node.common.model.FolderNode;
 import com.owing.node.domains.cast.model.CastNode;
@@ -20,7 +21,7 @@ import java.util.Set;
 
 @Node("CastFolder")
 @Getter
-public class CastFolderNode extends BaseTimeNeo4j implements FolderNode {
+public class CastFolderNode extends BaseFolderNode implements FolderNode {
 
     @Id
     @GeneratedValue
