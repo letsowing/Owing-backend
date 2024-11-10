@@ -1,13 +1,13 @@
 package com.owing.node.folder.cast.repository;
 
+import com.owing.node.common.repository.BaseFolderNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CastFolderNodeRepository extends Neo4jRepository<CastFolderNode, Long> {
+public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastFolderNode> {
 
     @Query("""
             MATCH

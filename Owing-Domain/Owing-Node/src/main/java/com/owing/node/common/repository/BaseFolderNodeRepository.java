@@ -3,14 +3,13 @@ package com.owing.node.common.repository;
 import java.util.List;
 
 import com.owing.core.dnd.folder.repository.BaseFolderRepository;
+import com.owing.node.common.model.BaseFolderNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.owing.core.dnd.folder.model.BaseFolderEntity;
-
 @NoRepositoryBean
-public interface BaseFolderNodeRepository<T extends BaseFolderEntity> extends BaseFolderRepository<T>, Neo4jRepository<T, Long> {
+public interface BaseFolderNodeRepository<T extends BaseFolderNode> extends BaseFolderRepository<T>, Neo4jRepository<T, Long> {
 	@Query("""
         MATCH
           (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]->(f:`:#{literal(#folderNodeName)}`{deleted:false})
