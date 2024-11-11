@@ -1,10 +1,11 @@
 dependencies {
     implementation project(':Owing-Common')
     implementation project(':Owing-Infrastructure')
+    implementation project(':Owing-Domain:Owing-Core')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
 }
 
 bootJar.enabled = false

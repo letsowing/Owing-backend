@@ -1,0 +1,45 @@
+package com.owing.api.story.service.story;
+
+import com.owing.api.common.util.MemberUtils;
+import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.file.service.CreateFileUseCase;
+import com.owing.api.story.mapper.StoryMapper;
+import com.owing.common.annotation.UseCase;
+import com.owing.core.dnd.base.adapter.BaseDndAdapter;
+import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
+import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.model.StoryFolder;
+import com.owing.entity.domains.story.service.StoryDomainService;
+
+import lombok.RequiredArgsConstructor;
+
+@UseCase
+@RequiredArgsConstructor
+public class CreateStoryUseCase extends CreateFileUseCase<Story, StoryFolder> {
+    private final MemberUtils memberUtils;
+    private final StoryDomainService dndDomainService;
+    private final StoryMapper dndMapper;
+    private final StoryFolderAdapter folderAdapter;
+
+    @Override
+    protected MemberUtils memberUtils() {
+        return memberUtils;
+    }
+
+    @Override
+    protected BaseDndDomainService<Story> baseDndDomainService() {
+        return dndDomainService;
+    }
+
+    @Override
+    protected BaseFileMapper<Story, StoryFolder> dndMapper() {
+        return dndMapper;
+    }
+
+    @Override
+    protected BaseDndAdapter<StoryFolder> folderAdapter() {
+        return folderAdapter;
+    }
+
+}

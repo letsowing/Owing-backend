@@ -6,8 +6,10 @@ include 'Owing-Common'
 include 'Owing-Infrastructure'
 
 // 'Owing-Domain'
+include 'Owing-Domain:Owing-Core'
 include 'Owing-Domain:Owing-Entity'
 include 'Owing-Domain:Owing-Node'
 
 include 'Owing-Api'
 include 'Owing-Batch'
+include 'Owing-Ai'

@@ -1,15 +1,21 @@
 package com.owing.entity.domains.member.adaptor;
 
+import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.member.error.MemberErrorCode;
 import com.owing.entity.domains.member.error.exception.MemberException;
 import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+import java.util.Optional;
+
+@Adaptor
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberAdaptor {
+
     private final MemberRepository memberRepository;
 
     public Member findById(Long memberId) {
@@ -29,5 +35,9 @@ public class MemberAdaptor {
 
     public Member getReferenceById(Long memberId) {
         return memberRepository.getReferenceById(memberId);
+    }
+
+    public Optional<Member> findByEmailAndProvider(String email, OauthProvider provider) {
+        return memberRepository.findByEmailAndProvider(email, provider);
     }
 }

@@ -19,15 +19,17 @@ public abstract class BaseTimeNeo4j {
 
 	private LocalDateTime deletedAt;
 
+	private Boolean deleted = Boolean.FALSE;
+
 	public void delete() {
-		this.deletedAt = LocalDateTime.now();
+		this.deleted = Boolean.TRUE;
 	}
 
 	public void restore() {
-		this.deletedAt = null;
+		this.deleted = Boolean.FALSE;
 	}
 
 	public boolean isDeleted() {
-		return this.deletedAt != null;
+		return this.deleted;
 	}
 }
