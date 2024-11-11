@@ -85,9 +85,9 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
     @Override
     @Query("""
 			MATCH
-			  (t:CastFolder{deleted:false})
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
 			WHERE
-			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
+			  t.position >= $start AND t.position <= $end
 			SET
 			  t.position = t.position - 1
 			""")
@@ -96,9 +96,9 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
     @Override
     @Query("""
 			MATCH
-			  (t:CastFolder{deleted:false})
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
 			WHERE
-			  t.position >= $start AND t.position <= $end AND t.projectId = $projectId
+			  t.position >= $start AND t.position <= $end
 			SET
 			  t.position = t.position + 1
 			""")
