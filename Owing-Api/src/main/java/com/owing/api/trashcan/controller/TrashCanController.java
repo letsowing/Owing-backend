@@ -1,5 +1,6 @@
 package com.owing.api.trashcan.controller;
 
+import org.apache.logging.log4j.util.Cast;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.owing.api.cast.service.ReadCastUseCase;
+import com.owing.api.story.service.folder.ReadStoryFolderUseCase;
+import com.owing.api.story.service.story.ReadStoryUseCase;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.service.CreateTrashCanUserCase;
 import com.owing.api.trashcan.service.DeleteTrashCanUserCase;
 import com.owing.api.trashcan.service.ReadTrashCanUserCase;
 import com.owing.api.trashcan.service.UpdateTrashCanUserCase;
+import com.owing.api.universe.service.universe.ReadUniverseUseCase;
+import com.owing.entity.domains.story.model.Story;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,16 +57,16 @@ public class TrashCanController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// todo story 보여주기
 	@GetMapping("/{trashId}/story")
-	public ResponseEntity<?> getStoryTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("story 구현이 되야 함");
+	public ResponseEntity<Story> getStoryTrashCan(@PathVariable Long trashId) {
+		return ResponseEntity.ok(readTrashCanUserCase.executeStory(trashId));
 	}
 
 	// todo cast 보여주기
 	@GetMapping("/{trashId}/cast")
 	public ResponseEntity<?> getCastTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("cast 구현이 되야 함");
+		return ResponseEntity.ok("구현 필요");
+		// return ResponseEntity.ok(readTrashCanUserCase.executeCast(trashId));
 	}
 
 	// todo universe 보여주기
