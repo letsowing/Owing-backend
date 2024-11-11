@@ -37,18 +37,20 @@ public abstract class DndController<A, U, P>{
     }
 
     @PatchMapping("/{dndId}/title")
-    public ResponseEntity<?> updateDndTitle(@PathVariable Long dndId, @RequestBody U updateDndRequest) {
-        return ResponseEntity.ok(updateDndUseCase().executeUpdateTitle(dndId, updateDndRequest));
+    public ResponseEntity<Void> updateDndTitle(@PathVariable Long dndId, @RequestBody U updateDndRequest) {
+        updateDndUseCase().executeUpdateTitle(dndId, updateDndRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{dndId}/position")
-    public ResponseEntity<?> updateDndPosition(@PathVariable Long dndId, @RequestBody P updateDndPositionRequest) {
-        return ResponseEntity.ok(updateDndUseCase().executeUpdatePosition(dndId, updateDndPositionRequest));
+    public ResponseEntity<Void> updateDndPosition(@PathVariable Long dndId, @RequestBody P updateDndPositionRequest) {
+        updateDndUseCase().executeUpdatePosition(dndId, updateDndPositionRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{dndId}")
     public ResponseEntity<Void> deleteDnd(@PathVariable Long dndId) {
         deleteDndUseCase().execute(dndId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
