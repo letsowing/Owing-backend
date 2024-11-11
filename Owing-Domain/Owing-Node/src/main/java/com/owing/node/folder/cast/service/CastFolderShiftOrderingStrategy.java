@@ -1,7 +1,7 @@
 package com.owing.node.folder.cast.service;
 
 import com.owing.core.dnd.base.orderStrategy.shift.FolderShiftOrderingStrategy;
-import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
+import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
@@ -13,7 +13,7 @@ public class CastFolderShiftOrderingStrategy extends FolderShiftOrderingStrategy
 	private final Neo4jTemplate neo4jTemplate;
 
 	public CastFolderShiftOrderingStrategy(
-			CastFolderNodeAdaptor dndAdapter,
+			CastFolderNodeAdapter dndAdapter,
 			CastFolderNodeRepository dndRepository,
 			Neo4jTemplate neo4jTemplate) {
 		super(dndAdapter, dndRepository);

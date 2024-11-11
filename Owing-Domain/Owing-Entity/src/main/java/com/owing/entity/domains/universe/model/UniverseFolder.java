@@ -1,17 +1,20 @@
 package com.owing.entity.domains.universe.model;
 
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.file.model.BaseFileEntity;
+import com.owing.core.dnd.folder.model.BaseFolder;
+import jakarta.persistence.*;
 import org.hibernate.annotations.SoftDelete;
 
 import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,9 +26,8 @@ public class UniverseFolder extends BaseFolderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    // @OneToMany(mappedBy = "universeFolder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    // private List<Universe> universeList = new ArrayList<>();
+     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+     private List<Universe> files = new ArrayList<>();
 
     @Builder
     public UniverseFolder(Long id, String name, String description, Long projectId) {
@@ -34,4 +36,5 @@ public class UniverseFolder extends BaseFolderEntity {
         this.description = description;
         this.projectId = projectId;
     }
+
 }

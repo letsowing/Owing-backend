@@ -1,4 +1,4 @@
-package com.owing.entity.domains.member.adaptor;
+package com.owing.entity.domains.member.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.member.error.MemberErrorCode;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Adaptor
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberAdaptor {
+public class MemberAdapter {
 
     private final MemberRepository memberRepository;
 

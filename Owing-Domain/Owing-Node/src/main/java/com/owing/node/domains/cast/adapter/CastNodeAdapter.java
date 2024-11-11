@@ -1,4 +1,4 @@
-package com.owing.node.domains.cast.adaptor;
+package com.owing.node.domains.cast.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdaptor {
+public class CastNodeAdapter {
 
     private final CastNodeRepository castNodeRepository;
 

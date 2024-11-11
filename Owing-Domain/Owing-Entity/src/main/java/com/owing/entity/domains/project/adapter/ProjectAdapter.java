@@ -1,4 +1,4 @@
-package com.owing.entity.domains.project.adaptor;
+package com.owing.entity.domains.project.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
@@ -8,13 +8,12 @@ import com.owing.entity.domains.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Adaptor
 @RequiredArgsConstructor
-public class ProjectAdaptor {
+public class ProjectAdapter {
     private final ProjectRepository projectRepository;
 
     public Project save(Project project) {

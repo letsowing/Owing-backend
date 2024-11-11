@@ -4,7 +4,6 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
 import lombok.RequiredArgsConstructor;
