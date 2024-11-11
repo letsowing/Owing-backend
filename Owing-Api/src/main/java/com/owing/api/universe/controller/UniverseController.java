@@ -48,10 +48,12 @@ public class UniverseController {
 	}
 
 	@PatchMapping("/{universeId}")
-	public ResponseEntity<FileInfoResponse> updateUniversePosition(
+	public ResponseEntity<Void> updateUniversePosition(
 		@PathVariable Long universeId,
-		@RequestBody UpdateFilePositionRequest updateUniverseRequest) {
-		return ResponseEntity.ok(updateUniverseUseCase.executeUpdatePosition(universeId, updateUniverseRequest));
+		@RequestBody UpdateFilePositionRequest updateUniverseRequest
+	) {
+		updateUniverseUseCase.executeUpdatePosition(universeId, updateUniverseRequest);
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{universeId}")
@@ -62,7 +64,7 @@ public class UniverseController {
 	@DeleteMapping("/{universeId}")
 	public ResponseEntity<String> deleteUniverse(@PathVariable Long universeId) {
 		deleteUniverseUseCase.execute(universeId);
-		return ResponseEntity.ok("삭제되었습니다.");
+		return ResponseEntity.noContent().build();
 	}
 
 	/* presigned url 생성 */

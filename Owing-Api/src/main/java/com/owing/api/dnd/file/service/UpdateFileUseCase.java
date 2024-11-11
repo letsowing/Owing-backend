@@ -13,28 +13,26 @@ import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFolder> implements
-    UpdateDndUseCase<FileInfoResponse, UpdateFileRequest, UpdateFilePositionRequest> {
+    UpdateDndUseCase<UpdateFileRequest, UpdateFilePositionRequest> {
     protected abstract MemberUtils memberUtils();
     protected abstract BaseDndDomainService<T> baseDndDomainService();
     protected abstract BaseDndDomainService<F> fBaseDndDomainService();
     protected abstract BaseFileMapper<T, F> dndMapper();
 
     @Transactional
-    public FileInfoResponse executeUpdateTitle(Long id, UpdateFileRequest dto) {
+    public void executeUpdateTitle(Long id, UpdateFileRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T newEntity = dndMapper().toEntity(dto);
         T updatedEntity = baseDndDomainService().updateTitle(entity, newEntity);
-        return dndMapper().toInfoResponse(updatedEntity);
     }
 
     @Transactional
-    public FileInfoResponse executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
+    public void executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
         T afterEntity = baseDndDomainService().getOptionalEntity(dto.afterId());
         F folder = fBaseDndDomainService().getOptionalEntity(dto.folderId());
         T updatedEntity = baseDndDomainService().updateEntityPosition(entity, beforeEntity, afterEntity, folder);
-        return dndMapper().toInfoResponse(updatedEntity);
     }
 
 }

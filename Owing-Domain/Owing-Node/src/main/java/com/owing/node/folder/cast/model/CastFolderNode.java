@@ -6,6 +6,7 @@ import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeRelationshipException;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -35,6 +36,7 @@ public class CastFolderNode extends BaseFolderNode implements FolderNode {
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
     private List<CastNode> cast;
 
+    @Builder
     public CastFolderNode(String name, String description) {
         this.name = name;
         this.description = description;

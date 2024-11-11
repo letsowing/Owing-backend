@@ -20,7 +20,7 @@ public abstract class BaseDndDomainService<T extends BaseDnd>{
 		if(id == null){
 			return null;
 		}
-		return dndEntityAdapter().findById(id);
+		return this.getEntity(id);
 	}
 
 	public List<T> getEntityList(Long parentId) {
