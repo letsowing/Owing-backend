@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/stories")
+@RequestMapping("/v1/stories")
 @RequiredArgsConstructor
 @Tag(name="원고 /stories", description="원고 API")
 public class StoryController extends BaseFileController {

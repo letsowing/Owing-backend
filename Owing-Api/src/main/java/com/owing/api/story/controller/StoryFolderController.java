@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/stories/folders")
+@RequestMapping("/v1/stories/folders")
 @RequiredArgsConstructor
 @Tag(name="원고 폴더 /stories/folders", description="원고 폴더 API")
 public class StoryFolderController extends BaseFolderController {

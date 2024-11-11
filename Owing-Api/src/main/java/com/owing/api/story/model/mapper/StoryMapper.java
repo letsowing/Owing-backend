@@ -12,7 +12,6 @@ public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
 	public Story toEntity(AddFileRequest addDndRequest, StoryFolder folder) {
 		return Story.builder()
 			.title(addDndRequest.title())
-			.description(addDndRequest.description())
 			.folder(folder)
 			.build();
 	}
@@ -20,14 +19,12 @@ public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
 	public Story toEntity(AddFileRequest addDndRequest) {
 		return Story.builder()
 			.title(addDndRequest.title())
-			.description(addDndRequest.description())
 			.build();
 	}
 
 	public Story toEntity(UpdateFileRequest updateDndRequest) {
 		return Story.builder()
 			.title(updateDndRequest.title())
-			.description(updateDndRequest.description())
 			.build();
 	}
 }
