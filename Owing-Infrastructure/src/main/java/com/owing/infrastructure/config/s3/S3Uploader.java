@@ -27,6 +27,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @Component
 @RequiredArgsConstructor
 public class S3Uploader {
+	public static final int SIGNATURE_DURATION_MIN = 10;
 	private final S3Client s3Client;
 	private final S3Presigner s3Presigner;
 	private final S3Properties s3Properties;
@@ -45,7 +46,7 @@ public class S3Uploader {
 			.build();
 
 		PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
-			.signatureDuration(Duration.ofMinutes(10)) // presignedURL 10분간 접근 허용
+			.signatureDuration(Duration.ofMinutes(SIGNATURE_DURATION_MIN)) // presignedURL 10분간 접근 허용
 			.putObjectRequest(putObjectRequest)
 			.build();
 
