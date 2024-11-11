@@ -16,6 +16,6 @@ public class ReadCastUseCase {
 
     public CastInfoResponse execute(Long castId) {
         CastNode castnode = castNodeAdapter.findOneById(castId);
-        return castNodeMapper.toInfoResponse(castnode);
+        return castNodeMapper.toCastInfoResponse(castnode);
     }
 }

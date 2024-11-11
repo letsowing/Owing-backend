@@ -7,7 +7,11 @@ import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.api.cast.service.*;
+import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
+import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +43,14 @@ public class CastController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping
-    public ResponseEntity<CastInfoResponse> createCast(@RequestBody CreateCastRequest createCastRequest) {
-        return ResponseEntity.ok(createCastUseCase.execute(createCastRequest));
+    @PostMapping("/dnd")
+    public ResponseEntity<FileInfoResponse> createCast(@RequestBody AddFileRequest addFileRequest) {
+        return ResponseEntity.ok(createCastUseCase.execute(addFileRequest));
     }
+//    @PostMapping
+//    public ResponseEntity<CastInfoResponse> createCast(@RequestBody CreateCastRequest createCastRequest) {
+//        return ResponseEntity.ok(createCastUseCase.execute(createCastRequest));
+//    }
 
     @PostMapping("/relationships")
     public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@RequestBody CreateConnectionRequest createConnectionRequest) {

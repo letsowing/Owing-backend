@@ -43,7 +43,7 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
 //    private CastFolderNode castFolder;
 
     @Builder
-    public CastNode(String name, Long age, String gender, String role, String description, String imageUrl, Coordinate coordinate, Long position) {
+    public CastNode(String name, Long age, String gender, String role, String description, String imageUrl, Coordinate coordinate, Long position, CastFolderNode folder) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -52,6 +52,7 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
         this.imageUrl = imageUrl;
         this.coordinate = coordinate;
         this.position = position;
+        this.folder = folder;
     }
 
     @Override

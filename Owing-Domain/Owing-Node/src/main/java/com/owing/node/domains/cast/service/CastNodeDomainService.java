@@ -39,9 +39,8 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         CastFolderNode castFolderNode = entity.getFolder();
 
         entity.updateFolder(null);
-        CastNode save = castNodeRepository.save(entity);
-        castNodeRepository.connectFolder(entity.getId(), castFolderNode.getId());
-        return save;
+        CastNode savedCastNode = castNodeRepository.save(entity);
+        return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
     }
 
     @Transactional

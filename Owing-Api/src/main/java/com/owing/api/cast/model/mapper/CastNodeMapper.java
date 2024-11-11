@@ -7,12 +7,42 @@ import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
+import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.*;
+import com.owing.node.folder.cast.model.CastFolderNode;
 
 @Mapper
-public class CastNodeMapper {
+public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
+
+    @Override
+    public CastNode toEntity(AddFileRequest addDndRequest, CastFolderNode folder) {
+        return CastNode.builder()
+                .name(addDndRequest.title())
+                .description(addDndRequest.description())
+                .folder(folder)
+                .build();
+    }
+
+    @Override
+    public CastNode toEntity(AddFileRequest addDndRequest) {
+        return CastNode.builder()
+                .name(addDndRequest.title())
+                .description(addDndRequest.description())
+                .build();
+    }
+
+    @Override
+    public CastNode toEntity(UpdateFileRequest updateDndRequest) {
+        return CastNode.builder()
+                .name(updateDndRequest.title())
+                .description(updateDndRequest.description())
+                .build();
+
+    }
 
     public CastNode toEntity(CreateCastRequest createCastRequest) {
         return CastNode.builder()
@@ -55,7 +85,8 @@ public class CastNodeMapper {
                 .build();
     }
 
-    public CastInfoResponse toInfoResponse(CastNode castNode) {
+    // BaseFileMapper와 충돌로 인한 임시 제거
+    public CastInfoResponse toCastInfoResponse(CastNode castNode) {
         return new CastInfoResponse(
                 castNode.getId(),
                 castNode.getName(),
