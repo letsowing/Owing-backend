@@ -1,4 +1,4 @@
-package com.owing.api.trashcan.model.dto;
+package com.owing.entity.domains.trashcan.model;
 
 public record File(Long id, String name, String description) {
 }

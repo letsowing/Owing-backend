@@ -3,13 +3,10 @@ package com.owing.entity.folders.trashcan.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.SoftDelete;
-
-import com.owing.entity.common.constant.OwingPersistenceConst;
+import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.entity.common.model.BaseTimeEntity;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.trashcan.model.TrashCan;
-import com.owing.entity.domains.universe.model.Universe;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,7 +39,7 @@ public class TrashCanFolder extends BaseTimeEntity {
     private Long itemId;
 
     @Column(nullable = false)
-    private Folder tableName;
+    private FolderType tableName;
 
     @Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
     private String name;

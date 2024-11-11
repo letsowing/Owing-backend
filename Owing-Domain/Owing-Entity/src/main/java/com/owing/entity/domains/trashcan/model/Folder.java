@@ -1,4 +1,4 @@
-package com.owing.api.trashcan.model.dto;
+package com.owing.entity.domains.trashcan.model;
 
 import java.util.List;
 

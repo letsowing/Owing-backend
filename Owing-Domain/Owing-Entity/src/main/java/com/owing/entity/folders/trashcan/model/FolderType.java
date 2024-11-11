@@ -1,6 +1,6 @@
 package com.owing.entity.folders.trashcan.model;
 
-public enum Folder {
+public enum FolderType {
 	STORY,
 	CAST,
 	UNIVERSE;
