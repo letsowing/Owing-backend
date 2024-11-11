@@ -6,6 +6,9 @@ dependencies {
     // AWS S3
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
 
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.15.3'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     runtimeOnly 'org.postgresql:postgresql'
