@@ -3,13 +3,13 @@ package com.owing.core.dnd.base.orderStrategy.shift;
 import java.util.Objects;
 
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
-import com.owing.core.dnd.file.model.BaseFileEntity;
-import com.owing.core.dnd.file.repository.BaseFileEntityRepository;
-import com.owing.core.dnd.folder.model.BaseFolderEntity;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.file.repository.BaseFileRepository;
+import com.owing.core.dnd.folder.model.BaseFolder;
 
-public abstract class FileShiftOrderingStrategy<T extends BaseFileEntity<F>, F extends BaseFolderEntity> extends ShiftOrderingStrategy<T>{
+public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends BaseFolder> extends ShiftOrderingStrategy<T>{
 
-	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileEntityRepository<T, F> dndRepository) {
+	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T, F> dndRepository) {
 		super(dndAdapter, dndRepository);
 	}
 

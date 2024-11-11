@@ -61,6 +61,10 @@ public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo
 		this.name = newTitle;
 	}
 
+	public void updateName(String newName) {
+		this.updateTitle(newName);
+	}
+
 	@Override
 	public void updatePosition(long newPosition) {
 		if (!validatePosition(newPosition)) {

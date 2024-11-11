@@ -129,10 +129,6 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
                 .anyMatch(conn -> conn.getTargetId().equals(target.getId()));
     }
 
-    public void updatePosition(Long position) {
-        this.position = position;
-    }
-
     public void updateCoordinate(Integer x, Integer y) {
         this.updateCoordinate(new Coordinate(x, y));
     }
@@ -143,10 +139,6 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
         }
         this.coordinate = coordinate;
         return true;
-    }
-
-    public void updateName(String name) {
-        updateTitle(name);
     }
 
     public void updateAge(Long age) {

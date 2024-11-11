@@ -22,7 +22,8 @@ public class CreateCastUseCase {
         CastNode castNode = castNodeMapper.toEntity(createCastRequest);
         CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(createCastRequest.folderId());
 
-        CastNode savedCastNode = castNodeDomainService.createCastNode(castNode, castFolderNode);
+        castNode.connectFolder(castFolderNode);
+        CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
         return castNodeMapper.toInfoResponse(savedCastNode);
     }
 }

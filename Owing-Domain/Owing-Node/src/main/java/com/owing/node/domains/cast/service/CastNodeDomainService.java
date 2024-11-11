@@ -1,7 +1,12 @@
 package com.owing.node.domains.cast.service;
 
 import com.owing.common.annotation.DomainService;
+import com.owing.core.dnd.base.adapter.BaseDndAdapter;
+import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.node.common.constant.CastConstant;
+import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
@@ -14,21 +19,29 @@ import org.springframework.transaction.annotation.Transactional;
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CastNodeDomainService {
+public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastFolderNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
+    private final CastNodeAdapter castNodeAdapter;
+    private final CastShiftOrderingStrategy castShiftOrderingStrategy;
 
+    @Override
     @Transactional
-    public CastNode createCastNode(CastNode castNode, CastFolderNode castFolderNode) {
-        // TODO position 기본값으로 변경
-        castNode.updatePosition(0L);
-        castNode.updateCoordinate(
+    public CastNode createEntity(CastNode entity) {
+        long position = orderingStrategy().getNewPosition(entity.getParentId());
+        entity.updatePosition(position);
+        entity.updateCoordinate(
                 CastConstant.DEFAULT_COORDINATE_X,
                 CastConstant.DEFAULT_COORDINATE_Y
         );
-        CastNode savedCastNode = castNodeRepository.save(castNode);
-        return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
+
+        CastFolderNode castFolderNode = entity.getFolder();
+
+        entity.updateFolder(null);
+        CastNode save = castNodeRepository.save(entity);
+        castNodeRepository.connectFolder(entity.getId(), castFolderNode.getId());
+        return save;
     }
 
     @Transactional
@@ -62,5 +75,21 @@ public class CastNodeDomainService {
         castNode.delete();
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);
+    }
+
+    // Bean Setting
+    @Override
+    protected BaseDndRepository<CastNode> dndRepository() {
+        return this.castNodeRepository;
+    }
+
+    @Override
+    protected BaseDndAdapter<CastNode> dndEntityAdapter() {
+        return this.castNodeAdapter;
+    }
+
+    @Override
+    protected OrderingStrategy<CastNode> orderingStrategy() {
+        return this.castShiftOrderingStrategy;
     }
 }

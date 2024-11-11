@@ -159,22 +159,22 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
     @Override
     @Query("""
 			MATCH
-			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
 			WHERE
-			  t.position >= $start AND t.position <= $end
+			  c.position >= $start AND c.position <= $end AND id(cf)=$castFolderId
 			SET
-			  t.position = t.position + 1
+			  c.position = c.position + 1
 			""")
-    void incrementPositionBetween(Long start, Long end, Long projectId);
+    void incrementPositionBetween(Long start, Long end, Long castFolderId);
 
     @Override
     @Query("""
 			MATCH
-				(p:Project{deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+				(cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
 			WHERE
-				p.id = $projectId
+				id(cf) = $parentId
 			RETURN
-				COALESCE(MAX(t.position), -1)
+				COALESCE(MAX(c.position), -1)
 			""")
     Long getMaxPositionByParentId(Long parentId);
 }
