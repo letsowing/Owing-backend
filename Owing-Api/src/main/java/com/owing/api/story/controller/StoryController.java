@@ -22,11 +22,14 @@ import com.owing.api.story.service.story.DeleteStoryUseCase;
 import com.owing.api.story.service.story.ReadStoryUseCase;
 import com.owing.api.story.service.story.UpdateStoryUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/stories")
 @RequiredArgsConstructor
+@Tag(name="원고 /stories", description="원고 API")
 public class StoryController extends BaseFileController {
 	private final CreateStoryUseCase createDndUseCase;
 	private final ReadStoryUseCase readDndUseCase;
@@ -34,6 +37,7 @@ public class StoryController extends BaseFileController {
 	private final UpdateStoryUseCase updateDndUseCase;
 
 	@PostMapping("/{storyId}")
+	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
 	public ResponseEntity<?> createStory(@PathVariable Long storyId, @RequestBody AddStoryTextRequest request) {
         createDndUseCase.executeText(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();

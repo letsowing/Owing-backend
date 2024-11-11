@@ -1,5 +1,12 @@
 package com.owing.api.cast.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
 import com.owing.api.cast.service.CreateCastFolderUseCase;
 import com.owing.api.cast.service.DeleteCastFolderUseCase;
@@ -13,13 +20,14 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/cast/folders")
 @RequiredArgsConstructor
+@Tag(name = "캐릭터 폴더 /cast/folders", description = "캐릭터 폴더 API")
 public class CastFolderController extends BaseFolderController {
 
     private final CreateCastFolderUseCase createCastFolderUseCase;
