@@ -2,10 +2,9 @@ package com.owing.api.project.service;
 
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
+import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.error.exception.ProjectIllegalAccessException;
 import com.owing.entity.domains.project.model.Project;
@@ -20,12 +19,12 @@ public class UpdateProjectUseCase {
     private final MemberUtils memberUtils;
     private final ProjectDomainService projectDomainService;
     private final ProjectMapper projectMapper;
-    private final ProjectAdaptor projectAdaptor;
+    private final ProjectAdapter projectAdapter;
 
     @Transactional
     public void execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
         Long memberId = memberUtils.getCurrentMemberId();
-        Project oldProject = projectAdaptor.findById(projectId);
+        Project oldProject = projectAdapter.findById(projectId);
 
         if (!oldProject.getMember().getId().equals(memberId)) {
             throw ProjectIllegalAccessException.of(ProjectErrorCode.ILLEGAL_ACCESS,

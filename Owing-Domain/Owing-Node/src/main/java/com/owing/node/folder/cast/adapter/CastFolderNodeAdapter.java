@@ -1,4 +1,4 @@
-package com.owing.node.folder.cast.adaptor;
+package com.owing.node.folder.cast.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastFolderNodeAdaptor extends BaseFolderAdapter<CastFolderNode> {
+public class CastFolderNodeAdapter extends BaseFolderAdapter<CastFolderNode> {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
 

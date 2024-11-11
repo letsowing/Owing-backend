@@ -7,7 +7,7 @@ import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.UpdateFolderUseCase;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
+import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateCastFolderUseCase extends UpdateFolderUseCase<CastFolderNode> {
 
-    private final CastFolderNodeAdaptor castFolderNodeAdaptor;
+    private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderNodeDomainService castFolderNodeDomainService;
     private final MemberUtils memberUtils;
     private final CastFolderNodeMapper castFolderNodeMapper;
 
     public void executeInfoUpdate(Long folderId, UpdateCastFolderInfo updateCastFolderInfo) {
-        CastFolderNode castFolderNode = castFolderNodeAdaptor.findOneById(folderId);
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(folderId);
         castFolderNodeDomainService.updateCastFolderNodeInfo(
                 castFolderNode,
                 updateCastFolderInfo.name(),

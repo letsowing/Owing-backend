@@ -1,7 +1,7 @@
 package com.owing.api.universe.model.mapper;
 
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -22,10 +22,9 @@ public class UniverseFolderMapper extends BaseFolderMapper<UniverseFolder> {
 	}
 
 	@Override
-	public UniverseFolder toEntity(UpdateFolderRequest updateDndRequest) {
+	public UniverseFolder toEntity(UpdateFolderTitleRequest updateDndRequest) {
 		return UniverseFolder.builder()
 			.name(updateDndRequest.name())
-			.description(updateDndRequest.description())
 			.build();
 	}
 

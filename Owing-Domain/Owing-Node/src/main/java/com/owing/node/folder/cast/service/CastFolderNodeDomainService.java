@@ -5,7 +5,7 @@ import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.folder.service.BaseFolderDomainService;
-import com.owing.node.folder.cast.adaptor.CastFolderNodeAdaptor;
+import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
@@ -22,12 +22,12 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
 
     private final CastFolderNodeRepository castFolderNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
-    private final CastFolderNodeAdaptor castFolderNodeAdaptor;
+    private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;
 
     @Override
     public CastFolderNode getEntity(Long folderId) {
-        return castFolderNodeAdaptor.findOneById(folderId);
+        return castFolderNodeAdapter.findOneById(folderId);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
 
     @Override
     protected BaseDndAdapter<CastFolderNode> dndEntityAdapter() {
-        return this.castFolderNodeAdaptor;
+        return this.castFolderNodeAdapter;
     }
 
     @Override

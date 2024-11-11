@@ -1,4 +1,4 @@
-package com.owing.node.domains.story.adaptor;
+package com.owing.node.domains.story.adapter;
 
 
 import com.owing.common.annotation.Adaptor;
@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryNodeAdaptor {
+public class StoryNodeAdapter {
 
     private final StoryNodeRepository storyNodeRepository;
 

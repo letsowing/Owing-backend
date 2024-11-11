@@ -1,5 +1,10 @@
 package com.owing.api.story.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +16,7 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.story.model.dto.request.AddStoryTextRequest;
 import com.owing.api.story.service.story.CreateStoryUseCase;
 import com.owing.api.story.service.story.DeleteStoryUseCase;
 import com.owing.api.story.service.story.ReadStoryUseCase;
@@ -26,6 +32,12 @@ public class StoryController extends BaseFileController {
 	private final ReadStoryUseCase readDndUseCase;
 	private final DeleteStoryUseCase deleteDndUseCase;
 	private final UpdateStoryUseCase updateDndUseCase;
+
+	@PostMapping("/{storyId}")
+	public ResponseEntity<?> createStory(@PathVariable Long storyId, @RequestBody AddStoryTextRequest request) {
+        createDndUseCase.executeText(storyId, request);
+		return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 
 	@Override
@@ -44,7 +56,7 @@ public class StoryController extends BaseFileController {
 	}
 
 	@Override
-	protected UpdateDndUseCase<?, UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
+	protected UpdateDndUseCase<UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
 		return updateDndUseCase;
 	}
 }

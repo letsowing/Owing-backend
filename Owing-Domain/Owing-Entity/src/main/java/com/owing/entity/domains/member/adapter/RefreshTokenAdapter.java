@@ -1,4 +1,4 @@
-package com.owing.entity.domains.member.adaptor;
+package com.owing.entity.domains.member.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.entity.domains.member.error.exception.RefreshTokenException;
@@ -10,7 +10,7 @@ import static com.owing.entity.domains.member.error.RefreshTokenErrorCode.*;
 
 @Adaptor
 @RequiredArgsConstructor
-public class RefreshTokenAdaptor {
+public class RefreshTokenAdapter {
 
     private final RefreshTokenRepository refreshTokenRepository;
 

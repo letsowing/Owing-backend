@@ -3,7 +3,7 @@ package com.owing.api.story.service.story;
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.UpdateFileUseCase;
-import com.owing.api.story.mapper.StoryMapper;
+import com.owing.api.story.model.mapper.StoryMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.entity.domains.story.model.Story;
