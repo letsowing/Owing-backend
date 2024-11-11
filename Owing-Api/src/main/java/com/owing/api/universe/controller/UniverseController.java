@@ -15,10 +15,13 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
 import com.owing.api.file.service.CreatePresignedUrlUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
+import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.service.universe.CreateUniverseUseCase;
 import com.owing.api.universe.service.universe.DeleteUniverseUseCase;
+import com.owing.api.universe.service.universe.GenerateUniverseImageUseCase;
 import com.owing.api.universe.service.universe.ReadUniverseUseCase;
 import com.owing.api.universe.service.universe.UpdateUniverseUseCase;
 
@@ -34,12 +37,15 @@ public class UniverseController {
 	private final ReadUniverseUseCase readUniverseUseCase;
 	private final DeleteUniverseUseCase deleteUniverseUseCase;
 	private final CreatePresignedUrlUseCase createPresignedUrlUseCase;
+	private final GenerateUniverseImageUseCase generateUniverseImageUseCase;
 
+	/* 세계관 생성 */
 	@PostMapping
 	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@RequestBody AddUniverseRequest addUniverseRequest) {
 		return ResponseEntity.ok(createUniverseUseCase.execute(addUniverseRequest));
 	}
 
+	/* 세계관 수정 */
 	@PutMapping("/{universeId}")
 	public ResponseEntity<UniverseShortInfoResponse> updateUniverse(
 		@PathVariable Long universeId,
@@ -56,11 +62,13 @@ public class UniverseController {
 		return ResponseEntity.noContent().build();
 	}
 
+	/* 세계관 조회 */
 	@GetMapping("/{universeId}")
 	public ResponseEntity<UniverseShortInfoResponse> readUniverse(@PathVariable Long universeId) {
 		return ResponseEntity.ok(readUniverseUseCase.execute(universeId));
 	}
 
+	/* 세계관 삭제 */
 	@DeleteMapping("/{universeId}")
 	public ResponseEntity<String> deleteUniverse(@PathVariable Long universeId) {
 		deleteUniverseUseCase.execute(universeId);
@@ -71,6 +79,12 @@ public class UniverseController {
 	@GetMapping("/files/{filename}")
 	public ResponseEntity<?> getFile(@PathVariable(value = "filename") String fileName) {
 		return ResponseEntity.ok(createPresignedUrlUseCase.execute(fileName));
+	}
+
+	/* OpenAI - 세계관 이미지 생성 요청 후 S3 업로드 */
+	@PostMapping("/images")
+	public ResponseEntity<UniverseImageResponse> generateUniverseImage(@RequestBody GenerateUniverseImageRequest generateUniverseImageRequest) {
+		return ResponseEntity.ok(generateUniverseImageUseCase.execute(generateUniverseImageRequest));
 	}
 
 }
