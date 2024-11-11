@@ -43,7 +43,7 @@ public class StoryFolderController extends BaseFolderController {
 	}
 
 	@Override
-	protected UpdateDndUseCase<?, UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
+	protected UpdateDndUseCase<UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
 		return updateDndUseCase;
 	}
 }

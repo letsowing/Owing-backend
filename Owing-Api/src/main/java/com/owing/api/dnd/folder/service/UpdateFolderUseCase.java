@@ -12,26 +12,24 @@ import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class UpdateFolderUseCase<T extends BaseFolder> implements
-    UpdateDndUseCase<FolderInfoResponse, UpdateFolderTitleRequest, UpdateFolderPositionRequest> {
+    UpdateDndUseCase<UpdateFolderTitleRequest, UpdateFolderPositionRequest> {
     protected abstract MemberUtils memberUtils();
     protected abstract BaseDndDomainService<T> baseDndDomainService();
     protected abstract BaseFolderMapper<T> dndMapper();
 
     @Transactional
-    public FolderInfoResponse executeUpdateTitle(Long id, UpdateFolderTitleRequest dto) {
+    public void executeUpdateTitle(Long id, UpdateFolderTitleRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T newEntity = dndMapper().toEntity(dto);
         T updatedEntity = baseDndDomainService().updateTitle(entity, newEntity);
-        return dndMapper().toInfoResponse(updatedEntity);
     }
 
     @Transactional
-    public FolderInfoResponse executeUpdatePosition(Long id, UpdateFolderPositionRequest dto) {
+    public void executeUpdatePosition(Long id, UpdateFolderPositionRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
         T afterEntity = baseDndDomainService().getOptionalEntity(dto.afterId());
         T updatedEntity = baseDndDomainService().updateEntityPosition(entity, beforeEntity, afterEntity);
-        return dndMapper().toInfoResponse(updatedEntity);
     }
 
 }

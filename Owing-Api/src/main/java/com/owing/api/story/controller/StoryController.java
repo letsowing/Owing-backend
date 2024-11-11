@@ -44,7 +44,7 @@ public class StoryController extends BaseFileController {
 	}
 
 	@Override
-	protected UpdateDndUseCase<?, UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
+	protected UpdateDndUseCase<UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
 		return updateDndUseCase;
 	}
 }

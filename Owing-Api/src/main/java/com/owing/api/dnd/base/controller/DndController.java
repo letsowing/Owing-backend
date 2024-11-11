@@ -19,7 +19,7 @@ public abstract class DndController<A, U, P>{
     protected abstract CreateDndUseCase<?, A> createDndUseCase();
     protected abstract ReadDndUseCase<?, ?> readDndUseCase();
     protected abstract DeleteDndUseCase deleteDndUseCase();
-    protected abstract UpdateDndUseCase<?, U, P> updateDndUseCase();
+    protected abstract UpdateDndUseCase<U, P> updateDndUseCase();
 
     @GetMapping("/{dndId}")
     public ResponseEntity<?> getDnd(@PathVariable Long dndId) {

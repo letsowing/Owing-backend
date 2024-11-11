@@ -50,7 +50,7 @@ public class CastFolderController extends BaseFolderController {
     }
 
     @Override
-    protected UpdateDndUseCase<?, UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
+    protected UpdateDndUseCase<UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
         return this.updateCastFolderUseCase;
     }
 }
