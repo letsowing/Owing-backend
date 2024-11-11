@@ -81,4 +81,8 @@ public class TrashCanFolderDomainService {
 			trashCan.getItemId();
 		}
 	}
+
+	public void createTrashCanFolder(TrashCanFolder trashCanFolder) {
+		trashCanFolderRepository.save(trashCanFolder);
+	}
 }

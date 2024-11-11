@@ -2,11 +2,17 @@ package com.owing.api.trashcan.model.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.common.annotation.Mapper;
+import com.owing.core.dnd.file.model.BaseFileEntity;
+import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.trashcan.model.File;
 import com.owing.entity.domains.trashcan.model.Folder;
+import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
 @Mapper
@@ -59,5 +65,40 @@ public class TrashCanMapper {
 
 	private boolean isUniverseCategory(TrashCanFolder trashCanFolder) {
 		return trashCanFolder.getTableName().isUniverse();
+	}
+
+	public <T extends BaseFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
+		return TrashCanFolder.builder()
+			.itemId(entity.getId())
+			.tableName(determineTableName(entity))
+			.name(entity.getName())
+			.description(entity.getDescription())
+			.project(project)
+			.trashCanList(entity.getFiles().stream()
+				.map(file -> toEntity((BaseFileEntity<?>) file))
+				.collect(Collectors.toList()))
+			.build();
+	}
+
+	private <T extends BaseFolder> FolderType determineTableName(T entity) {
+		String className = entity.getClass().getSimpleName().toLowerCase();
+
+		if (className.contains("story")) {
+			return FolderType.STORY;
+		} else if (className.contains("cast")) {
+			return FolderType.CAST;
+		} else if (className.contains("universe")) {
+			return FolderType.UNIVERSE;
+		}
+
+		throw new IllegalArgumentException("Unknown folder type for class: " + className);
+	}
+
+	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity) {
+		return TrashCan.builder()
+			.itemId(baseFileEntity.getId())
+			.name(baseFileEntity.getTitle())
+			.description(baseFileEntity.getDescription())
+			.build();
 	}
 }

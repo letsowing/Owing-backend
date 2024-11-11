@@ -1,6 +1,5 @@
 package com.owing.api.trashcan.service;
 
-import com.owing.api.common.MemberUtils;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
