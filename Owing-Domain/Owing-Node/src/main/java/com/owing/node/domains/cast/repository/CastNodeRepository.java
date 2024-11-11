@@ -66,7 +66,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             MERGE
               (cf)-[r:INCLUDE]->(c)
             RETURN
-              c
+              c, r, cf
             """)
     CastNode connectFolder(Long castId, Long castFolderId);
 
