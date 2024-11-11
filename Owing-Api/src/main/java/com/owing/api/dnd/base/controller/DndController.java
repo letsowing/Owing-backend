@@ -41,7 +41,7 @@ public abstract class DndController<A, U, P>{
         return ResponseEntity.ok(updateDndUseCase().executeUpdateTitle(dndId, updateDndRequest));
     }
 
-    @PatchMapping("/{dndId}")
+    @PatchMapping("/{dndId}/position")
     public ResponseEntity<?> updateDndPosition(@PathVariable Long dndId, @RequestBody P updateDndPositionRequest) {
         return ResponseEntity.ok(updateDndUseCase().executeUpdatePosition(dndId, updateDndPositionRequest));
     }
