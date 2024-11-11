@@ -1,6 +1,10 @@
 package com.owing.infrastructure.config.s3;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
@@ -9,7 +13,9 @@ import com.owing.infrastructure.config.s3.error.S3ErrorCode;
 import com.owing.infrastructure.config.s3.error.exception.S3InvalidFileException;
 
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -18,6 +24,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @Component
 @RequiredArgsConstructor
 public class S3Uploader {
+	public static final int SIGNATURE_DURATION_MIN = 10;
 	private final S3Client s3Client;
 	private final S3Presigner s3Presigner;
 	private final S3Properties s3Properties;
@@ -29,8 +36,27 @@ public class S3Uploader {
 			return null;
 		}
 
+		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+			.bucket(s3Properties.s3().bucket())
+			.key(filename)
+			.contentType(getContentType(filename)) // contentType 추가
+			.build();
+
+		PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
+			.signatureDuration(Duration.ofMinutes(SIGNATURE_DURATION_MIN)) // presignedURL 10분간 접근 허용
+			.putObjectRequest(putObjectRequest)
+			.build();
+
+		PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner.presignPutObject(putObjectPresignRequest);
+		String url = presignedPutObjectRequest.url().toString();
+
+		s3Presigner.close(); // presigner를 닫고 획득한 모든 리소스를 해제
+		return url;
+	}
+
+	private String getContentType(String fileName) {
 		// 파일 확장자를 추출하고 contentType 설정
-		String[] splittedFileName = filename.split("\\.");
+		String[] splittedFileName = fileName.split("\\.");
 		String extension = splittedFileName[splittedFileName.length - 1].equalsIgnoreCase("jpg")
 			? "jpeg" : splittedFileName[splittedFileName.length - 1].toLowerCase();
 
@@ -40,25 +66,43 @@ public class S3Uploader {
 			throw S3InvalidFileException.of(S3ErrorCode.INVALID_EXTENSION);
 		}
 
-		// contentType 생성
-		String contentType = "image/" + extension;
+		return "image/" + extension; // contentType 생성
+	}
+
+	/* Base64 이미지를 S3에 업로드  */
+	public String uploadBase64ImageToS3(String b64Json) {
+
+		String fileName = "sample.png"; // todo : 랜덤 이름 생성 (하지만 FileUtil은 사용하지 못한다..)
+		// String fileName = FileUtils.buildFileName("sample.png");
+
+		// Base64 문자열을 바이트 배열로 디코딩
+		byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
+
+		// 바이트 배열을 InputStream으로 변환
+		InputStream inputStream = new ByteArrayInputStream(decodedBytes);
+
+		return uploadFileToS3(fileName, inputStream, decodedBytes.length);
+	}
+
+	private String uploadFileToS3(String fileName, InputStream inputStream, long contentLength) {
+
+		UUID randomUUID = UUID.randomUUID();
 
 		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(s3Properties.s3().bucket())
-			.key(filename)
-			.contentType(contentType) // contentType 추가
+			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
+			.contentType(getContentType(fileName))
 			.build();
 
-		PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
-			.signatureDuration(Duration.ofMinutes(10)) // presignedURL 10분간 접근 허용
-			.putObjectRequest(putObjectRequest)
+		s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, contentLength));
+
+		GetUrlRequest getUrlRequest = GetUrlRequest.builder()
+			.bucket(s3Properties.s3().bucket())
+			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
 			.build();
 
-		PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner.presignPutObject(putObjectPresignRequest);
-		String url = presignedPutObjectRequest.url().toString();
+		return s3Client.utilities().getUrl(getUrlRequest).toString();
 
-		s3Presigner.close(); // presigner를 닫고 획득한 모든 리소스를 해제
-		return url;
 	}
 
 }

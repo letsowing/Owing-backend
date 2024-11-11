@@ -34,14 +34,15 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
         CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
         return castNodeMapper.toInfoResponse(savedCastNode);
     }
-//    public FileInfoResponse execute(CreateCastRequest createCastRequest) {
-//        CastNode castNode = castNodeMapper.toEntity(createCastRequest);
-//        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(createCastRequest.folderId());
-//
-//        castNode.connectFolder(castFolderNode);
-//        CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
-//        return castNodeMapper.toInfoResponse(savedCastNode);
-//    }
+
+    public CastInfoResponse executeFull(CreateCastRequest createCastRequest) {
+        CastNode castNode = castNodeMapper.toEntity(createCastRequest);
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(createCastRequest.folderId());
+
+        castNode.connectFolder(castFolderNode);
+        CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
+        return castNodeMapper.toCastInfoResponse( savedCastNode);
+    }
 
     @Override
     protected MemberUtils memberUtils() {
