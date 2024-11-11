@@ -2,6 +2,7 @@ package com.owing.api.universe.service.folder;
 
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
+import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
@@ -19,7 +20,7 @@ public class DeleteUniverseFolderUseCase extends DeleteFolderUseCase<UniverseFol
     private final BaseDndDomainService<UniverseFolder> baseDndDomainService;
     private final TrashCanFolderDomainService trashCanFolderDomainService;
     private final ProjectAdapter projectAdapter;
-    private final TrashCanMapper trashCanMapper;
+    private final TrashCanFolderMapper trashCanFolderMapper;
 
 
     @Override
@@ -39,5 +40,5 @@ public class DeleteUniverseFolderUseCase extends DeleteFolderUseCase<UniverseFol
     protected ProjectAdapter projectAdapter() { return this.projectAdapter; }
 
     @Override
-    protected TrashCanMapper trashCanMapper() { return this.trashCanMapper; }
+    protected TrashCanFolderMapper trashCanFolderMapper() { return this.trashCanFolderMapper; }
 }
