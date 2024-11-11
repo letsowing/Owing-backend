@@ -5,6 +5,7 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.universe.model.Universe;
@@ -58,5 +59,11 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 	@Override
 	public Universe toEntity(UpdateFileRequest updateDndRequest) {
 		return null;
+	}
+
+	public UniverseImageResponse toGenerateImageResponse(String imgUrl) {
+		return UniverseImageResponse.builder()
+			.imageUrl(imgUrl)
+			.build();
 	}
 }

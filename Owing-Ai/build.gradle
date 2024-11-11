@@ -2,6 +2,7 @@
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 ext {
@@ -12,10 +13,22 @@ dependencies {
 	implementation project(':Owing-Common')
 	implementation project(':Owing-Infrastructure')
 
-	// AI
-	implementation 'org.springframework.ai:spring-ai-anthropic-spring-boot-starter'
+	// OpenAI
 	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
-	implementation 'org.springframework.ai:spring-ai-stability-ai-spring-boot-starter'
+	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+
+	// FalAI
+	implementation 'ai.fal.client:fal-client:0.7.1'
+
+	// S3
+//	implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
+
+
+
+	// AI
+//	implementation 'org.springframework.ai:spring-ai-anthropic-spring-boot-starter'
+//	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+//	implementation 'org.springframework.ai:spring-ai-stability-ai-spring-boot-starter'
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

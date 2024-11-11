@@ -1,7 +1,5 @@
 package com.owing.infrastructure.config.s3;
 
-import static org.springframework.web.servlet.function.RequestPredicates.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.Duration;
@@ -11,7 +9,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.infrastructure.config.s3.dto.AiImageToS3Request;
 import com.owing.infrastructure.config.s3.error.S3ErrorCode;
 import com.owing.infrastructure.config.s3.error.exception.S3InvalidFileException;
 
@@ -73,13 +70,13 @@ public class S3Uploader {
 	}
 
 	/* Base64 이미지를 S3에 업로드  */
-	public String uploadBase64ImageToS3(AiImageToS3Request aiImageToS3Request) {
+	public String uploadBase64ImageToS3(String b64Json) {
 
 		String fileName = "sample.png"; // todo : 랜덤 이름 생성 (하지만 FileUtil은 사용하지 못한다..)
 		// String fileName = FileUtils.buildFileName("sample.png");
 
 		// Base64 문자열을 바이트 배열로 디코딩
-		byte[] decodedBytes = Base64.getDecoder().decode(aiImageToS3Request.b64Json());
+		byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
 
 		// 바이트 배열을 InputStream으로 변환
 		InputStream inputStream = new ByteArrayInputStream(decodedBytes);
