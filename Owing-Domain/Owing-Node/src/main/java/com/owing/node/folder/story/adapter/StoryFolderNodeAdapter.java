@@ -1,4 +1,4 @@
-package com.owing.node.folder.story.adaptor;
+package com.owing.node.folder.story.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.node.folder.story.error.code.StoryFolderNodeErrorCode;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryFolderNodeAdaptor {
+public class StoryFolderNodeAdapter {
 
     private final StoryFolderNodeRepository repository;
 

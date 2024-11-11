@@ -1,4 +1,4 @@
-package com.owing.node.domains.project.adaptor;
+package com.owing.node.domains.project.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.node.domains.project.error.code.ProjectNodeErrorCode;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class ProjectNodeAdaptor {
+public class ProjectNodeAdapter {
 
     private final ProjectNodeRepository projectNodeRepository;
 

@@ -20,8 +20,10 @@ public abstract class BaseFileMapper<T extends BaseFile<F>, F extends BaseFolder
 	}
 
 	public FileInfoListResponse toListResponse(List<T> dndList) {
-		return new FileInfoListResponse(dndList.stream()
-			.map(FileInfoResponse::from)
-			.toList());
+		return new FileInfoListResponse(
+				dndList.stream()
+						.map(this::toInfoResponse)
+						.toList()
+		);
 	}
 }

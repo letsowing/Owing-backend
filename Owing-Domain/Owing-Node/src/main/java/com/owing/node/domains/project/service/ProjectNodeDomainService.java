@@ -1,7 +1,7 @@
 package com.owing.node.domains.project.service;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.node.domains.project.adaptor.ProjectNodeAdaptor;
+import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectNodeDomainService {
 
     private final ProjectNodeRepository projectNodeRepository;
-    private final ProjectNodeAdaptor projectNodeAdaptor;
+    private final ProjectNodeAdapter projectNodeAdapter;
 
     @Transactional
     public void createProjectNode(ProjectNode projectNode) {
@@ -22,7 +22,7 @@ public class ProjectNodeDomainService {
 
     @Transactional
     public void deleteProjectNode(Long projectId) {
-        ProjectNode projectNode = projectNodeAdaptor.findById(projectId);
+        ProjectNode projectNode = projectNodeAdapter.findById(projectId);
         projectNode.delete();
         projectNodeRepository.save(projectNode);
     }

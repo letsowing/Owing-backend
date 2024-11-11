@@ -6,7 +6,7 @@ import com.owing.api.auth.service.helper.GoogleOauthHelper;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.member.mapper.MemberMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.member.adaptor.MemberAdaptor;
+import com.owing.entity.domains.member.adapter.MemberAdapter;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
 import com.owing.entity.domains.member.service.MemberDomainService;
@@ -24,7 +24,7 @@ public class GoogleOauthLoginUseCase {
 
     private final MemberDomainService memberDomainService;
     private final RefreshTokenDomainService refreshTokenDomainService;
-    private final MemberAdaptor memberAdaptor;
+    private final MemberAdapter memberAdapter;
     private final MemberMapper memberMapper;
     private final AuthMapper authMapper;
     private final GoogleOauthHelper googleOauthHelper;
@@ -33,7 +33,7 @@ public class GoogleOauthLoginUseCase {
     @Transactional
     public TokenResponse execute(String idToken) {
         Payload payload = validateGoogleIdToken(idToken);
-        Member member = memberAdaptor.findByEmailAndProvider(payload.get(GOOGLE_CLAIM_EMAIL).toString(), GOOGLE)
+        Member member = memberAdapter.findByEmailAndProvider(payload.get(GOOGLE_CLAIM_EMAIL).toString(), GOOGLE)
                 .orElseGet(() -> memberDomainService.createMember(memberMapper.toEntity(payload, GOOGLE)));
         return createTokens(member);
     }

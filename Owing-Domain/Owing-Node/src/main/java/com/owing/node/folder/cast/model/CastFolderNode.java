@@ -1,7 +1,7 @@
 package com.owing.node.folder.cast.model;
 
+import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.node.common.model.BaseFolderNode;
-import com.owing.node.common.model.FolderNode;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Node("CastFolder")
 @Getter
-public class CastFolderNode extends BaseFolderNode implements FolderNode {
+public class CastFolderNode extends BaseFolderNode {
 
     @Id
     @GeneratedValue
@@ -35,6 +35,11 @@ public class CastFolderNode extends BaseFolderNode implements FolderNode {
 
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
     private List<CastNode> cast;
+
+    // TODO 임시 작성. FileNode 임포트하고 cast들로 변경 필요
+    public List<BaseFile> getFiles(){
+        return null;
+    }
 
     @Builder
     public CastFolderNode(String name, String description) {

@@ -15,8 +15,10 @@ public abstract class BaseFolderMapper<T extends BaseFolder> implements DndMappe
 	}
 
 	public FolderInfoListResponse toListResponse(List<T> dndList) {
-		return new FolderInfoListResponse(dndList.stream()
-			.map(FolderInfoResponse::from)
-			.toList());
+		return new FolderInfoListResponse(
+				dndList.stream()
+						.map(this::toInfoResponse)
+						.toList()
+		);
 	}
 }

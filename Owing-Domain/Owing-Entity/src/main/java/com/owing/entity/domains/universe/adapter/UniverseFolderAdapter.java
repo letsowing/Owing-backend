@@ -1,4 +1,4 @@
-package com.owing.entity.domains.universe.adaptor;
+package com.owing.entity.domains.universe.adapter;
 
 import com.owing.common.annotation.Adaptor;
 import com.owing.core.dnd.base.repository.BaseDndRepository;

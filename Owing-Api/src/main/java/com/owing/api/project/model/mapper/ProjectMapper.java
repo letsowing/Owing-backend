@@ -9,7 +9,7 @@ import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.common.model.dto.ProjectShortInfoDto;
 import com.owing.entity.domains.member.model.Member;
-import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
+import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectMapper {
 
-    private final ProjectAdaptor projectAdaptor;
+    private final ProjectAdapter projectAdapter;
 
     public Project toEntity(AddProjectRequest addProjectRequest, Member member) {
         ProjectInfo projectInfo = toProjectInfo(addProjectRequest);

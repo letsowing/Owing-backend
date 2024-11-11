@@ -2,7 +2,7 @@ package com.owing.api.common.util;
 
 import com.owing.api.auth.error.AuthErrorCode;
 import com.owing.api.auth.error.exception.AuthException;
-import com.owing.entity.domains.member.adaptor.MemberAdaptor;
+import com.owing.entity.domains.member.adapter.MemberAdapter;
 import com.owing.entity.domains.member.model.Member;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MemberUtils {
-    private final MemberAdaptor memberAdaptor;
+    private final MemberAdapter memberAdapter;
 
     public Long getCurrentMemberId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -26,10 +26,10 @@ public class MemberUtils {
     }
 
     public Member getCurrentMember() {
-        return memberAdaptor.findById(getCurrentMemberId());
+        return memberAdapter.findById(getCurrentMemberId());
     }
 
     public Member getCurrentMemberReference() {
-        return memberAdaptor.getReferenceById(getCurrentMemberId());
+        return memberAdapter.getReferenceById(getCurrentMemberId());
     }
 }

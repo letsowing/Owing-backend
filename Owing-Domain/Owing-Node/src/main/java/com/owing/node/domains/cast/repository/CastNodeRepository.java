@@ -1,9 +1,10 @@
 package com.owing.node.domains.cast.repository;
 
 import com.owing.node.common.model.projection.CastRelationshipProjection;
+import com.owing.node.common.repository.BaseFileNodeRepository;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
+public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, CastFolderNode> {
 
     @Query("""
             MATCH
@@ -112,4 +113,68 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
 //            "AND n2.deletedAt IS NULL " +
 //            "RETURN n2.id AS id, n2.name AS name, n2.gender AS gender")
 //    List<CastSummaryDto> findAllSummaryByProjectId(Long projectId);
+
+
+    /**
+     * TODO
+     * 쿼리 자동생성을 막기 위한 임시 쿼리
+     * 추후 수정
+     */
+
+    @Override
+    @Query("""
+        MATCH
+          (cf:CastFolder{id:$projectId, deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+        WHERE
+          id(cf)=$castFolderId
+        ORDER BY
+          c.position
+        RETURN
+          c, r, p
+        """)
+    List<CastNode> findByParentId(Long castFolderId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			WHERE
+			  t.position > $position
+			SET
+			  t.position = t.position - 1
+			""")
+    void decrementPositionAfter(Long position, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			WHERE
+			  t.position >= $start AND t.position <= $end
+			SET
+			  t.position = t.position - 1
+			""")
+    void decrementPositionBetween(Long start, Long end, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			WHERE
+			  t.position >= $start AND t.position <= $end
+			SET
+			  t.position = t.position + 1
+			""")
+    void incrementPositionBetween(Long start, Long end, Long projectId);
+
+    @Override
+    @Query("""
+			MATCH
+				(p:Project{deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			WHERE
+				p.id = $projectId
+			RETURN
+				COALESCE(MAX(t.position), -1)
+			""")
+    Long getMaxPositionByParentId(Long parentId);
 }

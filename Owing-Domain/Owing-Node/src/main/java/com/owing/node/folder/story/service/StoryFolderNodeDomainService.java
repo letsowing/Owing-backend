@@ -2,7 +2,7 @@ package com.owing.node.folder.story.service;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.node.domains.project.model.ProjectNode;
-import com.owing.node.folder.story.adaptor.StoryFolderNodeAdaptor;
+import com.owing.node.folder.story.adapter.StoryFolderNodeAdapter;
 import com.owing.node.folder.story.model.StoryFolderNode;
 import com.owing.node.folder.story.repository.StoryFolderNodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoryFolderNodeDomainService {
 
     private final StoryFolderNodeRepository storyFolderNodeRepository;
-    private final StoryFolderNodeAdaptor storyFolderNodeAdaptor;
+    private final StoryFolderNodeAdapter storyFolderNodeAdapter;
 
     @Transactional
     public void createStoryFolderNode(StoryFolderNode storyFolderNode, ProjectNode projectNode) {
@@ -24,7 +24,7 @@ public class StoryFolderNodeDomainService {
 
     @Transactional
     public void deleteStoryFolderNode(Long storyFolderId) {
-        StoryFolderNode storyFolderNode = storyFolderNodeAdaptor.findById(storyFolderId);
+        StoryFolderNode storyFolderNode = storyFolderNodeAdapter.findById(storyFolderId);
         storyFolderNode.delete();
         storyFolderNodeRepository.save(storyFolderNode);
     }

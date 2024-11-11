@@ -1,41 +1,44 @@
 package com.owing.node.common.model;
 
 import com.owing.core.constant.OwingPersistenceConst;
+import com.owing.core.dnd.base.error.DndErrorCode;
+import com.owing.core.dnd.base.error.exception.DndException;
+import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.core.dnd.file.model.BaseFile;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.util.StringUtils;
 
 @Getter
 public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo4j implements BaseFile<T>{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@Column(nullable = false)
-	protected Long position;
+
+	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
+	protected String name;
+
 	@Column(length = OwingPersistenceConst.DESC_LEN)
 	protected String description;
 
-	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
-	protected String title;
+	@Column(nullable = false)
+	protected Long position;
 
-	@ManyToOne
-	@JoinColumn(name = "folder_id", nullable = false)
+	@Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
 	protected T folder;
 
 	public void update(BaseFileNode<T> newFile){
-		this.title = newFile.getTitle();
+		this.name = newFile.getTitle();
 		this.description = newFile.getDescription();
 	}
 
 	public void updateFolder(T folder){
 		this.folder = folder;
+	}
+
+	@Override
+	public String getTitle() {
+		return this.name;
 	}
 
 	@Override
@@ -48,4 +51,21 @@ public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo
 		return newPosition >= 0;
 	}
 
+	public abstract void connectFolder(T folder);
+
+	@Override
+	public void updateTitle(String newTitle) {
+		if (!StringUtils.hasText(newTitle)) {
+			throw DndException.of(DndErrorCode.INVALID_TITLE);
+		}
+		this.name = newTitle;
+	}
+
+	@Override
+	public void updatePosition(long newPosition) {
+		if (!validatePosition(newPosition)) {
+			throw DndInvalidPositionException.of(DndErrorCode.INVALID_POSITION);
+		}
+		this.position = newPosition;
+	}
 }
