@@ -32,7 +32,7 @@ public abstract class DndController<A, U, P>{
         return ResponseEntity.ok(readDndUseCase().executeList(parentId));
     }
 
-    @PostMapping
+    @PostMapping("/dnd")
     public ResponseEntity<?> createDnd(@RequestBody A addDndRequest) {
         return ResponseEntity.ok(createDndUseCase().execute(addDndRequest));
     }
