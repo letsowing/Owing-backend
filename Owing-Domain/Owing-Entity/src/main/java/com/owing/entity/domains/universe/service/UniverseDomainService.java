@@ -7,7 +7,7 @@ import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.service.BaseFileDomainService;
-import com.owing.entity.domains.universe.adaptor.UniverseAdaptor;
+import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UniverseDomainService extends BaseFileDomainService<Universe, UniverseFolder> {
 
 	private final UniverseRepository universeRepository;
-	private final UniverseAdaptor universeAdaptor;
+	private final UniverseAdapter universeAdapter;
 	private final UniverseShiftOrderingStrategy orderingStrategy;
 
 	@Transactional
@@ -42,7 +42,7 @@ public class UniverseDomainService extends BaseFileDomainService<Universe, Unive
 
 	@Override
 	protected BaseDndAdapter<Universe> dndEntityAdapter() {
-		return universeAdaptor;
+		return universeAdapter;
 	}
 
 	@Override

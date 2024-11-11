@@ -1,7 +1,7 @@
 package com.owing.node.domains.story.service;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.node.domains.story.adaptor.StoryNodeAdaptor;
+import com.owing.node.domains.story.adapter.StoryNodeAdapter;
 import com.owing.node.domains.story.model.StoryNode;
 import com.owing.node.domains.story.repository.StoryNodeRepository;
 import com.owing.node.folder.story.model.StoryFolderNode;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoryNodeDomainService {
 
     private final StoryNodeRepository storyNodeRepository;
-    private final StoryNodeAdaptor storyNodeAdaptor;
+    private final StoryNodeAdapter storyNodeAdapter;
 
     @Transactional
     public void createStoryNode(StoryNode storyNode, StoryFolderNode storyFolderNode) {
@@ -24,7 +24,7 @@ public class StoryNodeDomainService {
 
     @Transactional
     public void deleteStoryNode(Long storyId) {
-        StoryNode storyNode = storyNodeAdaptor.findById(storyId);
+        StoryNode storyNode = storyNodeAdapter.findById(storyId);
         storyNode.delete();
         storyNodeRepository.save(storyNode);
     }
