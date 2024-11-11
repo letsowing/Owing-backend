@@ -12,7 +12,7 @@ import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +50,7 @@ public class CastFolderController extends BaseFolderController {
     }
 
     @Override
-    protected UpdateDndUseCase<?, UpdateFolderRequest, UpdateFolderPositionRequest> updateDndUseCase() {
+    protected UpdateDndUseCase<?, UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
         return this.updateCastFolderUseCase;
     }
 }

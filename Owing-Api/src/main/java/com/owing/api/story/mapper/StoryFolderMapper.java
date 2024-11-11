@@ -1,7 +1,7 @@
 package com.owing.api.story.mapper;
 
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderRequest;
+import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.story.model.StoryFolder;
@@ -16,10 +16,9 @@ public class StoryFolderMapper extends BaseFolderMapper<StoryFolder> {
 			.build();
 	}
 
-	public StoryFolder toEntity(UpdateFolderRequest updateFolderRequest) {
+	public StoryFolder toEntity(UpdateFolderTitleRequest updateFolderRequest) {
 		return StoryFolder.builder()
 			.name(updateFolderRequest.name())
-			.description(updateFolderRequest.description())
 			.build();
 	}
 }
