@@ -1,4 +1,4 @@
-package com.owing.api.trashcan.service;
+package com.owing.api.trashcan.service.folder;
 
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
@@ -8,16 +8,11 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteTrashCanUserCase {
+public class DeleteTrashCanFolderUserCase {
 	private final TrashCanFolderDomainService trashCanFolderDomainService;
-	private final TrashCanDomainService trashCanDomainService;
 
 	public void executeAll(Long projectId) {
 		trashCanFolderDomainService.deleteAllTrashCan(projectId);
-	}
-
-	public void execute(Long trashId) {
-		trashCanDomainService.deleteTrashCan(trashId);
 	}
 
 	public void executeFolder(Long trashId) {

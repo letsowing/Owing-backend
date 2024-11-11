@@ -1,6 +1,4 @@
-package com.owing.api.trashcan.service;
-
-import org.apache.logging.log4j.util.Cast;
+package com.owing.api.trashcan.service.trashcan;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
@@ -16,17 +14,11 @@ import lombok.RequiredArgsConstructor;
 @UseCase
 @RequiredArgsConstructor
 public class ReadTrashCanUserCase {
-	private final TrashCanFolderDomainService trashCanFolderDomainService;
 	private final TrashCanMapper trashCanMapper;
 	private final TrashCanAdaptor trashCanAdaptor;
 	private final StoryAdapter storyAdapter;
 	//private final CastAdapter castAdapter;
 
-
-
-	public TrashCanFolderResponse execute(Long projectId) {
-		return trashCanMapper.toTrashCanFolderResponse(trashCanFolderDomainService.getTrashCanFolder(projectId));
-	}
 
 	public Story executeStory(Long trashId) {
 		TrashCan trashCan = trashCanAdaptor.findById(trashId);
