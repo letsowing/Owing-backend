@@ -1,5 +1,6 @@
 package com.owing.api.universe.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +36,13 @@ public class UniverseController {
 	private final DeleteUniverseUseCase deleteUniverseUseCase;
 	private final CreatePresignedUrlUseCase createPresignedUrlUseCase;
 
+	/* 세계관 생성 */
 	@PostMapping
 	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@RequestBody AddUniverseRequest addUniverseRequest) {
 		return ResponseEntity.ok(createUniverseUseCase.execute(addUniverseRequest));
 	}
 
+	/* 세계관 수정 */
 	@PutMapping("/{universeId}")
 	public ResponseEntity<UniverseShortInfoResponse> updateUniverse(
 		@PathVariable Long universeId,
@@ -54,11 +57,13 @@ public class UniverseController {
 		return ResponseEntity.ok(updateUniverseUseCase.executeUpdatePosition(universeId, updateUniverseRequest));
 	}
 
+	/* 세계관 조회 */
 	@GetMapping("/{universeId}")
 	public ResponseEntity<UniverseShortInfoResponse> readUniverse(@PathVariable Long universeId) {
 		return ResponseEntity.ok(readUniverseUseCase.execute(universeId));
 	}
 
+	/* 세계관 삭제 */
 	@DeleteMapping("/{universeId}")
 	public ResponseEntity<String> deleteUniverse(@PathVariable Long universeId) {
 		deleteUniverseUseCase.execute(universeId);
