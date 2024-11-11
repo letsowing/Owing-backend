@@ -27,7 +27,7 @@ public class CastFolderController extends BaseFolderController {
     private final UpdateCastFolderUseCase updateCastFolderUseCase;
     private final DeleteCastFolderUseCase deleteCastFolderUseCase;
 
-    @PutMapping("/{folderId}/info")
+    @PutMapping("/{folderId}")
     public ResponseEntity<Void> updateCastFolderInfo(@PathVariable Long folderId, @RequestBody UpdateCastFolderInfo updateCastFolderInfo) {
         updateCastFolderUseCase.executeInfoUpdate(folderId, updateCastFolderInfo);
         return ResponseEntity.noContent().build();
