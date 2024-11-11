@@ -1,7 +1,7 @@
-package com.owing.core.dnd.file.model;
+package com.owing.node.common.model;
 
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.core.dnd.folder.model.BaseFolderEntity;
+import com.owing.core.dnd.file.model.BaseFile;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 
 @Getter
-public abstract class BaseFileNode<T extends BaseFolderEntity> implements BaseFile<T>{
+public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo4j implements BaseFile<T>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

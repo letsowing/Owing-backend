@@ -1,6 +1,8 @@
 package com.owing.node.folder.cast.adaptor;
 
 import com.owing.common.annotation.Adaptor;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.core.dnd.folder.adapter.BaseFolderAdapter;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeNotFoundException;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastFolderNodeAdaptor {
+public class CastFolderNodeAdaptor extends BaseFolderAdapter<CastFolderNode> {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
 
@@ -33,5 +35,10 @@ public class CastFolderNodeAdaptor {
 
     public List<CastFolderNode> findAllWithRelationshipByProjectId(Long projectId) {
         return castFolderNodeRepository.findAllWithRelationshipByProjectId(projectId);
+    }
+
+    @Override
+    protected BaseDndRepository<CastFolderNode> dndRepository() {
+        return castFolderNodeRepository;
     }
 }
