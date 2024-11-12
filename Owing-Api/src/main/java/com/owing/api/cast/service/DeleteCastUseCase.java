@@ -1,23 +1,29 @@
 package com.owing.api.cast.service;
 
+import com.owing.api.common.util.MemberUtils;
+import com.owing.api.dnd.file.service.DeleteFileUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.node.domains.cast.adapter.CastNodeAdapter;
+import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.service.CastNodeDomainService;
+import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteCastUseCase {
+public class DeleteCastUseCase extends DeleteFileUseCase<CastNode, CastFolderNode> {
 
-    private final CastNodeAdapter castNodeAdapter;
     private final CastNodeDomainService castNodeDomainService;
+    private final MemberUtils memberUtils;
 
-    public void execute(Long castId) {
-        CastNode castNode = castNodeAdapter.findOneById(castId);
+    // Bean Setting
+    @Override
+    protected MemberUtils memberUtils() {
+        return this.memberUtils;
+    }
 
-        //TODO member의 삭제 권한 판별 추가
-
-        castNodeDomainService.deleteEntity(castNode);
+    @Override
+    protected BaseDndDomainService<CastNode> baseDndDomainService() {
+        return this.castNodeDomainService;
     }
 }

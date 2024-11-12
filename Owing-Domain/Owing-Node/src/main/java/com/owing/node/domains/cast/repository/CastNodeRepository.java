@@ -114,25 +114,24 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 //            "RETURN n2.id AS id, n2.name AS name, n2.gender AS gender")
 //    List<CastSummaryDto> findAllSummaryByProjectId(Long projectId);
 
+    @Override
+    @Query("""
+        MATCH
+          (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+        WHERE
+          id(cf)=$castFolderId
+        ORDER BY
+          c.position
+        RETURN
+          cf, r, c
+        """)
+    List<CastNode> findByParentId(Long castFolderId);
 
     /**
      * TODO
      * 쿼리 자동생성을 막기 위한 임시 쿼리
      * 추후 수정
      */
-
-    @Override
-    @Query("""
-        MATCH
-          (cf:CastFolder{id:$projectId, deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
-        WHERE
-          id(cf)=$castFolderId
-        ORDER BY
-          c.position
-        RETURN
-          c, r, p
-        """)
-    List<CastNode> findByParentId(Long castFolderId);
 
     @Override
     @Query("""
