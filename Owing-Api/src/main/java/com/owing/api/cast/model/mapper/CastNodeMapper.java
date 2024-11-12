@@ -118,4 +118,15 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
     public CastGraphResponse toGraphResponse(List<CastGraphNodeProjection> graphCast, List<CastGraphRelationshipProjection> graphCastRelationship) {
         return new CastGraphResponse(graphCast, graphCastRelationship);
     }
+
+    public CastRelationship toCastRelationship(CastRelationshipProjection castRelationshipProjection) {
+        return CastRelationship.builder()
+                .id(castRelationshipProjection.relationshipId())
+                .label(castRelationshipProjection.label())
+                .sourceId(castRelationshipProjection.sourceId())
+                .targetId(castRelationshipProjection.targetId())
+                .sourceHandle(castRelationshipProjection.sourceHandle())
+                .targetHandle(castRelationshipProjection.targetHandle())
+                .build();
+    }
 }

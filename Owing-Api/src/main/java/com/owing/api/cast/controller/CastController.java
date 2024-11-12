@@ -1,21 +1,13 @@
 package com.owing.api.cast.controller;
 
+import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
-import jakarta.websocket.server.PathParam;
+import com.owing.api.cast.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.owing.api.cast.model.dto.request.CreateCastRequest;
-import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
-import com.owing.api.cast.service.CreateCastUseCase;
-import com.owing.api.cast.service.CreateConnectionUseCase;
-import com.owing.api.cast.service.DeleteCastUseCase;
-import com.owing.api.cast.service.ReadCastUseCase;
-import com.owing.api.cast.service.UpdateCastUseCase;
 import com.owing.api.dnd.base.controller.BaseFileController;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
@@ -36,10 +28,11 @@ import lombok.RequiredArgsConstructor;
 public class CastController extends BaseFileController {
 
     private final CreateCastUseCase createCastUseCase;
-    private final CreateConnectionUseCase createConnectionUseCase;
     private final ReadCastUseCase readCastUseCase;
     private final UpdateCastUseCase updateCastUseCase;
     private final DeleteCastUseCase deleteCastUseCase;
+    private final CreateConnectionUseCase createConnectionUseCase;
+    private final UpdateConnectionUseCase updateConnectionUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -71,6 +64,12 @@ public class CastController extends BaseFileController {
     @Operation(summary = "✨ 관계도: 인물 관계 생성", description = "인물 관계 생성")
     public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@RequestBody CreateConnectionRequest createConnectionRequest) {
         return ResponseEntity.ok(createConnectionUseCase.execute(createConnectionRequest));
+    }
+
+    @PatchMapping("/relationships/{relationshipId}/label")
+    public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
+        updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
+        return ResponseEntity.noContent().build();
     }
 
     // Bean Setting
