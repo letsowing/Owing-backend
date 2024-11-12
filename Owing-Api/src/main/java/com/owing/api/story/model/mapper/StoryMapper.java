@@ -28,4 +28,9 @@ public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
 			.name(updateDndRequest.name())
 			.build();
 	}
+
+	@Override
+	public StoryInfoResponse toInfoResponse(Story entity) {
+		return StoryInfoResponse.from(entity);
+	}
 }
