@@ -27,7 +27,7 @@ public class TrashCanMapper {
 			.orElse(newTrashCanFolder(entity));
 		return TrashCan.builder()
 			.itemId(entity.getId())
-			.name(entity.getTitle())
+			.name(entity.getName())
 			.description(entity.getDescription())
 			.trashCanFolder(trashCanFolder)
 			.build();

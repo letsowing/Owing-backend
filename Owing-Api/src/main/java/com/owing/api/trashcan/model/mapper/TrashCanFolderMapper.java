@@ -82,7 +82,7 @@ public class TrashCanFolderMapper {
 	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity) {
 		return TrashCan.builder()
 			.itemId(baseFileEntity.getId())
-			.name(baseFileEntity.getTitle())
+			.name(baseFileEntity.getName())
 			.description(baseFileEntity.getDescription())
 			.build();
 	}
