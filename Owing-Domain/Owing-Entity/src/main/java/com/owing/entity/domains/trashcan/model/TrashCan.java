@@ -2,23 +2,20 @@ package com.owing.entity.domains.trashcan.model;
 
 import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "trash_can")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class TrashCan {
 
 	@Id
@@ -31,10 +28,11 @@ public class TrashCan {
 	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
 	private String name;
 
-	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
+	@Column(length = OwingPersistenceConst.FILE_NAME_LEN)
 	private String description;
 
-	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
+	@CreatedDate
+	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
 	@ManyToOne
