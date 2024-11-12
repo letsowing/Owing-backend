@@ -1,5 +1,8 @@
 package com.owing.node.domains.cast.model;
 
+import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
+import com.owing.node.domains.cast.error.exception.CastException;
+
 public enum ConnectionType {
     DIRECTIONAL("CONNECTION"), BIDIRECTIONAL("BI_CONNECTION");
 
@@ -9,12 +12,12 @@ public enum ConnectionType {
         this.value = value;
     }
 
-//    public static ConnectionType of(String value) {
-//        for (ConnectionType type : ConnectionType.values()) {
-//            if (type.value.equalsIgnoreCase(value)) {
-//                return type;
-//            }
-//        }
-//        throw CastingException.of(CastingErrorCode.ILLEGAL_TYPE_ARGS);
-//    }
+    public static ConnectionType of(String value) {
+        for (ConnectionType type : ConnectionType.values()) {
+            if (type.value.equalsIgnoreCase(value)) {
+                return type;
+            }
+        }
+        throw CastException.of(CastNodeErrorCode.ILLEGAL_HANDLE_ARGS);
+    }
 }
