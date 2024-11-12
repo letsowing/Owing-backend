@@ -2,7 +2,7 @@ package com.owing.api.dnd.file.model.dto.request;
 
 import com.owing.api.dnd.base.model.dto.request.UpdateDndRequest;
 
-public record UpdateFileRequest(
+public record UpdateFileTitleRequest(
 	String title
 ) implements UpdateDndRequest {
 }

@@ -8,7 +8,7 @@ import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
@@ -34,7 +34,7 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
     }
 
     @Override
-    public CastNode toEntity(UpdateFileRequest updateDndRequest) {
+    public CastNode toEntity(UpdateFileTitleRequest updateDndRequest) {
         return CastNode.builder()
                 .name(updateDndRequest.title())
                 .build();
