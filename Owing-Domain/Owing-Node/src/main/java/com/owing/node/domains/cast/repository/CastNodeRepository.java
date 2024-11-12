@@ -127,44 +127,48 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
         """)
     List<CastNode> findByParentId(Long castFolderId);
 
-    /**
-     * TODO
-     * 쿼리 자동생성을 막기 위한 임시 쿼리
-     * 추후 수정
-     */
-
     @Override
     @Query("""
 			MATCH
-			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
 			WHERE
-			  t.position > $position
+			  id(cf)=$folderId
+			  AND
+			    c.position > $position
 			SET
-			  t.position = t.position - 1
+			  c.position = c.position - 1
 			""")
-    void decrementPositionAfter(Long position, Long projectId);
-
-    @Override
-    @Query("""
-			MATCH
-			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
-			WHERE
-			  t.position >= $start AND t.position <= $end
-			SET
-			  t.position = t.position - 1
-			""")
-    void decrementPositionBetween(Long start, Long end, Long projectId);
+    void decrementPositionAfter(Long position, Long folderId);
 
     @Override
     @Query("""
 			MATCH
 			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
 			WHERE
-			  c.position >= $start AND c.position <= $end AND id(cf)=$castFolderId
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $start
+			  AND
+			    c.position <= $end
+			SET
+			  c.position = c.position - 1
+			""")
+    void decrementPositionBetween(Long start, Long end, Long folderId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $start
+			  AND
+			    c.position <= $end
 			SET
 			  c.position = c.position + 1
 			""")
-    void incrementPositionBetween(Long start, Long end, Long castFolderId);
+    void incrementPositionBetween(Long start, Long end, Long folderId);
 
     @Override
     @Query("""
