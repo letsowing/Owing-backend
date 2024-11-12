@@ -115,7 +115,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  r3.sourceId as sourceId, r3.sourceHandle as sourceHandle,
 			  r3.targetId as targetId, r3.targetHandle as targetHandle
 			""")
-    List<CastGraphRelationshipProjection> findGraphRelationshipByProjectId(Long projectId);
+    List<CastGraphRelationshipProjection> findGraphCastRelationshipByProjectId(Long projectId);
 
     @Query("""
 			MATCH
@@ -125,7 +125,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			RETURN DISTINCT
 			  id(c) as id, c.name as name, c.gender as gender, c.imageUrl as imageUrl
 			""")
-    List<CastGraphNodeProjection> findGraphNodeByProjectId(Long projectId);
+    List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId);
 
     @Override
     @Query("""
