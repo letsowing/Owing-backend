@@ -26,6 +26,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     private final CastNodeAdapter castNodeAdapter;
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
 
+    // =====Cast CRUD=====
     @Override
     public CastNode getEntity(Long castId) {
         return castNodeAdapter.findOneById(castId);
@@ -49,18 +50,6 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     }
 
     @Transactional
-    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.connectCast(relationship);
-        return castNodeRepository.save(sourceCast);
-    }
-
-    @Transactional
-    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.biconnectCast(relationship);
-        return castNodeRepository.save(sourceCast);
-    }
-
-    @Transactional
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
         castNode.updateInfo(castNodeInfo);
         neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
@@ -81,6 +70,19 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         castNode.delete();
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);
+    }
+
+    // =====Cast Relationship=====
+    @Transactional
+    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.connectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    @Transactional
+    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.biconnectCast(relationship);
+        return castNodeRepository.save(sourceCast);
     }
 
     // Bean Setting
