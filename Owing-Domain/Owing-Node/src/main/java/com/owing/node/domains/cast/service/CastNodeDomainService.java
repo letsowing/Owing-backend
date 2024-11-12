@@ -27,6 +27,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
 
     @Override
+    public CastNode getEntity(Long castId) {
+        return castNodeAdapter.findOneById(castId);
+    }
+
+    @Override
     @Transactional
     public CastNode createEntity(CastNode entity) {
         long position = orderingStrategy().getNewPosition(entity.getParentId());
