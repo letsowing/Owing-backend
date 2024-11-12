@@ -4,7 +4,7 @@ import com.owing.node.domains.cast.model.ConnectionHandle;
 import com.owing.node.domains.cast.model.ConnectionType;
 
 public record CastRelationshipInfoResponse(
-        String id,
+        Long id,
         String label,
         ConnectionType type,
         Long sourceId,

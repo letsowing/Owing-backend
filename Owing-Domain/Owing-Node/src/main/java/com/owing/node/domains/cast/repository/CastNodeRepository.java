@@ -60,7 +60,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             WHERE
                 id(n1)=$sourceId and id(n2)=$targetId
             RETURN
-                distinct split(elementId(r), ":")[1] as relationshipId,
+                distinct id(r) as relationshipId,
                 r.label as label,
                 r.sourceId as sourceId,
                 r.sourceHandle as sourceHandle,
@@ -75,7 +75,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             WHERE
               id(n1)=$sourceId and id(n2)=$targetId
             RETURN
-              distinct split(elementId(r), ":")[1] as relationshipId,
+              distinct id(r) as relationshipId,
               r.label as label,
               r.sourceId as sourceId,
               r.sourceHandle as sourceHandle,
