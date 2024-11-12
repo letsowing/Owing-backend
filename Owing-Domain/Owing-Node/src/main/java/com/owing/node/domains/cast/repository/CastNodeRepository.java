@@ -86,27 +86,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 
 	@Query("""
 			MATCH
-			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
-			WHERE
-			  id(r) = $relationshipId
-			SET
-			  r.label=$label
-			""")
-	void updateCastRelationshipLabel(Long relationshipId, String label);
-
-	@Query("""
-			MATCH
-			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
-			WHERE
-			  id(r) = $relationshipId
-			SET
-			  r += {sourceHandle: $sourceHandle, targetHandle: $targetHandle}
-			""")
-	void updateCastRelationshipHandle(Long relationshipId, String sourceHandle, String targetHandle);
-
-	@Query("""
-			MATCH
-			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
+			  (c1:Cast{deleted:false})-[r:CONNECTION|BI_CONNECTION]->(c2:Cast{deleted:false})
 			WHERE
 			  id(r) = $relationshipId
 			RETURN DISTINCT
@@ -119,29 +99,56 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			""")
 	Optional<CastRelationshipProjection> findCastRelationshipById(Long relationshipId);
 
+	@Query("""
+			MATCH
+			  (c1:Cast{deleted:false})-[r:CONNECTION|BI_CONNECTION]->(c2:Cast{deleted:false})
+			WHERE
+			  id(r) = $relationshipId
+			SET
+			  r.label = $label
+			""")
+	void updateCastRelationshipLabel(Long relationshipId, String label);
 
-    @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
-            "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
-            "SET r.label = $label " +
-            "SET r.sourceHandle = $sourceHandle " +
-            "SET r.targetHandle = $targetHandle " +
-            "RETURN r.uuid AS uuid, r.label AS label, r.sourceId AS sourceId, r.targetId AS targetId, " +
-            "r.sourceHandle AS sourceHandle, r.targetHandle AS targetHandle")
-    Optional<CastRelationship> updateDirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
+	@Query("""
+			MATCH
+			  (c1:Cast{deleted:false})-[r:CONNECTION|BI_CONNECTION]->(c2:Cast{deleted:false})
+			WHERE
+			  id(r) = $relationshipId
+			SET
+			  r += {sourceHandle: $sourceHandle, targetHandle: $targetHandle}
+			""")
+	void updateCastRelationshipHandle(Long relationshipId, String sourceHandle, String targetHandle);
 
-    @Query("MATCH (n1:Cast{id: $sourceId})-[r:BI_CONNECTION{uuid: $uuid}]-(n2:Cast{id: $targetId}) " +
-            "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
-            "SET r.label = $label " +
-            "SET r.sourceHandle = $sourceHandle " +
-            "SET r.targetHandle = $targetHandle " +
-            "RETURN r.uuid AS uuid, r.label AS label, r.sourceId AS sourceId, r.targetId AS targetId, " +
-            "r.sourceHandle AS sourceHandle, r.targetHandle AS targetHandle")
-    Optional<CastRelationship> updateBidirectionalConnectionName(String uuid, Long sourceId, Long targetId, String label, String sourceHandle, String targetHandle);
+    @Query("""
+			MATCH
+			  (c1:Cast{deleted:false})-[r:CONNECTION|BI_CONNECTION]-(c2:Cast{deleted:false})
+			WHERE
+			  id(r) = $relationshipId
+			DELETE
+			  r
+			""")
+    void deleteCastRelationshipById(Long relationshipId);
 
-    @Query("MATCH (n1:Cast)-[r:CONNECTION|BI_CONNECTION{uuid: $uuid}]-(n2:Cast) " +
-            "DELETE r " +
-            "RETURN count(DISTINCT r)")
-    Integer deleteConnectionByUuid(String uuid);
+	@Query("""
+			MATCH
+			  (c1:Cast{deleted:false}), (c2:Cast{deleted:false})
+			WHERE
+			  id(c1)=$sourceId AND id(c2)=$targetId
+			MERGE
+			  (c1)-[r:`:#{literal(#type)}`]->(c2)
+			ON CREATE SET
+			  r.label = $label,
+			  r.sourceId=id(c1), r.sourceHandle = $sourceHandle,
+			  r.targetId=id(c2), r.targetHandle = $targetHandle
+			RETURN
+			  id(r) as relationshipId,
+			  r.label as label,
+			  r.sourceId as sourceId,
+			  r.sourceHandle as sourceHandle,
+			  r.targetId as targetId,
+			  r.targetHandle as targetHandle
+			""")
+	CastRelationshipProjection createCastRelationship(Long sourceId, Long targetId, String type, String label, String sourceHandle, String targetHandle);
 
 	// =====Cast Graph=====
     @Query("""

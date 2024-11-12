@@ -20,4 +20,8 @@ public enum ConnectionType {
         }
         throw CastException.of(CastNodeErrorCode.ILLEGAL_HANDLE_ARGS);
     }
+
+    public String getValue() {
+        return this.value;
+    }
 }

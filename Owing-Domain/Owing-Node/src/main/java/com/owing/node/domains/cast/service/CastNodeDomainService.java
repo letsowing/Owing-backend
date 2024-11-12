@@ -6,7 +6,10 @@ import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.node.common.constant.CastConstant;
+import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
+import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
+import com.owing.node.domains.cast.error.exception.CastNodeRelationshipException;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.model.projection.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
@@ -14,8 +17,11 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 @DomainService
 @RequiredArgsConstructor
@@ -26,6 +32,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
+
+    private final Map<ConnectionType, Function<CastRelationship, CastRelationshipProjection>> castRelationshipHandler = Map.of(
+            ConnectionType.DIRECTIONAL, this::createConnection,
+            ConnectionType.BIDIRECTIONAL, this::createBiconnection
+    );
 
     public List<CastGraphNodeProjection> getGraphNode(Long projectId) {
         return castNodeAdapter.findGraphCastByProjectId(projectId);
@@ -56,15 +67,32 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
 
     // =====Cast Relationship=====
     @Transactional
-    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.connectCast(relationship);
-        return castNodeRepository.save(sourceCast);
+    public CastRelationshipProjection handleCastRelationship(ConnectionType type, CastRelationship relationship) {
+        Function<CastRelationship, CastRelationshipProjection> handler = castRelationshipHandler.get(type);
+        if (ObjectUtils.isEmpty(handler)) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.ILLEGAL_TYPE_ARGS);
+        }
+        return handler.apply(relationship);
+    }
+    @Transactional
+    protected CastRelationshipProjection createConnection(CastRelationship relationship) {
+        // TODO 선행 관계 검증
+        return createCastRelationship(relationship, ConnectionType.DIRECTIONAL);
     }
 
     @Transactional
-    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.biconnectCast(relationship);
-        return castNodeRepository.save(sourceCast);
+    protected CastRelationshipProjection createBiconnection(CastRelationship relationship) {
+        // TODO 선행 관계 검증
+        return createCastRelationship(relationship, ConnectionType.BIDIRECTIONAL);
+    }
+
+    @Transactional
+    protected CastRelationshipProjection createCastRelationship(CastRelationship relationship, ConnectionType connectionType) {
+        return castNodeRepository.createCastRelationship(
+                relationship.getSourceId(), relationship.getTargetId(),
+                connectionType.getValue(), relationship.getLabel(),
+                relationship.getSourceHandle().name(), relationship.getTargetHandle().name()
+        );
     }
 
     @Transactional
@@ -75,6 +103,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     @Transactional
     public void updateCastRelationshipHandle(CastRelationship castRelationship, ConnectionHandle sourceHandle, ConnectionHandle targetHandle) {
         castNodeRepository.updateCastRelationshipHandle(castRelationship.getId(), sourceHandle.name(), targetHandle.name());
+    }
+
+    @Transactional
+    public void deleteCastRelationship(CastRelationship castRelationship) {
+        castNodeRepository.deleteCastRelationshipById(castRelationship.getId());
     }
 
     // =====super() Cast CRUD=====
