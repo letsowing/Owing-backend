@@ -74,8 +74,10 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         }
     }
 
+    @Override
     @Transactional
-    public void deleteCastNode(CastNode castNode) {
+    public void deleteEntity(CastNode castNode) {
+        castShiftOrderingStrategy.reorderEntity(castNode);
         castNode.delete();
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);

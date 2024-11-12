@@ -18,6 +18,6 @@ public class DeleteCastUseCase {
 
         //TODO member의 삭제 권한 판별 추가
 
-        castNodeDomainService.deleteCastNode(castNode);
+        castNodeDomainService.deleteEntity(castNode);
     }
 }
