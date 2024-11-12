@@ -6,6 +6,7 @@ import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -180,4 +181,14 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 				COALESCE(MAX(c.position), -1)
 			""")
     Long getMaxPositionByParentId(Long parentId);
+
+	@Query("""
+		MATCH
+		  (c:Cast{deleted:true})
+		WHERE
+		  id(c)=$itemId
+		SET
+		  c.deleted=false
+		""")
+	void restoreById(@Param("itemId") Long itemId);
 }

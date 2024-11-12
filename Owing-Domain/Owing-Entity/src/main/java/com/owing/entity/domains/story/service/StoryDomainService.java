@@ -44,4 +44,8 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		story.updateTextCount(textCnt);
 		storyRepository.save(story);
 	}
+
+	public void restoreById(Long itemId) {
+		storyRepository.restoreById(itemId);
+	}
 }

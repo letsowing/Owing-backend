@@ -49,7 +49,6 @@ public class TrashCanFolderController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// todo trashFolder 복원 구현하기
 	@PostMapping("/{trashId}")
 	public ResponseEntity<?> restoreTrashCanFolder(@PathVariable Long trashId) {
 		updateTrashCanFolderUserCase.executeRestoreFolder(trashId);

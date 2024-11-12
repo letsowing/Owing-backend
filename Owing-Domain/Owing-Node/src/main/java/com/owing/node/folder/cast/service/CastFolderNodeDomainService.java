@@ -1,10 +1,13 @@
 package com.owing.node.folder.cast.service;
 
+import java.util.List;
+
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.folder.service.BaseFolderDomainService;
+import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
@@ -24,6 +27,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     private final Neo4jTemplate neo4jTemplate;
     private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;
+    private final CastNodeRepository castNodeRepository;
 
     @Override
     public CastFolderNode getEntity(Long folderId) {
@@ -73,4 +77,10 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         return this.castFolderShiftOrderingStrategy;
     }
 
+    public void restore(Long folderItemId, List<Long> trashCanItemIds) {
+        castFolderNodeRepository.restoreById(folderItemId);
+        for (Long id : trashCanItemIds) {
+            castNodeRepository.restoreById(id);
+        }
+    }
 }

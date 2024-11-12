@@ -49,4 +49,8 @@ public class UniverseDomainService extends BaseFileDomainService<Universe, Unive
 	protected OrderingStrategy<Universe> orderingStrategy() {
 		return orderingStrategy;
 	}
+
+	public void restoreById(Long itemId) {
+		universeRepository.restoreById(itemId);
+	}
 }

@@ -1,5 +1,7 @@
 package com.owing.entity.domains.universe.service;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
@@ -29,7 +31,7 @@ public class UniverseFolderDomainService extends BaseFolderDomainService<Univers
 
 	@Override
 	protected BaseDndAdapter<UniverseFolder> dndEntityAdapter() {
-		return dndAdapter;
+		return null;
 	}
 
 	@Override

@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.service.trashcan.CreateTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.DeleteTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.ReadTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.UpdateTrashCanUserCase;
 import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.universe.model.Universe;
+import com.owing.node.domains.cast.model.CastNode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,6 @@ public class TrashCanController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// todo 휴지통 요소 복원하기
 	@PostMapping("/{trashId}")
 	public ResponseEntity<?> restoreTrashCan(@PathVariable Long trashId) {
 		updateTrashCanUserCase.executeRestore(trashId);
@@ -46,16 +45,13 @@ public class TrashCanController {
 		return ResponseEntity.ok(readTrashCanUserCase.executeStory(trashId));
 	}
 
-	// todo cast 보여주기
 	@GetMapping("/{trashId}/cast")
-	public ResponseEntity<?> getCastTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("구현 필요");
-		// return ResponseEntity.ok(readTrashCanUserCase.executeCast(trashId));
+	public ResponseEntity<CastNode> getCastTrashCan(@PathVariable Long trashId) {
+		return ResponseEntity.ok(readTrashCanUserCase.executeCast(trashId));
 	}
 
-	// todo universe 보여주기
 	@GetMapping("/{trashId}/universe")
-	public ResponseEntity<?> getUniverseTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("universe 구현이 되야 함");
+	public ResponseEntity<Universe> getUniverseTrashCan(@PathVariable Long trashId) {
+		return ResponseEntity.ok(readTrashCanUserCase.executeUniverse(trashId));
 	}
 }

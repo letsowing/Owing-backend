@@ -3,6 +3,7 @@ package com.owing.node.folder.cast.repository;
 import com.owing.node.common.repository.BaseFolderNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -115,4 +116,13 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
 			""")
 	Long getMaxPositionByParentId(Long projectId);
 
+	@Query("""
+		MATCH
+		  (c:CastFolder{deleted:true})
+		WHERE
+		  id(c)=$itemId
+		SET
+		  c.deleted=false
+		""")
+	void restoreById(@Param("itemId") Long itemId);
 }
