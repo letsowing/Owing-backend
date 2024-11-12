@@ -3,10 +3,10 @@ package com.owing.ai.domains.image.service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.owing.ai.domains.chat.strategy.PromptGenerator;
 import com.owing.ai.domains.image.dto.request.GenerateUniverseImageRequest;
 import com.owing.ai.domains.image.dto.response.UniverseImageResponse;
 import com.owing.ai.domains.image.strategy.ImageGenerator;
-import com.owing.ai.domains.image.utils.PromptUtils;
 import com.owing.infrastructure.config.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class UniverseImageService {
 
 	private final ImageGenerator imageGenerator;
+	private final PromptGenerator promptGenerator;
 	private final S3Uploader s3Uploader;
 
 
@@ -29,7 +30,10 @@ public class UniverseImageService {
 	// @Transactional
 	public ResponseEntity<UniverseImageResponse> generateUniverseImage(GenerateUniverseImageRequest imageGenerateRequest) {
 
-		String prompt = PromptUtils.createPrompt(imageGenerateRequest);
+		/* TextGeneration - 프롬프트 생성 */
+		String prompt = promptGenerator.generateUniverseImagePrompt(imageGenerateRequest); // todo: 프롬프트 db 저장
+
+		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
 
 		/* S3 업로드 */

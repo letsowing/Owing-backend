@@ -4,17 +4,27 @@ import org.springframework.ai.openai.api.OpenAiImageApi;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "spring.ai.openai")
-public record OpenAiImageProperties (
+public record OpenAiProperties(
 	String apiKey,
-	Image image
+	Image image,
+	Chat chat
 ) {
 	public record Image (
-		Options options
+		ImageOptions options
 	) {}
-	public record Options (
+	public record ImageOptions (
 		OpenAiImageApi.ImageModel model,
 		String responseFormat,
 		String quality,
 		String size
+	) {}
+	public record Chat (
+		ChatOptions options
+	) {}
+	public record ChatOptions (
+		String model,
+		// String responseFormat,
+		String temperature,
+		String maxTokens
 	) {}
 }
