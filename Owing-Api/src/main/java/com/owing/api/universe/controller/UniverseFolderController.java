@@ -16,11 +16,13 @@ import com.owing.api.universe.service.folder.DeleteUniverseFolderUseCase;
 import com.owing.api.universe.service.folder.ReadUniverseFolderUseCase;
 import com.owing.api.universe.service.folder.UpdateUniverseFolderUseCase;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/v1/universes/folders")
 @RequiredArgsConstructor
+@Tag(name="세계관 폴더 /universes/folders", description="세계관 폴더 API")
 public class UniverseFolderController extends BaseFolderController {
 	private final CreateUniverseFolderUseCase createUniverseUseCase;
 	private final UpdateUniverseFolderUseCase updateUniverseUseCase;
