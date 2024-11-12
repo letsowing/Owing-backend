@@ -9,11 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FileMapper {
 
-	public FileResponse toFileResponse(String presignedUrl, String fileUrl, String fileName) {
+	public FileResponse toFileResponse(String presignedUrl, String fileUrl) {
 		return FileResponse.builder()
 			.presignedUrl(presignedUrl)
 			.fileUrl(fileUrl)
-			.fileName(fileName)
 			.build();
 	}
 }

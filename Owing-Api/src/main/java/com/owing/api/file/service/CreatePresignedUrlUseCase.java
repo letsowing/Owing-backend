@@ -17,10 +17,10 @@ public class CreatePresignedUrlUseCase {
 	public FileResponse execute(String fileName) {
 
 		String randomFileName = FileUtils.buildFileName(fileName);
-		String presignUrl = s3Uploader.getPresignUrl(fileName);
+		String presignUrl = s3Uploader.getPresignUrl(randomFileName);
 		// presignUrl 에서 쿼리 파라미터를 제외한 fileUrl 생성
 		String fileUrl = presignUrl.contains("?") ? presignUrl.substring(0, presignUrl.indexOf("?")) : "";
 
-		return fileMapper.toFileResponse(presignUrl, fileUrl, randomFileName);
+		return fileMapper.toFileResponse(presignUrl, fileUrl);
 	}
 }
