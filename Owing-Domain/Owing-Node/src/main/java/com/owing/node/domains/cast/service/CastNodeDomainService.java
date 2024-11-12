@@ -22,12 +22,44 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastFolderNode> {
 
-    private final CastNodeRepository castNodeRepository;
-    private final Neo4jTemplate neo4jTemplate;
     private final CastNodeAdapter castNodeAdapter;
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
+    private final CastNodeRepository castNodeRepository;
+    private final Neo4jTemplate neo4jTemplate;
 
-    // =====Cast CRUD=====
+    @Transactional
+    public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
+        castNode.updateInfo(castNodeInfo);
+        neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
+    }
+
+    @Transactional
+    public void updateCastNodeCoordinate(CastNode castNode, Coordinate coordinate) {
+        boolean isUpdated = castNode.updateCoordinate(coordinate);
+        if (isUpdated) {
+            neo4jTemplate.save(CastNode.class).one(castNode);
+        }
+    }
+
+    @Transactional
+    public void restoreById(Long castId) {
+        castNodeRepository.restoreById(castId);
+    }
+
+    // =====Cast Relationship=====
+    @Transactional
+    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.connectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    @Transactional
+    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.biconnectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    // =====super() Cast CRUD=====
     @Override
     public CastNode getEntity(Long castId) {
         return castNodeAdapter.findOneById(castId);
@@ -59,20 +91,6 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         return entity;
     }
 
-    @Transactional
-    public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
-        castNode.updateInfo(castNodeInfo);
-        neo4jTemplate.save(CastNode.class).one(CastInfoProjection.from(castNode));
-    }
-
-    @Transactional
-    public void updateCastNodeCoordinate(CastNode castNode, Coordinate coordinate) {
-        boolean isUpdated = castNode.updateCoordinate(coordinate);
-        if (isUpdated) {
-            neo4jTemplate.save(CastNode.class).one(castNode);
-        }
-    }
-
     @Override
     @Transactional
     public void deleteEntity(CastNode castNode) {
@@ -80,19 +98,6 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         castNode.delete();
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);
-    }
-
-    // =====Cast Relationship=====
-    @Transactional
-    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.connectCast(relationship);
-        return castNodeRepository.save(sourceCast);
-    }
-
-    @Transactional
-    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.biconnectCast(relationship);
-        return castNodeRepository.save(sourceCast);
     }
 
     // Bean Setting
@@ -111,7 +116,4 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         return this.castShiftOrderingStrategy;
     }
 
-    public void restoreById(Long itemId) {
-        castNodeRepository.restoreById(itemId);
-    }
 }
