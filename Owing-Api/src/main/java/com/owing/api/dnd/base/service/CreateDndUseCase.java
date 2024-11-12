@@ -1,5 +1,7 @@
 package com.owing.api.dnd.base.service;
 
-public interface CreateDndUseCase<R, A>{
-    R execute(A a);
+import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
+
+public interface CreateDndUseCase<A>{
+    DndInfoResponse execute(A a);
 }

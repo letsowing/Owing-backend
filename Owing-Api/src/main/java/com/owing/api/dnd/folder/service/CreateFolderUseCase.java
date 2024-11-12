@@ -11,7 +11,7 @@ import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class CreateFolderUseCase<T extends BaseFolder> implements
-    CreateDndUseCase<FolderInfoResponse, AddFolderRequest> {
+    CreateDndUseCase<AddFolderRequest> {
     protected abstract MemberUtils memberUtils();
     protected abstract BaseDndDomainService<T> baseDndDomainService();
     protected abstract BaseFolderMapper<T> dndMapper();
