@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.owing.api.dnd.base.model.dto.request.AddDndRequest;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
 import com.owing.api.dnd.base.service.ReadDndUseCase;
@@ -15,10 +16,10 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-public abstract class DndController<A, U, P>{
+public abstract class DndController<A extends AddDndRequest, U, P>{
 
-    protected abstract CreateDndUseCase<?, A> createDndUseCase();
-    protected abstract ReadDndUseCase<?, ?> readDndUseCase();
+    protected abstract CreateDndUseCase<A> createDndUseCase();
+    protected abstract ReadDndUseCase readDndUseCase();
     protected abstract DeleteDndUseCase deleteDndUseCase();
     protected abstract UpdateDndUseCase<U, P> updateDndUseCase();
 

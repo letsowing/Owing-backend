@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
+import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 public abstract class BaseFolderController extends DndController<AddFolderRequest, UpdateFolderTitleRequest, UpdateFolderPositionRequest>{
+
+	protected abstract ReadFolderUseCase readDndUseCase();
 
 	@GetMapping
 	@Operation(summary = "✨ DnD: 폴더 리스트 조회", description = "프로젝트 내 폴더 리스트와 밑에 딸린 파일 리스트를 조회합니다.")

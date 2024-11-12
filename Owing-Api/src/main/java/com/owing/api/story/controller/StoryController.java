@@ -16,7 +16,7 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.story.model.dto.request.AddStoryTextRequest;
+import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.service.story.CreateStoryUseCase;
 import com.owing.api.story.service.story.DeleteStoryUseCase;
 import com.owing.api.story.service.story.ReadStoryUseCase;
@@ -38,19 +38,19 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
-	public ResponseEntity<?> createStory(@PathVariable Long storyId, @RequestBody AddStoryTextRequest request) {
+	public ResponseEntity<?> createStory(@PathVariable Long storyId, @RequestBody AddStoryContentRequest request) {
         createDndUseCase.executeText(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
 	@Override
-	protected CreateDndUseCase<?, AddFileRequest> createDndUseCase() {
+	protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
 		return createDndUseCase;
 	}
 
 	@Override
-	protected ReadDndUseCase<?, ?> readDndUseCase() {
+	protected ReadDndUseCase readDndUseCase() {
 		return readDndUseCase;
 	}
 

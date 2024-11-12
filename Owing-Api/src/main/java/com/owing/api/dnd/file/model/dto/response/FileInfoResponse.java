@@ -8,14 +8,14 @@ import lombok.Builder;
 @Builder
 public record FileInfoResponse(
 	Long id,
-	String title,
+	String name,
 	String description,
 	Long folderId
 ) implements DndInfoResponse {
 	public static FileInfoResponse from(BaseFile entity) {
 		return FileInfoResponse.builder()
 			.id(entity.getId())
-			.title(entity.getTitle())
+			.name(entity.getName())
 			.description(entity.getDescription())
 			.folderId(entity.getParentId())
 			.build();
