@@ -17,10 +17,44 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 
+	/**
+	 * 세계관 DnD 생성시 사용
+	 */
+	@Override
+	public Universe toEntity(AddFileRequest dto, UniverseFolder folder) {
+		return Universe.builder()
+			.name(dto.name())
+			.folder(folder)
+			.build();
+	}
+
+	/**
+	 * 세계관 DnD 수정시 사용
+	 */
+	@Override
+	public Universe toEntity(UpdateFileTitleRequest dto) {
+		return  Universe.builder()
+			.name(dto.name())
+			.build();
+	}
+
+	/**
+	 * 세계관 정보 응답
+	 */
+	@Override
+	public UniverseShortInfoResponse toInfoResponse(Universe universe) {
+		return UniverseShortInfoResponse.builder()
+			.id(universe.getId())
+			.name(universe.getName())
+			.description(universe.getDescription())
+			.imageUrl(universe.getImageUrl())
+			.build();
+	}
+
 	/** 세계관 생성 시 사용합니다 **/
 	public Universe toEntity(AddUniverseRequest addUniverseRequest, UniverseFolder universeFolder) {
 		return Universe.builder()
-			.title(addUniverseRequest.name())
+			.name(addUniverseRequest.name())
 			.description(addUniverseRequest.description())
 			.imageUrl(addUniverseRequest.imageUrl())
 			.folder(universeFolder)
@@ -30,35 +64,11 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 	/** 세계관 수정 시 사용합니다 **/
 	public Universe toEntity(Universe oldUniverse, UpdateUniverseRequest updateUniverseRequest) {
 		return Universe.builder()
-			.title(updateUniverseRequest.name())
+			.name(updateUniverseRequest.name())
 			.description(updateUniverseRequest.description())
 			.imageUrl(updateUniverseRequest.imageUrl())
 			.folder(oldUniverse.getFolder())
 			.build();
-	}
-
-	public UniverseShortInfoResponse toShortInfoResponse(Universe universe) {
-		return UniverseShortInfoResponse.builder()
-			.id(universe.getId())
-			.title(universe.getTitle())
-			.description(universe.getDescription())
-			.imageUrl(universe.getImageUrl())
-			.build();
-	}
-
-	@Override
-	public Universe toEntity(AddFileRequest addDndRequest, UniverseFolder folder) {
-		return null;
-	}
-
-	@Override
-	public Universe toEntity(AddFileRequest addDndRequest) {
-		return null;
-	}
-
-	@Override
-	public Universe toEntity(UpdateFileTitleRequest updateDndRequest) {
-		return null;
 	}
 
 	public UniverseImageResponse toGenerateImageResponse(String imgUrl) {
@@ -66,4 +76,5 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 			.imageUrl(imgUrl)
 			.build();
 	}
+
 }

@@ -2,6 +2,9 @@ package com.owing.node.folder.cast.service;
 
 import java.util.List;
 
+import org.springframework.data.neo4j.core.Neo4jTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
@@ -14,9 +17,8 @@ import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderInfoProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderTitleProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.neo4j.core.Neo4jTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
 
     @Override
     @Transactional
-    public CastFolderNode updateTitle(CastFolderNode entity, CastFolderNode newEntity) {
+    public CastFolderNode updateName(CastFolderNode entity, CastFolderNode newEntity) {
         entity.updateTitle(newEntity.getName());
         CastFolderTitleProjection titleProjection = CastFolderTitleProjection.from(entity);
         neo4jTemplate.save(CastFolderNode.class).one(titleProjection);

@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SoftDelete
-public class StoryText extends BaseTimeEntity {
+public class StoryContent extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(mappedBy = "storyText")
+	@OneToOne(mappedBy = "storyContent")
 	private Story story;
 
 	@Lob
@@ -33,12 +33,12 @@ public class StoryText extends BaseTimeEntity {
 	private String content;
 
 	@Builder
-	public StoryText(Story story, String content) {
+	public StoryContent(Story story, String content) {
 		this.story = story;
 		this.content = content;
 	}
 
-	public void update(StoryText newStoryText) {
-        this.content = newStoryText.content;
+	public void update(StoryContent newStoryContent) {
+        this.content = newStoryContent.content;
     }
 }

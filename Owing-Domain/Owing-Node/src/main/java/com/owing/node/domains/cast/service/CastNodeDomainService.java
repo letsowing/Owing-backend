@@ -52,8 +52,8 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
 
     @Override
     @Transactional
-    public CastNode updateTitle(CastNode entity, CastNode newEntity) {
-        entity.updateTitle(newEntity.getTitle());
+    public CastNode updateName(CastNode entity, CastNode newEntity) {
+        entity.updateName(newEntity.getName());
         CastTitleProjection titleProjection = CastTitleProjection.from(entity);
         neo4jTemplate.save(CastNode.class).one(titleProjection);
         return entity;

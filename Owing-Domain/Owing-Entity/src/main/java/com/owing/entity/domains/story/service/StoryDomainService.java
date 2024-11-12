@@ -8,7 +8,7 @@ import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.model.StoryText;
+import com.owing.entity.domains.story.model.StoryContent;
 import com.owing.entity.domains.story.repository.StoryRepository;
 import com.owing.entity.domains.story.textCount.TextCounter;
 
@@ -38,9 +38,9 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		return orderingStrategy;
 	}
 
-	public void updateContent(Story story, StoryText storyText) {
-		story.createOrUpdateStoryText(storyText);
-		int textCnt = TextCounter.countText(storyText.getContent(), false, true);
+	public void updateContent(Story story, StoryContent storyContent) {
+		story.createOrUpdateStoryText(storyContent);
+		int textCnt = TextCounter.countText(storyContent.getContent(), false, true);
 		story.updateTextCount(textCnt);
 		storyRepository.save(story);
 	}
