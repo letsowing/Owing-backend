@@ -3,7 +3,7 @@ package com.owing.node.domains.cast.model.projection;
 import com.owing.node.domains.cast.model.ConnectionHandle;
 import com.owing.node.domains.cast.model.ConnectionType;
 
-public record CastConnectionProjection(
+public record CastGraphRelationshipProjection(
         String uuid,
         String type,
         String label,
@@ -12,7 +12,7 @@ public record CastConnectionProjection(
         ConnectionHandle sourceHandle,
         ConnectionHandle targetHandle
 ) {
-    public CastConnectionProjection {
+    public CastGraphRelationshipProjection {
         type = ConnectionType.of(type).name();
     }
 }
