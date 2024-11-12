@@ -21,8 +21,8 @@ public class TrashCanFolderAdaptor {
 	}
 
 	public TrashCanFolder findById(Long trashId) {
-		return trashCanFolderRepository.findById(trashId).orElseThrow(() -> TrashCanFolderException.of(
-			TrashCanFolderErrorCode.TRASH_CAN_FOLDER_NOT_FOUND, "요청된 TrashCanFolder Id: %d".formatted(trashId)));
+		return trashCanFolderRepository.findById(trashId)
+			.orElseThrow(() -> TrashCanFolderException.of(TrashCanFolderErrorCode.TRASH_CAN_FOLDER_NOT_FOUND, "요청된 TrashCanFolder Id: %d".formatted(trashId)));
 	}
 
 	public Optional<TrashCanFolder> findByItemId(Long itemId) {

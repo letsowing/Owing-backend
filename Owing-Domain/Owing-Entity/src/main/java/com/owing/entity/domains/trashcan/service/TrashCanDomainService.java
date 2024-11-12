@@ -59,12 +59,14 @@ public class TrashCanDomainService {
 	}
 
 	public FolderType findTableNameById(Long trashId) {
-		TrashCan trashCan = trashCanRepository.findById(trashId).orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
+		TrashCan trashCan = trashCanRepository.findById(trashId)
+			.orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
 		return trashCan.getTrashCanFolder().getTableName();
 	}
 
 	public Long findItemId(Long trashId) {
-		TrashCan trashCan = trashCanRepository.findById(trashId).orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
+		TrashCan trashCan = trashCanRepository.findById(trashId)
+			.orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
 		return trashCan.getItemId();
 	}
 }

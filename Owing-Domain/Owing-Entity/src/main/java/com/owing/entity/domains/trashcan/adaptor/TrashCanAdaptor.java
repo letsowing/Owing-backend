@@ -14,7 +14,8 @@ public class TrashCanAdaptor {
     private final TrashCanRepository trashCanRepository;
 
     public TrashCan findById(Long trashId) {
-        return trashCanRepository.findById(trashId).orElseThrow(() -> TrashCanException.of(TrashCanErrorCode.TRASH_CAN_NOT_FOUND,
+        return trashCanRepository.findById(trashId).
+            orElseThrow(() -> TrashCanException.of(TrashCanErrorCode.TRASH_CAN_NOT_FOUND,
             String.format("요청된 Trash Id: %d", trashId)));
     }
 }
