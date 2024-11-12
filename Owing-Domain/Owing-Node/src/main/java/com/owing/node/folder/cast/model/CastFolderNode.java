@@ -17,6 +17,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Node("CastFolder")
@@ -36,11 +37,11 @@ public class CastFolderNode extends BaseFolderNode implements FolderNode {
     private ProjectNode project;
 
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
-    private List<CastNode> cast;
+    private List<CastNode> cast = new ArrayList<>();
 
     // TODO 임시 작성. FileNode 임포트하고 cast들로 변경 필요
     public List<BaseFile> getFiles(){
-        return null;
+        return new ArrayList<>();
     }
 
     @Builder
