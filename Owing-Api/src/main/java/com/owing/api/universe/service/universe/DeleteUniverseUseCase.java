@@ -2,8 +2,10 @@ package com.owing.api.universe.service.universe;
 
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.service.DeleteFileUseCase;
+import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -17,7 +19,8 @@ public class DeleteUniverseUseCase extends DeleteFileUseCase<Universe, UniverseF
 
 	private final MemberUtils memberUtils;
 	private final UniverseDomainService universeDomainService;
-	private final UniverseAdapter universeAdapter;
+	private final TrashCanDomainService trashCanDomainService;
+	private final TrashCanMapper trashCanMapper;
 
 	@Override
 	protected MemberUtils memberUtils() {
@@ -27,6 +30,16 @@ public class DeleteUniverseUseCase extends DeleteFileUseCase<Universe, UniverseF
 	@Override
 	protected BaseDndDomainService<Universe> baseDndDomainService() {
 		return universeDomainService;
+	}
+
+	@Override
+	protected TrashCanDomainService trashCanDomainService() {
+		return trashCanDomainService;
+	}
+
+	@Override
+	protected TrashCanMapper trashCanMapper() {
+		return trashCanMapper;
 	}
 
 	// @Transactional

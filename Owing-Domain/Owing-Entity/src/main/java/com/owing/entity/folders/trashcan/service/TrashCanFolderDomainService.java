@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.owing.entity.domains.story.repository.StoryFolderRepository;
+import com.owing.entity.domains.story.repository.StoryRepository;
 import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseRepository;
 import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
@@ -14,11 +18,17 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class TrashCanFolderDomainService {
 
 	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 	private final TrashCanFolderRepository trashCanFolderRepository;
+
+	private final StoryFolderRepository storyFolderRepository;
+	private final StoryRepository storyRepository;
+
+	private final UniverseFolderRepository universeFolderRepository;
+	private final UniverseRepository universeRepository;
 
 	public List<TrashCanFolder> getTrashCanFolder(Long projectId) {
 		return trashCanFolderAdaptor.findAllByProject_Id(projectId);
@@ -41,14 +51,10 @@ public class TrashCanFolderDomainService {
 			// todo cast 하위에 있던 file들 모두 복원 처리하기.
 			trashCanFolderUnderFileRestoreCast(trashCanFolder);
 		}
-		// todo trashCan 에 Universe에 해당하는 deleted 부분을 false로 변경
 		else if (trashCanFolder.getTableName().isUniverse()){
-			// todo universe 하위에 있던 file들 모두 복원 처리하기.
 			trashCanFolderUnderFileRestoreUniverse(trashCanFolder);
 		}
-		// todo trashCan 에 Story에 해당하는 deleted 부분을 false로 변경
 		else if (trashCanFolder.getTableName().isStory()){
-			// todo story 하위에 있던 file들 모두 복원 처리하기.
 			trashCanFolderUnderFileRestoreStory(trashCanFolder);
 		}
 
@@ -59,26 +65,26 @@ public class TrashCanFolderDomainService {
 		List<TrashCan> trashCans = trashCanFolder.getTrashCanList();
 
 		for (TrashCan trashCan : trashCans){
-			// todo 여기서 cast 에서 itemId에 해당하는 거 복원하기
-			trashCan.getItemId();
+			// todo 여기서 cast 에서 itemId에 해당하는 거 복원하고 삭제
+
 		}
 	}
 
 	private void trashCanFolderUnderFileRestoreUniverse(TrashCanFolder trashCanFolder){
 		List<TrashCan> trashCans = trashCanFolder.getTrashCanList();
 
+		universeFolderRepository.restoreById(trashCanFolder.getItemId());
 		for (TrashCan trashCan : trashCans){
-			// todo 여기서 universe 에서 itemId에 해당하는 거 복원하기
-			trashCan.getItemId();
+			universeRepository.restoreById(trashCan.getItemId());
 		}
 	}
 
 	private void trashCanFolderUnderFileRestoreStory(TrashCanFolder trashCanFolder){
 		List<TrashCan> trashCans = trashCanFolder.getTrashCanList();
 
+		storyFolderRepository.restoreById(trashCanFolder.getItemId());
 		for (TrashCan trashCan : trashCans){
-			// todo 여기서 story 에서 itemId에 해당하는 거 복원하기
-			trashCan.getItemId();
+			storyRepository.restoreById(trashCan.getItemId());
 		}
 	}
 

@@ -23,4 +23,6 @@ public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, 
 	@Modifying
 	@Query("UPDATE TrashCanFolder t SET t.createdAt = CURRENT_TIMESTAMP WHERE t.id = :id")
 	void updateCreatedAtById(Long id);
+
+
 }

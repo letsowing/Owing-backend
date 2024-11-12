@@ -2,12 +2,11 @@ package com.owing.api.trashcan.service.folder;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
-import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.story.adapter.StoryAdapter;
-import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
-import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.domains.trashcan.model.Folder;
+import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
+import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,13 @@ import lombok.RequiredArgsConstructor;
 public class ReadTrashCanFolderUserCase {
 	private final TrashCanFolderDomainService trashCanFolderDomainService;
 	private final TrashCanFolderMapper trashCanFolderMapper;
+	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 
-	public TrashCanFolderResponse execute(Long projectId) {
+	public TrashCanFolderResponse executeProject(Long projectId) {
 		return trashCanFolderMapper.toTrashCanFolderResponse(trashCanFolderDomainService.getTrashCanFolder(projectId));
+	}
+
+	public TrashCanFolder execute(Long trashId) {
+		return trashCanFolderAdaptor.findById(trashId);
 	}
 }

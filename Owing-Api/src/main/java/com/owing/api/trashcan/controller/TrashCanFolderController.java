@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.story.service.folder.CreateStoryFolderUseCase;
-import com.owing.api.story.service.folder.DeleteStoryFolderUseCase;
-import com.owing.api.story.service.folder.ReadStoryFolderUseCase;
-import com.owing.api.story.service.folder.UpdateStoryFolderUseCase;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.service.folder.CreateTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.DeleteTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.ReadTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.UpdateTrashCanFolderUserCase;
+import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +29,7 @@ public class TrashCanFolderController {
 
 	@GetMapping("")
 	public ResponseEntity<TrashCanFolderResponse> getTrashCan(@RequestParam("projectId") Long projectId) {
-		return ResponseEntity.ok(readTrashCanFolderUserCase.execute(projectId));
+		return ResponseEntity.ok(readTrashCanFolderUserCase.executeProject(projectId));
 	}
 
 	@DeleteMapping("")
@@ -41,22 +38,9 @@ public class TrashCanFolderController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// todo story-folder 보여주기
-	@GetMapping("/{trashId}/story")
-	public ResponseEntity<?> getStoryFolderTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("universe 구현이 되야 함");
-	}
-
-	// todo cast-folder 보여주기
-	@GetMapping("/{trashId}/cast")
-	public ResponseEntity<?> getCastFolderTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("universe 구현이 되야 함");
-	}
-
-	// todo universe-folder 보여주기
-	@GetMapping("/{trashId}/universe")
-	public ResponseEntity<?> getUniverseFolderTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok("universe 구현이 되야 함");
+	@GetMapping("/{trashId}")
+	public ResponseEntity<TrashCanFolder> getFolderTrashCan(@PathVariable Long trashId) {
+		return ResponseEntity.ok(readTrashCanFolderUserCase.execute(trashId));
 	}
 
 	@DeleteMapping("/{trashId}")
