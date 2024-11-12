@@ -1,6 +1,7 @@
 package com.owing.api.dnd.base.service;
 
-public interface ReadDndUseCase<R, L> {
-	R executeRetrieve(Long dndId);
-	L executeList(Long dndId);
+import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
+
+public interface ReadDndUseCase {
+	DndInfoResponse executeRetrieve(Long dndId);
 }

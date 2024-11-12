@@ -27,8 +27,7 @@ public class CreateCastFolderUseCase extends CreateFolderUseCase<CastFolderNode>
     public FolderInfoResponse execute(AddFolderRequest createCastFolderRequest) {
         ProjectNode projectNode = projectNodeAdapter.findById(createCastFolderRequest.projectId());
         CastFolderNode castFolderNode = castFolderNodeMapper.toEntity(
-                createCastFolderRequest.name(),
-                createCastFolderRequest.description());
+                createCastFolderRequest.name());
 
         castFolderNode.connectProject(projectNode);
         CastFolderNode savedCastFolder = castFolderDomainService.createEntity(castFolderNode);

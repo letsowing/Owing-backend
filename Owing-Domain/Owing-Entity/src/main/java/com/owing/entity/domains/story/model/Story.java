@@ -29,17 +29,16 @@ public class Story extends BaseFileEntity<StoryFolder> {
 	private int textCount;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private StoryText storyText;
-
+	private StoryContent storyContent;
 
 	@Builder
-	Story(String title, String description, Long position, int textCount, StoryFolder folder, StoryText storyText) {
-		this.title = title;
+	Story(String name, String description, Long position, int textCount, StoryFolder folder, StoryContent storyContent) {
+		this.name = name;
 		this.description = description;
 		this.position = position;
 		this.textCount = textCount;
 		this.folder = folder;
-		this.storyText = storyText;
+		this.storyContent = storyContent;
 	}
 
 	public void updateTextCount(int textCount){
@@ -50,11 +49,11 @@ public class Story extends BaseFileEntity<StoryFolder> {
 	}
 
 
-	public void createOrUpdateStoryText(StoryText newStoryText) {
-		if (this.storyText == null) {
-			this.storyText = newStoryText;
+	public void createOrUpdateStoryText(StoryContent newStoryContent) {
+		if (this.storyContent == null) {
+			this.storyContent = newStoryContent;
 		} else {
-			this.storyText.update(newStoryText);
+			this.storyContent.update(newStoryContent);
 		}
 	}
 }

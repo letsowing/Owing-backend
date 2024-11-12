@@ -15,11 +15,12 @@ import com.owing.api.cast.service.UpdateCastFolderUseCase;
 import com.owing.api.dnd.base.controller.BaseFolderController;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
+import com.owing.api.dnd.folder.service.ReadFolderUseCase;
+import com.owing.node.folder.cast.model.CastFolderNode;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -43,12 +44,12 @@ public class CastFolderController extends BaseFolderController {
 
     // Bean Setting
     @Override
-    protected CreateDndUseCase<?, AddFolderRequest> createDndUseCase() {
+    protected CreateDndUseCase<AddFolderRequest> createDndUseCase() {
         return this.createCastFolderUseCase;
     }
 
     @Override
-    protected ReadDndUseCase<?, ?> readDndUseCase() {
+    protected ReadFolderUseCase<CastFolderNode> readDndUseCase() {
         return this.readCastFolderUseCase;
     }
 

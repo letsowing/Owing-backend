@@ -1,5 +1,7 @@
 package com.owing.api.cast.model.mapper;
 
+import java.util.List;
+
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
@@ -9,18 +11,16 @@ import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.folder.cast.model.CastFolderNode;
 
-import java.util.List;
-
 @Mapper
 public class CastFolderNodeMapper extends BaseFolderMapper<CastFolderNode> {
 
-    public CastFolderNode toEntity(String name, String description) {
-        return new CastFolderNode(name, description);
+    public CastFolderNode toEntity(String name) {
+        return new CastFolderNode(name);
     }
 
     @Override
     public CastFolderNode toEntity(AddFolderRequest addDndRequest) {
-        return new CastFolderNode(addDndRequest.name(), addDndRequest.description());
+        return new CastFolderNode(addDndRequest.name());
     }
 
     @Override

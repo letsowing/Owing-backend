@@ -1,15 +1,6 @@
 package com.owing.api.cast.controller;
 
-import com.owing.api.dnd.base.controller.BaseFileController;
-import com.owing.api.dnd.base.service.CreateDndUseCase;
-import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.ReadDndUseCase;
-import com.owing.api.dnd.base.service.UpdateDndUseCase;
-import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,17 +15,23 @@ import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
-import lombok.RequiredArgsConstructor;
 import com.owing.api.cast.service.CreateCastUseCase;
 import com.owing.api.cast.service.CreateConnectionUseCase;
 import com.owing.api.cast.service.DeleteCastUseCase;
 import com.owing.api.cast.service.ReadCastUseCase;
 import com.owing.api.cast.service.UpdateCastUseCase;
+import com.owing.api.dnd.base.controller.BaseFileController;
+import com.owing.api.dnd.base.service.CreateDndUseCase;
+import com.owing.api.dnd.base.service.DeleteDndUseCase;
+import com.owing.api.dnd.base.service.ReadDndUseCase;
+import com.owing.api.dnd.base.service.UpdateDndUseCase;
+import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/v1/cast")
@@ -76,12 +73,12 @@ public class CastController extends BaseFileController {
 
     // Bean Setting
     @Override
-    protected CreateDndUseCase<?, AddFileRequest> createDndUseCase() {
+    protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
         return this.createCastUseCase;
     }
 
     @Override
-    protected ReadDndUseCase<?, ?> readDndUseCase() {
+    protected ReadDndUseCase readDndUseCase() {
         return this.readCastUseCase;
     }
 
