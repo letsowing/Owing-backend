@@ -21,22 +21,15 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
     @Override
     public CastNode toEntity(AddFileRequest addDndRequest, CastFolderNode folder) {
         return CastNode.builder()
-                .name(addDndRequest.title())
+                .name(addDndRequest.name())
                 .folder(folder)
-                .build();
-    }
-
-    @Override
-    public CastNode toEntity(AddFileRequest addDndRequest) {
-        return CastNode.builder()
-                .name(addDndRequest.title())
                 .build();
     }
 
     @Override
     public CastNode toEntity(UpdateFileTitleRequest updateDndRequest) {
         return CastNode.builder()
-                .name(updateDndRequest.title())
+                .name(updateDndRequest.name())
                 .build();
 
     }
@@ -83,7 +76,7 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
     }
 
     // BaseFileMapper와 충돌로 인한 임시 변경
-    public CastInfoResponse toCastInfoResponse(CastNode castNode) {
+    public CastInfoResponse toInfoResponse(CastNode castNode) {
         return new CastInfoResponse(
                 castNode.getId(),
                 castNode.getName(),

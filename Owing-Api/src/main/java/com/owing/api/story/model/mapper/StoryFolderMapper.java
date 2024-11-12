@@ -11,7 +11,6 @@ public class StoryFolderMapper extends BaseFolderMapper<StoryFolder> {
 	public StoryFolder toEntity(AddFolderRequest addFolderRequest) {
 		return StoryFolder.builder()
 			.name(addFolderRequest.name())
-			.description(addFolderRequest.description())
 			.projectId(addFolderRequest.projectId())
 			.build();
 	}

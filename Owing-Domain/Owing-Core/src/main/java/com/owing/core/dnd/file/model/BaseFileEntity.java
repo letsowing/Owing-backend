@@ -25,7 +25,7 @@ public abstract class BaseFileEntity<T extends BaseFolderEntity> implements Base
 	protected String description;
 
 	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
-	protected String title;
+	protected String name;
 
 	@ManyToOne
 	@JoinColumn(name = "folder_id", nullable = false)
@@ -39,15 +39,15 @@ public abstract class BaseFileEntity<T extends BaseFolderEntity> implements Base
 		this.position = newPosition;
 	}
 
-	public void updateTitle(String newTitle) {
-		if (!StringUtils.hasText(newTitle)) {
+	public void updateName(String newName) {
+		if (!StringUtils.hasText(newName)) {
             throw DndException.of(DndErrorCode.INVALID_TITLE);
         }
-        this.title = newTitle;
+        this.name = newName;
 	}
 
 	public void update(BaseFileEntity<T> newFile){
-		this.title = newFile.getTitle();
+		this.name = newFile.getName();
 		this.description = newFile.getDescription();
 	}
 

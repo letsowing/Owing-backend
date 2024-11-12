@@ -33,7 +33,7 @@ public abstract class BaseDndDomainService<T extends BaseDnd>{
 		return dndRepository().save(entity);
 	}
 
-	public abstract T updateTitle(T entity, T newEntity);
+	public abstract T updateName(T entity, T newEntity);
 
 	public void deleteEntity(T entity) {
 		orderingStrategy().reorderEntity(entity);

@@ -33,7 +33,7 @@ public class UpdateUniverseUseCase extends UpdateFileUseCase<Universe, UniverseF
 		Universe oldUniverse = baseDndDomainService.getEntity(universeId);
 		Universe newUniverse = dndMapper.toEntity(oldUniverse, updateUniverseRequest);
 		Universe updatedUniverse = baseDndDomainService.updateUniverse(oldUniverse, newUniverse);
-		return dndMapper.toShortInfoResponse(updatedUniverse);
+		return dndMapper.toInfoResponse(updatedUniverse);
 	}
 
 	@Override

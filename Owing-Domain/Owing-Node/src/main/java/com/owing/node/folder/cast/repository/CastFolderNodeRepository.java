@@ -16,11 +16,11 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
             OPTIONAL MATCH
               (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
             WITH
-              cf, r2, c
+              cf, r2, c, r1, p
             ORDER BY
               cf.position, c.position
             RETURN
-              cf, collect(r2), collect(c)
+              cf, collect(r2), collect(c), r1, p
             """)
     List<CastFolderNode> findAllWithRelationshipByProjectId(Long projectId);
 

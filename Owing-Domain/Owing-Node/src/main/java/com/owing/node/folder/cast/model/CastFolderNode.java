@@ -1,15 +1,8 @@
 package com.owing.node.folder.cast.model;
 
-import com.owing.core.dnd.file.model.BaseFile;
-import com.owing.core.dnd.folder.model.BaseFolder;
-import com.owing.node.common.model.BaseFolderNode;
-import com.owing.node.common.model.FolderNode;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.project.model.ProjectNode;
-import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
-import com.owing.node.folder.cast.error.exception.CastFolderNodeRelationshipException;
-import lombok.Builder;
-import lombok.Getter;
+import java.util.List;
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -17,8 +10,17 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.node.common.model.BaseFolderNode;
+import com.owing.node.common.model.FolderNode;
+import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.project.model.ProjectNode;
+import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
+import com.owing.node.folder.cast.error.exception.CastFolderNodeRelationshipException;
+
+import lombok.Builder;
+import lombok.Getter;
+
 
 @Node("CastFolder")
 @Getter
@@ -40,9 +42,8 @@ public class CastFolderNode extends BaseFolderNode {
     private List<CastNode> cast = new ArrayList<>();
 
     @Builder
-    public CastFolderNode(String name, String description) {
+    public CastFolderNode(String name) {
         this.name = name;
-        this.description = description;
     }
 
     @Override

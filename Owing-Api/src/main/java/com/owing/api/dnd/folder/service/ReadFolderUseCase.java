@@ -10,7 +10,7 @@ import com.owing.core.dnd.base.service.BaseDndDomainService;
 import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class ReadFolderUseCase<T extends BaseFolder>  implements
-	ReadDndUseCase<FolderInfoResponse, FolderInfoListResponse> {
+	ReadDndUseCase {
 	protected abstract BaseFolderMapper<T> dndMapper();
 	protected abstract BaseDndDomainService<T> baseDndDomainService();
 

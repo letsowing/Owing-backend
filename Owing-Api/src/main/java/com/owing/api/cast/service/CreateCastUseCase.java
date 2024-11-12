@@ -5,7 +5,6 @@ import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.CreateFileUseCase;
 import com.owing.common.annotation.UseCase;
@@ -15,6 +14,7 @@ import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.service.CastNodeDomainService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
+
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -27,7 +27,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
     private final MemberUtils memberUtils;
 
     @Override
-    public FileInfoResponse execute(AddFileRequest addFileRequest) {
+    public CastInfoResponse execute(AddFileRequest addFileRequest) {
         CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(addFileRequest.folderId());
         CastNode castNode = castNodeMapper.toEntity(addFileRequest, castFolderNode);
 
@@ -41,7 +41,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
 
         castNode.connectFolder(castFolderNode);
         CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
-        return castNodeMapper.toCastInfoResponse( savedCastNode);
+        return castNodeMapper.toInfoResponse( savedCastNode);
     }
 
     @Override

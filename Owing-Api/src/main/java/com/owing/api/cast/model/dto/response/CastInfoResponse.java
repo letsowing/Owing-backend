@@ -1,7 +1,7 @@
 package com.owing.api.cast.model.dto.response;
 
+import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
 import com.owing.node.domains.cast.model.Coordinate;
-import lombok.Builder;
 
 public record CastInfoResponse(
         Long id,
@@ -12,5 +12,5 @@ public record CastInfoResponse(
         String description,
         String imageUrl,
         Coordinate coordinate
-) {
+) implements DndInfoResponse {
 }

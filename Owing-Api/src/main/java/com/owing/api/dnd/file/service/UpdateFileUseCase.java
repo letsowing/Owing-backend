@@ -22,7 +22,7 @@ public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFol
     public void executeUpdateTitle(Long id, UpdateFileTitleRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T newEntity = dndMapper().toEntity(dto);
-        T updatedEntity = baseDndDomainService().updateTitle(entity, newEntity);
+        T updatedEntity = baseDndDomainService().updateName(entity, newEntity);
     }
 
     @Transactional
