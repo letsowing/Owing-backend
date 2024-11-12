@@ -26,12 +26,11 @@ public class CreateConnectionUseCase {
 
         CastRelationship connection = castNodeMapper.toRelationship(createConnectionRequest, targetCast);
 
+        castNodeDomainService.handleCastRelationship(createConnectionRequest.type(), connection);
         CastRelationshipProjection savedConnection;
         if (createConnectionRequest.type().equals(ConnectionType.DIRECTIONAL)) {
-            castNodeDomainService.createConnection(sourceCast, connection);
             savedConnection = castNodeAdapter.findConnection(sourceCast.getId(), targetCast.getId());
         } else {
-            castNodeDomainService.createBiconnection(sourceCast, connection);
             savedConnection = castNodeAdapter.findBiconnection(sourceCast.getId(), targetCast.getId());
         }
 

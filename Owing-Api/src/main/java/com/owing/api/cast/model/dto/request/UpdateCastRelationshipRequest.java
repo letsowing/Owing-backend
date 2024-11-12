@@ -1,15 +1,13 @@
-package com.owing.api.cast.model.dto.response;
+package com.owing.api.cast.model.dto.request;
 
 import com.owing.node.domains.cast.model.ConnectionHandle;
 import com.owing.node.domains.cast.model.ConnectionType;
 
-public record CastRelationshipInfoResponse(
-        Long id,
-        String label,
+public record UpdateCastRelationshipRequest(
         ConnectionType type,
         Long sourceId,
-        ConnectionHandle sourceHandle,
         Long targetId,
+        ConnectionHandle sourceHandle,
         ConnectionHandle targetHandle
 ) {
 }
