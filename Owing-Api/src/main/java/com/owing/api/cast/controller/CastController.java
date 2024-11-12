@@ -66,9 +66,21 @@ public class CastController extends BaseFileController {
         return ResponseEntity.ok(createConnectionUseCase.execute(createConnectionRequest));
     }
 
+    @PatchMapping("/relationships/{relationshipId}")
+    public ResponseEntity<Void> updateRelationship(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
+        updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/relationships/{relationshipId}/label")
     public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
         updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/relationships/{relationshipId}/handle")
+    public ResponseEntity<Void> updateRelationshipHandle(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipHandleRequest updateCastRelationshipHandleRequest) {
+        updateConnectionUseCase.executeHandle(relationshipId, updateCastRelationshipHandleRequest);
         return ResponseEntity.noContent().build();
     }
 
