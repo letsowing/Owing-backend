@@ -3,6 +3,8 @@ package com.owing.api.cast.service;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
+import com.owing.api.dnd.folder.model.dto.response.FolderInfoListResponse;
+import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 import com.owing.common.annotation.UseCase;
@@ -22,33 +24,20 @@ public class ReadCastFolderUseCase extends ReadFolderUseCase<CastFolderNode> {
 
     private final ProjectNodeAdapter projectNodeAdapter;
     private final CastFolderNodeAdapter castFolderNodeAdapter;
-    private final CastNodeMapper castNodeMapper;
     private final CastFolderNodeMapper castFolderNodeMapper;
     private final CastFolderNodeDomainService castFolderNodeDomainService;
 
-    @Deprecated
-    public List<CastFolderResponse> executeGetList(Long projectId) {
+    @Override
+    public FolderInfoResponse executeRetrieve(Long folderId) {
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
+        return castFolderNodeMapper.toInfoResponse(castFolderNode);
+    }
+
+    @Override
+    public FolderInfoListResponse executeList(Long projectId) {
         ProjectNode projectNode = projectNodeAdapter.findById(projectId);
         List<CastFolderNode> castFolderNodeList = castFolderNodeAdapter.findAllWithRelationshipByProjectId(projectNode.getId());
-        return getSortedCastFolderResponse(castFolderNodeList);
-    }
-
-    @Deprecated(forRemoval = true)
-    public CastFolderResponse executeGetOne(Long folderId) {
-        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
-        return getSortedCastFolderResponse(List.of(castFolderNode)).getFirst();
-    }
-
-    @Deprecated
-    private List<CastFolderResponse> getSortedCastFolderResponse(List<CastFolderNode> castFolderNodeList) {
-        return castFolderNodeList.stream()
-                .map(folder -> castFolderNodeMapper.toFolderResponse(
-                        folder,
-                        folder.getCast().stream()
-                                .map(castNodeMapper::toFileResponse)
-                                .toList()
-                ))
-                .toList();
+        return castFolderNodeMapper.toListResponse(castFolderNodeList);
     }
 
     @Override

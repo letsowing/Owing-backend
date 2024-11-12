@@ -30,11 +30,6 @@ public class CastFolderNodeMapper extends BaseFolderMapper<CastFolderNode> {
                 .build();
     }
 
-    @Override
-    public FolderInfoResponse toInfoResponse(CastFolderNode castFolderNode) {
-        return FolderInfoResponse.from(castFolderNode);
-    }
-
     public CastFolderResponse toFolderResponse(CastFolderNode castFolderNode, List<CastFileResponse> castFileResponseList) {
         return new CastFolderResponse(
                 castFolderNode.getId(),
