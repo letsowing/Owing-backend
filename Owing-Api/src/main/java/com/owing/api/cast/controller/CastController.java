@@ -3,6 +3,9 @@ package com.owing.api.cast.controller;
 import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.service.*;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,12 +72,18 @@ public class CastController extends BaseFileController {
     }
 
     @PatchMapping("/relationships/{relationshipId}/label")
+    @Operation(summary = "✨ 관계도: 인물 관계 수정", description = "인물 관계의 라벨을 수정")
     public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
         updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/relationships/{relationshipId}")
+    @Operation(summary = "✨ 관계도: 인물 관계 수정", description = "source || target 노드, Handle 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "기존 관계와 source & target이 같다면 handle만 수정"),
+            @ApiResponse(responseCode = "200", description = "기존 관계와 source & target이 다르다면 기존 관계 삭제 & 새로운 관계 추가. 응답은 생성과 같음")
+    })
     public ResponseEntity<?> updateRelationship(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipRequest updateCastRelationshipRequest) {
         Optional<CastRelationshipInfoResponse> optional = updateConnectionUseCase.execute(relationshipId, updateCastRelationshipRequest);
         if (optional.isEmpty()) {
