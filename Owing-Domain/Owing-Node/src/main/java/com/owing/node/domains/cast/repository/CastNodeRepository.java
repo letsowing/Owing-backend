@@ -84,6 +84,31 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             """)
     Optional<CastRelationshipProjection> findBiconnection(Long sourceId, Long targetId);
 
+	@Query("""
+			MATCH
+			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
+			WHERE
+			  id(r) = $relationshipId
+			SET
+			  r.label=$label
+			""")
+	void updateCastRelationshipLabel(Long relationshipId, String label);
+
+	@Query("""
+			MATCH
+			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
+			WHERE
+			  id(r) = $relationshipId
+			RETURN DISTINCT
+			  id(r) as relationshipId,
+			  r.label as label,
+			  r.sourceId as sourceId,
+			  r.sourceHandle as sourceHandle,
+			  r.targetId as targetId,
+			  r.targetHandle as targetHandle
+			""")
+	Optional<CastRelationshipProjection> findCastRelationshipById(Long relationshipId);
+
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +

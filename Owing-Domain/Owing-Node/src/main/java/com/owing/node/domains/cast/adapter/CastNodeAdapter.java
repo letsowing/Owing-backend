@@ -8,6 +8,7 @@ import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
@@ -42,6 +43,14 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
                 .orElseThrow(() -> CastRelationshipNotFoundException.of(
                         CastNodeErrorCode.RELATIONSHIP_NOT_FOUND,
                         "Source Id: %d, Target Id: %d".formatted(sourceId, targetId)
+                ));
+    }
+
+    public CastRelationshipProjection findCastRelationshipById(Long relationshipId) {
+        return castNodeRepository.findCastRelationshipById(relationshipId)
+                .orElseThrow(() -> CastRelationshipNotFoundException.of(
+                        CastNodeErrorCode.RELATIONSHIP_NOT_FOUND,
+                        "relationship id: %d".formatted(relationshipId)
                 ));
     }
 
