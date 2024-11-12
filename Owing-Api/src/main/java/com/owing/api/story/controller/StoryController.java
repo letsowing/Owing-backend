@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
+import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.service.story.CreateStoryUseCase;
 import com.owing.api.story.service.story.DeleteStoryUseCase;
 import com.owing.api.story.service.story.ReadStoryUseCase;
@@ -43,6 +45,12 @@ public class StoryController extends BaseFileController {
 		return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+	@PutMapping("/{storyId}")
+	@Operation(summary = "✨일반: 원고 정보 수정", description = "원고 정보를 수정합니다.")
+	public ResponseEntity<?> updateStory(@PathVariable Long storyId, @RequestBody UpdateStoryRequest request) {
+		updateDndUseCase.execute(storyId, request);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
 	@Override
 	protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
