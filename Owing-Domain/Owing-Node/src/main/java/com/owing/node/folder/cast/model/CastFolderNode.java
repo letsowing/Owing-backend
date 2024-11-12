@@ -1,7 +1,9 @@
 package com.owing.node.folder.cast.model;
 
 import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.folder.model.BaseFolder;
 import com.owing.node.common.model.BaseFolderNode;
+import com.owing.node.common.model.FolderNode;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
@@ -15,6 +17,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Node("CastFolder")
@@ -34,7 +37,7 @@ public class CastFolderNode extends BaseFolderNode {
     private ProjectNode project;
 
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
-    private List<CastNode> cast;
+    private List<CastNode> cast = new ArrayList<>();
 
     @Builder
     public CastFolderNode(String name, String description) {
