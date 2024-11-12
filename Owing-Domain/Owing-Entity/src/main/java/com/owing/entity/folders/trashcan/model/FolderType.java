@@ -5,6 +5,21 @@ public enum FolderType {
 	CAST,
 	UNIVERSE;
 
+	public static FolderType fromClassName(String className) {
+		if (className == null || className.isEmpty()) {
+			throw new IllegalArgumentException("Class name cannot be null or empty");
+		}
+
+		String upperCaseName = className.toUpperCase();
+
+		return switch (upperCaseName) {
+			case "STORY" -> STORY;
+			case "CAST" -> CAST;
+			case "UNIVERSE" -> UNIVERSE;
+			default -> throw new IllegalArgumentException("Unknown class name: " + className);
+		};
+	}
+
 	public boolean isStory() {
 		return this == STORY;
 	}
