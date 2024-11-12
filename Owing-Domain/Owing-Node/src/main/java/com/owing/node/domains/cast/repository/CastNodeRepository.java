@@ -27,6 +27,33 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             """)
     Optional<CastNode> findOneById(Long castId);
 
+	@Query("""
+		MATCH
+		  (c:Cast{deleted:true})
+		WHERE
+		  id(c)=$itemId
+		SET
+		  c.deleted=false
+		""")
+	void restoreById(@Param("itemId") Long itemId);
+
+	@Query("""
+            MATCH
+              (cf:CastFolder{deleted:false})
+            WHERE
+              id(cf)=$castFolderId
+            MATCH
+              (c:Cast{deleted:false})
+            WHERE
+              id(c)=$castId
+            MERGE
+              (cf)-[r:INCLUDE]->(c)
+            RETURN
+              c, r, cf
+            """)
+	CastNode connectFolder(Long castId, Long castFolderId);
+
+	// =====Cast to Cast Connection=====
     @Query("""
             MATCH
                 (n1:Cast{deleted:false})-[r:CONNECTION]->(n2:Cast{deleted:false})
@@ -57,21 +84,6 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             """)
     Optional<CastRelationshipProjection> findBiconnection(Long sourceId, Long targetId);
 
-    @Query("""
-            MATCH
-              (cf:CastFolder{deleted:false})
-            WHERE
-              id(cf)=$castFolderId
-            MATCH
-              (c:Cast{deleted:false})
-            WHERE
-              id(c)=$castId
-            MERGE
-              (cf)-[r:INCLUDE]->(c)
-            RETURN
-              c, r, cf
-            """)
-    CastNode connectFolder(Long castId, Long castFolderId);
 
     @Query("MATCH (n1:Cast{id: $sourceId})-[r:CONNECTION{uuid: $uuid}]->(n2:Cast{id: $targetId}) " +
             "WHERE n1.deletedAt IS NULL AND n2.deletedAt IS NULL " +
@@ -95,12 +107,6 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             "DELETE r " +
             "RETURN count(DISTINCT r)")
     Integer deleteConnectionByUuid(String uuid);
-
-    @Query("MATCH (n1:Project{id: $projectId})-[r1:INCLUDED]->(n2:Cast) " +
-            "WHERE n1.deletedAt IS NULL " +
-                "AND n2.deletedAt IS NULL " +
-            "RETURN n2")
-    List<CastNode> findAllByProjectId(Long projectId);
 
 	// =====Cast Graph=====
     @Query("""
@@ -127,6 +133,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			""")
     List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId);
 
+	// =====super() Cast Repository=====
     @Override
     @Query("""
         MATCH
@@ -193,14 +200,4 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 				COALESCE(MAX(c.position), -1)
 			""")
     Long getMaxPositionByParentId(Long parentId);
-
-	@Query("""
-		MATCH
-		  (c:Cast{deleted:true})
-		WHERE
-		  id(c)=$itemId
-		SET
-		  c.deleted=false
-		""")
-	void restoreById(@Param("itemId") Long itemId);
 }
