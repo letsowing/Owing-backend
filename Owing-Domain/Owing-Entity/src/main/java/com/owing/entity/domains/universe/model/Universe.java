@@ -34,18 +34,18 @@ public class Universe extends BaseFileEntity<UniverseFolder> {
 	private String imageUrl;
 
 	public Universe updateUniverse(Universe newUniverse) {
-		this.title = newUniverse.title;
+		this.name = newUniverse.name;
 		this.description = newUniverse.description;
 		this.imageUrl = newUniverse.imageUrl;
 		return this;
 	}
 
 	@Builder
-	public Universe(Long id, String description, String imageUrl, String title, Long position, UniverseFolder folder) {
+	public Universe(Long id, String description, String imageUrl, String name, Long position, UniverseFolder folder) {
 		this.id = id;
 		this.description = description;
 		this.imageUrl = imageUrl;
-		this.title = title;
+		this.name = name;
 		this.position = position;
 		this.folder = folder;
 	}

@@ -11,8 +11,8 @@ public abstract class BaseFileDomainService<T extends BaseFile<F>, F extends Bas
 		return orderingStrategy().updatePosition(entity, beforeEntity, afterEntity, newParent);
 	}
 
-	public T updateTitle(T entity, T newEntity) {
-		entity.updateTitle(newEntity.getTitle());
+	public T updateName(T entity, T newEntity) {
+		entity.updateName(newEntity.getName());
 		dndRepository().save(entity);
 		return entity;
 	}

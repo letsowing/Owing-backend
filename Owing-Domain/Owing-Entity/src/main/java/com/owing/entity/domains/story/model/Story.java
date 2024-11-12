@@ -33,8 +33,8 @@ public class Story extends BaseFileEntity<StoryFolder> {
 
 
 	@Builder
-	Story(String title, String description, Long position, int textCount, StoryFolder folder, StoryText storyText) {
-		this.title = title;
+	Story(String name, String description, Long position, int textCount, StoryFolder folder, StoryContent storyContent) {
+		this.name = name;
 		this.description = description;
 		this.position = position;
 		this.textCount = textCount;
