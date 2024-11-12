@@ -52,14 +52,14 @@ public class CastController extends BaseFileController {
     @Operation(summary = "✨ 일반: 캐릭터 정보 수정", description = "캐릭터 정보 수정")
     public ResponseEntity<Void> updateCastInfo(@PathVariable Long castId, @RequestBody UpdateCastInfoRequest updateCastInfoRequest) {
         updateCastUseCase.executeUpdateInfo(castId, updateCastInfoRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{castId}")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 내 위치 이동")
     public ResponseEntity<Void> updateCastCoordinate(@PathVariable Long castId, @RequestBody UpdateCastCoordinateRequest updateCastCoordinateRequest) {
         updateCastUseCase.executeUpdateCoordinate(castId, updateCastCoordinateRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
