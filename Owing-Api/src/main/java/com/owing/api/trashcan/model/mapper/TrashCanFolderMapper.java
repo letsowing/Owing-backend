@@ -23,14 +23,10 @@ public class TrashCanFolderMapper {
 		List<Folder> universe = new ArrayList<>();
 
 		for (TrashCanFolder trashCanFolder : trashCanFolders) {
-			if(isStoryCategory(trashCanFolder)){
-				story.add(toFolder(trashCanFolder));
-			}
-			else if (isCastCategory(trashCanFolder)){
-				cast.add(toFolder(trashCanFolder));
-			}
-			else if (isUniverseCategory(trashCanFolder)){
-				universe.add(toFolder(trashCanFolder));
+			switch (trashCanFolder.getTableName()) {
+				case STORY -> story.add(toFolder(trashCanFolder));
+				case CAST -> cast.add(toFolder(trashCanFolder));
+				case UNIVERSE -> universe.add(toFolder(trashCanFolder));
 			}
 		}
 
@@ -80,23 +76,13 @@ public class TrashCanFolderMapper {
 	}
 
 	private <T extends BaseFolder> FolderType determineTableName(T entity) {
-		String className = entity.getClass().getSimpleName().toLowerCase();
-
-		if (className.contains("story")) {
-			return FolderType.STORY;
-		} else if (className.contains("cast")) {
-			return FolderType.CAST;
-		} else if (className.contains("universe")) {
-			return FolderType.UNIVERSE;
-		}
-
-		throw new IllegalArgumentException("Unknown folder type for class: " + className);
+		return FolderType.fromClassName(entity.getClass().getSimpleName());
 	}
 
 	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity) {
 		return TrashCan.builder()
 			.itemId(baseFileEntity.getId())
-			.name(baseFileEntity.getTitle())
+			.name(baseFileEntity.getName())
 			.description(baseFileEntity.getDescription())
 			.build();
 	}

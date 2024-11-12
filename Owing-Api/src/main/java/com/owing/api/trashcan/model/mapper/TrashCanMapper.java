@@ -24,12 +24,10 @@ public class TrashCanMapper {
 
 	public <T extends BaseFile<?>> TrashCan toEntity(T entity) {
 		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemId(entity.getParentId())
-			.orElse(
-				newTrashCanFolder(entity)
-			);
+			.orElse(newTrashCanFolder(entity));
 		return TrashCan.builder()
 			.itemId(entity.getId())
-			.name(entity.getTitle())
+			.name(entity.getName())
 			.description(entity.getDescription())
 			.trashCanFolder(trashCanFolder)
 			.build();

@@ -17,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class DeleteCastFolderUseCase extends DeleteFolderUseCase<CastFolderNode> {
 
     private final CastFolderNodeDomainService castFolderNodeDomainService;
-    private final MemberUtils memberUtils;
     private final TrashCanFolderDomainService trashCanFolderDomainService;
-    private final ProjectAdapter projectAdapter;
     private final TrashCanFolderMapper trashCanFolderMapper;
+    private final ProjectAdapter projectAdapter;
+    private final MemberUtils memberUtils;
 
     @Override
     protected MemberUtils memberUtils() {
