@@ -15,7 +15,7 @@ import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.story.model.dto.request.AddStoryTextRequest;
 import com.owing.api.story.service.story.CreateStoryUseCase;
 import com.owing.api.story.service.story.DeleteStoryUseCase;
@@ -60,7 +60,7 @@ public class StoryController extends BaseFileController {
 	}
 
 	@Override
-	protected UpdateDndUseCase<UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
+	protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
 		return updateDndUseCase;
 	}
 }

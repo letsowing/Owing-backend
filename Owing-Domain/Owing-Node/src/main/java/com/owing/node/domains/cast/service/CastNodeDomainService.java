@@ -1,10 +1,16 @@
 package com.owing.node.domains.cast.service;
 
 import com.owing.common.annotation.DomainService;
+import com.owing.core.dnd.base.adapter.BaseDndAdapter;
+import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.node.common.constant.CastConstant;
+import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
+import com.owing.node.domains.cast.model.projection.CastTitleProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
@@ -14,33 +20,43 @@ import org.springframework.transaction.annotation.Transactional;
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CastNodeDomainService {
+public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastFolderNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
+    private final CastNodeAdapter castNodeAdapter;
+    private final CastShiftOrderingStrategy castShiftOrderingStrategy;
 
+    // =====Cast CRUD=====
+    @Override
+    public CastNode getEntity(Long castId) {
+        return castNodeAdapter.findOneById(castId);
+    }
+
+    @Override
     @Transactional
-    public CastNode createCastNode(CastNode castNode, CastFolderNode castFolderNode) {
-        // TODO position 기본값으로 변경
-        castNode.updatePosition(0L);
-        castNode.updateCoordinate(
+    public CastNode createEntity(CastNode entity) {
+        long position = orderingStrategy().getNewPosition(entity.getParentId());
+        entity.updatePosition(position);
+        entity.updateCoordinate(
                 CastConstant.DEFAULT_COORDINATE_X,
                 CastConstant.DEFAULT_COORDINATE_Y
         );
-        CastNode savedCastNode = castNodeRepository.save(castNode);
+
+        CastFolderNode castFolderNode = entity.getFolder();
+
+        entity.updateFolder(null);
+        CastNode savedCastNode = castNodeRepository.save(entity);
         return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
     }
 
+    @Override
     @Transactional
-    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.connectCast(relationship);
-        return castNodeRepository.save(sourceCast);
-    }
-
-    @Transactional
-    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
-        sourceCast.biconnectCast(relationship);
-        return castNodeRepository.save(sourceCast);
+    public CastNode updateTitle(CastNode entity, CastNode newEntity) {
+        entity.updateTitle(newEntity.getTitle());
+        CastTitleProjection titleProjection = CastTitleProjection.from(entity);
+        neo4jTemplate.save(CastNode.class).one(titleProjection);
+        return entity;
     }
 
     @Transactional
@@ -57,10 +73,41 @@ public class CastNodeDomainService {
         }
     }
 
+    @Override
     @Transactional
-    public void deleteCastNode(CastNode castNode) {
+    public void deleteEntity(CastNode castNode) {
+        castShiftOrderingStrategy.reorderEntity(castNode);
         castNode.delete();
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);
+    }
+
+    // =====Cast Relationship=====
+    @Transactional
+    public CastNode createConnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.connectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    @Transactional
+    public CastNode createBiconnection(CastNode sourceCast, CastRelationship relationship) {
+        sourceCast.biconnectCast(relationship);
+        return castNodeRepository.save(sourceCast);
+    }
+
+    // Bean Setting
+    @Override
+    protected BaseDndRepository<CastNode> dndRepository() {
+        return this.castNodeRepository;
+    }
+
+    @Override
+    protected BaseDndAdapter<CastNode> dndEntityAdapter() {
+        return this.castNodeAdapter;
+    }
+
+    @Override
+    protected OrderingStrategy<CastNode> orderingStrategy() {
+        return this.castShiftOrderingStrategy;
     }
 }

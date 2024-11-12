@@ -1,6 +1,8 @@
 package com.owing.node.domains.cast.adapter;
 
 import com.owing.common.annotation.Adaptor;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.core.dnd.file.adapter.BaseFileAdapter;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -11,18 +13,9 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdapter {
+public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
 
     private final CastNodeRepository castNodeRepository;
-
-    @Deprecated
-    public CastNode findById(Long castId) {
-        return castNodeRepository.findById(castId)
-                .orElseThrow(() -> CastNodeNotFoundException.of(
-                        CastNodeErrorCode.CAST_NODE_NOT_FOUND,
-                        "Requested Cast Node Id: %d".formatted(castId)
-                ));
-    }
 
     public CastNode findOneById(Long castId) {
         return castNodeRepository.findOneById(castId)
@@ -46,5 +39,11 @@ public class CastNodeAdapter {
                         CastNodeErrorCode.RELATIONSHIP_NOT_FOUND,
                         "Source Id: %d, Target Id: %d".formatted(sourceId, targetId)
                 ));
+    }
+
+    // Bean Setting
+    @Override
+    protected BaseDndRepository<CastNode> dndRepository() {
+        return this.castNodeRepository;
     }
 }
