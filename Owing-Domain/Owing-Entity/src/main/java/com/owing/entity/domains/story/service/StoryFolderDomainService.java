@@ -40,8 +40,7 @@ public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolde
 
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
 		storyFolderRepository.restoreById(folderItemId);
-		for (Long id : trashCanItemIds) {
-			storyRepository.restoreById(id);
-		}
+		trashCanItemIds
+			.forEach(storyFolderRepository::restoreById);
 	}
 }

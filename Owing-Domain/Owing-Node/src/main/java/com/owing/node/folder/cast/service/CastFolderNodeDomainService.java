@@ -79,8 +79,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
 
     public void restore(Long folderItemId, List<Long> trashCanItemIds) {
         castFolderNodeRepository.restoreById(folderItemId);
-        for (Long id : trashCanItemIds) {
-            castNodeRepository.restoreById(id);
-        }
+        trashCanItemIds
+            .forEach(castNodeRepository::restoreById);
     }
 }
