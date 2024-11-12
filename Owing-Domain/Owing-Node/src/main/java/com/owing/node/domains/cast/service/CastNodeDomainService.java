@@ -110,4 +110,8 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     protected OrderingStrategy<CastNode> orderingStrategy() {
         return this.castShiftOrderingStrategy;
     }
+
+    public void restoreById(Long itemId) {
+        castNodeRepository.restoreById(itemId);
+    }
 }

@@ -56,4 +56,5 @@ public class Story extends BaseFileEntity<StoryFolder> {
 			this.storyContent.update(newStoryContent);
 		}
 	}
+
 }
