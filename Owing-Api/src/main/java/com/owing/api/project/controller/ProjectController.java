@@ -19,6 +19,7 @@ import com.owing.api.project.model.dto.request.UpdateProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
+import com.owing.api.project.service.CreateProjectPresignedUrlUseCase;
 import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.project.service.DeleteProjectUseCase;
 import com.owing.api.project.service.ReadProjectListUseCase;
@@ -42,6 +43,7 @@ public class ProjectController {
     private final ReadProjectUseCase readProjectUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
+    private final CreateProjectPresignedUrlUseCase createProjectPresignedUrlUseCase;
 
     @PostMapping
     @Operation(summary = "✨ 프로젝트 생성", description = "프로젝트를 생성합니다.")
@@ -80,5 +82,12 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
         deleteProjectUseCase.execute(projectId);
         return ResponseEntity.ok().build();
+    }
+
+    /* presigned url 생성 */
+    @GetMapping("/files/{fileExtension}")
+    @Operation(summary = "✨ 일반: 작품 presignedUrl", description = "presigned url 생성합니다.")
+    public ResponseEntity<?> getFile(@PathVariable(value = "fileExtension") String fileExtension) {
+        return ResponseEntity.ok(createProjectPresignedUrlUseCase.execute(fileExtension));
     }
 }
