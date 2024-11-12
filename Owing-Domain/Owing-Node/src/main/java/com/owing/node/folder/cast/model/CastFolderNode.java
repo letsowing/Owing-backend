@@ -22,7 +22,7 @@ import java.util.List;
 
 @Node("CastFolder")
 @Getter
-public class CastFolderNode extends BaseFolderNode implements FolderNode {
+public class CastFolderNode extends BaseFolderNode {
 
     @Id
     @GeneratedValue
@@ -39,15 +39,15 @@ public class CastFolderNode extends BaseFolderNode implements FolderNode {
     @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
     private List<CastNode> cast = new ArrayList<>();
 
-    // TODO 임시 작성. FileNode 임포트하고 cast들로 변경 필요
-    public List<BaseFile> getFiles(){
-        return new ArrayList<>();
-    }
-
     @Builder
     public CastFolderNode(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    @Override
+    public List<CastNode> getFiles(){
+        return this.cast;
     }
 
     @Override

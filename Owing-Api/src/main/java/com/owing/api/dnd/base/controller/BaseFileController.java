@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
-public abstract class BaseFileController extends DndController<AddFileRequest, UpdateFileRequest, UpdateFilePositionRequest>{
+public abstract class BaseFileController extends DndController<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest>{
 	@GetMapping
 	@Operation(summary = "✨ DnD: 파일 리스트 조회", description = "파일 or 폴더 리스트 조회")
 	public ResponseEntity<?> getDndList(

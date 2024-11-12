@@ -1,9 +1,10 @@
 package com.owing.node.domains.cast.repository;
 
 import com.owing.node.common.model.projection.CastRelationshipProjection;
+import com.owing.node.common.repository.BaseFileNodeRepository;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -11,15 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
+public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, CastFolderNode> {
 
     @Query("""
             MATCH
-                (c:Cast{deleted:false})
+                (c:Cast{deleted:false})<-[r:INCLUDE]-(cf:CastFolder{deleted:false})
             WHERE
                 id(c)=$castId
             RETURN
-                c
+                c, r, cf
             """)
     Optional<CastNode> findOneById(Long castId);
 
@@ -65,7 +66,7 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
             MERGE
               (cf)-[r:INCLUDE]->(c)
             RETURN
-              c
+              c, r, cf
             """)
     CastNode connectFolder(Long castId, Long castFolderId);
 
@@ -112,4 +113,71 @@ public interface CastNodeRepository extends Neo4jRepository<CastNode, Long> {
 //            "AND n2.deletedAt IS NULL " +
 //            "RETURN n2.id AS id, n2.name AS name, n2.gender AS gender")
 //    List<CastSummaryDto> findAllSummaryByProjectId(Long projectId);
+
+    @Override
+    @Query("""
+        MATCH
+          (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+        WHERE
+          id(cf)=$castFolderId
+        ORDER BY
+          c.position
+        RETURN
+          cf, r, c
+        """)
+    List<CastNode> findByParentId(Long castFolderId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position > $position
+			SET
+			  c.position = c.position - 1
+			""")
+    void decrementPositionAfter(Long position, Long folderId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $start
+			  AND
+			    c.position <= $end
+			SET
+			  c.position = c.position - 1
+			""")
+    void decrementPositionBetween(Long start, Long end, Long folderId);
+
+    @Override
+    @Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $start
+			  AND
+			    c.position <= $end
+			SET
+			  c.position = c.position + 1
+			""")
+    void incrementPositionBetween(Long start, Long end, Long folderId);
+
+    @Override
+    @Query("""
+			MATCH
+				(cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+				id(cf) = $parentId
+			RETURN
+				COALESCE(MAX(c.position), -1)
+			""")
+    Long getMaxPositionByParentId(Long parentId);
 }

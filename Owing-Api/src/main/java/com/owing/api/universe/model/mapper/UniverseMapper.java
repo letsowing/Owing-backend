@@ -1,7 +1,7 @@
 package com.owing.api.universe.model.mapper;
 
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
@@ -57,7 +57,7 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 	}
 
 	@Override
-	public Universe toEntity(UpdateFileRequest updateDndRequest) {
+	public Universe toEntity(UpdateFileTitleRequest updateDndRequest) {
 		return null;
 	}
 

@@ -6,6 +6,7 @@ import com.owing.core.dnd.base.error.DndErrorCode;
 import com.owing.core.dnd.base.error.exception.DndException;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.node.domains.project.model.ProjectNode;
 import jakarta.persistence.Column;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
@@ -21,6 +22,8 @@ public abstract class BaseFolderNode extends BaseTimeNeo4j implements BaseFolder
 	public boolean validatePosition(long newPosition) {
 		return newPosition >= 0;
 	}
+
+	public abstract void connectProject(ProjectNode projectNode);
 
 	@Override
 	public void updateTitle(String newTitle) {
