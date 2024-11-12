@@ -72,6 +72,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         castNodeRepository.updateCastRelationshipLabel(castRelationship.getId(), label);
     }
 
+    @Transactional
+    public void updateCastRelationshipHandle(CastRelationship castRelationship, ConnectionHandle sourceHandle, ConnectionHandle targetHandle) {
+        castNodeRepository.updateCastRelationshipHandle(castRelationship.getId(), sourceHandle.name(), targetHandle.name());
+    }
+
     // =====super() Cast CRUD=====
     @Override
     public CastNode getEntity(Long castId) {

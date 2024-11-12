@@ -99,6 +99,16 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
 			WHERE
 			  id(r) = $relationshipId
+			SET
+			  r += {sourceHandle: $sourceHandle, targetHandle: $targetHandle}
+			""")
+	void updateCastRelationshipHandle(Long relationshipId, String sourceHandle, String targetHandle);
+
+	@Query("""
+			MATCH
+			  (c1:Cast)-[r:CONNECTION|BI_CONNECTION]->(c2:Cast)
+			WHERE
+			  id(r) = $relationshipId
 			RETURN DISTINCT
 			  id(r) as relationshipId,
 			  r.label as label,
