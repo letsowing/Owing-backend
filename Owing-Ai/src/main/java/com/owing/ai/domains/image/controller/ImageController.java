@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.owing.ai.domains.image.dto.request.GenerateProjectImageRequest;
 import com.owing.ai.domains.image.dto.request.GenerateUniverseImageRequest;
+import com.owing.ai.domains.image.dto.response.ProjectImageResponse;
 import com.owing.ai.domains.image.dto.response.UniverseImageResponse;
 import com.owing.ai.domains.image.service.UniverseImageService;
 
@@ -23,5 +25,11 @@ public class ImageController {
 	@PostMapping("/universes")
 	public ResponseEntity<UniverseImageResponse> generateUniverseImage(@RequestBody GenerateUniverseImageRequest imageGenerateRequest) {
 		return universeImageService.generateUniverseImage(imageGenerateRequest);
+	}
+
+	/* OpenAI - 작품 이미지 생성 요청 후 S3 업로드 */
+	@PostMapping("/projects")
+	public ResponseEntity<ProjectImageResponse> generateProjectImage(@RequestBody GenerateProjectImageRequest imageGenerateRequest) {
+		return universeImageService.generateProjectImage(imageGenerateRequest);
 	}
 }

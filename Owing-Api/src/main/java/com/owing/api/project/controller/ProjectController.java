@@ -15,16 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.common.constant.ProjectSort;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
+import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
+import com.owing.api.project.model.dto.response.ProjectImageResponse;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.service.CreateProjectPresignedUrlUseCase;
 import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.project.service.DeleteProjectUseCase;
+import com.owing.api.project.service.GenerateProjectImageUseCase;
 import com.owing.api.project.service.ReadProjectListUseCase;
 import com.owing.api.project.service.ReadProjectUseCase;
 import com.owing.api.project.service.UpdateProjectUseCase;
+import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,6 +49,7 @@ public class ProjectController {
     private final UpdateProjectUseCase updateProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
     private final CreateProjectPresignedUrlUseCase createProjectPresignedUrlUseCase;
+    private final GenerateProjectImageUseCase generateProjectImageUseCase;
 
     @PostMapping
     @Operation(summary = "✨ 프로젝트 생성", description = "프로젝트를 생성합니다.")
@@ -89,5 +95,12 @@ public class ProjectController {
     @Operation(summary = "✨ 일반: 작품 presignedUrl", description = "presigned url 생성합니다.")
     public ResponseEntity<?> getFile(@PathVariable(value = "fileExtension") String fileExtension) {
         return ResponseEntity.ok(createProjectPresignedUrlUseCase.execute(fileExtension));
+    }
+
+    /* OpenAI - 세계관 이미지 생성 요청 후 S3 업로드 */
+    @PostMapping("/images")
+    @Operation(summary = "✨ OpenAI: 세계관 이미지 생성 요청 후 S3 업로드", description = "세계관 이미지 생성 요청 후 S3 업로드")
+    public ResponseEntity<ProjectImageResponse> generateUniverseImage(@RequestBody GenerateProjectImageRequest generateProjectImageRequest) {
+        return ResponseEntity.ok(generateProjectImageUseCase.execute(generateProjectImageRequest));
     }
 }
