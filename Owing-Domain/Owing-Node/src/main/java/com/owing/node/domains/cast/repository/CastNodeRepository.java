@@ -4,6 +4,8 @@ import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.common.repository.BaseFileNodeRepository;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -100,20 +102,30 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             "RETURN n2")
     List<CastNode> findAllByProjectId(Long projectId);
 
-//    @Query("MATCH (n1:Project{id: $projectId})-[r1:INCLUDED]->(n2:Cast)-[r2]-(n3:Cast) " +
-//            "WHERE n1.deletedAt IS NULL " +
-//                "AND n2.deletedAt IS NULL " +
-//                "AND n3.deletedAt IS NULL " +
-//            "RETURN DISTINCT " +
-//                "type(r2) as type, r2.uuid AS uuid, r2.label AS label, r2.sourceId AS sourceId, " +
-//                "r2.targetId AS targetId, r2.sourceHandle AS sourceHandle, r2.targetHandle AS targetHandle")
-//    List<CastRelationshipInfoDto> findAllConnectionByProjectId(Long projectId);
-//
-//    @Query("MATCH (n1:Project{id: $projectId})-[r1:INCLUDED]->(n2:Cast) " +
-//            "WHERE n1.deletedAt IS NULL " +
-//            "AND n2.deletedAt IS NULL " +
-//            "RETURN n2.id AS id, n2.name AS name, n2.gender AS gender")
-//    List<CastSummaryDto> findAllSummaryByProjectId(Long projectId);
+	// =====Cast Graph=====
+    @Query("""
+			MATCH
+			  (p:Project{id: $projectId, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
+			MATCH
+			  (cf)-[r2:INCLUDE]-(c1:Cast{deleted:false})
+			MATCH
+			  (c1)-[r3]-(c2:Cast{deleted:false})
+			RETURN DISTINCT
+			  id(r3) as id, type(r3) as type, r3.label as label,
+			  r3.sourceId as sourceId, r3.sourceHandle as sourceHandle,
+			  r3.targetId as targetId, r3.targetHandle as targetHandle
+			""")
+    List<CastGraphRelationshipProjection> findGraphRelationshipByProjectId(Long projectId);
+
+    @Query("""
+			MATCH
+			  (p:Project{id: $projectId, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})
+			MATCH
+			  (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
+			RETURN DISTINCT
+			  id(c) as id, c.name as name, c.gender as gender, c.imageUrl as imageUrl
+			""")
+    List<CastGraphNodeProjection> findGraphNodeByProjectId(Long projectId);
 
     @Override
     @Query("""
