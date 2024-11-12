@@ -38,6 +38,7 @@ public class CastController extends BaseFileController {
     private final DeleteCastUseCase deleteCastUseCase;
     private final CreateConnectionUseCase createConnectionUseCase;
     private final UpdateConnectionUseCase updateConnectionUseCase;
+    private final DeleteConnectionUseCase deleteConnectionUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -90,6 +91,13 @@ public class CastController extends BaseFileController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(optional.get());
+    }
+
+    @DeleteMapping("/relationships/{relationshipId}")
+    @Operation(summary = "✨ 관계도: 인물 관계 삭제", description = "인물 관계를 삭제")
+    public ResponseEntity<Void> deleteRelationship(@PathVariable Long relationshipId) {
+        deleteConnectionUseCase.execute(relationshipId);
+        return ResponseEntity.noContent().build();
     }
 
     // Bean Setting
