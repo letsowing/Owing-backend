@@ -1,19 +1,27 @@
 package com.owing.core.dnd.folder.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.util.StringUtils;
 
 import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.core.dnd.base.error.DndErrorCode;
 import com.owing.core.dnd.base.error.exception.DndException;
 import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
+import com.owing.core.dnd.file.model.BaseFileEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import lombok.Getter;
 
 @MappedSuperclass
 @Getter
-public abstract class BaseFolderEntity implements BaseFolder {
+public abstract class BaseFolderEntity<T extends BaseFileEntity> implements BaseFolder {
 
 	@Column(nullable = false)
 	protected Long position;
@@ -26,6 +34,10 @@ public abstract class BaseFolderEntity implements BaseFolder {
 
 	@Column(name = "project_id")
 	protected Long projectId;
+
+	@OrderBy("position ASC")
+	@OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<T> files = new ArrayList<>();
 
 	@Override
 	public Long getParentId() {
