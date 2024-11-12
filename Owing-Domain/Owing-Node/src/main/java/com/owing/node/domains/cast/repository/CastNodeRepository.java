@@ -16,11 +16,11 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 
     @Query("""
             MATCH
-                (c:Cast{deleted:false})
+                (c:Cast{deleted:false})<-[r:INCLUDE]-(cf:CastFolder{deleted:false})
             WHERE
                 id(c)=$castId
             RETURN
-                c
+                c, r, cf
             """)
     Optional<CastNode> findOneById(Long castId);
 
