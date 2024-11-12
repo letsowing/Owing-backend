@@ -1,9 +1,6 @@
 package com.owing.api.cast.model.mapper;
 
-import com.owing.api.cast.model.dto.request.CreateCastRequest;
-import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
+import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
@@ -127,6 +124,16 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
                 .targetId(castRelationshipProjection.targetId())
                 .sourceHandle(castRelationshipProjection.sourceHandle())
                 .targetHandle(castRelationshipProjection.targetHandle())
+                .build();
+    }
+
+    public CastRelationship toCastRelationship(String label, UpdateCastRelationshipRequest updateRequest) {
+        return CastRelationship.builder()
+                .label(label)
+                .sourceId(updateRequest.sourceId())
+                .targetId(updateRequest.targetId())
+                .sourceHandle(updateRequest.sourceHandle())
+                .targetHandle(updateRequest.targetHandle())
                 .build();
     }
 }
