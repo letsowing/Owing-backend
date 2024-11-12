@@ -10,6 +10,7 @@ import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
+import com.owing.node.domains.cast.model.projection.CastTitleProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,15 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         entity.updateFolder(null);
         CastNode savedCastNode = castNodeRepository.save(entity);
         return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
+    }
+
+    @Override
+    @Transactional
+    public CastNode updateTitle(CastNode entity, CastNode newEntity) {
+        entity.updateTitle(newEntity.getTitle());
+        CastTitleProjection titleProjection = CastTitleProjection.from(entity);
+        neo4jTemplate.save(CastNode.class).one(titleProjection);
+        return entity;
     }
 
     @Transactional
