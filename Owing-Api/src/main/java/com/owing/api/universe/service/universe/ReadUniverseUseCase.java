@@ -1,14 +1,11 @@
 package com.owing.api.universe.service.universe;
 
-import com.owing.entity.domains.universe.adapter.UniverseAdapter;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.ReadFileUseCase;
-import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
@@ -22,12 +19,6 @@ public class ReadUniverseUseCase extends ReadFileUseCase<Universe, UniverseFolde
 	private final UniverseMapper universeMapper;
 	private final UniverseDomainService baseDndDomainService;
 	private final UniverseAdapter universeAdapter;
-
-	@Transactional
-	public UniverseShortInfoResponse execute(Long universeId) {
-		Universe universe = universeAdapter.findById(universeId);
-		return universeMapper.toShortInfoResponse(universe);
-	}
 
 	@Override
 	protected BaseFileMapper<Universe, UniverseFolder> dndMapper() {
