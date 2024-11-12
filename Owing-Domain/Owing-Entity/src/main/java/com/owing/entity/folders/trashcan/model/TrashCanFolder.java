@@ -24,7 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "trash_can_folder")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

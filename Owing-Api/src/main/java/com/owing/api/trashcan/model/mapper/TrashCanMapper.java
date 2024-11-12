@@ -5,12 +5,14 @@ import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.folder.model.BaseFolder;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.story.repository.StoryRepository;
+import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.trashcan.model.TrashCan;
-import com.owing.entity.domains.universe.repository.UniverseRepository;
+import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
+import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,9 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TrashCanMapper {
 	final private TrashCanFolderAdaptor trashCanFolderAdaptor;
-	private final UniverseRepository universeRepository;
-	private final StoryRepository storyRepository;
+	private final UniverseFolderAdapter universeFolderAdapter;
+	private final StoryFolderAdapter storyFolderAdapter;
+	private final CastFolderNodeAdapter castFolderNodeAdapter;
 	private final ProjectAdapter projectAdapter;
+	private final TrashCanFolderRepository trashCanFolderRepository;
 
 	public <T extends BaseFile<?>> TrashCan toEntity(T entity) {
 		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemId(entity.getParentId())
@@ -37,15 +41,15 @@ public class TrashCanMapper {
 		FolderType folderType = determineTableName(entity);
 		BaseFolder baseFolder = getBaseFolderByRepository(folderType, entity.getParentId());
 		Project project = projectAdapter.findById(baseFolder.getProjectId());
-
-		return TrashCanFolder.builder()
-			.itemId(entity.getParentId())
-			.tableName(folderType)
-			.name(baseFolder.getName())
-			.description(baseFolder.getDescription())
-			.project(project)
-			.trashCanList(null)
-			.build();
+		TrashCanFolder trashCanFolder = TrashCanFolder.builder()
+				.itemId(entity.getParentId())
+				.tableName(folderType)
+				.name(baseFolder.getName())
+				.description(baseFolder.getDescription())
+				.project(project)
+				.trashCanList(null)
+				.build();
+		return trashCanFolderRepository.save(trashCanFolder);
 	}
 
 	private <T extends BaseFile<?>> FolderType determineTableName(T entity) {
@@ -64,10 +68,9 @@ public class TrashCanMapper {
 
 	private BaseFolder getBaseFolderByRepository(FolderType folderType, Long parentId) {
 		return switch (folderType) {
-			case UNIVERSE -> (BaseFolder) universeRepository.findById(parentId)
-				.orElseThrow(() -> new IllegalStateException("todo Universe not found for ID: " + parentId));
-			case STORY -> (BaseFolder) storyRepository.findById(parentId)
-				.orElseThrow(() -> new IllegalStateException("todo Story not found for ID: " + parentId));
+			case UNIVERSE -> universeFolderAdapter.findById(parentId);
+			case STORY -> storyFolderAdapter.findById(parentId);
+			case CAST -> castFolderNodeAdapter.findById(parentId);
 			default -> throw new IllegalArgumentException("todo Unsupported FolderType: " + folderType);
 		};
 	}
