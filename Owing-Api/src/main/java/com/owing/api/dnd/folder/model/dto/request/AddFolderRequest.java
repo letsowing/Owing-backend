@@ -4,7 +4,6 @@ import com.owing.api.dnd.base.model.dto.request.AddDndRequest;
 
 public record AddFolderRequest(
 		String name,
-		String description,
 		Long projectId
 ) implements AddDndRequest {
 }

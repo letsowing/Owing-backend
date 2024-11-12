@@ -16,7 +16,6 @@ public class UniverseFolderMapper extends BaseFolderMapper<UniverseFolder> {
 	public UniverseFolder toEntity(AddFolderRequest addDndRequest) {
 		return UniverseFolder.builder()
 			.name(addDndRequest.name())
-			.description(addDndRequest.description())
 			.projectId(addDndRequest.projectId())
 			.build();
 	}
