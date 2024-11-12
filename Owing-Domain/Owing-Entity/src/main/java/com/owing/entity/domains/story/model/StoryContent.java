@@ -28,7 +28,6 @@ public class StoryContent extends BaseTimeEntity {
 	@OneToOne(mappedBy = "storyContent")
 	private Story story;
 
-	@Lob
 	@Column(columnDefinition = "TEXT")
 	private String content;
 
