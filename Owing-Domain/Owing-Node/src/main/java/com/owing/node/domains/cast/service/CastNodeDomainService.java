@@ -8,14 +8,14 @@ import com.owing.core.dnd.file.service.BaseFileDomainService;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.*;
-import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
-import com.owing.node.domains.cast.model.projection.CastInfoProjection;
-import com.owing.node.domains.cast.model.projection.CastTitleProjection;
+import com.owing.node.domains.cast.model.projection.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
@@ -26,6 +26,14 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
+
+    public List<CastGraphNodeProjection> getGraphNode(Long projectId) {
+        return castNodeAdapter.findGraphCastByProjectId(projectId);
+    }
+
+    public List<CastGraphRelationshipProjection> getGraphRelationship(Long projectId) {
+        return castNodeAdapter.findGraphCastRelationshipByProjectId(projectId);
+    }
 
     @Transactional
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {

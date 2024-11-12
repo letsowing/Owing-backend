@@ -5,6 +5,7 @@ import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
+import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
@@ -13,7 +14,11 @@ import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.*;
+import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.folder.cast.model.CastFolderNode;
+
+import java.util.List;
 
 @Mapper
 public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
@@ -108,5 +113,9 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
                 castNode.getDescription(),
                 castNode.getImageUrl()
         );
+    }
+
+    public CastGraphResponse toGraphResponse(List<CastGraphNodeProjection> graphCast, List<CastGraphRelationshipProjection> graphCastRelationship) {
+        return new CastGraphResponse(graphCast, graphCastRelationship);
     }
 }
