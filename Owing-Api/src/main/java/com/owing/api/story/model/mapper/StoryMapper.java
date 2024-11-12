@@ -3,6 +3,7 @@ package com.owing.api.story.model.mapper;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.dto.response.StoryInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.story.model.Story;
@@ -32,5 +33,12 @@ public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
 	@Override
 	public StoryInfoResponse toInfoResponse(Story entity) {
 		return StoryInfoResponse.from(entity);
+	}
+
+	public Story toEntity(UpdateStoryRequest updateStoryRequest) {
+		return Story.builder()
+			.name(updateStoryRequest.name())
+			.description(updateStoryRequest.description())
+			.build();
 	}
 }

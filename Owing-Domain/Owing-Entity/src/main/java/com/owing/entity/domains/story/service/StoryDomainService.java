@@ -1,5 +1,7 @@
 package com.owing.entity.domains.story.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
 import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
@@ -47,5 +49,10 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 
 	public void restoreById(Long itemId) {
 		storyRepository.restoreById(itemId);
+	}
+
+	@Transactional
+	public void update(Story oldStory, Story newStory) {
+		oldStory.update(newStory);
 	}
 }
