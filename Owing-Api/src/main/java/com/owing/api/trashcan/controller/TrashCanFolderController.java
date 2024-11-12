@@ -27,12 +27,12 @@ public class TrashCanFolderController {
 	private final UpdateTrashCanFolderUserCase updateTrashCanFolderUserCase;
 	private final DeleteTrashCanFolderUserCase deleteTrashCanFolderUserCase;
 
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<TrashCanFolderResponse> getTrashCan(@RequestParam("projectId") Long projectId) {
 		return ResponseEntity.ok(readTrashCanFolderUserCase.executeProject(projectId));
 	}
 
-	@DeleteMapping("")
+	@DeleteMapping
 	public ResponseEntity<?> deleteAllTrashCan(@RequestParam("projectId") Long projectId) {
 		deleteTrashCanFolderUserCase.executeAll(projectId);
 		return ResponseEntity.noContent().build();
