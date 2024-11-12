@@ -32,7 +32,7 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 	 * 세계관 DnD 수정시 사용
 	 */
 	@Override
-	public Universe toEntity(UpdateFileRequest dto) {
+	public Universe toEntity(UpdateFileTitleRequest dto) {
 		return  Universe.builder()
 			.name(dto.name())
 			.build();

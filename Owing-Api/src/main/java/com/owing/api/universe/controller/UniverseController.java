@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.owing.api.dnd.base.controller.BaseFileController;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
 import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileRequest;
-import com.owing.api.dnd.base.controller.BaseFileController;
+import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.file.service.CreatePresignedUrlUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
@@ -92,7 +92,7 @@ public class UniverseController extends BaseFileController {
 	}
 
 	@Override
-	protected UpdateDndUseCase<UpdateFileRequest, UpdateFilePositionRequest> updateDndUseCase() {
+	protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
 		return updateUniverseUseCase;
 	}
 }

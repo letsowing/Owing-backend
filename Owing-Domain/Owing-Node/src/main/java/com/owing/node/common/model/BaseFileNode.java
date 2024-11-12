@@ -1,5 +1,8 @@
 package com.owing.node.common.model;
 
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.util.StringUtils;
+
 import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.core.dnd.base.error.DndErrorCode;
 import com.owing.core.dnd.base.error.exception.DndException;
@@ -8,8 +11,6 @@ import com.owing.core.dnd.file.model.BaseFile;
 
 import jakarta.persistence.Column;
 import lombok.Getter;
-import org.springframework.data.neo4j.core.schema.Relationship;
-import org.springframework.util.StringUtils;
 
 @Getter
 public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo4j implements BaseFile<T>{
@@ -28,7 +29,7 @@ public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo
 	protected T folder;
 
 	public void update(BaseFileNode<T> newFile){
-		this.name = newFile.getTitle();
+		this.name = newFile.getName();
 		this.description = newFile.getDescription();
 	}
 
@@ -37,7 +38,7 @@ public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo
 	}
 
 	@Override
-	public String getTitle() {
+	public String getName() {
 		return this.name;
 	}
 
@@ -54,15 +55,11 @@ public abstract class BaseFileNode<T extends BaseFolderNode> extends BaseTimeNeo
 	public abstract void connectFolder(T folder);
 
 	@Override
-	public void updateTitle(String newTitle) {
+	public void updateName(String newTitle) {
 		if (!StringUtils.hasText(newTitle)) {
 			throw DndException.of(DndErrorCode.INVALID_TITLE);
 		}
 		this.name = newTitle;
-	}
-
-	public void updateName(String newName) {
-		this.updateTitle(newName);
 	}
 
 	@Override
