@@ -3,7 +3,8 @@ package com.owing.node.domains.cast.repository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.common.repository.BaseFileNodeRepository;
 import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -197,10 +198,36 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
     List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId);
 
 	// =====AI Prompt=====
+	@Query("""
+			MATCH
+			  (p:Project{id: $projectId, deleted: false})-[r1:INCLUDE]->(cf:CastFolder{deleted: false})
+			MATCH
+			  (cf)-[r2:INCLUDE]->(c1:Cast{deleted: false})
+			MATCH
+			  (c1)-[r3:CONNECTION|BI_CONNECTION]-(c2:Cast{deleted: false})
+			RETURN DISTINCT
+			  type(r3) as type,
+			  r3.label as label,
+			  r3.sourceId as sourceId,
+			  r3.targetId as targetId
+			""")
+	List<CastRelationshipAiProjection> findAllCastRelationshipForAiPrompt(Long projectId);
 
-
-//	@Query()
-//	List<CastRelationshipProjection> findAllRelationship(Long projectId);
+	@Query("""
+			PROFILE
+			MATCH
+			  (p:Project{id: $projectId, deleted: false})-[r1:INCLUDE]->(cf:CastFolder{deleted: false})
+			MATCH
+			  (cf:CastFolder{deleted: false})-[r:INCLUDE]->(c:Cast)
+			RETURN
+			  id(c) as castId,
+			  c.name as name,
+			  c.role as role,
+			  c.gender as gender,
+			  c.age as age,
+			  c.description as description
+			""")
+	List<CastAiProjection> findAllCastForAiPrompt(Long projectId);
 
 
 	// =====super() Cast Repository=====

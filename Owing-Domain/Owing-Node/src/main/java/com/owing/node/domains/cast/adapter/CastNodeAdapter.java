@@ -10,8 +10,10 @@ import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -62,9 +64,14 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
         return castNodeRepository.findGraphCastRelationshipByProjectId(projectId);
     }
 
-    public List<CastNode> findAllByProjectId(Long projectId) {
-        // return castNodeRepository.findAllByProjectId(projectId);
-        return null;
+    public List<CastAiProjection> findAllCastForAiPrompt(Long projectId) {
+        List<CastAiProjection> allCastForAiPrompt = castNodeRepository.findAllCastForAiPrompt(projectId);
+        return allCastForAiPrompt;
+    }
+
+    public List<CastRelationshipAiProjection> findAllCastRelationshipForAiPrompt(Long projectId) {
+        List<CastRelationshipAiProjection> allCastRelationshipForAiPrompt = castNodeRepository.findAllCastRelationshipForAiPrompt(projectId);
+        return allCastRelationshipForAiPrompt;
     }
 
     // Bean Setting
