@@ -16,5 +16,6 @@ public class FeignClientConfig {
 			.encoder(new JacksonEncoder())  // JacksonEncoder 사용
 			.decoder(new JacksonDecoder())
 			.target(OwingAiClient.class, "https://ai.letsowing.com/v1");
+			// .target(OwingAiClient.class, "http://localhost:8081/v1");
 	}
 }

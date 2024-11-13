@@ -36,8 +36,6 @@ public class FalAiImageGenerator implements ImageGenerator {
 	@Override
 	public String generateImage(String prompt) {
 
-		System.out.println("@@@@ FLUX 사용 @@@@");
-
 		var input = Map.of(
 			"prompt", prompt,
 			"seed", 6252023,
