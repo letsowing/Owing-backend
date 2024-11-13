@@ -4,5 +4,5 @@ public record GenerateProjectImageRequest(
 	String title,
 	String description,
 	String category,
-	String[] genre
+	String[] genres
 ) { }

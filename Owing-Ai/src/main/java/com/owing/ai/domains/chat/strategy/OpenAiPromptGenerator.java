@@ -91,7 +91,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 			, generateProjectImageRequest.title()
 			, generateProjectImageRequest.description()
 			, generateProjectImageRequest.category()
-			, Arrays.toString(generateProjectImageRequest.genre())
+			, Arrays.toString(generateProjectImageRequest.genres())
 		);
 
 		SystemMessage systemMessage = new SystemMessage(systemContent);
