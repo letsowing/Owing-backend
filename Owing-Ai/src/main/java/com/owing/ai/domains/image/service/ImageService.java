@@ -3,14 +3,14 @@ package com.owing.ai.domains.image.service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.owing.ai.domains.chat.strategy.PromptGenerator;
+import com.owing.ai.domains.image.promptGenerator.PromptGenerator;
 import com.owing.ai.domains.image.dto.request.GenerateCastImageRequest;
 import com.owing.ai.domains.image.dto.request.GenerateProjectImageRequest;
 import com.owing.ai.domains.image.dto.request.GenerateUniverseImageRequest;
 import com.owing.ai.domains.image.dto.response.CastImageResponse;
 import com.owing.ai.domains.image.dto.response.ProjectImageResponse;
 import com.owing.ai.domains.image.dto.response.UniverseImageResponse;
-import com.owing.ai.domains.image.strategy.ImageGenerator;
+import com.owing.ai.domains.image.imageGenerator.ImageGenerator;
 import com.owing.infrastructure.config.s3.S3Properties;
 import com.owing.infrastructure.config.s3.S3Uploader;
 

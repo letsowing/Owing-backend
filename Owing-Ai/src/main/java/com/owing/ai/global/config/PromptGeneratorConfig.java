@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.owing.ai.domains.chat.strategy.PromptGenerator;
+import com.owing.ai.domains.image.promptGenerator.PromptGenerator;
 
 @Configuration
 public class PromptGeneratorConfig {

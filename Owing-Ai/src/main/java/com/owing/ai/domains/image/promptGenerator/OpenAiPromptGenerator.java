@@ -1,4 +1,4 @@
-package com.owing.ai.domains.chat.strategy;
+package com.owing.ai.domains.image.promptGenerator;
 
 import java.util.Arrays;
 import java.util.List;
