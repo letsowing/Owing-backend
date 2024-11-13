@@ -9,7 +9,8 @@ import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@ImportAutoConfiguration({FeignAutoConfiguration.class})
+// @ImportAutoConfiguration({FeignAutoConfiguration.class})
+@EnableFeignClients
 public class OwingApiApplication {
 
     public static void main(String[] args) {
