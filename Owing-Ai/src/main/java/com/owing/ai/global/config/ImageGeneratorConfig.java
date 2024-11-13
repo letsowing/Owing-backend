@@ -9,7 +9,7 @@ import com.owing.ai.domains.image.strategy.ImageGenerator;
 @Configuration
 public class ImageGeneratorConfig {
 
-	public static final String IMAGE_GENERATOR_TYPE = "openAI"; // todo
+	public static final String IMAGE_GENERATOR_TYPE = "falAI"; // todo
 
 	@Bean
 	public ImageGenerator imageGenerator(
