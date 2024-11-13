@@ -1,16 +1,14 @@
 package com.owing.api.openfeign;
 
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
 /* open feign의 configuration은 @Configuration 을 달면 안 된다. */
-@Configuration
+// @Configuration
 // @EnableFeignClients(basePackages = {"com.owing.api.openfeign"})
 public class FeignClientConfig {
 	@Bean
