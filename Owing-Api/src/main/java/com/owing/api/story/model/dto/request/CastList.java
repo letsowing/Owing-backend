@@ -1,6 +1,6 @@
 package com.owing.api.story.model.dto.request;
 
-import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
 
 public record CastList(
 	Long castId,
@@ -10,14 +10,14 @@ public record CastList(
 	Long age,
 	String description
 ) {
-	public static CastList from(CastNode cast){
+	public static CastList from(CastAiProjection cast){
 		return new CastList(
-			cast.getId(),
-			cast.getName(),
-			cast.getRole(),
-			cast.getGender(),
-			cast.getAge(),
-			cast.getDescription()
+			cast.castId(),
+			cast.name(),
+			cast.role(),
+			cast.gender(),
+			cast.age(),
+			cast.description()
 		);
 	}
 }
