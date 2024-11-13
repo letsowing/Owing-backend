@@ -14,7 +14,7 @@ public enum FolderType {
 
 		return switch (upperCaseName) {
 			case "STORYFOLDER" -> STORY;
-			case "CASTFOLDER" -> CAST;
+			case "CASTFOLDERNODE" -> CAST;
 			case "UNIVERSEFOLDER" -> UNIVERSE;
 			default -> throw new IllegalArgumentException("Unknown class name: " + className);
 		};
