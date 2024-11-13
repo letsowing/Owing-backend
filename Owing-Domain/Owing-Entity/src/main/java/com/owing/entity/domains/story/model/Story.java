@@ -57,4 +57,7 @@ public class Story extends BaseFileEntity<StoryFolder> {
 		}
 	}
 
+	public String getContent() {
+		return this.storyContent.getContent();
+	}
 }
