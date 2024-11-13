@@ -21,8 +21,8 @@ public class GenerateProjectImageUseCase {
 	public ProjectImageResponse execute(GenerateProjectImageRequest generateProjectImageRequest) {
 
 		/* FeignClient 를 이용해 AI 서버로 이미지 생성 요청 */
-		UniverseImageResponse universeImageResponse = owingAiClient.generateProjectImage(generateProjectImageRequest);
-		String imgUrl = universeImageResponse.imageUrl();
+		ProjectImageResponse projectImageResponse = owingAiClient.generateProjectImage(generateProjectImageRequest);
+		String imgUrl = projectImageResponse.imageUrl();
 		return projectMapper.toGenerateImageResponse(imgUrl);
 	}
 }

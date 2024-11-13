@@ -12,10 +12,12 @@ import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
 import com.owing.api.story.model.dto.request.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.StorySpellCheckRequest;
 import com.owing.api.story.model.dto.response.StorySpellCheckResponse;
+import com.owing.api.project.model.dto.response.ProjectImageResponse;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 
 @FeignClient(name = "owing-ai-client",
+	// url = "http://localhost:8081/v1",
 	url = "https://ai.letsowing.com/v1",
 	configuration = FeignClientConfig.class)
 public interface OwingAiClient {
@@ -25,7 +27,7 @@ public interface OwingAiClient {
 
 	/* 작품 AI 이미지 생성 */
 	@PostMapping("/images/projects")
-	UniverseImageResponse generateProjectImage(@RequestBody GenerateProjectImageRequest generateProjectImageRequest);
+	ProjectImageResponse generateProjectImage(@RequestBody GenerateProjectImageRequest generateProjectImageRequest);
 
 	/* 인물 AI 이미지 생성 */
 	@PostMapping("/images/cast")
