@@ -37,7 +37,7 @@ public class ImageService {
 	public ResponseEntity<UniverseImageResponse> generateUniverseImage(GenerateUniverseImageRequest imageGenerateRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateUniverseImagePrompt(imageGenerateRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateUniverseImagePrompt(imageGenerateRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
@@ -63,7 +63,7 @@ public class ImageService {
 	public ResponseEntity<ProjectImageResponse> generateProjectImage(GenerateProjectImageRequest generateProjectImageRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateProjectImagePrompt(generateProjectImageRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateProjectImagePrompt(generateProjectImageRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
@@ -89,7 +89,7 @@ public class ImageService {
 	public ResponseEntity<CastImageResponse> generateCastImage(GenerateCastImageRequest generateCastImageRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateCastImagePrompt(generateCastImageRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateCastImagePrompt(generateCastImageRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
