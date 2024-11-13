@@ -18,7 +18,7 @@ cloud:
     bucket: ${S3_BUCKET}
     directory:
       project: ${DIRECTORY_PROJECT}
-      casting: ${DIRECTORY_CASTING}
+      cast: ${DIRECTORY_CAST}
       universe: ${DIRECTORY_UNIVERSE}
   stack-auto: false
 

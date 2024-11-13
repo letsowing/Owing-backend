@@ -18,7 +18,7 @@ public record S3Properties(
     ) {}
     public record Directory(
             String project,
-            String casting,
+            String cast,
             String universe
     ) {}
     public record Credentials(

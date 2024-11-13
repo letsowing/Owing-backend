@@ -39,6 +39,7 @@ public class CastController extends BaseFileController {
     private final CreateConnectionUseCase createConnectionUseCase;
     private final UpdateConnectionUseCase updateConnectionUseCase;
     private final DeleteConnectionUseCase deleteConnectionUseCase;
+    private final CreateCastPresignedUrlUseCase createCastPresignedUrlUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -120,4 +121,12 @@ public class CastController extends BaseFileController {
     protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
         return this.updateCastUseCase;
     }
+
+    /* presigned url 생성 */
+    @GetMapping("/files/{fileExtension}")
+    @Operation(summary = "✨ 일반: 인물 presignedUrl", description = "presigned url 생성합니다.")
+    public ResponseEntity<?> getFile(@PathVariable(value = "fileExtension") String fileExtension) {
+        return ResponseEntity.ok(createCastPresignedUrlUseCase.execute(fileExtension));
+    }
+
 }
