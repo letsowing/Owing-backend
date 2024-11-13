@@ -4,6 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.owing.api.cast.model.dto.request.GenerateCastImageRequest;
+import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
@@ -20,4 +22,7 @@ public interface OwingAiClient {
 	@PostMapping("/images/projects")
 	UniverseImageResponse generateProjectImage(@RequestBody GenerateProjectImageRequest generateProjectImageRequest);
 
+	/* 인물 AI 이미지 생성 */
+	@PostMapping("/images/cast")
+	CastImageResponse generateCastImage(@RequestBody GenerateCastImageRequest generateCastImageRequest);
 }
