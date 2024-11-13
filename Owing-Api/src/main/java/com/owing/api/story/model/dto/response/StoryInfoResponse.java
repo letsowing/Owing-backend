@@ -20,7 +20,7 @@ public record StoryInfoResponse(
 				.name(story.getName())
 				.description(story.getDescription())
 				.textCount(story.getTextCount())
-				.content(story.getStoryContent() == null ? null : story.getStoryContent().getContent())
+				.content(story.getContent())
 				.build();
 	}
 }

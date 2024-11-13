@@ -1,5 +1,7 @@
 package com.owing.entity.domains.story.model;
 
+import java.util.Optional;
+
 import org.hibernate.annotations.SoftDelete;
 
 import com.owing.core.dnd.file.model.BaseFileEntity;
@@ -58,6 +60,8 @@ public class Story extends BaseFileEntity<StoryFolder> {
 	}
 
 	public String getContent() {
-		return this.storyContent.getContent();
+		return Optional.ofNullable(storyContent)
+				.map(StoryContent::getContent)
+				.orElse("");
 	}
 }

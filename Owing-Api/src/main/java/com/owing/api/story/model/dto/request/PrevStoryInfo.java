@@ -13,7 +13,7 @@ public record PrevStoryInfo(
 			story.getId(),
 			story.getName(),
 			story.getDescription(),
-			story.getStoryContent().getContent()
+			story.getContent()
 		);
 	}
 }
