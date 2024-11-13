@@ -11,7 +11,7 @@ import feign.jackson.JacksonEncoder;
 
 /* open feign의 configuration은 @Configuration 을 달면 안 된다. */
 @Configuration
-@EnableFeignClients(basePackages = {"com.owing.api.openfeign"})
+// @EnableFeignClients(basePackages = {"com.owing.api.openfeign"})
 public class FeignClientConfig {
 	@Bean
 	public OwingAiClient createClient() {
@@ -19,6 +19,7 @@ public class FeignClientConfig {
 			.contract(new SpringMvcContract())  // Spring MVC 어노테이션을 인식하게 함
 			.encoder(new JacksonEncoder())  // JacksonEncoder 사용
 			.decoder(new JacksonDecoder())
+			// .target(OwingAiClient.class, "http://localhost:8081/v1");
 			.target(OwingAiClient.class, "https://ai.letsowing.com/v1");
 	}
 }
