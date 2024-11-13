@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
 public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, Long> {
@@ -18,7 +19,7 @@ public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, 
 
 	int deleteByCreatedAtBefore(LocalDateTime cutoffDateTime);
 
-	Optional<TrashCanFolder> findByItemId(Long itemId);
+	Optional<TrashCanFolder> findByItemIdAndTableName(Long itemId, FolderType tableName);
 
 	@Modifying
 	@Query("UPDATE trash_can_folder t SET t.createdAt = CURRENT_TIMESTAMP WHERE t.id = :id")
