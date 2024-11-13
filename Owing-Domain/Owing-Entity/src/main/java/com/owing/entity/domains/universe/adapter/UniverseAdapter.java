@@ -1,5 +1,7 @@
 package com.owing.entity.domains.universe.adapter;
 
+import java.util.List;
+
 import com.owing.common.annotation.Adaptor;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
@@ -23,5 +25,9 @@ public class UniverseAdapter extends BaseFileAdapter<Universe> {
 	public Universe findById(Long universeId) {
 		return universeRepository.findById(universeId)
 			.orElseThrow(() -> UniverseNotFoundException.of(UniverseErrorCode.UNIVERSE_NOT_FOUND));
+	}
+
+	public List<Universe> findByProjectId(Long projectId) {
+		return universeRepository.findByFolder_ProjectId(projectId);
 	}
 }
