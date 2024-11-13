@@ -1,10 +1,7 @@
 package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.*;
-import com.owing.api.cast.model.dto.response.CastFileResponse;
-import com.owing.api.cast.model.dto.response.CastGraphResponse;
-import com.owing.api.cast.model.dto.response.CastInfoResponse;
-import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
+import com.owing.api.cast.model.dto.response.*;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
@@ -77,7 +74,7 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
                 .build();
     }
 
-    // BaseFileMapper와 충돌로 인한 임시 변경
+    @Override
     public CastInfoResponse toInfoResponse(CastNode castNode) {
         return new CastInfoResponse(
                 castNode.getId(),
@@ -89,6 +86,10 @@ public class CastNodeMapper extends BaseFileMapper<CastNode, CastFolderNode> {
                 castNode.getImageUrl(),
                 castNode.getCoordinate()
         );
+    }
+
+    public CastInfoWithFolderResponse toInfoWithFolderResponse(CastNode castNode) {
+        return new CastInfoWithFolderResponse(castNode.getParentId(), this.toInfoResponse(castNode));
     }
 
     public CastRelationshipInfoResponse toInfoResponse(CastRelationshipProjection relationship, ConnectionType type) {
