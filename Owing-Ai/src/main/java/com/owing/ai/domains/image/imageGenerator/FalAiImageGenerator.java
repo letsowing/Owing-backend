@@ -1,4 +1,4 @@
-package com.owing.ai.domains.image.strategy;
+package com.owing.ai.domains.image.imageGenerator;
 
 import java.io.InputStream;
 import java.net.URL;
