@@ -2,6 +2,7 @@ package com.owing.api.cast.service;
 
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
+import com.owing.api.cast.model.dto.response.CastInfoWithFolderResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
 import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.common.annotation.UseCase;
@@ -21,9 +22,9 @@ public class ReadCastUseCase implements ReadDndUseCase {
     private final CastNodeMapper castNodeMapper;
     private final CastNodeDomainService castNodeDomainService;
 
-    public CastInfoResponse executeRetrieve(Long castId){
+    public CastInfoWithFolderResponse executeRetrieve(Long castId){
         CastNode castnode = castNodeDomainService.getEntity(castId);
-        return castNodeMapper.toInfoResponse(castnode);
+        return castNodeMapper.toInfoWithFolderResponse(castnode);
     }
 
     public CastGraphResponse executeGraph(Long projectId) {

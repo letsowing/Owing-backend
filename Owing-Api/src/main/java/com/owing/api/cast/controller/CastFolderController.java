@@ -1,11 +1,8 @@
 package com.owing.api.cast.controller;
 
+import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
 import com.owing.api.cast.service.CreateCastFolderUseCase;
@@ -25,6 +22,8 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/cast/folders")
 @RequiredArgsConstructor
@@ -35,6 +34,12 @@ public class CastFolderController extends BaseFolderController {
     private final ReadCastFolderUseCase readCastFolderUseCase;
     private final UpdateCastFolderUseCase updateCastFolderUseCase;
     private final DeleteCastFolderUseCase deleteCastFolderUseCase;
+
+    // TODO BaseFolderController의 공통 구현으로 분리
+    @GetMapping("/{projectId}/dropdown")
+    public ResponseEntity<List<CastFolderDropdownItemResponse>> getFolderDropdownList(@PathVariable Long projectId) {
+        return ResponseEntity.ok(readCastFolderUseCase.executeDropdownList(projectId));
+    }
 
     @PutMapping("/{folderId}")
     public ResponseEntity<Void> updateCastFolderInfo(@PathVariable Long folderId, @RequestBody UpdateCastFolderInfo updateCastFolderInfo) {

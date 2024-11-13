@@ -171,7 +171,11 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			MATCH
 			  (cf)-[r2:INCLUDE]->(c:Cast{deleted:false})
 			RETURN DISTINCT
-			  id(c) as castId, c.name as name, c.gender as gender, c.imageUrl as imageUrl
+			  id(c) as castId,
+			  c.name as name,
+			  c.role as role,
+			  c.imageUrl as imageUrl,
+			  c.`coordinate.x` as `coordinate.x`, c.`coordinate.y` as `coordinate.y`
 			""")
     List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId);
 
