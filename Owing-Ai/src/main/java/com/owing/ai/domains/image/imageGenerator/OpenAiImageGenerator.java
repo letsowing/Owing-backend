@@ -1,4 +1,4 @@
-package com.owing.ai.domains.image.strategy;
+package com.owing.ai.domains.image.imageGenerator;
 
 import org.springframework.ai.image.ImageMessage;
 import org.springframework.ai.image.ImageModel;

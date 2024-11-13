@@ -3,14 +3,14 @@ package com.owing.ai.domains.image.service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.owing.ai.domains.chat.strategy.PromptGenerator;
+import com.owing.ai.domains.image.promptGenerator.PromptGenerator;
 import com.owing.ai.domains.image.dto.request.GenerateCastImageRequest;
 import com.owing.ai.domains.image.dto.request.GenerateProjectImageRequest;
 import com.owing.ai.domains.image.dto.request.GenerateUniverseImageRequest;
 import com.owing.ai.domains.image.dto.response.CastImageResponse;
 import com.owing.ai.domains.image.dto.response.ProjectImageResponse;
 import com.owing.ai.domains.image.dto.response.UniverseImageResponse;
-import com.owing.ai.domains.image.strategy.ImageGenerator;
+import com.owing.ai.domains.image.imageGenerator.ImageGenerator;
 import com.owing.infrastructure.config.s3.S3Properties;
 import com.owing.infrastructure.config.s3.S3Uploader;
 
@@ -37,7 +37,7 @@ public class ImageService {
 	public ResponseEntity<UniverseImageResponse> generateUniverseImage(GenerateUniverseImageRequest imageGenerateRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateUniverseImagePrompt(imageGenerateRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateUniverseImagePrompt(imageGenerateRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
@@ -63,7 +63,7 @@ public class ImageService {
 	public ResponseEntity<ProjectImageResponse> generateProjectImage(GenerateProjectImageRequest generateProjectImageRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateProjectImagePrompt(generateProjectImageRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateProjectImagePrompt(generateProjectImageRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);
@@ -89,7 +89,7 @@ public class ImageService {
 	public ResponseEntity<CastImageResponse> generateCastImage(GenerateCastImageRequest generateCastImageRequest) {
 
 		/* TextGeneration - 프롬프트 생성 */
-		String prompt = promptGenerator.generateCastImagePrompt(generateCastImageRequest); // todo: 프롬프트 db 저장
+		String prompt = promptGenerator.generateCastImagePrompt(generateCastImageRequest); // todo: 프롬프트 저장
 
 		/* ImageGeneration - 이미지 생성 */
 		String b64Json = imageGenerator.generateImage(prompt);

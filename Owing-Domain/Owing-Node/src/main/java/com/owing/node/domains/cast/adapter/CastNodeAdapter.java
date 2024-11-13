@@ -1,5 +1,7 @@
 package com.owing.node.domains.cast.adapter;
 
+import java.util.List;
+
 import com.owing.common.annotation.Adaptor;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
@@ -8,13 +10,11 @@ import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
-import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
@@ -60,6 +60,11 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
 
     public List<CastGraphRelationshipProjection> findGraphCastRelationshipByProjectId(Long projectId) {
         return castNodeRepository.findGraphCastRelationshipByProjectId(projectId);
+    }
+
+    public List<CastNode> findAllByProjectId(Long projectId) {
+        // return castNodeRepository.findAllByProjectId(projectId);
+        return null;
     }
 
     // Bean Setting

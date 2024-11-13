@@ -19,6 +19,8 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
+import com.owing.api.story.service.story.CheckStoryCrashUseCase;
+import com.owing.api.story.service.story.CheckStorySpellUseCase;
 import com.owing.api.story.service.story.CreateStoryUseCase;
 import com.owing.api.story.service.story.DeleteStoryUseCase;
 import com.owing.api.story.service.story.ReadStoryUseCase;
@@ -37,6 +39,8 @@ public class StoryController extends BaseFileController {
 	private final ReadStoryUseCase readDndUseCase;
 	private final DeleteStoryUseCase deleteDndUseCase;
 	private final UpdateStoryUseCase updateDndUseCase;
+	private final CheckStoryCrashUseCase checkStoryCrashUseCase;
+	private final CheckStorySpellUseCase checkStorySpellUseCase;
 
 	@PostMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
@@ -50,6 +54,19 @@ public class StoryController extends BaseFileController {
 	public ResponseEntity<?> updateStory(@PathVariable Long storyId, @RequestBody UpdateStoryRequest request) {
 		updateDndUseCase.execute(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PostMapping("/{storyId}/crash-check")
+	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌을 검사합니다.")
+	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody Long projectId) {
+		checkStoryCrashUseCase.execute(storyId, projectId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PostMapping("/{storyId}/spell-check")
+	@Operation(summary = "✨AI: 맞춤법 검사", description = "맞춤법을 검사합니다. 사실 AI가 아님")
+	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId) {
+		return ResponseEntity.ok(checkStorySpellUseCase.execute(storyId));
 	}
 
 	@Override

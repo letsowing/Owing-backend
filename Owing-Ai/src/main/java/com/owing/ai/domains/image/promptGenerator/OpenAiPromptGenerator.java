@@ -1,4 +1,4 @@
-package com.owing.ai.domains.chat.strategy;
+package com.owing.ai.domains.image.promptGenerator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +42,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 			+ "\n"
 			+ "[지시사항]\n"
 			+ "- name 과 description 을 바탕으로 [주어 + 행위 + 배경 + 스타일 + 사진]의 비율 정도를 말해주고, 필요하다면 더 디테일하게 [각도 / 포즈 / 구도 / 색상 / 시대 / 계절] 등 다양한 요소들에 대해 언급할 것.\n"
+			+ "- 이미지에 텍스트는 추가하지 말 것.\n"
 			+ "- 프롬프트는 반드시 영어로 작성할 것.\n"
 			+ "- 주어진 정보 외에는 어떤 창의적 개입도 하지 말고, 오로지 입력된 정보만을 바탕으로 작성할 것.";
 
@@ -80,6 +81,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 			+ "[지시사항]\n"
 			+ "- title, description, category, genre 를 바탕으로 작품의 표지 이미지가 될 수 있도록 [주요 요소 + 표현 방식 + 배경 + 스타일 + 사진 구도] 비율로 프롬프트를 구성할 것.\n"
 			+ "- 필요시 [각도 / 인물 포즈 / 구도 / 색상 / 시대적 배경 / 계절 등]의 세부 요소를 추가하여 더욱 구체적으로 표현할 것.\n"
+			+ "- 이미지에 텍스트는 추가하지 말 것.\n"
 			+ "- 프롬프트는 반드시 영어로 작성할 것.\n"
 			+ "- 주어진 정보 외에는 어떤 창의적 개입도 하지 말고, 오로지 입력된 정보만을 바탕으로 작성할 것.";
 
@@ -126,6 +128,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 			+ "- 배경은 인물의 역할과 부가 설명에 맞게 적절히 상상해 설정하고, 작품의 분위기를 잘 나타낼 수 있도록 서술할 것.\n"
 			+ "- 사진 구도는 [인물의 각도, 포즈, 거리] 등을 조절하여 인물이 돋보일 수 있는 방향으로 구체적으로 지시할 것.\n"
 			+ "- 필요에 따라 [조명, 그림자 효과, 색감] 등 세부적 요소를 추가하여 표현할 것.\n"
+			+ "- 이미지에 텍스트는 추가하지 말 것.\n"
 			+ "- 프롬프트는 반드시 영어로 작성할 것.\n"
 			+ "- 주어진 정보 외에는 어떤 창의적 개입도 하지 말고, 오로지 입력된 정보만을 바탕으로 작성할 것.";
 

@@ -1,5 +1,7 @@
 package com.owing.entity.domains.story.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +17,7 @@ public interface StoryRepository extends BaseFileEntityRepository<Story, StoryFo
 	@Modifying
 	@Query(value = "UPDATE story SET deleted = false WHERE id = :itemId", nativeQuery = true)
 	void restoreById(@Param("itemId") Long itemId);
+
+	List<Story> findByFolder_ProjectId(Long projectId);
+
 }

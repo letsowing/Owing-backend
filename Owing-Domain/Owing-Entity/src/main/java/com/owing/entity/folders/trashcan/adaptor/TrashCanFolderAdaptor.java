@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.owing.common.annotation.Adaptor;
 import com.owing.entity.folders.trashcan.error.TrashCanFolderErrorCode;
 import com.owing.entity.folders.trashcan.error.exception.TrashCanFolderException;
+import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
 
@@ -25,7 +26,7 @@ public class TrashCanFolderAdaptor {
 			.orElseThrow(() -> TrashCanFolderException.of(TrashCanFolderErrorCode.TRASH_CAN_FOLDER_NOT_FOUND, "요청된 TrashCanFolder Id: %d".formatted(trashId)));
 	}
 
-	public Optional<TrashCanFolder> findByItemId(Long itemId) {
-		return trashCanFolderRepository.findByItemId(itemId);
+	public Optional<TrashCanFolder> findByItemIdAndTableName(Long itemId, FolderType folderType) {
+		return trashCanFolderRepository.findByItemIdAndTableName(itemId, folderType);
 	}
 }
