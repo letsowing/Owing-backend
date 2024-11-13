@@ -17,7 +17,6 @@ import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 
 @FeignClient(name = "owing-ai-client",
-	// url = "http://localhost:8081/v1",
 	url = "https://ai.letsowing.com/v1",
 	configuration = FeignClientConfig.class)
 public interface OwingAiClient {
