@@ -9,7 +9,9 @@ public record CastGraphRelationshipProjection(
         Long relationshipId,
         String type,
         String label,
+        @JsonProperty("source")
         Long sourceId,
+        @JsonProperty("target")
         Long targetId,
         ConnectionHandle sourceHandle,
         ConnectionHandle targetHandle
