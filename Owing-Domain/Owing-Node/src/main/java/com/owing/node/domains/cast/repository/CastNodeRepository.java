@@ -140,15 +140,8 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  r.label = $label,
 			  r.sourceId=id(c1), r.sourceHandle = $sourceHandle,
 			  r.targetId=id(c2), r.targetHandle = $targetHandle
-			RETURN
-			  id(r) as relationshipId,
-			  r.label as label,
-			  r.sourceId as sourceId,
-			  r.sourceHandle as sourceHandle,
-			  r.targetId as targetId,
-			  r.targetHandle as targetHandle
 			""")
-	CastRelationshipProjection createCastRelationship(Long sourceId, Long targetId, String type, String label, String sourceHandle, String targetHandle);
+	void createCastRelationship(Long sourceId, Long targetId, String type, String label, String sourceHandle, String targetHandle);
 
 	@Query("""
 			OPTIONAL MATCH

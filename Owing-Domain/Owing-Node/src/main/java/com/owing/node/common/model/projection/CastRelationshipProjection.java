@@ -6,8 +6,8 @@ public record CastRelationshipProjection (
         Long relationshipId,
         String label,
         Long sourceId,
-        Long targetId,
         ConnectionHandle sourceHandle,
+        Long targetId,
         ConnectionHandle targetHandle
 ) {
 }
