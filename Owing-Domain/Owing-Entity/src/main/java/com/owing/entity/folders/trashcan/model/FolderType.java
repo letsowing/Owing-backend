@@ -13,9 +13,9 @@ public enum FolderType {
 		String upperCaseName = className.toUpperCase();
 
 		return switch (upperCaseName) {
-			case "STORY" -> STORY;
-			case "CAST" -> CAST;
-			case "UNIVERSE" -> UNIVERSE;
+			case "STORYFOLDER" -> STORY;
+			case "CASTFOLDER" -> CAST;
+			case "UNIVERSEFOLDER" -> UNIVERSE;
 			default -> throw new IllegalArgumentException("Unknown class name: " + className);
 		};
 	}

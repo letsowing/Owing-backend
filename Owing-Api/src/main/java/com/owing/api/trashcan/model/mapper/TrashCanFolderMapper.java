@@ -50,37 +50,32 @@ public class TrashCanFolderMapper {
 		);
 	}
 
-	private boolean isStoryCategory(TrashCanFolder trashCanFolder) {
-		return trashCanFolder.getTableName().isStory();
-	}
-
-	private boolean isCastCategory(TrashCanFolder trashCanFolder) {
-		return trashCanFolder.getTableName().isCast();
-	}
-
-	private boolean isUniverseCategory(TrashCanFolder trashCanFolder) {
-		return trashCanFolder.getTableName().isUniverse();
-	}
-
 	public <T extends BaseFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
-		return TrashCanFolder.builder()
+		TrashCanFolder trashCanFolder = TrashCanFolder.builder()
 			.itemId(entity.getId())
 			.tableName(determineTableName(entity))
 			.name(entity.getName())
 			.description(entity.getDescription())
 			.project(project)
-			.trashCanList(entity.getFiles().stream()
-				.map(file -> toEntity((BaseFileEntity<?>) file))
-				.collect(Collectors.toList()))
+			.trashCanList(new ArrayList<>())
 			.build();
+
+		List<TrashCan> trashCanList = entity.getFiles().stream()
+			.map(file -> toEntity(((BaseFileEntity<?>) file), trashCanFolder))
+			.toList();
+
+		trashCanFolder.getTrashCanList().addAll(trashCanList);
+
+		return trashCanFolder;
 	}
 
 	private <T extends BaseFolder> FolderType determineTableName(T entity) {
 		return FolderType.fromClassName(entity.getClass().getSimpleName());
 	}
 
-	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity) {
+	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity, TrashCanFolder trashCanFolder) {
 		return TrashCan.builder()
+			.trashCanFolder(trashCanFolder)
 			.itemId(baseFileEntity.getId())
 			.name(baseFileEntity.getName())
 			.description(baseFileEntity.getDescription())

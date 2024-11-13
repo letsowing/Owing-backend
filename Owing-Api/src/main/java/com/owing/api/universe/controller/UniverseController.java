@@ -23,6 +23,7 @@ import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
+import com.owing.api.universe.service.universe.CreateUniversePresignedUrlUseCase;
 import com.owing.api.universe.service.universe.CreateUniverseUseCase;
 import com.owing.api.universe.service.universe.DeleteUniverseUseCase;
 import com.owing.api.universe.service.universe.GenerateUniverseImageUseCase;
@@ -43,7 +44,7 @@ public class UniverseController extends BaseFileController {
 	private final UpdateUniverseUseCase updateUniverseUseCase;
 	private final ReadUniverseUseCase readUniverseUseCase;
 	private final DeleteUniverseUseCase deleteUniverseUseCase;
-	private final CreatePresignedUrlUseCase createPresignedUrlUseCase;
+	private final CreateUniversePresignedUrlUseCase createUniversePresignedUrlUseCase;
 	private final GenerateUniverseImageUseCase generateUniverseImageUseCase;
 
 	/* 세계관 생성 */
@@ -63,10 +64,10 @@ public class UniverseController extends BaseFileController {
 	}
 
 	/* presigned url 생성 */
-	@GetMapping("/files/{filename}")
+	@GetMapping("/files/{fileExtension}")
 	@Operation(summary = "✨ 일반: 세계관 presignedUrl", description = "presigned url 생성합니다.")
-	public ResponseEntity<?> getFile(@PathVariable(value = "filename") String fileName) {
-		return ResponseEntity.ok(createPresignedUrlUseCase.execute(fileName));
+	public ResponseEntity<?> getFile(@PathVariable(value = "fileExtension") String fileExtension) {
+		return ResponseEntity.ok(createUniversePresignedUrlUseCase.execute(fileExtension));
 	}
 
 	/* OpenAI - 세계관 이미지 생성 요청 후 S3 업로드 */

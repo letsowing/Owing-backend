@@ -7,7 +7,7 @@ import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.stereotype.Component;
 
-import com.owing.ai.global.properties.OpenAiImageProperties;
+import com.owing.ai.global.properties.OpenAiProperties;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class OpenAiImageGenerator implements ImageGenerator {
 
 	private final ImageModel imageModel;
-	private final OpenAiImageProperties openAiImageProperties;
+	private final OpenAiProperties openAiProperties;
 
 
 	@Override
@@ -36,7 +36,7 @@ public class OpenAiImageGenerator implements ImageGenerator {
 	}
 
 	private OpenAiImageOptions imageOptions() {
-		String size = openAiImageProperties.image().options().size();
+		String size = openAiProperties.image().options().size();
 		if (!size.matches("1024x1024|1792×1024|1024×1792")) {
 			throw new IllegalArgumentException("Invalid size for DALL-E 3 model. Allowed sizes: 1024x1024, 1792×1024, 1024×1792");
 		}
@@ -46,9 +46,9 @@ public class OpenAiImageGenerator implements ImageGenerator {
 		int height = Integer.parseInt(sizeParts[1]);
 
 		return OpenAiImageOptions.builder()
-			.withModel(openAiImageProperties.image().options().model().getValue())
-			.withResponseFormat(openAiImageProperties.image().options().responseFormat())
-			.withQuality(openAiImageProperties.image().options().quality())
+			.withModel(openAiProperties.image().options().model().getValue())
+			.withResponseFormat(openAiProperties.image().options().responseFormat())
+			.withQuality(openAiProperties.image().options().quality())
 			.withN(1)
 			.withHeight(height)
 			.withWidth(width)

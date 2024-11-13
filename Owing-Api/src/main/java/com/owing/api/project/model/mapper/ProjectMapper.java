@@ -2,10 +2,12 @@ package com.owing.api.project.model.mapper;
 
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.ProjectInfoRequest;
+import com.owing.api.project.model.dto.response.ProjectImageResponse;
 import com.owing.api.project.model.dto.response.ProjectInfoResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.common.model.dto.ProjectShortInfoDto;
 import com.owing.entity.domains.member.model.Member;
@@ -62,5 +64,11 @@ public class ProjectMapper {
     public ProjectShortInfoPageResponse toPageResponse(Page<Project> projectPage) {
         Page<ProjectShortInfoDto> projectShortInfoDtoPage = projectPage.map(ProjectShortInfoDto::from);
         return new ProjectShortInfoPageResponse(projectShortInfoDtoPage);
+    }
+
+    public ProjectImageResponse toGenerateImageResponse(String imgUrl) {
+        return ProjectImageResponse.builder()
+            .imageUrl(imgUrl)
+            .build();
     }
 }

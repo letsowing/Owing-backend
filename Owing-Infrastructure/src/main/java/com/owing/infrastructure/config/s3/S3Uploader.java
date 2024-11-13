@@ -70,10 +70,11 @@ public class S3Uploader {
 	}
 
 	/* Base64 이미지를 S3에 업로드  */
-	public String uploadBase64ImageToS3(String b64Json) {
+	public String uploadBase64ImageToS3(String directory, String b64Json) {
 
-		String fileName = "sample.png"; // todo : 랜덤 이름 생성 (하지만 FileUtil은 사용하지 못한다..)
-		// String fileName = FileUtils.buildFileName("sample.png");
+		String fileName = UUID.randomUUID().toString(); // 랜덤 파일 이름
+		String now = String.valueOf(System.currentTimeMillis()); //파일 업로드 시간
+		String randomFileName = directory + "/" + fileName + "_" + now + ".png";
 
 		// Base64 문자열을 바이트 배열로 디코딩
 		byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
@@ -81,16 +82,14 @@ public class S3Uploader {
 		// 바이트 배열을 InputStream으로 변환
 		InputStream inputStream = new ByteArrayInputStream(decodedBytes);
 
-		return uploadFileToS3(fileName, inputStream, decodedBytes.length);
+		return uploadFileToS3(randomFileName, inputStream, decodedBytes.length);
 	}
 
 	private String uploadFileToS3(String fileName, InputStream inputStream, long contentLength) {
 
-		UUID randomUUID = UUID.randomUUID();
-
 		PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(s3Properties.s3().bucket())
-			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
+			.key(fileName)
 			.contentType(getContentType(fileName))
 			.build();
 
@@ -98,7 +97,7 @@ public class S3Uploader {
 
 		GetUrlRequest getUrlRequest = GetUrlRequest.builder()
 			.bucket(s3Properties.s3().bucket())
-			.key(s3Properties.s3().directory().universe() + randomUUID + fileName)
+			.key(fileName)
 			.build();
 
 		return s3Client.utilities().getUrl(getUrlRequest).toString();

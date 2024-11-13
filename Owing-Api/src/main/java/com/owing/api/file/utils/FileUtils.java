@@ -1,5 +1,7 @@
 package com.owing.api.file.utils;
 
+import java.util.UUID;
+
 /* 파일 이름을 설정해주는 클래스 */
 public class FileUtils {
 	public static final String FILE_EXTENSION_SEPARATOR = ".";
@@ -9,13 +11,21 @@ public class FileUtils {
 		return originalFileName.substring(0, fileExtensionIndex); //파일 이름
 	}
 
-	public static String buildFileName(String originalFileName) {
-		int fileExtensionIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR); //파일 확장자 구분선
-		String fileExtension = originalFileName.substring(fileExtensionIndex); //파일 확장자
-		String fileName = originalFileName.substring(0, fileExtensionIndex); //파일 이름
+	public static String buildFileName(String fileExtension) {
+
+		String fileName = UUID.randomUUID().toString(); // 랜덤 파일 이름
 		String now = String.valueOf(System.currentTimeMillis()); //파일 업로드 시간
 
-		return fileName + "_" + now + fileExtension;
+		return fileName + "_" + now + "." + fileExtension;
 	}
+
+	// public static String buildFileName(String originalFileName) {
+	// 	int fileExtensionIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR); //파일 확장자 구분선
+	// 	String fileExtension = originalFileName.substring(fileExtensionIndex); //파일 확장자
+	// 	String fileName = originalFileName.substring(0, fileExtensionIndex); //파일 이름
+	// 	String now = String.valueOf(System.currentTimeMillis()); //파일 업로드 시간
+	//
+	// 	return fileName + "_" + now + fileExtension;
+	// }
 }
 

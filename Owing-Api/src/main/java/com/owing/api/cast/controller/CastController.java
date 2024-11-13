@@ -2,6 +2,7 @@ package com.owing.api.cast.controller;
 
 import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
+import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.cast.service.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +20,8 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,6 +42,8 @@ public class CastController extends BaseFileController {
     private final CreateConnectionUseCase createConnectionUseCase;
     private final UpdateConnectionUseCase updateConnectionUseCase;
     private final DeleteConnectionUseCase deleteConnectionUseCase;
+    private final CreateCastPresignedUrlUseCase createCastPresignedUrlUseCase;
+    private final GenerateCastImageUseCase generateCastImageUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -120,4 +125,19 @@ public class CastController extends BaseFileController {
     protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
         return this.updateCastUseCase;
     }
+
+    /* presigned url 생성 */
+    @GetMapping("/files/{fileExtension}")
+    @Operation(summary = "✨ 일반: 인물 presignedUrl", description = "presigned url 생성합니다.")
+    public ResponseEntity<?> getFile(@PathVariable(value = "fileExtension") String fileExtension) {
+        return ResponseEntity.ok(createCastPresignedUrlUseCase.execute(fileExtension));
+    }
+
+    /* OpenAI - 세계관 이미지 생성 요청 후 S3 업로드 */
+    @PostMapping("/images")
+    @Operation(summary = "✨ OpenAI: 인물 이미지 생성 요청 후 S3 업로드", description = "인물 이미지 생성 요청 후 S3 업로드")
+    public ResponseEntity<CastImageResponse> generateCastImage(@RequestBody GenerateCastImageRequest generateCastImageRequest) {
+        return ResponseEntity.ok(generateCastImageUseCase.execute(generateCastImageRequest));
+    }
+
 }
