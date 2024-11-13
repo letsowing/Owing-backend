@@ -28,9 +28,8 @@ public class TrashCanMapper {
 
 	public <T extends BaseFile<?>> TrashCan toEntity(T entity) {
 		FolderType folderType = determineTableName(entity);
-		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity
-				.getParentId(), folderType)
-			.orElse(newTrashCanFolder(entity));
+		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getParentId(), folderType)
+			.orElseGet(() -> newTrashCanFolder(entity));
 		return TrashCan.builder()
 			.itemId(entity.getId())
 			.name(entity.getName())
