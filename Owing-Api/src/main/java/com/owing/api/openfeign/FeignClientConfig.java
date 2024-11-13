@@ -19,7 +19,6 @@ public class FeignClientConfig {
 			.contract(new SpringMvcContract())  // Spring MVC 어노테이션을 인식하게 함
 			.encoder(new JacksonEncoder())  // JacksonEncoder 사용
 			.decoder(new JacksonDecoder())
-			.target(OwingAiClient.class, "http://localhost:8081/v1");
-			// .target(OwingAiClient.class, "https://api.letsowing.com/v1");
+			.target(OwingAiClient.class, "https://ai.letsowing.com/v1");
 	}
 }
