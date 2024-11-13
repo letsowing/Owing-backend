@@ -84,7 +84,8 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         if (exists) {
             throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS);
         }
-        return createCastRelationship(relationship, ConnectionType.DIRECTIONAL);
+        createCastRelationship(relationship, ConnectionType.DIRECTIONAL);
+        return castNodeAdapter.findConnection(relationship.getSourceId(), relationship.getTargetId());
     }
 
     @Transactional
@@ -93,13 +94,13 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         if (exists) {
             throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS);
         }
-        return createCastRelationship(relationship, ConnectionType.BIDIRECTIONAL);
+        createCastRelationship(relationship, ConnectionType.BIDIRECTIONAL);
+        return castNodeAdapter.findBiconnection(relationship.getSourceId(), relationship.getTargetId());
     }
 
     @Transactional
-    protected CastRelationshipProjection createCastRelationship(CastRelationship relationship, ConnectionType connectionType) {
-
-        return castNodeRepository.createCastRelationship(
+    protected void createCastRelationship(CastRelationship relationship, ConnectionType connectionType) {
+        castNodeRepository.createCastRelationship(
                 relationship.getSourceId(), relationship.getTargetId(),
                 connectionType.getValue(), relationship.getLabel(),
                 relationship.getSourceHandle().name(), relationship.getTargetHandle().name()
