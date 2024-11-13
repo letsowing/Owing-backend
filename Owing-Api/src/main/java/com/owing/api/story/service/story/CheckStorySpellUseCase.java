@@ -24,6 +24,11 @@ public class CheckStorySpellUseCase {
 	public List<StorySpellCheckResponse> execute(Long storyId) {
 		Story story = storyAdapter.findById(storyId);
 		String content = storyDomainService.getParsedContent(story);
+
+		if(content.isBlank()){
+			return List.of();
+		}
+
 		StorySpellCheckRequest request = StorySpellCheckRequest.of(content);
 
 		return owingAiClient.spellCheck(request);

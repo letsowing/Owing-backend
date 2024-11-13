@@ -37,8 +37,19 @@ public class SpellCheckerService {
 
 	public List<ErrorInfo> checkSpelling(SpellCheckRequest request) {
 		String parsedContent = Jsoup.parse(request.content()).text();
+
+		if(parsedContent.isBlank()){
+			return null;
+		}
+
 		String response = sendPostRequest(parsedContent);
 		String parsedJsonString = parseStringJsonResult(response);
+
+		if(parsedJsonString == null || parsedJsonString.isBlank()){
+			return null;
+		}
+
+		System.out.println(parsedJsonString);
 		return convertToDto(parsedJsonString);
 	}
 
