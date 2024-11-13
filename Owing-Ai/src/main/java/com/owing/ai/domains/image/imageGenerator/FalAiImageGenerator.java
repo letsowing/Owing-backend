@@ -33,6 +33,7 @@ public class FalAiImageGenerator implements ImageGenerator {
 			ClientConfig.withCredentials(CredentialsResolver.fromApiKey(falAiProperties.apiKey()))
 		);
 	}
+	@Override
 	public String generateImage(String prompt) {
 
 		var input = Map.of(
