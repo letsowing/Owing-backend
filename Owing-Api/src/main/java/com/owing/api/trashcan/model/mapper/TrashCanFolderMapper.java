@@ -6,17 +6,26 @@ import java.util.stream.Collectors;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.common.annotation.Mapper;
+import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.file.model.BaseFileEntity;
 import com.owing.core.dnd.folder.model.BaseFolder;
 import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
 import com.owing.entity.domains.trashcan.model.File;
 import com.owing.entity.domains.trashcan.model.Folder;
 import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
+import lombok.RequiredArgsConstructor;
+
 @Mapper
+@RequiredArgsConstructor
 public class TrashCanFolderMapper {
+	private final TrashCanAdaptor trashCanAdaptor;
+	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
+
 	public TrashCanFolderResponse toTrashCanFolderResponse(List<TrashCanFolder> trashCanFolders) {
 		List<Folder> story = new ArrayList<>();
 		List<Folder> cast = new ArrayList<>();
@@ -51,14 +60,9 @@ public class TrashCanFolderMapper {
 	}
 
 	public <T extends BaseFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
-		TrashCanFolder trashCanFolder = TrashCanFolder.builder()
-			.itemId(entity.getId())
-			.tableName(determineTableName(entity))
-			.name(entity.getName())
-			.description(entity.getDescription())
-			.project(project)
-			.trashCanList(new ArrayList<>())
-			.build();
+		FolderType folderType = determineTableName(entity);
+		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getParentId(), folderType)
+			.orElse(newTrashCanFolder(entity, project));
 
 		List<TrashCan> trashCanList = entity.getFiles().stream()
 			.map(file -> toEntity(((BaseFileEntity<?>) file), trashCanFolder))
@@ -67,6 +71,17 @@ public class TrashCanFolderMapper {
 		trashCanFolder.getTrashCanList().addAll(trashCanList);
 
 		return trashCanFolder;
+	}
+
+	private <T extends BaseFolder> TrashCanFolder newTrashCanFolder(T entity, Project project){
+		return TrashCanFolder.builder()
+			.itemId(entity.getId())
+			.tableName(determineTableName(entity))
+			.name(entity.getName())
+			.description(entity.getDescription())
+			.project(project)
+			.trashCanList(new ArrayList<>())
+			.build();
 	}
 
 	private <T extends BaseFolder> FolderType determineTableName(T entity) {
