@@ -1,0 +1,21 @@
+package com.owing.node.domains.cast.model.projection;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.owing.node.domains.cast.model.ConnectionHandle;
+import com.owing.node.domains.cast.model.ConnectionType;
+
+public record CastAiRelationshipProjection(
+        Long relationshipId,
+        String type,
+        String label,
+        @JsonProperty("source")
+        Long sourceId,
+        @JsonProperty("target")
+        Long targetId,
+        ConnectionHandle sourceHandle,
+        ConnectionHandle targetHandle
+) {
+    public CastAiRelationshipProjection {
+        type = ConnectionType.of(type).name();
+    }
+}

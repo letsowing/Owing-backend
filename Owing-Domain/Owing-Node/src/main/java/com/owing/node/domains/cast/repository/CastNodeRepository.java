@@ -150,6 +150,30 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			""")
 	CastRelationshipProjection createCastRelationship(Long sourceId, Long targetId, String type, String label, String sourceHandle, String targetHandle);
 
+	@Query("""
+			OPTIONAL MATCH
+			  (s1:Cast{deleted: false})-[r1:CONNECTION]->(t1:Cast{deleted: false})
+			WHERE
+			  id(s1)=$sourceId AND id(t1)=$targetId
+			OPTIONAL MATCH
+			  (s2:Cast{deleted: false})-[r2:BI_CONNECTION]-(t2:Cast{deleted: false})
+			WHERE
+			  id(s2)=$sourceId AND id(t2)=$targetId
+			RETURN
+			  count(r1)+count(r2) > 0
+			""")
+	Boolean existsCastRelationshipForConnection(Long sourceId, Long targetId);
+
+	@Query("""
+			MATCH
+			  (s1:Cast{deleted: false})-[r1:CONNECTION|BI_CONNECTION]-(t1:Cast{deleted: false})
+			WHERE
+			  id(s1)=$sourceId AND id(t1)=$targetId
+			RETURN
+			  count(r1) > 0
+			""")
+	Boolean existsCastRelationshipForBiconnection(Long sourceId, Long targetId);
+
 	// =====Cast Graph=====
     @Query("""
 			MATCH
@@ -178,6 +202,13 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  c.`coordinate.x` as `coordinate.x`, c.`coordinate.y` as `coordinate.y`
 			""")
     List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId);
+
+	// =====AI Prompt=====
+
+
+//	@Query()
+//	List<CastRelationshipProjection> findAllRelationship(Long projectId);
+
 
 	// =====super() Cast Repository=====
     @Override
