@@ -3,6 +3,7 @@ package com.owing.api.cast.model.mapper;
 import java.util.List;
 
 import com.owing.api.cast.model.dto.response.CastFileResponse;
+import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
@@ -37,5 +38,15 @@ public class CastFolderNodeMapper extends BaseFolderMapper<CastFolderNode> {
                 castFolderNode.getDescription(),
                 castFileResponseList
         );
+    }
+
+    public CastFolderDropdownItemResponse toDropdownItemResponse(CastFolderNode castFolderNode) {
+        return new CastFolderDropdownItemResponse(castFolderNode.getId(), castFolderNode.getName());
+    }
+
+    public List<CastFolderDropdownItemResponse> toDropdownListResponse(List<CastFolderNode> castFolderNodeList) {
+        return castFolderNodeList.stream()
+                .map(this::toDropdownItemResponse)
+                .toList();
     }
 }

@@ -1,5 +1,6 @@
 package com.owing.api.cast.service;
 
+import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
@@ -40,6 +41,13 @@ public class ReadCastFolderUseCase extends ReadFolderUseCase<CastFolderNode> {
         return castFolderNodeMapper.toListResponse(castFolderNodeList);
     }
 
+    public List<CastFolderDropdownItemResponse> executeDropdownList(Long projectId) {
+        ProjectNode projectNode = projectNodeAdapter.findById(projectId);
+        List<CastFolderNode> castFolderNodeList = castFolderNodeAdapter.findAllByParentId(projectNode.getId());
+        return castFolderNodeMapper.toDropdownListResponse(castFolderNodeList);
+    }
+
+    // Bean Setting
     @Override
     protected BaseFolderMapper<CastFolderNode> dndMapper() {
         return this.castFolderNodeMapper;
