@@ -11,6 +11,7 @@ import com.owing.ai.domains.image.dto.response.CastImageResponse;
 import com.owing.ai.domains.image.dto.response.ProjectImageResponse;
 import com.owing.ai.domains.image.dto.response.UniverseImageResponse;
 import com.owing.ai.domains.image.strategy.ImageGenerator;
+import com.owing.infrastructure.config.s3.S3Properties;
 import com.owing.infrastructure.config.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class ImageService {
 	private final ImageGenerator imageGenerator;
 	private final PromptGenerator promptGenerator;
 	private final S3Uploader s3Uploader;
+	private final S3Properties s3Properties;
 
 
 	/**
@@ -41,7 +43,7 @@ public class ImageService {
 		String b64Json = imageGenerator.generateImage(prompt);
 
 		/* S3 업로드 */
-		String url = s3Uploader.uploadBase64ImageToS3(b64Json);
+		String url = s3Uploader.uploadBase64ImageToS3(s3Properties.s3().directory().universe(), b64Json);
 
 		UniverseImageResponse response = UniverseImageResponse.builder()
 			.imageUrl(url)
@@ -51,10 +53,10 @@ public class ImageService {
 	}
 
 	/**
-	 * OpenAI API 를 이용해 Universe 파일 이미지를 생성하는 메서드
+	 * OpenAI API 를 이용해 작품 표지 이미지를 생성하는 메서드
 	 * 이미지 생성 후 S3에 업로드
 	 *
-	 * @param generateProjectImageRequest 파일 생성 요청을 담은 DTO
+	 * @param generateProjectImageRequest 작품 생성 요청을 담은 DTO
 	 * @return 생성된 이미지의 URL 을 ResponseEntity 로 반환
 	 */
 	// @Transactional
@@ -67,7 +69,7 @@ public class ImageService {
 		String b64Json = imageGenerator.generateImage(prompt);
 
 		/* S3 업로드 */
-		String url = s3Uploader.uploadBase64ImageToS3(b64Json);
+		String url = s3Uploader.uploadBase64ImageToS3(s3Properties.s3().directory().project(), b64Json);
 
 		ProjectImageResponse response = ProjectImageResponse.builder()
 			.imageUrl(url)
@@ -77,10 +79,10 @@ public class ImageService {
 	}
 
 	/**
-	 * OpenAI API 를 이용해 Universe 파일 이미지를 생성하는 메서드
+	 * OpenAI API 를 이용해 인물 이미지를 생성하는 메서드
 	 * 이미지 생성 후 S3에 업로드
 	 *
-	 * @param generateCastImageRequest 파일 생성 요청을 담은 DTO
+	 * @param generateCastImageRequest 인물 생성 요청을 담은 DTO
 	 * @return 생성된 이미지의 URL 을 ResponseEntity 로 반환
 	 */
 	// @Transactional
@@ -93,7 +95,7 @@ public class ImageService {
 		String b64Json = imageGenerator.generateImage(prompt);
 
 		/* S3 업로드 */
-		String url = s3Uploader.uploadBase64ImageToS3(b64Json);
+		String url = s3Uploader.uploadBase64ImageToS3(s3Properties.s3().directory().cast(), b64Json);
 
 		CastImageResponse response = CastImageResponse.builder()
 			.imageUrl(url)
