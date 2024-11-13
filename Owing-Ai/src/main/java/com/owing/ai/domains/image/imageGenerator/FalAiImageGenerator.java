@@ -33,7 +33,10 @@ public class FalAiImageGenerator implements ImageGenerator {
 			ClientConfig.withCredentials(CredentialsResolver.fromApiKey(falAiProperties.apiKey()))
 		);
 	}
+	@Override
 	public String generateImage(String prompt) {
+
+		System.out.println("@@@@ FLUX 사용 @@@@");
 
 		var input = Map.of(
 			"prompt", prompt,
