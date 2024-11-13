@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonObject;
-import com.owing.ai.global.properties.FalAiImageProperties;
+import com.owing.ai.global.properties.FalAiProperties;
 
 import ai.fal.client.*;
 import ai.fal.client.queue.*;
@@ -16,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FalAiImageGenerator implements ImageGenerator {
 
-	private final FalAiImageProperties falAiImageProperties;
+	private final FalAiProperties falAiProperties;
 	private FalClient falClient; // FalClient 인스턴스 선언
 
 	// API 키 설정 및 FalClient 초기화
 	@PostConstruct
 	public void init() {
 		this.falClient = FalClient.withConfig(
-			ClientConfig.withCredentials(CredentialsResolver.fromApiKey(falAiImageProperties.apiKey()))
+			ClientConfig.withCredentials(CredentialsResolver.fromApiKey(falAiProperties.apiKey()))
 		);
 	}
 	public String generateImage(String prompt) {
@@ -35,7 +35,7 @@ public class FalAiImageGenerator implements ImageGenerator {
 			"num_images", 4
 		);
 
-		var result = falClient.subscribe(falAiImageProperties.model(),
+		var result = falClient.subscribe(falAiProperties.model(),
 			SubscribeOptions.<JsonObject>builder()
 				.input(input)
 				// .logs(true)

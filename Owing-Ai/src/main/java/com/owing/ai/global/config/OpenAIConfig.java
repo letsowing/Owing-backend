@@ -4,7 +4,7 @@ import org.springframework.ai.openai.api.OpenAiImageApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.owing.ai.global.properties.OpenAiImageProperties;
+import com.owing.ai.global.properties.OpenAiProperties;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpenAIConfig {
 
-	private final OpenAiImageProperties openAiImageProperties;
+	private final OpenAiProperties openAiProperties;
 
 	/**
 	 * OpenAI 이미지 API 를 위한 Bean 을 생성하는 메서드
@@ -21,6 +21,6 @@ public class OpenAIConfig {
 	 */
 	@Bean
 	public OpenAiImageApi openAiImageApi() {
-		return new OpenAiImageApi(openAiImageProperties.apiKey());
+		return new OpenAiImageApi(openAiProperties.apiKey());
 	}
 }
