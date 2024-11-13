@@ -56,7 +56,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     public void updateCastNodeCoordinate(CastNode castNode, Coordinate coordinate) {
         boolean isUpdated = castNode.updateCoordinate(coordinate);
         if (isUpdated) {
-            neo4jTemplate.save(CastNode.class).one(castNode);
+            neo4jTemplate.save(CastNode.class).one(CastCoordinateProjection.from(castNode));
         }
     }
 
@@ -68,6 +68,10 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     // =====Cast Relationship=====
     @Transactional
     public CastRelationshipProjection handleCastRelationship(ConnectionType type, CastRelationship relationship) {
+        if (relationship.getSourceId().equals(relationship.getTargetId())) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.ILLEGAL_ARGS, "Source, Target Cast가 동일합니다.");
+        }
+
         Function<CastRelationship, CastRelationshipProjection> handler = castRelationshipHandler.get(type);
         if (ObjectUtils.isEmpty(handler)) {
             throw CastNodeRelationshipException.of(CastNodeErrorCode.ILLEGAL_TYPE_ARGS);
@@ -76,18 +80,25 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     }
     @Transactional
     protected CastRelationshipProjection createConnection(CastRelationship relationship) {
-        // TODO 선행 관계 검증
+        Boolean exists = castNodeRepository.existsCastRelationshipForConnection(relationship.getSourceId(), relationship.getTargetId());
+        if (exists) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS);
+        }
         return createCastRelationship(relationship, ConnectionType.DIRECTIONAL);
     }
 
     @Transactional
     protected CastRelationshipProjection createBiconnection(CastRelationship relationship) {
-        // TODO 선행 관계 검증
+        Boolean exists = castNodeRepository.existsCastRelationshipForBiconnection(relationship.getSourceId(), relationship.getTargetId());
+        if (exists) {
+            throw CastNodeRelationshipException.of(CastNodeErrorCode.CONNECTION_ALREADY_EXISTS);
+        }
         return createCastRelationship(relationship, ConnectionType.BIDIRECTIONAL);
     }
 
     @Transactional
     protected CastRelationshipProjection createCastRelationship(CastRelationship relationship, ConnectionType connectionType) {
+
         return castNodeRepository.createCastRelationship(
                 relationship.getSourceId(), relationship.getTargetId(),
                 connectionType.getValue(), relationship.getLabel(),
