@@ -120,7 +120,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 			+ "- 아래 [입력값]을 꼼꼼히 읽고, [지시사항]에 따라 이미지 생성에 필요한 모든 주요 요소를 포함해 프롬프트를 작성해줘.\n"
 			+ "\n"
 			+ "[지시사항]\n"
-			+ "- title, age, gender, role, description 을 바탕으로 작품의 표지 이미지가 될 수 있도록 [주요 요소 + 표현 방식 + 배경 + 스타일 + 사진 구도] 비율로 프롬프트를 구성할 것.\n"
+			+ "- title, age, gender, role, description 을 바탕으로 인물의 이미지가 될 수 있도록 [주요 요소 + 표현 방식 + 배경 + 스타일 + 사진 구도] 비율로 프롬프트를 구성할 것.\n"
 			+ "- 주요 요소에는 인물의 외모, 표정, 의상, 배경, 계절적 특징, 그리고 인물이 속한 시대적 요소 등을 반영해 구체적으로 묘사할 것.\n"
 			+ "- 표현 방식에서는 묘사 수준을 예시로 [극사실적, 회화적, 애니메이션 스타일 등]을 고려하여 명시할 것.\n"
 			+ "- 배경은 인물의 역할과 부가 설명에 맞게 적절히 상상해 설정하고, 작품의 분위기를 잘 나타낼 수 있도록 서술할 것.\n"
@@ -131,7 +131,7 @@ public class OpenAiPromptGenerator implements PromptGenerator {
 
 		String userContent = String.format(
 			"[입력값]\n"
-				+ "- 인물의 이름 (title) : [%s]\n"
+				+ "- 인물의 이름 (name) : [%s]\n"
 				+ "- 인물의 나이 (age) : [%s]\n"
 				+ "- 인물의 성별 (gender) : [%s]\n"
 				+ "- 인물의 역할 (role) : [%s]\n"
