@@ -61,7 +61,7 @@ public class TrashCanFolderMapper {
 
 	public <T extends BaseFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
 		FolderType folderType = determineTableName(entity);
-		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getParentId(), folderType)
+		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getId(), folderType)
 			.orElse(newTrashCanFolder(entity, project));
 
 		List<TrashCan> trashCanList = entity.getFiles().stream()
