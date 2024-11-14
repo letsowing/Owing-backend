@@ -12,6 +12,7 @@ import com.owing.api.story.model.dto.request.PrevStoryInfo;
 import com.owing.api.story.model.dto.request.ProjectInfoDto;
 import com.owing.api.story.model.dto.request.RelationList;
 import com.owing.api.story.model.dto.request.StoryCrashCheckRequest;
+import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UniverseInfo;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.common.annotation.UseCase;
@@ -42,7 +43,8 @@ public class CheckStoryCrashUseCase {
 	private final ObjectMapper objectMapper;
 
 
-	public CrashCheckResponse execute(Long storyId, Long projectId) throws JsonProcessingException {
+	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
+		Long projectId = dto.projectId();
 		ProjectInfo projectInfo = projectAdapter.findById(projectId).getProjectInfo();
 		List<Story> stories = storyAdapter.findByProjectId(projectId);
 		List<Universe> universes = universeAdapter.findByProjectId(projectId);
