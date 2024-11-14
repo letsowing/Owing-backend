@@ -15,6 +15,7 @@ import com.owing.node.domains.cast.service.CastNodeDomainService;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
@@ -25,11 +26,18 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
     private final MemberUtils memberUtils;
     private final CastFolderNodeDomainService castFolderNodeDomainService;
 
+    @Transactional
     public void executeUpdateInfo(Long castId, UpdateCastInfoRequest updateCastInfoRequest) {
         CastNode castNode = castNodeDomainService.getEntity(castId);
 
         CastNodeInfo castNodeInfo = castNodeMapper.toCastNodeInfo(updateCastInfoRequest);
         castNodeDomainService.updateCastNodeInfo(castNode, castNodeInfo);
+
+        if (!updateCastInfoRequest.folderId().equals(castNode.getParentId())) {
+            CastFolderNode attachCandidate = castFolderNodeDomainService.getEntity(updateCastInfoRequest.folderId());
+            castFolderNodeDomainService.detachCast(castNode.getFolder(), castId);
+            castFolderNodeDomainService.attachCast(attachCandidate, castId);
+        }
     }
 
     public void executeUpdateCoordinate(Long castId, UpdateCastCoordinateRequest updateCastCoordinateRequest) {
