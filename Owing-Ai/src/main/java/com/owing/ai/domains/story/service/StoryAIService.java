@@ -2,7 +2,6 @@ package com.owing.ai.domains.story.service;
 
 import java.util.List;
 
-import org.jsoup.Jsoup;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.owing.ai.domains.story.dto.request.CrashCheckRequest;
 import com.owing.ai.domains.story.dto.request.SystemText;
-import com.owing.ai.domains.story.dto.response.CrashCheckResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class StoryAIService {
 	private final ChatClient openAiClient;
 
-	public CrashCheckResponse crashCheck(CrashCheckRequest request) {
+	public String crashCheck(CrashCheckRequest request) {
 			/*
 		설정 충돌이란 무엇인가?
 
@@ -29,16 +27,17 @@ public class StoryAIService {
 		3. 원고의 이전내용
 
 	 */
-		String parsedContent = Jsoup.parse(request.content()).text();
-
 		SystemMessage systemMessage = SystemText.template();
-		UserMessage userMessage = new UserMessage(parsedContent);
+		UserMessage userMessage = new UserMessage(request.toString());
 		Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
 
-		CrashCheckResponse res = openAiClient
+		String res = openAiClient
 			.prompt(prompt)
+			.system(SystemText.systemText)
+			.user(request.toString())
 			.call()
-			.entity(CrashCheckResponse.class);
+			// .entity(CrashCheckResponse.class);
+			.content();
 		System.out.println(res);
 		return res;
 	}

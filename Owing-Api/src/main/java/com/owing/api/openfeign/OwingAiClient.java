@@ -35,7 +35,7 @@ public interface OwingAiClient {
 
 	/* 설정 충돌 검사 */
 	@PostMapping("/stories/crash-check")
-	void crashCheck(@RequestBody StoryCrashCheckRequest storyCrashCheckRequest);
+	String crashCheck(@RequestBody StoryCrashCheckRequest storyCrashCheckRequest);
 
 	/* 맞춤법 검사 */
 	@PostMapping("/stories/spell-check")
