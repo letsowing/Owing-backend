@@ -23,7 +23,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 		return true;
 	}
 
-	private F getParentFolder(T beforeEntity, T afterEntity) {
+	protected F getParentFolder(T beforeEntity, T afterEntity) {
 		return beforeEntity!= null? beforeEntity.getFolder() : afterEntity.getFolder();
 	}
 
@@ -41,7 +41,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 		return dndRepository.save(entity);
 	}
 
-	private void updatePositionInSameFolder(T entity, long newPosition){
+	protected void updatePositionInSameFolder(T entity, long newPosition){
 		if (entity.getPosition() < newPosition) {
 			moveFolderDown(newPosition, entity.getPosition(), entity.getParentId());
 		} else {
@@ -50,7 +50,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 
 	}
 
-	private void updatePositionInDifferentFolder(T entity, long newPosition, F oldFolder, F newFolder){
+	protected void updatePositionInDifferentFolder(T entity, long newPosition, F oldFolder, F newFolder){
         shiftFolderUp(entity.getPosition(), oldFolder.getId());
 		shiftFolderDown(newPosition, newFolder.getId());
 		entity.updateFolder(newFolder);
