@@ -58,9 +58,8 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}/crash-check")
 	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌을 검사합니다.")
-	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody Long projectId) {
-		checkStoryCrashUseCase.execute(storyId, projectId);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody Long projectId) throws Exception{
+		return ResponseEntity.ok(checkStoryCrashUseCase.execute(storyId, projectId));
 	}
 
 	@PostMapping("/{storyId}/spell-check")

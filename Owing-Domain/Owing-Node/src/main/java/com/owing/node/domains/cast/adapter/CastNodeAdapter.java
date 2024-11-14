@@ -72,6 +72,9 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
     public List<CastRelationshipAiProjection> findAllCastRelationshipForAiPrompt(Long projectId) {
         List<CastRelationshipAiProjection> allCastRelationshipForAiPrompt = castNodeRepository.findAllCastRelationshipForAiPrompt(projectId);
         return allCastRelationshipForAiPrompt;
+	}
+    public List<CastNode> findAllByProjectId(Long projectId) {
+        return List.of();
     }
 
     // Bean Setting
