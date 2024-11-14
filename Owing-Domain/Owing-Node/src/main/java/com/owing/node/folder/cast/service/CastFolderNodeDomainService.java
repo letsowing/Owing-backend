@@ -25,12 +25,29 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFolderNode> {
 
-    private final CastFolderNodeRepository castFolderNodeRepository;
-    private final Neo4jTemplate neo4jTemplate;
     private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;
-    private final CastNodeRepository castNodeRepository;
+    private final CastFolderNodeRepository castFolderNodeRepository;
 
+    private final CastNodeRepository castNodeRepository;
+    private final Neo4jTemplate neo4jTemplate;
+
+    @Transactional
+    public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
+        castFolderNode.updateTitle(name);
+        castFolderNode.updateDescription(description);
+
+        CastFolderInfoProjection castFolderInfoProjection = CastFolderInfoProjection.from(castFolderNode);
+        neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
+    }
+
+    public void restore(Long folderItemId, List<Long> trashCanItemIds) {
+        castFolderNodeRepository.restoreById(folderItemId);
+        trashCanItemIds
+                .forEach(castNodeRepository::restoreById);
+    }
+
+    // =====super() CastFolder CRUD=====
     @Override
     public CastFolderNode getEntity(Long folderId) {
         return castFolderNodeAdapter.findOneById(folderId);
@@ -53,17 +70,8 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(titleProjection);
         return entity;
     }
-
-    @Transactional
-    public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
-        castFolderNode.updateTitle(name);
-        castFolderNode.updateDescription(description);
-
-        CastFolderInfoProjection castFolderInfoProjection = CastFolderInfoProjection.from(castFolderNode);
-        neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
-    }
-
     // Bean Setting
+
     @Override
     protected BaseDndRepository<CastFolderNode> dndRepository() {
         return this.castFolderNodeRepository;
@@ -77,11 +85,5 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     @Override
     protected OrderingStrategy<CastFolderNode> orderingStrategy() {
         return this.castFolderShiftOrderingStrategy;
-    }
-
-    public void restore(Long folderItemId, List<Long> trashCanItemIds) {
-        castFolderNodeRepository.restoreById(folderItemId);
-        trashCanItemIds
-            .forEach(castNodeRepository::restoreById);
     }
 }
