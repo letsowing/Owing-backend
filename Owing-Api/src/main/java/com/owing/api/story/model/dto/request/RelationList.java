@@ -1,21 +1,19 @@
 package com.owing.api.story.model.dto.request;
 
-import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
 
 public record RelationList(
-	Long relationshipId,
 	String label,
 	Long sourceId,
 	Long targetId,
 	String type
 ) {
-	public static RelationList from(CastRelationship relationship) {
+	public static RelationList from(CastRelationshipAiProjection relationship) {
 		return new RelationList(
-			relationship.getId(),
-			relationship.getLabel(),
-			relationship.getSourceId(),
-			relationship.getTargetId(),
-			null
+			relationship.label(),
+			relationship.sourceId(),
+			relationship.targetId(),
+			relationship.type()
 		);
 	}
 }

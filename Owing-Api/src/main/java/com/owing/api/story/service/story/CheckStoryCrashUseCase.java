@@ -18,8 +18,9 @@ import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
-import com.owing.node.domains.cast.model.CastNode;
 
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -38,13 +39,14 @@ public class CheckStoryCrashUseCase {
 		ProjectInfo projectInfo = projectAdapter.findById(projectId).getProjectInfo();
 		List<Story> stories = storyAdapter.findByProjectId(projectId);
 		List<Universe> universes = universeAdapter.findByProjectId(projectId);
-		List<CastNode> castNodes = castNodeAdapter.findAllByProjectId(projectId);
+		List<CastAiProjection> castNodes = castNodeAdapter.findAllCastForAiPrompt(projectId);
+		List<CastRelationshipAiProjection> castRelationships = castNodeAdapter.findAllCastRelationshipForAiPrompt(projectId);
 
 		ProjectInfoDto pdto = ProjectInfoDto.from(projectInfo);
 		List<PrevStoryInfo> sdto = stories.stream().map(PrevStoryInfo::from).toList();
 		List<UniverseInfo> udto = universes.stream().map(UniverseInfo::from).toList();
 		List<CastList> cdto = castNodes.stream().map(CastList::from).toList();
-		List<RelationList> rdto = null;
+		List<RelationList> rdto = castRelationships.stream().map(RelationList::from).toList();
 		CastInfo castInfo = CastInfo.of(cdto, rdto);
 
 		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, null);
