@@ -2,6 +2,7 @@ package com.owing.core.dnd.base.orderStrategy.shift;
 
 import java.util.Objects;
 
+import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
 import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.file.repository.BaseFileRepository;
@@ -23,6 +24,20 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 		return true;
 	}
 
+	@Override
+	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, BaseDnd newParent) {
+		if(beforeEntity == null && afterEntity == null){
+			long newPosition = getNewPosition(newParent.getId());
+			updatePositionInDifferentFolder(dndEntity, newPosition, dndEntity.getFolder(), (F)newParent);
+			dndEntity.updatePosition(newPosition);
+			System.out.println(dndEntity.getParentId());
+			return dndAdapter.save(dndEntity);
+		} else {
+			return updatePosition(dndEntity, beforeEntity, afterEntity);
+		}
+
+	}
+
 	private F getParentFolder(T beforeEntity, T afterEntity) {
 		return beforeEntity!= null? beforeEntity.getFolder() : afterEntity.getFolder();
 	}
@@ -38,7 +53,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 			updatePositionInDifferentFolder(entity, newPosition, entity.getFolder(), newParent);
 		}
 		entity.updatePosition(newPosition);
-		return dndRepository.save(entity);
+		return dndAdapter.save(entity);
 	}
 
 	private void updatePositionInSameFolder(T entity, long newPosition){
