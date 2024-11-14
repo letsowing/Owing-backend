@@ -9,6 +9,8 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNode, CastFolderNode> {
 
@@ -26,12 +28,14 @@ public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNod
 	@Override
 	protected CastNode handleEntityUpdate(CastNode entity, CastNode beforeEntity, CastNode afterEntity) {
 		long newPosition = getUpdatePosition(entity, beforeEntity, afterEntity);
+		CastFolderNode newParent = super.getParentFolder(beforeEntity, afterEntity);
 
-		if (entity.getPosition() < newPosition) {
-			moveFolderDown(newPosition, entity.getPosition(), entity.getParentId());
+		if (Objects.equals(entity.getFolder(), newParent)) { // fixme
+			updatePositionInSameFolder(entity, newPosition);
 		} else {
-			moveFolderUp(newPosition, entity.getPosition(), entity.getParentId());
+			updatePositionInDifferentFolder(entity, newPosition, entity.getFolder(), newParent);
 		}
+
 		entity.updatePosition(newPosition);
 		CastPositionProjection castPositionProjection = CastPositionProjection.from(entity);
 		neo4jTemplate.save(CastNode.class).one(castPositionProjection);
