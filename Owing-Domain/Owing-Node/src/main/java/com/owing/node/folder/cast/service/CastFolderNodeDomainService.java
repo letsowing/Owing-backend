@@ -2,12 +2,12 @@ package com.owing.node.folder.cast.service;
 
 import java.util.List;
 
+import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.folder.service.BaseFolderDomainService;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
@@ -70,8 +70,8 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(titleProjection);
         return entity;
     }
-    // Bean Setting
 
+    // Bean Setting
     @Override
     protected BaseDndRepository<CastFolderNode> dndRepository() {
         return this.castFolderNodeRepository;
@@ -86,4 +86,5 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     protected OrderingStrategy<CastFolderNode> orderingStrategy() {
         return this.castFolderShiftOrderingStrategy;
     }
+
 }
