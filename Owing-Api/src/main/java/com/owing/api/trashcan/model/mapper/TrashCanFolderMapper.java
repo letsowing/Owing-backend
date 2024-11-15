@@ -18,6 +18,7 @@ import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
+import com.owing.node.common.model.BaseFileNode;
 import lombok.RequiredArgsConstructor;
 
 @Mapper
@@ -65,8 +66,10 @@ public class TrashCanFolderMapper {
 			.orElse(newTrashCanFolder(entity, project));
 
 		List<TrashCan> trashCanList = entity.getFiles().stream()
-			.map(file -> toEntity(((BaseFileEntity<?>) file), trashCanFolder))
-			.toList();
+				.map(file -> folderType.isCast()
+						? processFileAsNode(file, trashCanFolder)
+						: processFileAsEntity(file, trashCanFolder))
+				.toList();
 
 		trashCanFolder.getTrashCanList().addAll(trashCanList);
 
@@ -95,5 +98,22 @@ public class TrashCanFolderMapper {
 			.name(baseFileEntity.getName())
 			.description(baseFileEntity.getDescription())
 			.build();
+	}
+
+	private TrashCan toNode(BaseFileNode<?> baseFileNode, TrashCanFolder trashCanFolder) {
+		return TrashCan.builder()
+				.trashCanFolder(trashCanFolder)
+				.itemId(baseFileNode.getId())
+				.name(baseFileNode.getName())
+				.description(baseFileNode.getDescription())
+				.build();
+	}
+
+	private TrashCan processFileAsNode(Object file, TrashCanFolder trashCanFolder) {
+		return toNode((BaseFileNode<?>) file, trashCanFolder);
+	}
+
+	private TrashCan processFileAsEntity(Object file, TrashCanFolder trashCanFolder) {
+		return toEntity((BaseFileEntity<?>) file, trashCanFolder);
 	}
 }
