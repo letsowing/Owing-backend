@@ -50,11 +50,6 @@ public abstract class ShiftOrderingStrategy<T extends BaseDnd> implements Orderi
 		return handleEntityUpdate(entity, beforeEntity, afterEntity);
 	}
 
-	@Override
-	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, BaseDnd newParent) {
-		return updatePosition(dndEntity, beforeEntity, afterEntity);
-	}
-
 	protected abstract boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity);
 
 	protected void moveFolderUp(long newPosition, long oldPosition, Long projectId) {
@@ -74,7 +69,7 @@ public abstract class ShiftOrderingStrategy<T extends BaseDnd> implements Orderi
 	}
 
 	protected long getLastPosition(Long projectId) {
-		return dndRepository.getMaxPositionByParentId(projectId);
+		return dndAdapter.getMaxPositionByParentId(projectId);
 	}
 
 	protected boolean hasSameParentFolder(T e1, T e2) {

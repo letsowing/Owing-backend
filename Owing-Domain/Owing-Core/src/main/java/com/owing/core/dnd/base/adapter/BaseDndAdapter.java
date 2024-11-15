@@ -33,4 +33,8 @@ public abstract class BaseDndAdapter<T extends BaseDnd> {
 	public void incrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
 		dndRepository().incrementPositionBetween(fromPosition, toPosition, parentId);
 	}
+
+	public T save(T entity) {
+		return dndRepository().save(entity);
+	}
 }
