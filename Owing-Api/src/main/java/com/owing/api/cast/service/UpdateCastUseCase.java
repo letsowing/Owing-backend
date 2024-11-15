@@ -56,6 +56,20 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
         castNodeDomainService.updateCastNodeCoordinate(castNode, coordinate);
     }
 
+    // relationship 수정을 위한 재정의
+    @Override
+    @Transactional
+    public void executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
+        CastNode entity = baseDndDomainService().getEntity(id);
+        CastNode beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
+        CastNode afterEntity = baseDndDomainService().getOptionalEntity(dto.afterId());
+        CastFolderNode folder = fBaseDndDomainService().getOptionalEntity(dto.folderId());
+
+        castNodeDomainService.detachFolder(entity, entity.getParentId());
+        baseDndDomainService().updateEntityPosition(entity, beforeEntity, afterEntity, folder);
+        castNodeDomainService.attachFolder(entity, entity.getParentId());
+    }
+
     // Bean Setting
     @Override
     protected MemberUtils memberUtils() {

@@ -92,6 +92,11 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
         return this.savePosition(entity);
     }
 
+    @Transactional
+    public void incrementPositionAfter(long targetPosition, Long projectId) {
+        castNodeRepository.incrementPositionAfter(targetPosition, projectId);
+    }
+
     // Bean Setting
     @Override
     protected BaseDndRepository<CastNode> dndRepository() {

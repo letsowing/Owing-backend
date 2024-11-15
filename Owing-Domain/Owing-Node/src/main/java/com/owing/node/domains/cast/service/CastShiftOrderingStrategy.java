@@ -10,8 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNode, CastFolderNode> {
 
+	CastNodeAdapter castNodeAdapter;
+
 	public CastShiftOrderingStrategy(CastNodeAdapter dndAdapter, CastNodeRepository dndRepository) {
 		super(dndAdapter, dndRepository);
+		this.castNodeAdapter = dndAdapter;
 	}
 
+	@Override
+	protected void shiftFolderDown(long targetPosition, Long projectId) {
+		castNodeAdapter.incrementPositionAfter(targetPosition, projectId);
+	}
 }

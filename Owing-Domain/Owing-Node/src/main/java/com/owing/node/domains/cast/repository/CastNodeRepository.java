@@ -303,6 +303,19 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			""")
     void decrementPositionAfter(Long position, Long folderId);
 
+//	@Override
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $position
+			SET
+			  c.position = c.position + 1
+			""")
+	void incrementPositionAfter(Long position, Long folderId);
+
     @Override
     @Query("""
 			MATCH
