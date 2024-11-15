@@ -54,6 +54,19 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             """)
 	CastNode connectFolder(Long castId, Long castFolderId);
 
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted: false})-[r]->(c:Cast{deleted: false})
+			WHERE
+			  id(cf)=$castFolderId
+			RETURN
+			  c, r, cf
+			ORDER BY
+			  c.position DESC
+			LIMIT $limit
+			""")
+	List<CastNode> findByFolderIdOrderByPositionDescLimit(Long castFolderId, Long limit);
+
 	// =====Cast to Cast Connection=====
     @Query("""
             MATCH
