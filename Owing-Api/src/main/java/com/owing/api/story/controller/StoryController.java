@@ -18,6 +18,7 @@ import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
+import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.service.story.CheckStoryCrashUseCase;
 import com.owing.api.story.service.story.CheckStorySpellUseCase;
@@ -58,9 +59,8 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}/crash-check")
 	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌을 검사합니다.")
-	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody Long projectId) {
-		checkStoryCrashUseCase.execute(storyId, projectId);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody StoryCrashRequest request) throws Exception{
+		return ResponseEntity.ok(checkStoryCrashUseCase.execute(storyId, request));
 	}
 
 	@PostMapping("/{storyId}/spell-check")

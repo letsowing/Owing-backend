@@ -1,5 +1,6 @@
 package com.owing.core.dnd.base.orderStrategy.shift;
 
+import com.owing.core.dnd.base.model.BaseDnd;
 import com.owing.core.dnd.folder.adapter.BaseFolderAdapter;
 import com.owing.core.dnd.folder.model.BaseFolder;
 import com.owing.core.dnd.folder.repository.BaseFolderRepository;
@@ -8,6 +9,11 @@ public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends 
 
 	public FolderShiftOrderingStrategy(BaseFolderAdapter<T> dndAdapter, BaseFolderRepository<T> dndRepository) {
 		super(dndAdapter, dndRepository);
+	}
+
+	@Override
+	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, BaseDnd newParent) {
+		return updatePosition(dndEntity, beforeEntity, afterEntity);
 	}
 
 	protected boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity) {
@@ -36,6 +42,6 @@ public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends 
 			moveFolderUp(newPosition, entity.getPosition(), entity.getParentId());
 		}
 		entity.updatePosition(newPosition);
-		return dndRepository.save(entity);
+		return dndAdapter.save(entity);
 	}
 }

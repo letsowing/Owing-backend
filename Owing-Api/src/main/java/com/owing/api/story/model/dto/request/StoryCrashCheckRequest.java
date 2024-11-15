@@ -7,15 +7,15 @@ public record StoryCrashCheckRequest(
 	List<PrevStoryInfo> prevStory,
 	List<UniverseInfo> universe,
 	CastInfo cast,
-	String episode
+	String thisEpisode
 ) {
 	public static StoryCrashCheckRequest of(
 		ProjectInfoDto project,
 		List<PrevStoryInfo> prevStory,
 		List<UniverseInfo> universe,
 		CastInfo cast,
-		String episode
+		String thisEpisode
 	) {
-		return new StoryCrashCheckRequest(project, prevStory, universe, cast, episode);
+		return new StoryCrashCheckRequest(project, prevStory, universe, cast, thisEpisode);
 	}
 }
