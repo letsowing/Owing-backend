@@ -10,38 +10,6 @@ import java.util.Optional;
 
 public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastFolderNode> {
 
-	@Query("""
-			MATCH
-			  (cf:CastFolder{deleted: false})
-			WHERE
-			  id(cf)=$castFolderId
-			MATCH
-			  (c:Cast)
-			WHERE
-			  id(c)=$castId AND NOT EXISTS ((c)<-[:INCLUDE]-())
-			MERGE
-			  (cf)-[r:INCLUDE]->(c)
-			RETURN
-			  count(r)
-			""")
-	void mergeIncludeRelationship(Long castFolderId, Long castId);
-
-	@Query("""
-			MATCH
-			  (cf:CastFolder{deleted: false})
-			WHERE
-			  id(cf)=$castFolderId
-			MATCH
-			  (c:Cast)<-[r:INCLUDE]-(cf)
-			WHERE
-			  id(c)=$castId
-			DELETE
-			  r
-			RETURN
-			  count(r)
-			""")
-	Integer deleteIncludeRelationship(Long castFolderId, Long castId);
-
     @Query("""
             MATCH
               (p:Project{id:$projectId, deleted:false})-[r1:INCLUDE]->(cf:CastFolder{deleted:false})

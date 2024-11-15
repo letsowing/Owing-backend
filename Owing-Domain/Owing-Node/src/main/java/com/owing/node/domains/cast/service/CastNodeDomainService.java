@@ -122,6 +122,17 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         castNodeRepository.deleteCastRelationshipById(castRelationship.getId());
     }
 
+    // =====CastFolder Relationship=====
+    @Transactional
+    public void attachFolder(CastNode castNode, Long castFolderId) {
+        castNodeRepository.mergeIncludeRelationship(castNode.getId(), castFolderId);
+    }
+
+    @Transactional
+    public void detachFolder(CastNode castNode, Long castFolderId) {
+        castNodeRepository.deleteIncludeRelationship(castNode.getId(), castFolderId);
+    }
+
     // =====super() Cast CRUD=====
     @Override
     public CastNode getEntity(Long castId) {

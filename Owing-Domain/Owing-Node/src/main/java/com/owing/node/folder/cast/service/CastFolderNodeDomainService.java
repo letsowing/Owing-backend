@@ -47,17 +47,6 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
                 .forEach(castNodeRepository::restoreById);
     }
 
-    // =====CastFolder Relationship=====
-    @Transactional
-    public void attachCast(CastFolderNode castFolderNode, Long castId) {
-        castFolderNodeRepository.mergeIncludeRelationship(castFolderNode.getId(), castId);
-    }
-
-    @Transactional
-    public void detachCast(CastFolderNode castFolderNode, Long castId) {
-        castFolderNodeRepository.deleteIncludeRelationship(castFolderNode.getId(), castId);
-    }
-
     // =====super() CastFolder CRUD=====
     @Override
     public CastFolderNode getEntity(Long folderId) {

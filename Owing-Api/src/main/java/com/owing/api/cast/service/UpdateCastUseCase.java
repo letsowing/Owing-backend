@@ -35,8 +35,9 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
 
         if (!updateCastInfoRequest.folderId().equals(castNode.getParentId())) {
             CastFolderNode attachCandidate = castFolderNodeDomainService.getEntity(updateCastInfoRequest.folderId());
-            castFolderNodeDomainService.detachCast(castNode.getFolder(), castId);
-            castFolderNodeDomainService.attachCast(attachCandidate, castId);
+            castNodeDomainService.detachFolder(castNode, castNode.getParentId());
+            castNodeDomainService.attachFolder(castNode, castNode.getParentId());
+//            castNodeDomainService.updateEntityPosition();
         }
     }
 
