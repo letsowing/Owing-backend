@@ -46,6 +46,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         return castNodeAdapter.findGraphCastRelationshipByProjectId(projectId);
     }
 
+    public CastNode getLastPositionCastNodeInFolder(Long castFolderId) {
+        List<CastNode> castNodeList = castNodeAdapter.findByFolderIdOrderByPositionDescLimit(castFolderId, 1L);
+        return castNodeList.isEmpty() ? null : castNodeList.getFirst();
+    }
+
     @Transactional
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
         castNode.updateInfo(castNodeInfo);

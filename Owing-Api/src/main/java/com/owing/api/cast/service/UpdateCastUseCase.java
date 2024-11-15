@@ -4,6 +4,7 @@ import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
 import com.owing.api.common.util.MemberUtils;
+import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.UpdateFileUseCase;
 import com.owing.common.annotation.UseCase;
@@ -34,10 +35,17 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
         castNodeDomainService.updateCastNodeInfo(castNode, castNodeInfo);
 
         if (!updateCastInfoRequest.folderId().equals(castNode.getParentId())) {
-            CastFolderNode attachCandidate = castFolderNodeDomainService.getEntity(updateCastInfoRequest.folderId());
+            CastFolderNode attachCandidateFolder = castFolderNodeDomainService.getEntity(updateCastInfoRequest.folderId());
+
+            // detach current folder
             castNodeDomainService.detachFolder(castNode, castNode.getParentId());
+
+            // update file position, update folder(parent)
+            CastNode lastCastNode = castNodeDomainService.getLastPositionCastNodeInFolder(attachCandidateFolder.getId());
+            castNodeDomainService.updateEntityPosition(castNode, lastCastNode, null, attachCandidateFolder);
+
+            // attach candidate folder
             castNodeDomainService.attachFolder(castNode, castNode.getParentId());
-//            castNodeDomainService.updateEntityPosition();
         }
     }
 
