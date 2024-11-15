@@ -38,7 +38,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 
 	}
 
-	protected F getParentFolder(T beforeEntity, T afterEntity) {
+	private F getParentFolder(T beforeEntity, T afterEntity) {
 		return beforeEntity!= null? beforeEntity.getFolder() : afterEntity.getFolder();
 	}
 
@@ -47,7 +47,7 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 		long newPosition = getUpdatePosition(entity, beforeEntity, afterEntity);
 		F newParent = getParentFolder(beforeEntity, afterEntity);
 
-		if(Objects.equals(entity.getFolder(), newParent)){ // fixme
+		if(Objects.equals(entity.getParentId(), newParent.getId())){ // fixme
 			updatePositionInSameFolder(entity, newPosition);
 		}else {
 			updatePositionInDifferentFolder(entity, newPosition, entity.getFolder(), newParent);
