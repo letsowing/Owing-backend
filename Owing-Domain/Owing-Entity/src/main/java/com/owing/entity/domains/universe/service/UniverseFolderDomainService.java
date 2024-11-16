@@ -1,5 +1,8 @@
 package com.owing.entity.domains.universe.service;
 
+import com.owing.entity.domains.story.repository.StoryFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
@@ -13,6 +16,8 @@ import com.owing.entity.domains.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @DomainService
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -21,6 +26,8 @@ public class UniverseFolderDomainService extends BaseFolderDomainService<Univers
 	private final BaseFolderRepository<UniverseFolder> dndRepository;
 	private final BaseFolderAdapter<UniverseFolder> dndAdapter;
 	private final OrderingStrategy<UniverseFolder> orderingStrategy;
+	private final UniverseFolderRepository universeFolderRepository;
+	private final UniverseRepository universeRepository;
 
 	@Override
 	protected BaseDndRepository<UniverseFolder> dndRepository() {
@@ -35,5 +42,12 @@ public class UniverseFolderDomainService extends BaseFolderDomainService<Univers
 	@Override
 	protected OrderingStrategy<UniverseFolder> orderingStrategy() {
 		return orderingStrategy;
+	}
+
+	@Transactional
+	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
+		universeFolderRepository.restoreById(folderItemId);
+		trashCanItemIds
+				.forEach(universeRepository::restoreById);
 	}
 }

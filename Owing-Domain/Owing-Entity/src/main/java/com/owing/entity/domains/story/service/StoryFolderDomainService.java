@@ -11,7 +11,9 @@ import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.repository.StoryFolderRepository;
 
+import com.owing.entity.domains.story.repository.StoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolde
 	private final StoryFolderAdapter dndAdapter;
 	private final StoryFolderShiftOrderingStrategy orderingStrategy;
 	private final StoryFolderRepository storyFolderRepository;
+	private final StoryRepository storyRepository;
 
 	@Override
 	protected BaseDndRepository<StoryFolder> dndRepository() {
@@ -35,9 +38,10 @@ public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolde
 		return orderingStrategy;
 	}
 
+	@Transactional
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
 		storyFolderRepository.restoreById(folderItemId);
 		trashCanItemIds
-			.forEach(storyFolderRepository::restoreById);
+			.forEach(storyRepository::restoreById);
 	}
 }

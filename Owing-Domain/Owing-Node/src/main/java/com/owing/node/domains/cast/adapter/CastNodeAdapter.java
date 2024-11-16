@@ -10,6 +10,12 @@ import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.dto.CastInfo;
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
+import com.owing.node.domains.cast.repository.CastNodeDeletedRepository;
 import com.owing.node.domains.cast.model.projection.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
@@ -24,6 +30,7 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
+    private final CastNodeDeletedRepository castNodeDeletedRepository;
 
     public CastNode findOneById(Long castId) {
         return castNodeRepository.findOneById(castId)
@@ -80,6 +87,10 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
 		return allCastRelationshipForAiPrompt;
 	}
 
+    public CastInfo findDeletedById(Long itemId) {
+        return castNodeDeletedRepository.findDeletedById(itemId);
+    }
+
     /* TODO DomainService로 위치이동 고려 */
     private CastNode savePosition(CastNode castNode) {
         CastPositionProjection castPositionProjection = CastPositionProjection.from(castNode);
@@ -97,8 +108,8 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
     public void incrementPositionAfter(long targetPosition, Long projectId) {
         castNodeRepository.incrementPositionAfter(targetPosition, projectId);
     }
-
     // Bean Setting
+
     @Override
     protected BaseFileRepository<CastNode, CastFolderNode> dndRepository() {
         return this.castNodeRepository;

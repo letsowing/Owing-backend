@@ -7,6 +7,8 @@ import com.owing.core.dnd.file.adapter.BaseFileAdapter;
 import com.owing.core.dnd.file.repository.BaseFileRepository;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
+import com.owing.entity.domains.story.model.dto.StoryInfo;
+import com.owing.entity.domains.story.repository.StoryDeletedRepository;
 import com.owing.entity.domains.story.repository.StoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 	private final StoryRepository storyRepository;
+	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
 	protected BaseFileRepository<Story, StoryFolder> dndRepository() {
@@ -24,4 +27,8 @@ public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 	public List<Story> findByProjectId(Long projectId) {
 		return storyRepository.findByFolder_ProjectId(projectId);
 	}
+
+    public StoryInfo findDeletedById(Long itemId) {
+		return storyDeletedRepository.findDeletedById(itemId);
+    }
 }

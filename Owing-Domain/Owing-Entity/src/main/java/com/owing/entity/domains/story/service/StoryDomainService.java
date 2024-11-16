@@ -47,6 +47,7 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		storyRepository.save(story);
 	}
 
+	@Transactional
 	public void restoreById(Long itemId) {
 		storyRepository.restoreById(itemId);
 	}
