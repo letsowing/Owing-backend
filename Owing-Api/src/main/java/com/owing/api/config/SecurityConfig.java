@@ -23,7 +23,6 @@ import com.owing.api.filter.JwtExceptionFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtUtils jwtUtils;
-    private final CorsConfig corsConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +43,6 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
-//                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
 
         return http.build();
     }
