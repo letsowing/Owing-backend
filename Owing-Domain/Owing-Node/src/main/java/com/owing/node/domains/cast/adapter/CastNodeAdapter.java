@@ -3,8 +3,8 @@ package com.owing.node.domains.cast.adapter;
 import java.util.List;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
+import com.owing.core.dnd.file.repository.BaseFileRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -13,13 +13,14 @@ import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.projection.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
+import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
+public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
@@ -99,7 +100,7 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
 
     // Bean Setting
     @Override
-    protected BaseDndRepository<CastNode> dndRepository() {
+    protected BaseFileRepository<CastNode, CastFolderNode> dndRepository() {
         return this.castNodeRepository;
     }
 }

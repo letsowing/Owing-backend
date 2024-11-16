@@ -10,9 +10,9 @@ import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends BaseFolder> extends ShiftOrderingStrategy<T>{
 
-	private final BaseFileAdapter<T> baseFileAdapter;
+	private final BaseFileAdapter<T, F> baseFileAdapter;
 
-	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T, F> dndRepository) {
+	public FileShiftOrderingStrategy(BaseFileAdapter<T, F> dndAdapter, BaseFileRepository<T, F> dndRepository) {
 		super(dndAdapter, dndRepository);
 		this.baseFileAdapter = dndAdapter;
 	}
