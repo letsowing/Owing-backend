@@ -46,6 +46,11 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         return castNodeAdapter.findGraphCastRelationshipByProjectId(projectId);
     }
 
+    public CastNode getLastPositionCastNodeInFolder(Long castFolderId) {
+        List<CastNode> castNodeList = castNodeAdapter.findByFolderIdOrderByPositionDescLimit(castFolderId, 1L);
+        return castNodeList.isEmpty() ? null : castNodeList.getFirst();
+    }
+
     @Transactional
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
         castNode.updateInfo(castNodeInfo);
@@ -120,6 +125,17 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     @Transactional
     public void deleteCastRelationship(CastRelationship castRelationship) {
         castNodeRepository.deleteCastRelationshipById(castRelationship.getId());
+    }
+
+    // =====CastFolder Relationship=====
+    @Transactional
+    public void attachFolder(CastNode castNode, Long castFolderId) {
+        castNodeRepository.mergeIncludeRelationship(castNode.getId(), castFolderId);
+    }
+
+    @Transactional
+    public void detachFolder(CastNode castNode, Long castFolderId) {
+        castNodeRepository.deleteIncludeRelationship(castNode.getId(), castFolderId);
     }
 
     // =====super() Cast CRUD=====

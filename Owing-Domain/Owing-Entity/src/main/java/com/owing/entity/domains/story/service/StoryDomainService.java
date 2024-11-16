@@ -21,14 +21,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder> {
 
-	private final StoryRepository dndRepository;
 	private final StoryAdapter dndAdapter;
 	private final StoryShiftOrderingStrategy orderingStrategy;
 	private final StoryRepository storyRepository;
 
 	@Override
 	protected BaseDndRepository<Story> dndRepository() {
-		return dndRepository;
+		return storyRepository;
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 
 	public void updateContent(Story story, StoryContent storyContent) {
 		story.createOrUpdateStoryText(storyContent);
-		int textCnt = TextCounter.countText(storyContent.getContent(), false, true);
+		int textCnt = TextCounter.countText(storyContent.getContent(), false, true); // fixme
 		story.updateTextCount(textCnt);
 		storyRepository.save(story);
 	}

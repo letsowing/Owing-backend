@@ -36,12 +36,6 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
     @Relationship(type = "BI_CONNECTION", direction = Relationship.Direction.INCOMING)
     private Set<CastRelationship> inBiConnections;
 
-//    @Relationship(type = "APPEARED",  direction = Relationship.Direction.OUTGOING)
-//    private Set<StoryPlotNode> episodes;
-
-//    @Relationship(type = "INCLUDE", direction = Relationship.Direction.INCOMING)
-//    private CastFolderNode castFolder;
-
     @Builder
     public CastNode(String name, Long age, String gender, String role, String description, String imageUrl, Coordinate coordinate, Long position, CastFolderNode folder) {
         this.name = name;
