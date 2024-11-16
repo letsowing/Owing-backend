@@ -13,4 +13,5 @@ public interface BaseDndRepository<T extends BaseDnd> extends CrudRepository<T, 
 	void incrementPositionBetween(Long start, Long end, Long projectId);
 	Long getMaxPositionByParentId(Long parentId);
 	void restoreById(Long id);
+	void incrementPositionAfter(Long targetPosition, Long projectId);
 }

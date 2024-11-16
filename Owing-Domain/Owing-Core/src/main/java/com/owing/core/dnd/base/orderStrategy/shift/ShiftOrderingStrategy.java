@@ -65,7 +65,7 @@ public abstract class ShiftOrderingStrategy<T extends BaseDnd> implements Orderi
 	}
 
 	protected void shiftFolderDown(long targetPosition, Long projectId) {
-		dndAdapter.decrementPositionAfter(targetPosition, projectId);
+		dndAdapter.incrementPositionAfter(targetPosition, projectId);
 	}
 
 	protected long getLastPosition(Long projectId) {
