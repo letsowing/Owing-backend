@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StoryAdapter extends BaseFileAdapter<Story> {
 	private final StoryRepository storyRepository;
+	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
 	protected BaseDndRepository<Story> dndRepository() {
@@ -23,4 +24,8 @@ public class StoryAdapter extends BaseFileAdapter<Story> {
 	public List<Story> findByProjectId(Long projectId) {
 		return storyRepository.findByFolder_ProjectId(projectId);
 	}
+
+    public StoryInfo findDeletedById(Long itemId) {
+		return storyDeletedRepository.findDeletedById(itemId);
+    }
 }

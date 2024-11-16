@@ -1,5 +1,6 @@
 package com.owing.api.trashcan.service.trashcan;
 
+import com.owing.entity.domains.story.model.dto.StoryInfo;
 import org.apache.logging.log4j.util.Cast;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
@@ -27,9 +28,9 @@ public class ReadTrashCanUserCase {
 	private final UniverseAdapter universeAdapter;
 
 
-	public Story executeStory(Long trashId) {
+	public StoryInfo executeStory(Long trashId) {
 		TrashCan trashCan = trashCanAdaptor.findById(trashId);
-		return storyAdapter.findById(trashCan.getItemId());
+		return storyAdapter.findDeletedById(trashCan.getItemId());
 	}
 
 	public CastNode executeCast(Long trashId) {

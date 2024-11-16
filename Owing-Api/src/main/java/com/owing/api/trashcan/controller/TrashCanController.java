@@ -47,7 +47,7 @@ public class TrashCanController {
 
 	@GetMapping("/{trashId}/story")
 	@Operation(summary = "✨일반: 원고 쓰레기 상세보기", description = "원고 쓰레기를 상세 봅니다.")
-	public ResponseEntity<Story> getStoryTrashCan(@PathVariable Long trashId) {
+	public ResponseEntity<?> getStoryTrashCan(@PathVariable Long trashId) {
 		return ResponseEntity.ok(readTrashCanUserCase.executeStory(trashId));
 	}
 

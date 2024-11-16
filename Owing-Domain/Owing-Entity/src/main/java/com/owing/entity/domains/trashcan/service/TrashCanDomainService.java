@@ -25,12 +25,16 @@ public class TrashCanDomainService {
 	private final TrashCanFolderRepository trashCanFolderRepository;
 	private final StoryRepository storyRepository;
 	private final UniverseRepository universeRepository;
-	//private final CastRepository CastRepository;
 	private final TrashCanAdaptor trashCanAdaptor;
-	private final TrashCanFolderDomainService trashCanFolderDomainService;
 
 	public void deleteTrashCan(Long trashId) {
-		trashCanRepository.deleteById(trashId);
+		TrashCan trashCan = trashCanRepository.findById(trashId)
+				.orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
+		TrashCanFolder folder = trashCan.getTrashCanFolder();
+		trashCanRepository.delete(trashCan);
+		if (folder.getTrashCanList().size() <= 1) {
+			trashCanFolderRepository.delete(folder);
+		}
 	}
 
 	public void restoreTrashCan(Long trashId) {
