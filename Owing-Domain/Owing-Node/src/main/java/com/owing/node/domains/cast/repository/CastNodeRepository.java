@@ -54,6 +54,19 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             """)
 	CastNode connectFolder(Long castId, Long castFolderId);
 
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted: false})-[r]->(c:Cast{deleted: false})
+			WHERE
+			  id(cf)=$castFolderId
+			RETURN
+			  c, r, cf
+			ORDER BY
+			  c.position DESC
+			LIMIT $limit
+			""")
+	List<CastNode> findByFolderIdOrderByPositionDescLimit(Long castFolderId, Long limit);
+
 	// =====Cast to Cast Connection=====
     @Query("""
             MATCH
@@ -168,6 +181,39 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			""")
 	Boolean existsCastRelationshipForBiconnection(Long sourceId, Long targetId);
 
+	// =====Folder to Cast Relationship =====
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted: false})
+			WHERE
+			  id(cf)=$castFolderId
+			MATCH
+			  (c:Cast)
+			WHERE
+			  id(c)=$castId AND NOT EXISTS ((c)<-[:INCLUDE]-())
+			MERGE
+			  (cf)-[r:INCLUDE]->(c)
+			RETURN
+			  count(r)
+			""")
+	Integer mergeIncludeRelationship(Long castId, Long castFolderId);
+
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted: false})
+			WHERE
+			  id(cf)=$castFolderId
+			MATCH
+			  (c:Cast)<-[r:INCLUDE]-(cf)
+			WHERE
+			  id(c)=$castId
+			DELETE
+			  r
+			RETURN
+			  count(r)
+			""")
+	Integer deleteIncludeRelationship(Long castId, Long castFolderId);
+
 	// =====Cast Graph=====
     @Query("""
 			MATCH
@@ -256,6 +302,19 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  c.position = c.position - 1
 			""")
     void decrementPositionAfter(Long position, Long folderId);
+
+//	@Override
+	@Query("""
+			MATCH
+			  (cf:CastFolder{deleted:false})-[r:INCLUDE]->(c:Cast{deleted:false})
+			WHERE
+			  id(cf)=$folderId
+			  AND
+			    c.position >= $position
+			SET
+			  c.position = c.position + 1
+			""")
+	void incrementPositionAfter(Long position, Long folderId);
 
     @Override
     @Query("""
