@@ -10,8 +10,11 @@ import com.owing.core.dnd.folder.model.BaseFolder;
 
 public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends BaseFolder> extends ShiftOrderingStrategy<T>{
 
+	private final BaseFileAdapter<T> baseFileAdapter;
+
 	public FileShiftOrderingStrategy(BaseFileAdapter<T> dndAdapter, BaseFileRepository<T, F> dndRepository) {
 		super(dndAdapter, dndRepository);
+		this.baseFileAdapter = dndAdapter;
 	}
 
 	protected boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity) {
@@ -70,4 +73,8 @@ public abstract class FileShiftOrderingStrategy<T extends BaseFile<F>, F extends
 		shiftFolderDown(newPosition, newFolder.getId());
 		entity.updateFolder(newFolder);
     }
+
+	protected void shiftFolderDown(long targetPosition, Long projectId) {
+		this.baseFileAdapter.incrementPositionAfter(targetPosition, projectId);
+	}
 }
