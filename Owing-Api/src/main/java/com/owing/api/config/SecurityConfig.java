@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
-                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+//                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
 
         return http.build();
     }
