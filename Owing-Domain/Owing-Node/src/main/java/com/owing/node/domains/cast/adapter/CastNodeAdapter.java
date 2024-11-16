@@ -10,10 +10,12 @@ import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
 import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundException;
 import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.dto.CastInfo;
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
+import com.owing.node.domains.cast.repository.CastNodeDeletedRepository;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
 
     private final CastNodeRepository castNodeRepository;
+    private final CastNodeDeletedRepository castNodeDeletedRepository;
 
     public CastNode findOneById(Long castId) {
         return castNodeRepository.findOneById(castId)
@@ -82,5 +85,9 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode> {
     @Override
     protected BaseDndRepository<CastNode> dndRepository() {
         return this.castNodeRepository;
+    }
+
+    public CastInfo findDeletedById(Long itemId) {
+        return castNodeDeletedRepository.findDeletedById(itemId);
     }
 }

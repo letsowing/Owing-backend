@@ -32,7 +32,7 @@ public class UpdateTrashCanFolderUserCase {
 		} else if (tableName.isStory()){
 			storyFolderDomainService.restore(folderItemId, trashCanItemIds);
 		} else if (tableName.isUniverse()){
-			// universeFolderDomainService.restore(folderItemId, trashCanItemIds);
+			universeFolderDomainService.restore(folderItemId, trashCanItemIds);
 		}
 
 		trashCanFolderDomainService.deleteTrashCanFolderById(trashId);

@@ -79,6 +79,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         return this.castFolderShiftOrderingStrategy;
     }
 
+    @Transactional
     public void restore(Long folderItemId, List<Long> trashCanItemIds) {
         castFolderNodeRepository.restoreById(folderItemId);
         trashCanItemIds

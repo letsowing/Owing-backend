@@ -6,6 +6,8 @@ import com.owing.common.annotation.Adaptor;
 import com.owing.core.dnd.base.repository.BaseDndRepository;
 import com.owing.core.dnd.file.adapter.BaseFileAdapter;
 import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.model.dto.StoryInfo;
+import com.owing.entity.domains.story.repository.StoryDeletedRepository;
 import com.owing.entity.domains.story.repository.StoryRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -23,10 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class TrashCanDomainService {
 	private final TrashCanRepository trashCanRepository;
 	private final TrashCanFolderRepository trashCanFolderRepository;
-	private final StoryRepository storyRepository;
-	private final UniverseRepository universeRepository;
-	private final TrashCanAdaptor trashCanAdaptor;
 
+	@Transactional
 	public void deleteTrashCan(Long trashId) {
 		TrashCan trashCan = trashCanRepository.findById(trashId)
 				.orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
@@ -34,26 +32,6 @@ public class TrashCanDomainService {
 		trashCanRepository.delete(trashCan);
 		if (folder.getTrashCanList().size() <= 1) {
 			trashCanFolderRepository.delete(folder);
-		}
-	}
-
-	public void restoreTrashCan(Long trashId) {
-		TrashCan trashCan = trashCanAdaptor.findById(trashId);
-
-		// todo trashCan 에 Cast에 해당하는 deleted 부분을 false로 변경
-		if (trashCan.getTrashCanFolder().getTableName().isCast()){
-
-		}
-		else if (trashCan.getTrashCanFolder().getTableName().isUniverse()){
-			universeRepository.restoreById(trashCan.getItemId());
-		}
-		else if (trashCan.getTrashCanFolder().getTableName().isStory()){
-			storyRepository.restoreById(trashCan.getItemId());
-		}
-
-		trashCanRepository.deleteById(trashId);
-		if (trashCan.getTrashCanFolder().getTrashCanList().isEmpty()){
-			trashCanFolderRepository.deleteById(trashCan.getTrashCanFolder().getId());
 		}
 	}
 

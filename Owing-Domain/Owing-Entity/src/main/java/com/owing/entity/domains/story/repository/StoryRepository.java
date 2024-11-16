@@ -15,7 +15,13 @@ import com.owing.entity.domains.story.model.StoryFolder;
 public interface StoryRepository extends BaseFileEntityRepository<Story, StoryFolder> {
 
 	@Modifying
-	@Query(value = "UPDATE story SET deleted = false WHERE id = :itemId", nativeQuery = true)
+	@Query(value = """
+        UPDATE story s
+        SET deleted = false
+        FROM story_folder sf
+        WHERE s.folder_id = sf.id
+          AND s.id = :itemId
+        """, nativeQuery = true)
 	void restoreById(@Param("itemId") Long itemId);
 
 	List<Story> findByFolder_ProjectId(Long projectId);

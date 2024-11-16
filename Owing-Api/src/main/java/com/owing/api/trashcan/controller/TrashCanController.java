@@ -53,13 +53,13 @@ public class TrashCanController {
 
 	@GetMapping("/{trashId}/cast")
 	@Operation(summary = "✨일반: 인물 쓰레기 상세보기", description = "인물 쓰레기를 상세 봅니다.")
-	public ResponseEntity<CastNode> getCastTrashCan(@PathVariable Long trashId) {
+	public ResponseEntity<?> getCastTrashCan(@PathVariable Long trashId) {
 		return ResponseEntity.ok(readTrashCanUserCase.executeCast(trashId));
 	}
 
 	@GetMapping("/{trashId}/universe")
 	@Operation(summary = "✨일반: 세계관 쓰레기 상세보기", description = "세계관 쓰레기를 상세 봅니다.")
-	public ResponseEntity<Universe> getUniverseTrashCan(@PathVariable Long trashId) {
+	public ResponseEntity<?> getUniverseTrashCan(@PathVariable Long trashId) {
 		return ResponseEntity.ok(readTrashCanUserCase.executeUniverse(trashId));
 	}
 }

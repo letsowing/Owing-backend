@@ -8,6 +8,8 @@ import com.owing.core.dnd.file.adapter.BaseFileAdapter;
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
+import com.owing.entity.domains.universe.model.dto.UniverseInfo;
+import com.owing.entity.domains.universe.repository.UniverseDeletedRepository;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UniverseAdapter extends BaseFileAdapter<Universe> {
 	private final UniverseRepository universeRepository;
+	private final UniverseDeletedRepository universeDeletedRepository;
 
 	@Override
 	protected BaseDndRepository<Universe> dndRepository() {
@@ -29,5 +32,9 @@ public class UniverseAdapter extends BaseFileAdapter<Universe> {
 
 	public List<Universe> findByProjectId(Long projectId) {
 		return universeRepository.findByFolder_ProjectId(projectId);
+	}
+
+	public UniverseInfo findDeletedById(Long itemId) {
+		return universeDeletedRepository.findDeletedById(itemId);
 	}
 }
