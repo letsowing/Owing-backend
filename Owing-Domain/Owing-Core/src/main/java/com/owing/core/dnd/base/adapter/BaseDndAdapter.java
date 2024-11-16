@@ -26,10 +26,6 @@ public abstract class BaseDndAdapter<T extends BaseDnd> {
 		dndRepository().decrementPositionAfter(position, parentId);
 	}
 
-	public void incrementPositionAfter(long targetPosition, Long projectId) {
-		dndRepository().incrementPositionAfter(targetPosition, projectId);
-	}
-
 	public void decrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
 		dndRepository().decrementPositionBetween(fromPosition, toPosition, parentId);
 	}
