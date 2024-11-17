@@ -15,13 +15,17 @@ import com.owing.api.story.model.dto.request.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UniverseInfo;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
+import com.owing.api.story.model.mapper.CrashCheckLogMapper;
 import com.owing.common.annotation.UseCase;
+import com.owing.entity.domains.ai.log.story.model.CrashCheckLog;
+import com.owing.entity.domains.ai.log.story.service.CrashCheckLogDomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.error.StoryErrorCode;
 import com.owing.entity.domains.story.error.exception.StoryException;
 import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.service.StoryDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
@@ -41,6 +45,11 @@ public class CheckStoryCrashUseCase {
 
 	private final OwingAiClient owingAiClient;
 	private final ObjectMapper objectMapper;
+
+	// logging
+	private final CrashCheckLogDomainService crashCheckLogDomainService;
+	private final CrashCheckLogMapper crashCheckLogMapper;
+	private final StoryDomainService storyDomainService;
 
 
 	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
@@ -73,7 +82,13 @@ public class CheckStoryCrashUseCase {
 
 		CrashCheckResponse.Items[] itemsArray = objectMapper.treeToValue(itemsNode, CrashCheckResponse.Items[].class);
 
-		return CrashCheckResponse.of(itemsArray);
+		CrashCheckResponse crashCheckResponse = CrashCheckResponse.of(itemsArray);
+		logging(storyDomainService.getEntity(storyId), crashCheckResponse);
+		return crashCheckResponse;
+	}
 
+	private void logging(Story story, CrashCheckResponse aiResponse) {
+		CrashCheckLog crashCheckLog = crashCheckLogMapper.toEntity(story, aiResponse);
+		crashCheckLogDomainService.createLog(crashCheckLog);
 	}
 }

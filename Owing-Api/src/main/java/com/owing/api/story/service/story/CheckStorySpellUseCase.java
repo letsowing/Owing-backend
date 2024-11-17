@@ -23,6 +23,8 @@ public class CheckStorySpellUseCase {
 
 	private final OwingAiClient owingAiClient;
 	private final StoryAdapter storyAdapter;
+
+	// logging
 	private final SpellCheckLogDomainService spellCheckLogDomainService;
 	private final SpellCheckLogMapper spellCheckLogMapper;
 
