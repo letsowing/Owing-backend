@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final DashboardUseCase dashboardUseCase;
 
-	@GetMapping("/v1/dashbaord")
+	@GetMapping("/v1/dashboard")
 	public ResponseEntity<?> getDashboard(){
 		return ResponseEntity.ok(dashboardUseCase.execute());
 	}
