@@ -65,7 +65,7 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}/spell-check")
 	@Operation(summary = "✨AI: 맞춤법 검사", description = "맞춤법을 검사합니다. 사실 AI가 아님")
-	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId) {
+	public ResponseEntity<?> checkStorySpell(@PathVariable Long storyId) {
 		return ResponseEntity.ok(checkStorySpellUseCase.execute(storyId));
 	}
 
