@@ -28,7 +28,7 @@ public class TrashCan {
 	@Column(length = OwingPersistenceConst.FILE_NAME_LEN, nullable = false)
 	private String name;
 
-	@Column(length = OwingPersistenceConst.FILE_NAME_LEN)
+	@Column(length = OwingPersistenceConst.DESC_LEN)
 	private String description;
 
 	@CreatedDate
