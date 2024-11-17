@@ -1,14 +1,16 @@
 package com.owing.api.story.model.dto.request;
+import java.time.LocalDateTime;
 
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
 
 public record CastList(
-	Long castId,
+	Long id,
 	String name,
 	String role,
 	String gender,
 	Long age,
-	String description
+	String description,
+	LocalDateTime updatedAt
 ) {
 	public static CastList from(CastAiProjection cast){
 		return new CastList(
@@ -17,7 +19,8 @@ public record CastList(
 			cast.role(),
 			cast.gender(),
 			cast.age(),
-			cast.description()
+			cast.description(),
+			cast.updatedAt()
 		);
 	}
 }
