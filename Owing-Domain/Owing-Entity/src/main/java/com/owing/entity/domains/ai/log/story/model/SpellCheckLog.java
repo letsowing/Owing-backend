@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StoryAiLog extends BaseTimeEntity {
+public class SpellCheckLog extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class StoryAiLog extends BaseTimeEntity {
     @JoinColumn(name = "story_id", nullable = false)
     private Story story;
 
-    public StoryAiLog(Story story, List<SpellCheckOutput> output) {
+    public SpellCheckLog(Story story, List<SpellCheckOutput> output) {
         this.story = story;
         this.output = output;
     }
