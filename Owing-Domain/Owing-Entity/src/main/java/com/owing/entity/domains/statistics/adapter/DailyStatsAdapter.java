@@ -31,7 +31,7 @@ public class DailyStatsAdapter {
 		return repository.save(entity);
 	}
 
-	public List<DailyStats> findByMemberAndPeriod(Member member, LocalDate start, LocalDate end) {
-		return repository.findAllByMemberAndDateBetweenOrderByDate(member, start, end);
+	public List<DailyStats> findByMemberAndPeriod(Long memberId, LocalDate start, LocalDate end) {
+		return repository.findAllByMemberIdAndDateBetweenOrderByDate(memberId, start, end);
 	}
 }
