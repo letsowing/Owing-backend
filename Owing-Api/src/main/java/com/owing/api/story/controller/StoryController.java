@@ -1,8 +1,8 @@
 package com.owing.api.story.controller;
 
+import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
-import com.owing.api.story.model.dto.response.StorySpellCheckResponse;
-import com.owing.api.story.service.story.ReadStorySpellLogUseCase;
+import com.owing.api.story.service.story.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,6 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
-import com.owing.api.story.service.story.CheckStoryCrashUseCase;
-import com.owing.api.story.service.story.CheckStorySpellUseCase;
-import com.owing.api.story.service.story.CreateStoryUseCase;
-import com.owing.api.story.service.story.DeleteStoryUseCase;
-import com.owing.api.story.service.story.ReadStoryUseCase;
-import com.owing.api.story.service.story.UpdateStoryUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,6 +37,7 @@ public class StoryController extends BaseFileController {
 	private final CheckStoryCrashUseCase checkStoryCrashUseCase;
 	private final CheckStorySpellUseCase checkStorySpellUseCase;
 	private final ReadStorySpellLogUseCase readStorySpellLogUseCase;
+	private final ReadStoryCrashLogUseCase readStoryCrashLogUseCase;
 
 	@PostMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
@@ -62,6 +57,12 @@ public class StoryController extends BaseFileController {
 	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌을 검사합니다.")
 	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody StoryCrashRequest request) throws Exception{
 		return ResponseEntity.ok(checkStoryCrashUseCase.execute(storyId, request));
+	}
+
+	@GetMapping("/{storyId}/crash-check")
+	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌 로그를 조회합니다..")
+	public ResponseEntity<List<CrashCheckLogResponse>> getStoryCrash(@PathVariable Long storyId) {
+		return ResponseEntity.ok(readStoryCrashLogUseCase.execute(storyId));
 	}
 
 	@PostMapping("/{storyId}/spell-check")

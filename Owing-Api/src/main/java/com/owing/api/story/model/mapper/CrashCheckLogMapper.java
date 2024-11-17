@@ -1,5 +1,7 @@
 package com.owing.api.story.model.mapper;
 
+import com.owing.api.story.model.dto.response.CrashCheckItemResponse;
+import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.ai.log.story.model.CrashCheckLog;
@@ -29,12 +31,26 @@ public class CrashCheckLogMapper {
         return new CrashCheckLog(story, outputList);
     }
 
-//    public StorySpellCheckResponse toStorySpellCheckResponse(SpellCheckOutput spellCheckOutput) {
-//    }
+    public CrashCheckItemResponse toCrashCheckItemResponse(CrashCheckOutput crashCheckOutput) {
+        return new CrashCheckItemResponse(
+                crashCheckOutput.base(),
+                crashCheckOutput.add(),
+                crashCheckOutput.reason()
+        );
+    }
 
-//    public StorySpellCheckLogResponse toLogResponse(SpellCheckLog spellCheckLog) {
-//    }
+    public CrashCheckLogResponse toLogResponse(CrashCheckLog crashCheckLog) {
+        List<CrashCheckItemResponse> list = crashCheckLog.getOutput().stream().map(this::toCrashCheckItemResponse).toList();
+        return new CrashCheckLogResponse(
+                crashCheckLog.getId(),
+                list,
+                crashCheckLog.getCreatedAt()
+        );
+    }
 
-//    public List<StorySpellCheckLogResponse> toLogListResponse(List<SpellCheckLog> spellCheckLogList) {
-//    }
+    public List<CrashCheckLogResponse> toLogListResponse(List<CrashCheckLog> crashCheckLogList) {
+        return crashCheckLogList.stream()
+                .map(this::toLogResponse)
+                .toList();
+    }
 }
