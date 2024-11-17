@@ -1,38 +1,74 @@
 package com.owing.api.project.model.mapper;
 
 import com.owing.api.project.model.dto.request.AddProjectRequest;
-import com.owing.api.project.model.dto.response.ProjectResponse;
-import com.owing.entity.domains.project.adaptor.ProjectAdaptor;
+import com.owing.api.project.model.dto.request.ProjectInfoRequest;
+import com.owing.api.project.model.dto.response.ProjectImageResponse;
+import com.owing.api.project.model.dto.response.ProjectInfoResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoListResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoPageResponse;
+import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
+import com.owing.api.universe.model.dto.response.UniverseImageResponse;
+import com.owing.common.annotation.Mapper;
+import com.owing.entity.common.model.dto.ProjectShortInfoDto;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.project.model.ProjectInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Page;
 
-@Component
+import java.util.List;
+
+@Mapper
 @RequiredArgsConstructor
 public class ProjectMapper {
 
-    private final ProjectAdaptor projectAdaptor;
+    private final ProjectAdapter projectAdapter;
 
-    public Project toEntity(AddProjectRequest addProjectRequest) {
+    public Project toEntity(AddProjectRequest addProjectRequest, Member member) {
+        ProjectInfo projectInfo = toProjectInfo(addProjectRequest);
         return Project.builder()
-                .title(addProjectRequest.title())
-                .description(addProjectRequest.description())
-                .category(addProjectRequest.category())
-                .genres(addProjectRequest.genres())
-                .coverUrl(addProjectRequest.imageUrl())
+                .projectInfo(projectInfo)
+                .member(member)
                 .build();
     }
 
-    public ProjectResponse toResponse(Project project) {
-        return new ProjectResponse(
-                project.getId(),
-                project.getTitle(),
-                project.getCoverUrl()
-        );
+    public ProjectInfo toProjectInfo(ProjectInfoRequest projectInfoRequest) {
+        return ProjectInfo.builder()
+                .title(projectInfoRequest.title())
+                .description(projectInfoRequest.description())
+                .category(projectInfoRequest.category())
+                .genres(projectInfoRequest.genres())
+                .coverUrl(projectInfoRequest.coverUrl())
+                .build();
+    }
+    public ProjectInfoResponse toInfoResponse(Project project) {
+        Long projectId = project.getId();
+        ProjectInfo projectInfo = project.getProjectInfo();
+        return new ProjectInfoResponse(projectId, projectInfo);
     }
 
-    public ProjectResponse toResponse(Long projectId) {
-        Project project = projectAdaptor.find(projectId);
-        return toResponse(project);
+    public ProjectShortInfoResponse toShortInfoResponse(Project project) {
+        ProjectShortInfoDto projectShortInfoDto = ProjectShortInfoDto.from(project);
+        return new ProjectShortInfoResponse(projectShortInfoDto);
+    }
+
+    public ProjectShortInfoListResponse toListResponse(List<Project> projectList) {
+        List<ProjectShortInfoDto> projectShortInfoDtoList =
+                projectList.stream()
+                        .map(ProjectShortInfoDto::from)
+                        .toList();
+        return new ProjectShortInfoListResponse(projectShortInfoDtoList);
+    }
+
+    public ProjectShortInfoPageResponse toPageResponse(Page<Project> projectPage) {
+        Page<ProjectShortInfoDto> projectShortInfoDtoPage = projectPage.map(ProjectShortInfoDto::from);
+        return new ProjectShortInfoPageResponse(projectShortInfoDtoPage);
+    }
+
+    public ProjectImageResponse toGenerateImageResponse(String imgUrl) {
+        return ProjectImageResponse.builder()
+            .imageUrl(imgUrl)
+            .build();
     }
 }

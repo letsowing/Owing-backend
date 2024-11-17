@@ -2,26 +2,28 @@ package com.owing.infrastructure.config.s3;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "cloud.aws")
-record S3Properties(
+@ConfigurationProperties(prefix = "cloud")
+public record S3Properties(
+        AWS aws,
         S3 s3,
-        Boolean stackAuto,
-        String regionStatic,
-        Credentials credentials
+        Boolean stackAuto
 ) {
-    record S3(
+    public record AWS(
+        String region,
+        Credentials credentials
+    ) {}
+    public record S3(
             String bucket,
             Directory directory
     ) {}
-
-    record Directory(
+    public record Directory(
             String project,
-            String casting,
+            String cast,
             String universe
     ) {}
-
-    record Credentials(
-            String accessKey,
-            String secretKey
+    public record Credentials(
+        String accessKey,
+        String secretKey
     ) {}
+
 }

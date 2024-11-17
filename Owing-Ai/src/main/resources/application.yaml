@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: Owing-Ai
+
+  profiles:
+    include:
+      - infrastructure
+      - common
+
+  config:
+    import: optional:file:.env[.properties]
+  ai:
+    fal:
+      api-key: ${FAL_AI_KEY}
+      model: fal-ai/flux/schnell
+    openai:
+      api-key: ${OPEN_AI_KEY}
+      image:
+        options:
+          model: DALL_E_3
+          response-format: b64_json
+          quality: hd
+          size: 1024x1024
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.8
+          max-tokens: 16384
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, beans, httpexchanges, info, metrics, prometheus
+server:
+  port: 8081
+

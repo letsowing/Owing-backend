@@ -1,0 +1,46 @@
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+ext {
+	set('springAiVersion', "1.0.0-M3")
+}
+
+dependencies {
+	implementation project(':Owing-Common')
+	implementation project(':Owing-Infrastructure')
+
+	// OpenAI
+	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+
+	// FalAI
+	implementation 'ai.fal.client:fal-client:0.7.1'
+
+	implementation 'org.jsoup:jsoup:1.17.2'
+
+	// S3
+//	implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
+
+
+
+	// AI
+//	implementation 'org.springframework.ai:spring-ai-anthropic-spring-boot-starter'
+//	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+//	implementation 'org.springframework.ai:spring-ai-stability-ai-spring-boot-starter'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+	}
+}
+
+bootJar.enabled = true
+jar.enabled = false

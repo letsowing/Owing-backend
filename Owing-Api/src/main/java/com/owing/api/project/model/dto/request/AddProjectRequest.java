@@ -10,6 +10,6 @@ public record AddProjectRequest(
         String description,
         Category category,
         Set<Genre> genres,
-        String imageUrl
-) {
+        String coverUrl
+) implements ProjectInfoRequest{
 }

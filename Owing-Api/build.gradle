@@ -2,7 +2,12 @@
 bootJar.enabled = true
 jar.enabled = false
 
+ext {
+    set('springCloudVersion', "2023.0.3")
+}
+
 dependencies {
+    implementation project(':Owing-Domain:Owing-Core')
     implementation project(':Owing-Domain:Owing-Entity')
     implementation project(':Owing-Domain:Owing-Node')
     implementation project(':Owing-Common')
@@ -11,9 +16,30 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // google oauth
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.29.0'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+
+    // OpenFeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-jackson:11.10'
+
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.json:json:20240303'
 }
 
 test {
     useJUnitPlatform()
+}
+
+dependencyManagement {
+
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
