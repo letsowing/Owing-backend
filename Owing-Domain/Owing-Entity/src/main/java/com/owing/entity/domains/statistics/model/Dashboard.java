@@ -1,16 +1,12 @@
 package com.owing.entity.domains.statistics.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
-import com.owing.entity.domains.member.model.Member;
-
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class Dashboard implements Serializable {
+public class Dashboard {
 
 	@Id
 	private Long memberId;
@@ -29,10 +24,17 @@ public class Dashboard implements Serializable {
 	private int monthlyCount;
 	private LocalDate date;
 
-	private Member member; // fixme
-
 	@TimeToLive
 	private Long ttl;
+
+	@Builder
+	public Dashboard(Long memberId, int todayCount, int monthlyCount, LocalDate date, Long ttl) {
+		this.memberId = memberId;
+		this.todayCount = todayCount;
+		this.monthlyCount = monthlyCount;
+		this.date = date;
+		this.ttl = ttl;
+	}
 
 	public void addDailyCount(int count) {
 		this.todayCount += count;

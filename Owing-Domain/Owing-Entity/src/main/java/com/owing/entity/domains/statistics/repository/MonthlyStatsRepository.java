@@ -12,6 +12,6 @@ import com.owing.entity.domains.statistics.model.MonthlyStats;
 public interface MonthlyStatsRepository extends JpaRepository<MonthlyStats, Long> {
 	Optional<MonthlyStats> findByMemberAndMonth(Member member, LocalDate month);
 
-	@Query("select coalesce(sum(m.monthlyCount), 0) from MonthlyStats m where m.member = :member and year(m.month) = :year and month(m.month) = :month")
-	int getCountByYearMonth(Member member, int year, int month);
+	@Query("select coalesce(sum(m.monthlyCount), 0) from MonthlyStats m where m.member.id = :memberId and year(m.month) = :year and month(m.month) = :month")
+	int getCountByYearMonth(Long memberId, int year, int month);
 }
