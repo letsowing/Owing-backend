@@ -3,24 +3,23 @@ package com.owing.api.story.service.story;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.openfeign.OwingAiClient;
-import com.owing.api.story.model.dto.request.CastInfo;
-import com.owing.api.story.model.dto.request.CastList;
-import com.owing.api.story.model.dto.request.PrevStoryInfo;
-import com.owing.api.story.model.dto.request.ProjectInfoDto;
-import com.owing.api.story.model.dto.request.RelationList;
-import com.owing.api.story.model.dto.request.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
-import com.owing.api.story.model.dto.request.UniverseInfo;
+import com.owing.api.story.model.dto.request.ai.crashCheck.CastInfo;
+import com.owing.api.story.model.dto.request.ai.crashCheck.CastList;
+import com.owing.api.story.model.dto.request.ai.crashCheck.PrevStoryInfo;
+import com.owing.api.story.model.dto.request.ai.crashCheck.ProjectInfoDto;
+import com.owing.api.story.model.dto.request.ai.crashCheck.RelationList;
+import com.owing.api.story.model.dto.request.ai.crashCheck.StoryCrashCheckRequest;
+import com.owing.api.story.model.dto.request.ai.crashCheck.ThisEpisode;
+import com.owing.api.story.model.dto.request.ai.crashCheck.UniverseInfo;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.api.story.model.mapper.CrashCheckLogMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.ai.log.story.model.CrashCheckLog;
 import com.owing.entity.domains.ai.log.story.service.CrashCheckLogDomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
-import com.owing.entity.domains.project.model.ProjectInfo;
+import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.error.StoryErrorCode;
 import com.owing.entity.domains.story.error.exception.StoryException;
@@ -29,9 +28,9 @@ import com.owing.entity.domains.story.service.StoryDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
-
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
 import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
+
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -44,7 +43,6 @@ public class CheckStoryCrashUseCase {
 	private final ProjectAdapter projectAdapter;
 
 	private final OwingAiClient owingAiClient;
-	private final ObjectMapper objectMapper;
 
 	// logging
 	private final CrashCheckLogDomainService crashCheckLogDomainService;
@@ -54,7 +52,7 @@ public class CheckStoryCrashUseCase {
 
 	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
 		Long projectId = dto.projectId();
-		ProjectInfo projectInfo = projectAdapter.findById(projectId).getProjectInfo();
+		Project projectInfo = projectAdapter.findById(projectId);
 		List<Story> stories = storyAdapter.findByProjectId(projectId);
 		List<Universe> universes = universeAdapter.findByProjectId(projectId);
 		List<CastAiProjection> castNodes = castNodeAdapter.findAllCastForAiPrompt(projectId);
@@ -66,26 +64,15 @@ public class CheckStoryCrashUseCase {
 		List<CastList> cdto = castNodes.stream().map(CastList::from).toList();
 		List<RelationList> rdto = castRelationships.stream().map(RelationList::from).toList();
 		CastInfo castInfo = CastInfo.of(cdto, rdto);
-		String thisEpisode = stories.stream().findFirst().map(Story::getContent).orElseThrow(() -> StoryException.of(
-			StoryErrorCode.STORY_NOT_FOUND));
+		ThisEpisode thisEpisode = ThisEpisode.from(stories.stream().findFirst().orElseThrow(() -> StoryException.of(StoryErrorCode.STORY_NOT_FOUND)));
 
-		// fixme
-		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode);
-		// System.out.println(request);
-		String res = owingAiClient.crashCheck(request);
-		System.out.println(res);
-		res = res.replace("```json", "").replace("```","").strip();
+		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode, dto.projectId());
+		CrashCheckResponse crashCheckResponse = owingAiClient.crashCheck(request);
 
-		JsonNode rootNode = objectMapper.readTree(res);
-
-		JsonNode itemsNode = rootNode.path("reply").path("items");
-
-		CrashCheckResponse.Items[] itemsArray = objectMapper.treeToValue(itemsNode, CrashCheckResponse.Items[].class);
-
-		CrashCheckResponse crashCheckResponse = CrashCheckResponse.of(itemsArray);
 		logging(storyDomainService.getEntity(storyId), crashCheckResponse);
 		return crashCheckResponse;
 	}
+
 
 	private void logging(Story story, CrashCheckResponse aiResponse) {
 		CrashCheckLog crashCheckLog = crashCheckLogMapper.toEntity(story, aiResponse);

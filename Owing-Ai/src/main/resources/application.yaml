@@ -26,7 +26,14 @@ spring:
           model: gpt-4o-mini
           temperature: 0.8
           max-tokens: 16384
+  jpa:
+    hibernate:
+      ddl-auto: update
 
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/owing_ai
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
 management:
   endpoints:
     web:

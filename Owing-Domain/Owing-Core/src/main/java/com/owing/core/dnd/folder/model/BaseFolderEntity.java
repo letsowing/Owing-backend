@@ -1,8 +1,12 @@
 package com.owing.core.dnd.folder.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.StringUtils;
 
 import com.owing.core.constant.OwingPersistenceConst;
@@ -13,6 +17,7 @@ import com.owing.core.dnd.file.model.BaseFileEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToMany;
@@ -21,6 +26,7 @@ import lombok.Getter;
 
 @MappedSuperclass
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseFolderEntity<T extends BaseFileEntity> implements BaseFolder {
 
 	@Column(nullable = false)
@@ -38,6 +44,12 @@ public abstract class BaseFolderEntity<T extends BaseFileEntity> implements Base
 	@OrderBy("position ASC")
 	@OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<T> files = new ArrayList<>();
+
+	@CreatedDate
+	private LocalDateTime createdAt; //fixme
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+	private LocalDateTime deletedAt;
 
 	@Override
 	public Long getParentId() {

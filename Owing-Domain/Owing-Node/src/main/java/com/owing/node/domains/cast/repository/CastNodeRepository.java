@@ -1,19 +1,20 @@
 package com.owing.node.domains.cast.repository;
 
-import com.owing.node.common.model.projection.CastRelationshipProjection;
-import com.owing.node.common.repository.BaseFileNodeRepository;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.projection.CastAiProjection;
-import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
-import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
-import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
-import com.owing.node.folder.cast.model.CastFolderNode;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.owing.node.common.model.projection.CastRelationshipProjection;
+import com.owing.node.common.repository.BaseFileNodeRepository;
+import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.projection.CastAiProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
+import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
+import com.owing.node.folder.cast.model.CastFolderNode;
 
 @Repository
 public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, CastFolderNode> {
@@ -252,10 +253,12 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			MATCH
 			  (c1)-[r3:CONNECTION|BI_CONNECTION]-(c2:Cast{deleted: false})
 			RETURN DISTINCT
+			  r3.id as id,
 			  type(r3) as type,
 			  r3.label as label,
 			  r3.sourceId as sourceId,
-			  r3.targetId as targetId
+			  r3.targetId as targetId,
+			  r3.updatedAt as updatedAt
 			""")
 	List<CastRelationshipAiProjection> findAllCastRelationshipForAiPrompt(Long projectId);
 
@@ -271,7 +274,8 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  c.role as role,
 			  c.gender as gender,
 			  c.age as age,
-			  c.description as description
+			  c.description as description,
+			  c.updatedAt as updatedAt
 			""")
 	List<CastAiProjection> findAllCastForAiPrompt(Long projectId);
 
