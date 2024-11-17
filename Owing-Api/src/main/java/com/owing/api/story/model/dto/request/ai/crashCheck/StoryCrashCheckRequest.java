@@ -1,4 +1,4 @@
-package com.owing.api.story.model.dto.request;
+package com.owing.api.story.model.dto.request.ai.crashCheck;
 
 import java.util.List;
 
@@ -7,15 +7,17 @@ public record StoryCrashCheckRequest(
 	List<PrevStoryInfo> prevStory,
 	List<UniverseInfo> universe,
 	CastInfo cast,
-	String thisEpisode
-) {
+	ThisEpisode thisEpisode,
+	Long projectId
+	) {
 	public static StoryCrashCheckRequest of(
 		ProjectInfoDto project,
 		List<PrevStoryInfo> prevStory,
 		List<UniverseInfo> universe,
 		CastInfo cast,
-		String thisEpisode
+		ThisEpisode thisEpisode,
+		Long projectId
 	) {
-		return new StoryCrashCheckRequest(project, prevStory, universe, cast, thisEpisode);
+		return new StoryCrashCheckRequest(project, prevStory, universe, cast, thisEpisode, projectId);
 	}
 }

@@ -1,4 +1,5 @@
-package com.owing.api.story.model.dto.request;
+package com.owing.api.story.model.dto.request.ai.crashCheck;
+
 import java.time.LocalDateTime;
 
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
