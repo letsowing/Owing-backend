@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.owing.ai.domains.story.dto.request.SpellCheckRequest;
-import com.owing.ai.domains.story.dto.response.ErrorInfo;
+import com.owing.ai.domains.story.dto.request.spellCheck.SpellCheckRequest;
+import com.owing.ai.domains.story.dto.response.spellCheck.ErrorInfo;
 import com.owing.ai.domains.story.error.StoryAIErrorCode;
 import com.owing.ai.domains.story.error.exception.StoryAIException;
 

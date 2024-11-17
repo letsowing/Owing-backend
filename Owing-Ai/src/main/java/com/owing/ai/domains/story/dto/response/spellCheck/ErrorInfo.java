@@ -1,4 +1,4 @@
-package com.owing.ai.domains.story.dto.response;
+package com.owing.ai.domains.story.dto.response.spellCheck;
 
 import org.jsoup.parser.Parser;
 
