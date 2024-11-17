@@ -1,5 +1,10 @@
 package com.owing.core.dnd.file.model;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.StringUtils;
 
 import com.owing.core.constant.OwingPersistenceConst;
@@ -9,6 +14,7 @@ import com.owing.core.dnd.base.error.exception.DndInvalidPositionException;
 import com.owing.core.dnd.folder.model.BaseFolderEntity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
@@ -16,6 +22,7 @@ import lombok.Getter;
 
 @MappedSuperclass
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseFileEntity<T extends BaseFolderEntity> implements BaseFile<T>{
 
 	@Column(nullable = false)
@@ -31,6 +38,11 @@ public abstract class BaseFileEntity<T extends BaseFolderEntity> implements Base
 	@JoinColumn(name = "folder_id", nullable = false)
 	protected T folder;
 
+	@CreatedDate
+	private LocalDateTime createdAt; //fixme
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+	private LocalDateTime deletedAt;
 
 	public void updatePosition(long newPosition) {
 		if(!validatePosition(newPosition)){
