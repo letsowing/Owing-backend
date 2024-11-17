@@ -1,5 +1,8 @@
 package com.owing.api.story.model.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record StorySpellCheckResponse(
 	String help,
 	Integer errorIdx,

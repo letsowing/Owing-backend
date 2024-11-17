@@ -3,7 +3,6 @@ package com.owing.api.story.service.story;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.openfeign.OwingAiClient;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.ai.crashCheck.CastInfo;
@@ -15,13 +14,17 @@ import com.owing.api.story.model.dto.request.ai.crashCheck.StoryCrashCheckReques
 import com.owing.api.story.model.dto.request.ai.crashCheck.ThisEpisode;
 import com.owing.api.story.model.dto.request.ai.crashCheck.UniverseInfo;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
+import com.owing.api.story.model.mapper.CrashCheckLogMapper;
 import com.owing.common.annotation.UseCase;
+import com.owing.entity.domains.ai.log.story.model.CrashCheckLog;
+import com.owing.entity.domains.ai.log.story.service.CrashCheckLogDomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.error.StoryErrorCode;
 import com.owing.entity.domains.story.error.exception.StoryException;
 import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.service.StoryDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
@@ -41,6 +44,11 @@ public class CheckStoryCrashUseCase {
 
 	private final OwingAiClient owingAiClient;
 
+	// logging
+	private final CrashCheckLogDomainService crashCheckLogDomainService;
+	private final CrashCheckLogMapper crashCheckLogMapper;
+	private final StoryDomainService storyDomainService;
+
 
 	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
 		Long projectId = dto.projectId();
@@ -59,7 +67,15 @@ public class CheckStoryCrashUseCase {
 		ThisEpisode thisEpisode = ThisEpisode.from(stories.stream().findFirst().orElseThrow(() -> StoryException.of(StoryErrorCode.STORY_NOT_FOUND)));
 
 		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode, dto.projectId());
-		return owingAiClient.crashCheck(request);
+		CrashCheckResponse crashCheckResponse = owingAiClient.crashCheck(request);
 
+		logging(storyDomainService.getEntity(storyId), crashCheckResponse);
+		return crashCheckResponse;
+	}
+
+
+	private void logging(Story story, CrashCheckResponse aiResponse) {
+		CrashCheckLog crashCheckLog = crashCheckLogMapper.toEntity(story, aiResponse);
+		crashCheckLogDomainService.createLog(crashCheckLog);
 	}
 }
