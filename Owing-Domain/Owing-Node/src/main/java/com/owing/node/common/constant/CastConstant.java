@@ -4,4 +4,6 @@ public interface CastConstant {
 
     int DEFAULT_COORDINATE_X = 0;
     int DEFAULT_COORDINATE_Y = 0;
+    int MAX_COORDINATE = 300;
+
 }

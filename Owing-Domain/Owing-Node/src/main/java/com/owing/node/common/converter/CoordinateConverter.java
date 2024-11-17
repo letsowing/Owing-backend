@@ -15,8 +15,8 @@ public class CoordinateConverter implements Neo4jPersistentPropertyToMapConverte
 
     @NonNull @Override
     public Map<String, Value> decompose(@Nullable Coordinate property, @NonNull Neo4jConversionService neo4jConversionService) {
-        Value x = Values.value(CastConstant.DEFAULT_COORDINATE_X);
-        Value y = Values.value(CastConstant.DEFAULT_COORDINATE_Y);
+        Value x = Values.value(Coordinate.randomCoordinate());
+        Value y = Values.value(Coordinate.randomCoordinate());
 
         if (property != null) {
             if (property.x() != null) {
