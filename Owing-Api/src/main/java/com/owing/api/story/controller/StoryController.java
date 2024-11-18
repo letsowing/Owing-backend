@@ -3,6 +3,8 @@ package com.owing.api.story.controller;
 import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
 import com.owing.api.story.service.story.*;
+import com.owing.entity.domains.ai.log.story.model.CrashCheckLog;
+import com.owing.entity.domains.ai.log.story.model.SpellCheckLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +57,7 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}/crash-check")
 	@Operation(summary = "✨AI: 설정 충돌 검사", description = "원고 설정 충돌을 검사합니다.")
-	public ResponseEntity<?> checkStoryCrash(@PathVariable Long storyId, @RequestBody StoryCrashRequest request) throws Exception{
+	public ResponseEntity<CrashCheckLogResponse> checkStoryCrash(@PathVariable Long storyId, @RequestBody StoryCrashRequest request) throws Exception{
 		return ResponseEntity.ok(checkStoryCrashUseCase.execute(storyId, request));
 	}
 
@@ -67,7 +69,7 @@ public class StoryController extends BaseFileController {
 
 	@PostMapping("/{storyId}/spell-check")
 	@Operation(summary = "✨AI: 맞춤법 검사", description = "맞춤법을 검사합니다. 사실 AI가 아님")
-	public ResponseEntity<?> checkStorySpell(@PathVariable Long storyId) {
+	public ResponseEntity<StorySpellCheckLogResponse> checkStorySpell(@PathVariable Long storyId) {
 		return ResponseEntity.ok(checkStorySpellUseCase.execute(storyId));
 	}
 

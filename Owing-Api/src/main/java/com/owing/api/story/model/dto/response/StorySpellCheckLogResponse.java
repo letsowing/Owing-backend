@@ -8,4 +8,8 @@ public record StorySpellCheckLogResponse(
 	List<StorySpellCheckResponse> storySpellCheckResponseList,
 	LocalDateTime createdAt
 ) {
+
+	public static StorySpellCheckLogResponse nullContent() {
+		return new StorySpellCheckLogResponse(-1L, List.of(), LocalDateTime.now());
+	}
 }
