@@ -12,4 +12,17 @@ public record RelationList(
 	String type,
 	LocalDateTime updatedAt
 ) implements StoryInfoDto {
+
+	@Override
+	public String toString() {
+		return String.format(
+			"""
+				[관계]
+				설명 : %s, 
+				소스 : %d, 
+				타겟 : %d, 
+				방향(단,양) : %s
+			""",
+			label, sourceId, targetId, type);
+	}
 }

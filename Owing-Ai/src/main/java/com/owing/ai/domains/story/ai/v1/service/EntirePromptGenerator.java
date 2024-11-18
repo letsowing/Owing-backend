@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.owing.ai.domains.story.ai.AnalyzePromptGenerator;
 import com.owing.ai.domains.story.dto.request.crashCheck.CrashCheckRequest;
-import com.owing.ai.domains.story.ai.v1.data.SystemText;
+import com.owing.ai.domains.story.ai.v1.data.SystemTextV1;
 
 @Service
 public class EntirePromptGenerator implements AnalyzePromptGenerator {
 
 	@Override
 	public Prompt generatePrompt(CrashCheckRequest request) {
-		SystemMessage systemMessage = SystemText.template();
+		SystemMessage systemMessage = SystemTextV1.template();
 		UserMessage userMessage = new UserMessage(request.toString());
 		return new Prompt(List.of(systemMessage, userMessage));
 	}
