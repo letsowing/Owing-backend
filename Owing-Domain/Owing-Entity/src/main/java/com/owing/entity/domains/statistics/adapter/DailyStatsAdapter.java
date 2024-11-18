@@ -19,11 +19,11 @@ public class DailyStatsAdapter {
 		return repository.findById(id).orElseThrow(() -> new RuntimeException("T.T")); // fixme
 	}
 
-	public DailyStats getOrCreate(Member member) {
+	public DailyStats getOrCreate(Member member, LocalDate date) {
 		return repository.findByMemberIdAndDate(member.getId(), LocalDate.now()).orElseGet(() ->
 			DailyStats.builder()
 				.member(member) //fixme
-				.date(LocalDate.now())
+				.date(date)
 				.build());
 	}
 

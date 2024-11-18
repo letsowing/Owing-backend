@@ -17,10 +17,10 @@ public class DailyStatsService {
 	private final DailyStatsAdapter adapter;
 	private final MemberAdapter memberAdapter;
 
-	public void updateDailyCount(Long memberId, int delta) {
+	public void updateDailyCount(Long memberId, int delta,  LocalDate date) {
 		Member member = memberAdapter.findById(memberId);
 
-		DailyStats entity = adapter.getOrCreate(member);
+		DailyStats entity = adapter.getOrCreate(member, date);
 		entity.updateDailyCount(delta);
 		adapter.save(entity);
 	}

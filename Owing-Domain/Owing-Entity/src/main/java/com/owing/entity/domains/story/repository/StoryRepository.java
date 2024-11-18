@@ -45,4 +45,26 @@ public interface StoryRepository extends BaseFileEntityRepository<Story, StoryFo
 
 	List<Story> findByFolder_ProjectId(Long projectId);
 
+	@Query(value = "select * from story where folder_id = :folderId and deleted = false order by position", nativeQuery = true)
+	List<Story> findByParentId(Long folderId);
+
+	@Modifying
+	@Query(value = "update story set position = position - 1 where position > :position and folder_id = :folderId and deleted = false", nativeQuery = true)
+	void decrementPositionAfter(Long position, Long folderId);
+
+	@Modifying
+	@Query(value = "update story set position = position + 1 where position >= :position and folder_id = :folderId and deleted = false", nativeQuery = true)
+	void incrementPositionAfter(Long position, Long folderId);
+
+	@Query(value = "SELECT COALESCE(MAX(position), '-1') FROM story WHERE folder_id = :folderId and deleted = false", nativeQuery = true)
+	Long getMaxPositionByParentId(Long folderId);
+
+	@Modifying
+	@Query(value = "update story set position = position - 1 where position between :start and :end and folder_id = :folderId and deleted = false", nativeQuery = true)
+	void decrementPositionBetween(Long start, Long end, Long folderId);
+
+	@Modifying
+	@Query(value = "update story set position = position + 1 where position between :start and :end and folder_id = :folderId and deleted = false", nativeQuery = true)
+	void incrementPositionBetween(Long start, Long end, Long folderId);
+
 }

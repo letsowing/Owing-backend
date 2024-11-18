@@ -25,4 +25,8 @@ public class DashboardService {
 		return dashboardAdapter.findAll();
 	}
 
+	public void deleteDashboard(Dashboard dashboard) {
+		dashboardAdapter.delete(dashboard);
+	}
+
 }

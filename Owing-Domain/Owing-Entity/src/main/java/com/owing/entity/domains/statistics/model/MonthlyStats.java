@@ -32,12 +32,12 @@ public class MonthlyStats extends BaseTimeEntity {
 	private Member member;
 
 	private LocalDate month;
-	private Integer monthlyCount;
+	private int monthlyCount;
 
-	public void updateMonthlyCount(int monthlyCount) {
+	public void addMonthlyCount(int monthlyCount) {
         if(monthlyCount < 0){
             throw new IllegalArgumentException("T.T"); //fixme
         }
-		this.monthlyCount = monthlyCount;
+		this.monthlyCount += monthlyCount;
 	}
 }

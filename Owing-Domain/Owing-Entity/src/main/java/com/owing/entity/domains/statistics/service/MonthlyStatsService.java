@@ -1,5 +1,6 @@
 package com.owing.entity.domains.statistics.service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 
 import com.owing.common.annotation.DomainService;
@@ -20,10 +21,10 @@ public class MonthlyStatsService {
 		return adapter.getCountByYearMonth(memberId, yearMonth);
 	}
 
-	public void updateMonthlyCount(Long memberId, int monthlyCount){
+	public void updateMonthlyCount(Long memberId, int monthlyCount, LocalDate month) {
 		Member member = memberAdapter.findById(memberId);
-		MonthlyStats entity = adapter.getOrCreate(member);
-		entity.updateMonthlyCount(monthlyCount);
+		MonthlyStats entity = adapter.getOrCreate(member, month);
+		entity.addMonthlyCount(monthlyCount);
         adapter.save(entity);
 	}
 }
