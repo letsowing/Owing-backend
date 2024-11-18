@@ -2,7 +2,7 @@ package com.owing.ai.domains.story.ai.v1.data;
 
 import org.springframework.ai.chat.messages.SystemMessage;
 
-public class SystemText {
+public class SystemTextV1 {
 
 	public static SystemMessage template() {
 		return new SystemMessage(systemText);
