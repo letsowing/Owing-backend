@@ -30,7 +30,16 @@ public interface StoryRepository extends BaseFileEntityRepository<Story, StoryFo
           SELECT s.folder_id
           FROM story s
           WHERE s.id = :itemId
-        )
+        );
+
+        -- storyContent의 deleted 상태를 업데이트
+        UPDATE story_content sc
+        SET deleted = false
+        WHERE sc.id = (
+          SELECT s.story_content_id
+          FROM story s
+          WHERE s.id = :itemId
+        );
         """, nativeQuery = true)
 	void restoreById(@Param("itemId") Long itemId);
 
