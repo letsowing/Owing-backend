@@ -9,7 +9,9 @@ public record CastRelationshipAiProjection(
         String type,
         String label,
         Long sourceId,
+        String sourceName,
         Long targetId,
+        String targetName,
         LocalDateTime updatedAt
 ) {
     public CastRelationshipAiProjection {
