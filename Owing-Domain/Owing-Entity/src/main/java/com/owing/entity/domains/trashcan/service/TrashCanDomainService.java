@@ -24,11 +24,11 @@ public class TrashCanDomainService {
 	private final TrashCanRepository trashCanRepository;
 	private final TrashCanFolderRepository trashCanFolderRepository;
 
-	@Transactional
 	public void deleteTrashCan(Long trashId) {
 		TrashCan trashCan = trashCanRepository.findById(trashId)
 				.orElseThrow(() -> new RuntimeException("todo TrashCan not found"));
 		TrashCanFolder folder = trashCan.getTrashCanFolder();
+		folder.getTrashCanList().remove(trashCan);
 		trashCanRepository.delete(trashCan);
 		if (folder.getTrashCanList().size() <= 1) {
 			trashCanFolderRepository.delete(folder);
