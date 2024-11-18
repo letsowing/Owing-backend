@@ -23,11 +23,11 @@ public class MonthlyStatsAdapter {
 		return repository.getCountByYearMonth(memberId, yearMonth.getYear(), yearMonth.getMonthValue());
 	}
 
-	public MonthlyStats getOrCreate(Member member) {
-		return repository.findByMemberAndMonth(member, LocalDate.now().withDayOfMonth(1)).orElseGet(() ->
+	public MonthlyStats getOrCreate(Member member, LocalDate month) {
+		return repository.findByMemberAndMonth(member, month).orElseGet(() ->
 			MonthlyStats.builder()
 				.member(member)
-				.month(LocalDate.now().withDayOfMonth(1))
+				.month(month)
 				.build());
 	}
 
