@@ -63,4 +63,5 @@ public interface VectorStoreRepository extends JpaRepository<VectorStoreEntity, 
 		LIMIT :topK
 		""", nativeQuery = true)
 	List<VectorStoreEntity> similaritySearch(String projectId, String storyId, double similarity, int topK);
+
 }

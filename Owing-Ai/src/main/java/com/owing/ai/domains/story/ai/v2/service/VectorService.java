@@ -2,7 +2,6 @@ package com.owing.ai.domains.story.ai.v2.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -12,8 +11,8 @@ import com.owing.ai.domains.story.ai.v2.model.entity.VectorStoreEntity;
 import com.owing.ai.domains.story.ai.v2.model.entity.VectorStoreMetadata;
 import com.owing.ai.domains.story.ai.v2.model.repository.VectorStoreMetadataRepository;
 import com.owing.ai.domains.story.ai.v2.model.repository.VectorStoreRepository;
-import com.owing.ai.domains.story.ai.v2.util.DocumentConverter;
 import com.owing.ai.domains.story.ai.v2.util.StoryAITokenTextSplitter;
+import com.owing.ai.domains.story.ai.v3.service.DocumentConvertServiceV3;
 import com.owing.ai.domains.story.dto.request.crashCheck.CrashCheckRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class VectorService {
 	private final VectorStoreMetadataRepository vectorStoreMetadataRepository;
 
 	private final StoryAITokenTextSplitter splitter;
-	private final DocumentConverter converter;
+	private final DocumentConvertServiceV3 converter;
 
 	private static final double SIMILARITY_THRESHOLD = 0.5;
 	private static final int TOP_K = 30;
@@ -46,12 +45,9 @@ public class VectorService {
 		Long projectId = request.project().id();
 		VectorStoreMetadata metadata = getVectorStoreMetadata(projectId);
 
-		// 새로운 내용들만
+		// 새로운 내용들만 주세용~
 		List<Document> filtered = converter.filterNewContent(request, metadata.getUpdatedAt(), projectId);
 		metadata.updateUpdatedAt();
-
-		// 기존 내용 삭제
-		deleteExistingContent(projectId, filtered);
 
 		// 새로운 내용 넣기
 		List<Document> splitDocuments = splitter.splitCustomized(filtered);
@@ -65,12 +61,6 @@ public class VectorService {
 	public List<VectorStoreEntity> getSimilarDocuments(Long projectId, Long storyId) {
 		return vectorStoreRepository.similaritySearch(
 			projectId.toString(), storyId.toString(), SIMILARITY_THRESHOLD, TOP_K);
-	}
-
-	// 기존 내용 삭제
-	private void deleteExistingContent(Long projectId, List<Document> documents) {
-		Map<String, List<String>> result = converter.getDeleteIds(documents);
-		result.forEach((key, value) -> vectorStoreRepository.deleteByTypeAndIdIn(projectId.toString(), key, value));
 	}
 
 }
