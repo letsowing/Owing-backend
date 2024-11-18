@@ -1,5 +1,7 @@
 package com.owing.entity.domains.story.service;
 
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryContent;
 import com.owing.entity.domains.story.model.StoryFolder;
+import com.owing.entity.domains.story.model.dto.StoryVO;
 import com.owing.entity.domains.story.repository.StoryRepository;
 import com.owing.entity.domains.story.textCount.TextCounter;
 
@@ -45,6 +48,10 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		int textCnt = TextCounter.countText(storyContent.getContent(), false, true); // fixme
 		story.updateTextCount(textCnt);
 		storyRepository.save(story);
+	}
+
+	public List<StoryVO> findAllByProjectId(Long projectId) {
+		 return dndAdapter.findByProjectId(projectId).stream().map(s -> StoryVO.from(s, Jsoup.parse(s.getContent()).text())).toList();
 	}
 
 	@Transactional

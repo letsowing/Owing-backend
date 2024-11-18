@@ -1,7 +1,5 @@
 package com.owing.entity.domains.story.model.dto;
 
-import com.owing.entity.domains.story.model.Story;
-
 import lombok.Builder;
 
 @Builder
@@ -11,6 +9,5 @@ public record StoryInfo(
         String description,
         int textCount,
         String content
-
 ){}
 
