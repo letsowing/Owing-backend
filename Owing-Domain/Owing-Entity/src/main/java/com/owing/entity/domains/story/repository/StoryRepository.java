@@ -16,11 +16,30 @@ public interface StoryRepository extends BaseFileEntityRepository<Story, StoryFo
 
 	@Modifying
 	@Query(value = """
+        -- story의 deleted 상태를 업데이트
         UPDATE story s
         SET deleted = false
         FROM story_folder sf
         WHERE s.folder_id = sf.id
-          AND s.id = :itemId
+          AND s.id = :itemId;
+
+        -- story_folder의 deleted 상태를 업데이트
+        UPDATE story_folder sf
+        SET deleted = false
+        WHERE sf.id = (
+          SELECT s.folder_id
+          FROM story s
+          WHERE s.id = :itemId
+        );
+
+        -- storyContent의 deleted 상태를 업데이트
+        UPDATE story_content sc
+        SET deleted = false
+        WHERE sc.id = (
+          SELECT s.story_content_id
+          FROM story s
+          WHERE s.id = :itemId
+        );
         """, nativeQuery = true)
 	void restoreById(@Param("itemId") Long itemId);
 

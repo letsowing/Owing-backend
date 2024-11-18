@@ -30,13 +30,14 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
     Optional<CastNode> findOneById(Long castId);
 
 	@Query("""
-		MATCH
-		  (c:Cast{deleted:true})
-		WHERE
-		  id(c)=$itemId
-		SET
-		  c.deleted=false
-		""")
+        MATCH
+          (c:Cast {deleted: true})<-[r:INCLUDE]-(cf:CastFolder)
+        WHERE
+          id(c) = $itemId
+        SET
+          c.deleted = false,
+          cf.deleted = false
+        """)
 	void restoreById(@Param("itemId") Long itemId);
 
 	@Query("""
@@ -252,13 +253,25 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 			  (cf)-[r2:INCLUDE]->(c1:Cast{deleted: false})
 			MATCH
 			  (c1)-[r3:CONNECTION|BI_CONNECTION]-(c2:Cast{deleted: false})
+			WHERE
+			  id(c1) = r3.sourceId AND id(c2) = r3.targetId
+			MATCH
+			  (p:Project{id: $projectId, deleted: false})-[r1:INCLUDE]->(cf:CastFolder{deleted: false})
+			MATCH
+			  (cf)-[r2:INCLUDE]->(c1:Cast{deleted: false})
+			MATCH
+			  (c1)-[r3:CONNECTION|BI_CONNECTION]-(c2:Cast{deleted: false})
+			WHERE
+			  id(c1) = r3.sourceId AND id(c2) = r3.targetId
 			RETURN DISTINCT
-			  r3.id as id,
-			  type(r3) as type,
-			  r3.label as label,
-			  r3.sourceId as sourceId,
-			  r3.targetId as targetId,
-			  r3.updatedAt as updatedAt
+				r3.id as id,
+				type(r3) as type,
+				r3.label as label,
+				r3.sourceId as sourceId,
+				c1.name as sourceName,
+				r3.targetId as targetId,
+				c2.name as targetName,
+				r3.updatedAt as updatedAt
 			""")
 	List<CastRelationshipAiProjection> findAllCastRelationshipForAiPrompt(Long projectId);
 

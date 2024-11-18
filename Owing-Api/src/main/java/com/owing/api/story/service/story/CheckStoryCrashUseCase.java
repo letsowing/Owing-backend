@@ -13,6 +13,7 @@ import com.owing.api.story.model.dto.request.ai.crashCheck.RelationList;
 import com.owing.api.story.model.dto.request.ai.crashCheck.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.ai.crashCheck.ThisEpisode;
 import com.owing.api.story.model.dto.request.ai.crashCheck.UniverseInfo;
+import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.api.story.model.mapper.CrashCheckLogMapper;
 import com.owing.common.annotation.UseCase;
@@ -24,6 +25,7 @@ import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.error.StoryErrorCode;
 import com.owing.entity.domains.story.error.exception.StoryException;
 import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.model.dto.StoryVO;
 import com.owing.entity.domains.story.service.StoryDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
@@ -50,32 +52,34 @@ public class CheckStoryCrashUseCase {
 	private final StoryDomainService storyDomainService;
 
 
-	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
+	public CrashCheckLogResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
 		Long projectId = dto.projectId();
 		Project projectInfo = projectAdapter.findById(projectId);
-		List<Story> stories = storyAdapter.findByProjectId(projectId);
+		List<StoryVO> stories = storyDomainService.findAllByProjectId(projectId);
 		List<Universe> universes = universeAdapter.findByProjectId(projectId);
 		List<CastAiProjection> castNodes = castNodeAdapter.findAllCastForAiPrompt(projectId);
 		List<CastRelationshipAiProjection> castRelationships = castNodeAdapter.findAllCastRelationshipForAiPrompt(projectId);
 
 		ProjectInfoDto pdto = ProjectInfoDto.from(projectInfo);
-		List<PrevStoryInfo> sdto = stories.stream().filter(m -> !m.getId().equals(storyId)).map(PrevStoryInfo::from).toList();
+
 		List<UniverseInfo> udto = universes.stream().map(UniverseInfo::from).toList();
 		List<CastList> cdto = castNodes.stream().map(CastList::from).toList();
 		List<RelationList> rdto = castRelationships.stream().map(RelationList::from).toList();
 		CastInfo castInfo = CastInfo.of(cdto, rdto);
-		ThisEpisode thisEpisode = ThisEpisode.from(stories.stream().findFirst().orElseThrow(() -> StoryException.of(StoryErrorCode.STORY_NOT_FOUND)));
+
+		List<PrevStoryInfo> sdto = stories.stream().filter(m -> !m.id().equals(storyId)).map(PrevStoryInfo::from).toList();
+		ThisEpisode thisEpisode = ThisEpisode.from(stories.stream().filter(m -> m.id().equals(storyId)).findFirst().orElseThrow(() -> StoryException.of(StoryErrorCode.STORY_NOT_FOUND)));
 
 		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode, dto.projectId());
 		CrashCheckResponse crashCheckResponse = owingAiClient.crashCheck(request);
 
-		logging(storyDomainService.getEntity(storyId), crashCheckResponse);
-		return crashCheckResponse;
+		return logging(storyDomainService.getEntity(storyId), crashCheckResponse);
 	}
 
 
-	private void logging(Story story, CrashCheckResponse aiResponse) {
+	private CrashCheckLogResponse logging(Story story, CrashCheckResponse aiResponse) {
 		CrashCheckLog crashCheckLog = crashCheckLogMapper.toEntity(story, aiResponse);
-		crashCheckLogDomainService.createLog(crashCheckLog);
+		CrashCheckLog savedLog = crashCheckLogDomainService.createLog(crashCheckLog);
+		return crashCheckLogMapper.toLogResponse(savedLog);
 	}
 }

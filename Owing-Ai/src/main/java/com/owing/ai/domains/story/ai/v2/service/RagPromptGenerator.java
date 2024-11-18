@@ -11,7 +11,7 @@ import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.stereotype.Service;
 
 import com.owing.ai.domains.story.ai.AnalyzePromptGenerator;
-import com.owing.ai.domains.story.ai.v1.data.SystemText;
+import com.owing.ai.domains.story.ai.v1.data.SystemTextV1;
 import com.owing.ai.domains.story.ai.v2.model.entity.VectorStoreEntity;
 import com.owing.ai.domains.story.dto.request.crashCheck.CrashCheckRequest;
 
@@ -24,8 +24,6 @@ public class RagPromptGenerator implements AnalyzePromptGenerator {
 
 	@Override
 	public Prompt generatePrompt(CrashCheckRequest request) {
-		// 기존 내용에 대한 요약본 만들기
-
 		// 기존 내용을 벡터DB에 업데이트하기
 		vectorService.addAllDocuments(request);
 
@@ -38,7 +36,7 @@ public class RagPromptGenerator implements AnalyzePromptGenerator {
 		String inlined = similar.stream().map(VectorStoreEntity::getContent).collect(Collectors.joining(System.lineSeparator()));
 		System.out.println(inlined);
 
-		Message similarDocsMessage = new SystemPromptTemplate(SystemText.v1)
+		Message similarDocsMessage = new SystemPromptTemplate(SystemTextV1.v1)
 			.createMessage(Map.of("similarDocsMessage", inlined));
 		UserMessage userMessage = new UserMessage(request.toString());
 

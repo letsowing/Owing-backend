@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.owing.api.openfeign.OwingAiClient;
 import com.owing.api.story.model.dto.request.StorySpellCheckRequest;
+import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckResponse;
 import com.owing.api.story.model.mapper.SpellCheckLogMapper;
 import com.owing.common.annotation.UseCase;
@@ -28,24 +29,24 @@ public class CheckStorySpellUseCase {
 	private final SpellCheckLogDomainService spellCheckLogDomainService;
 	private final SpellCheckLogMapper spellCheckLogMapper;
 
-	public List<StorySpellCheckResponse> execute(Long storyId) {
+	public StorySpellCheckLogResponse execute(Long storyId) {
 		Story story = storyAdapter.findById(storyId);
 		String content = storyDomainService.getParsedContent(story);
 
 		if(content.isBlank()){
-			return List.of();
+			return StorySpellCheckLogResponse.nullContent();
 		}
 
 		StorySpellCheckRequest request = StorySpellCheckRequest.of(content);
 
 		List<StorySpellCheckResponse> storySpellCheckResponses = owingAiClient.spellCheck(request);
-		logging(story, storySpellCheckResponses);
-
-		return storySpellCheckResponses;
+		return logging(story, storySpellCheckResponses);
 	}
 
-	private void logging(Story story, List<StorySpellCheckResponse> aiResponse) {
+	private StorySpellCheckLogResponse logging(Story story, List<StorySpellCheckResponse> aiResponse) {
 		SpellCheckLog aiLogEntity = spellCheckLogMapper.toEntity(story, aiResponse);
-		spellCheckLogDomainService.createLog(aiLogEntity);
+		SpellCheckLog savedLog = spellCheckLogDomainService.createLog(aiLogEntity);
+		return spellCheckLogMapper.toLogResponse(savedLog);
 	}
+
 }

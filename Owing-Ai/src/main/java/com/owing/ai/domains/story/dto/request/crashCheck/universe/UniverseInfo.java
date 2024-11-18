@@ -10,4 +10,14 @@ public record UniverseInfo(
 	String description,
 	LocalDateTime updatedAt
 ) implements StoryInfoDto {
+	@Override
+	public String toString() {
+		return String.format(
+			"""
+				[세계관]
+				[제목] : %s, 
+				[설명] : %s
+			""",
+			name, description);
+	}
 }
