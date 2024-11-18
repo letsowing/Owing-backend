@@ -17,7 +17,11 @@ public class DashboardAdapter {
 	private final MonthlyStatsService monthlyStatsService;
 
 	public Dashboard getOrCreate(Long memberId){
-		return repository.findById(memberId).orElseGet(() -> Dashboard.builder()
+		LocalDate today = LocalDate.now();
+		String dashboardId = memberId + "-" + today;
+
+		return repository.findById(dashboardId).orElseGet(() -> Dashboard.builder()
+			.id(dashboardId)
 			.memberId(memberId)
 			.date(LocalDate.now())
 			.monthlyCount(monthlyStatsService.getMonthlyCount(memberId, YearMonth.now())) //fixme
@@ -30,5 +34,9 @@ public class DashboardAdapter {
 
 	public Iterable<Dashboard> findAll(){
 		return repository.findAll();
+	}
+
+	public void delete(Dashboard dashboard){
+		repository.delete(dashboard);
 	}
 }

@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Dashboard {
-
 	@Id
-	private Long memberId;
+	private String id;
 
+	private Long memberId;
 	private int todayCount;
 	private int monthlyCount;
 	private LocalDate date;
@@ -28,7 +28,8 @@ public class Dashboard {
 	private Long ttl;
 
 	@Builder
-	public Dashboard(Long memberId, int todayCount, int monthlyCount, LocalDate date, Long ttl) {
+	public Dashboard(String id, Long memberId, int todayCount, int monthlyCount, LocalDate date, Long ttl) {
+		this.id = id;
 		this.memberId = memberId;
 		this.todayCount = todayCount;
 		this.monthlyCount = monthlyCount;
