@@ -13,6 +13,7 @@ import com.owing.api.story.model.dto.request.ai.crashCheck.RelationList;
 import com.owing.api.story.model.dto.request.ai.crashCheck.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.ai.crashCheck.ThisEpisode;
 import com.owing.api.story.model.dto.request.ai.crashCheck.UniverseInfo;
+import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.api.story.model.mapper.CrashCheckLogMapper;
 import com.owing.common.annotation.UseCase;
@@ -50,7 +51,7 @@ public class CheckStoryCrashUseCase {
 	private final StoryDomainService storyDomainService;
 
 
-	public CrashCheckResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
+	public CrashCheckLogResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
 		Long projectId = dto.projectId();
 		Project projectInfo = projectAdapter.findById(projectId);
 		List<Story> stories = storyAdapter.findByProjectId(projectId);
@@ -69,13 +70,13 @@ public class CheckStoryCrashUseCase {
 		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode, dto.projectId());
 		CrashCheckResponse crashCheckResponse = owingAiClient.crashCheck(request);
 
-		logging(storyDomainService.getEntity(storyId), crashCheckResponse);
-		return crashCheckResponse;
+		return logging(storyDomainService.getEntity(storyId), crashCheckResponse);
 	}
 
 
-	private void logging(Story story, CrashCheckResponse aiResponse) {
+	private CrashCheckLogResponse logging(Story story, CrashCheckResponse aiResponse) {
 		CrashCheckLog crashCheckLog = crashCheckLogMapper.toEntity(story, aiResponse);
-		crashCheckLogDomainService.createLog(crashCheckLog);
+		CrashCheckLog savedLog = crashCheckLogDomainService.createLog(crashCheckLog);
+		return crashCheckLogMapper.toLogResponse(savedLog);
 	}
 }
