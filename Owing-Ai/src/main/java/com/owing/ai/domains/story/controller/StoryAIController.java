@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.ai.domains.story.dto.request.CrashCheckRequest;
-import com.owing.ai.domains.story.dto.request.SpellCheckRequest;
+import com.owing.ai.domains.story.dto.request.crashCheck.CrashCheckRequest;
+import com.owing.ai.domains.story.dto.request.spellCheck.SpellCheckRequest;
 import com.owing.ai.domains.story.service.SpellCheckerService;
 import com.owing.ai.domains.story.service.StoryAIService;
 

@@ -19,8 +19,8 @@ public class MonthlyStatsAdapter {
 		return repository.findById(id).orElseThrow(() -> new RuntimeException("T.T"));
 	}
 
-	public int getCountByYearMonth(Member member, YearMonth yearMonth) {
-		return repository.getCountByYearMonth(member, yearMonth.getYear(), yearMonth.getMonthValue());
+	public int getCountByYearMonth(Long memberId, YearMonth yearMonth) {
+		return repository.getCountByYearMonth(memberId, yearMonth.getYear(), yearMonth.getMonthValue());
 	}
 
 	public MonthlyStats getOrCreate(Member member) {

@@ -16,8 +16,8 @@ public class ProjectNodeDomainService {
     private final ProjectNodeAdapter projectNodeAdapter;
 
     @Transactional
-    public void createProjectNode(ProjectNode projectNode) {
-        projectNodeRepository.save(projectNode);
+    public ProjectNode createProjectNode(ProjectNode projectNode) {
+        return projectNodeRepository.save(projectNode);
     }
 
     @Transactional

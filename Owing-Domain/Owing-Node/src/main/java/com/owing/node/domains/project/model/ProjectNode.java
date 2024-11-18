@@ -21,15 +21,15 @@ public class ProjectNode extends BaseTimeNeo4j {
     @Version
     private Long version;
 
-    @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
-    private Set<StoryFolderNode> storyFolderNodes = new HashSet<>();
+//    @Relationship(type = "INCLUDE", direction = Relationship.Direction.OUTGOING)
+//    private Set<StoryFolderNode> storyFolderNodes = new HashSet<>();
 
     public ProjectNode(Long id) {
         this.id = id;
     }
 
-    public void connectStoryFolder(StoryFolderNode storyFolderNode) {
-        this.storyFolderNodes.add(storyFolderNode);
-    }
+//    public void connectStoryFolder(StoryFolderNode storyFolderNode) {
+//        this.storyFolderNodes.add(storyFolderNode);
+//    }
 
 }

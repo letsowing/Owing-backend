@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.owing.api.cast.model.dto.request.GenerateCastImageRequest;
 import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
-import com.owing.api.story.model.dto.request.StoryCrashCheckRequest;
+import com.owing.api.story.model.dto.request.ai.crashCheck.StoryCrashCheckRequest;
 import com.owing.api.story.model.dto.request.StorySpellCheckRequest;
+import com.owing.api.story.model.dto.response.CrashCheckResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckResponse;
 import com.owing.api.project.model.dto.response.ProjectImageResponse;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
@@ -35,7 +36,7 @@ public interface OwingAiClient {
 
 	/* 설정 충돌 검사 */
 	@PostMapping("/stories/crash-check")
-	String crashCheck(@RequestBody StoryCrashCheckRequest storyCrashCheckRequest);
+	CrashCheckResponse crashCheck(@RequestBody StoryCrashCheckRequest storyCrashCheckRequest);
 
 	/* 맞춤법 검사 */
 	@PostMapping("/stories/spell-check")

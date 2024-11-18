@@ -6,11 +6,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.statistics.model.DailyStats;
 
 public interface DailyStatsRepository extends JpaRepository<DailyStats, Long> {
 	Optional<DailyStats> findByMemberIdAndDate(Long memberId, LocalDate date);
 
-	List<DailyStats> findAllByMemberAndDateBetweenOrderByDate(Member member, LocalDate start, LocalDate end);
+	List<DailyStats> findAllByMemberIdAndDateBetweenOrderByDate(Long memberId, LocalDate start, LocalDate end);
 }
