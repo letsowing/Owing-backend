@@ -125,4 +125,14 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
 		  c.deleted=false
 		""")
 	void restoreById(@Param("itemId") Long itemId);
+
+	@Query("""
+		MATCH
+		  (cf:CastFolder{deleted:false})-[r]->(c:Cast{deleted:false})
+		WHERE
+		  id(cf)=$itemId
+		SET
+		  c.deleted = true
+		""")
+	void deleteFolderById(Long itemId);
 }

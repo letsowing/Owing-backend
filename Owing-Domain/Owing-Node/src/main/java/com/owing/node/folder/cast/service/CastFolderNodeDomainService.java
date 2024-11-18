@@ -56,6 +56,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     @Override
     @Transactional
     public void deleteEntity(CastFolderNode entity) {
+        castFolderNodeRepository.deleteFolderById(entity.getId());
         orderingStrategy().reorderEntity(entity);
         entity.delete();
         CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(entity);

@@ -30,13 +30,14 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
     Optional<CastNode> findOneById(Long castId);
 
 	@Query("""
-		MATCH
-		  (c:Cast{deleted:true})
-		WHERE
-		  id(c)=$itemId
-		SET
-		  c.deleted=false
-		""")
+        MATCH
+          (c:Cast {deleted: true})<-[r:INCLUDE]-(cf:CastFolder)
+        WHERE
+          id(c) = $itemId
+        SET
+          c.deleted = false,
+          cf.deleted = false
+        """)
 	void restoreById(@Param("itemId") Long itemId);
 
 	@Query("""
