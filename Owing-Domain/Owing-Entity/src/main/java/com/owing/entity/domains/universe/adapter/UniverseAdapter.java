@@ -38,4 +38,8 @@ public class UniverseAdapter extends BaseFileAdapter<Universe, UniverseFolder> {
 	public UniverseInfo findDeletedById(Long itemId) {
 		return universeDeletedRepository.findDeletedById(itemId);
 	}
+
+	public String findImageUrlById(Long id) {
+		return universeRepository.findImageUrlById(id);
+	}
 }

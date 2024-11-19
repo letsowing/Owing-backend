@@ -54,4 +54,7 @@ public interface UniverseRepository extends BaseFileEntityRepository<Universe, U
 	@Modifying
 	@Query(value = "update universe set position = position + 1 where position between :start and :end and folder_id = :folderId and deleted = false", nativeQuery = true)
 	void incrementPositionBetween(Long start, Long end, Long folderId);
+
+	@Query(value = "select image_url from universe where id = :id and deleted = false", nativeQuery = true)
+    String findImageUrlById(Long id);
 }

@@ -373,4 +373,11 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
 				COALESCE(MAX(c.position), -1)
 			""")
     Long getMaxPositionByParentId(Long parentId);
+
+	@Query("""
+        MATCH (c:Cast {deleted: false})
+        WHERE id(c) = $id
+        RETURN COALESCE(c.imageUrl, null)
+        """)
+	String findImageUrlById(Long id);
 }

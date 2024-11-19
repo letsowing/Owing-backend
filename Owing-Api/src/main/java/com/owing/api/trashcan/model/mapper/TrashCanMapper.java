@@ -5,13 +5,16 @@ import com.owing.core.dnd.file.model.BaseFile;
 import com.owing.core.dnd.folder.model.BaseFolder;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 
 import lombok.RequiredArgsConstructor;
@@ -24,18 +27,32 @@ public class TrashCanMapper {
 	private final StoryFolderAdapter storyFolderAdapter;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
 	private final ProjectAdapter projectAdapter;
+	private final UniverseAdapter universeAdapter;
+	private final CastNodeAdapter castNodeAdapter;
 	private final TrashCanFolderRepository trashCanFolderRepository;
 
 	public <T extends BaseFile<?>> TrashCan toEntity(T entity) {
 		FolderType folderType = determineTableName(entity);
 		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getParentId(), folderType)
 			.orElseGet(() -> newTrashCanFolder(entity));
+
+		String imageUrl = GetImageUrl(folderType, entity.getId());
+
 		return TrashCan.builder()
 			.itemId(entity.getId())
 			.name(entity.getName())
 			.description(entity.getDescription())
 			.trashCanFolder(trashCanFolder)
-			.build();
+			.imageUrl(imageUrl)
+				.build();
+	}
+
+	private String GetImageUrl(FolderType folderType, Long id) {
+		return switch (folderType) {
+			case UNIVERSE -> universeAdapter.findImageUrlById(id);
+			case STORY -> null;
+			case CAST -> castNodeAdapter.findImageUrlById(id);
+		};
 	}
 
 	private <T extends BaseFile<?>> TrashCanFolder newTrashCanFolder(T entity){

@@ -114,4 +114,8 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
     protected BaseFileRepository<CastNode, CastFolderNode> dndRepository() {
         return this.castNodeRepository;
     }
+
+    public String findImageUrlById(Long id) {
+        return castNodeRepository.findImageUrlById(id);
+    }
 }
