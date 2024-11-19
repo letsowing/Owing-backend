@@ -14,18 +14,21 @@ import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
 import com.owing.entity.domains.trashcan.model.File;
 import com.owing.entity.domains.trashcan.model.Folder;
 import com.owing.entity.domains.trashcan.model.TrashCan;
+import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 
 import com.owing.node.common.model.BaseFileNode;
+import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import lombok.RequiredArgsConstructor;
 
 @Mapper
 @RequiredArgsConstructor
 public class TrashCanFolderMapper {
-	private final TrashCanAdaptor trashCanAdaptor;
 	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
+	private final UniverseAdapter universeAdapter;
+	private final CastNodeAdapter castNodeAdapter;
 
 	public TrashCanFolderResponse toTrashCanFolderResponse(List<TrashCanFolder> trashCanFolders) {
 		List<Folder> story = new ArrayList<>();
@@ -48,7 +51,8 @@ public class TrashCanFolderMapper {
 			.map(trashCan -> new File(
 				trashCan.getId(),
 				trashCan.getName(),
-				trashCan.getDescription()
+				trashCan.getDescription(),
+					trashCan.getImageUrl()
 			))
 			.toList();
 
@@ -91,21 +95,33 @@ public class TrashCanFolderMapper {
 		return FolderType.fromClassName(entity.getClass().getSimpleName());
 	}
 
-	private TrashCan toEntity(BaseFileEntity<?> baseFileEntity, TrashCanFolder trashCanFolder) {
+	private TrashCan toEntity(BaseFileEntity<?> entity, TrashCanFolder trashCanFolder) {
+		String imageUrl = GetImageUrl(trashCanFolder.getTableName(), entity.getId());
 		return TrashCan.builder()
 			.trashCanFolder(trashCanFolder)
-			.itemId(baseFileEntity.getId())
-			.name(baseFileEntity.getName())
-			.description(baseFileEntity.getDescription())
+			.itemId(entity.getId())
+			.name(entity.getName())
+			.description(entity.getDescription())
+				.imageUrl(imageUrl)
 			.build();
 	}
 
-	private TrashCan toNode(BaseFileNode<?> baseFileNode, TrashCanFolder trashCanFolder) {
+	private String GetImageUrl(FolderType folderType, Long id) {
+		return switch (folderType) {
+			case UNIVERSE -> universeAdapter.findImageUrlById(id);
+			case STORY -> null;
+			case CAST -> castNodeAdapter.findImageUrlById(id);
+		};
+	}
+
+	private TrashCan toNode(BaseFileNode<?> node, TrashCanFolder trashCanFolder) {
+		String imageUrl = castNodeAdapter.findImageUrlById(node.getId());
 		return TrashCan.builder()
 				.trashCanFolder(trashCanFolder)
-				.itemId(baseFileNode.getId())
-				.name(baseFileNode.getName())
-				.description(baseFileNode.getDescription())
+				.itemId(node.getId())
+				.name(node.getName())
+				.description(node.getDescription())
+				.imageUrl(imageUrl)
 				.build();
 	}
 
