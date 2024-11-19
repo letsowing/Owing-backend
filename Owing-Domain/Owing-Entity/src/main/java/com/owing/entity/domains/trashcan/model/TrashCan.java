@@ -31,6 +31,9 @@ public class TrashCan {
 	@Column(length = OwingPersistenceConst.DESC_LEN)
 	private String description;
 
+	@Column(length = OwingPersistenceConst.URL_LEN)
+	private String imageUrl;
+
 	@CreatedDate
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
@@ -40,12 +43,13 @@ public class TrashCan {
 	private TrashCanFolder trashCanFolder;
 
 	@Builder
-	public TrashCan(Long id, Long itemId, String name, String description, LocalDateTime createdAt, TrashCanFolder trashCanFolder) {
+	public TrashCan(Long id, Long itemId, String name, String description, LocalDateTime createdAt, TrashCanFolder trashCanFolder, String imageUrl) {
 		this.id = id;
 		this.itemId = itemId;
 		this.name = name;
 		this.description = description;
 		this.createdAt = createdAt;
 		this.trashCanFolder = trashCanFolder;
+		this.imageUrl = imageUrl;
 	}
 }
