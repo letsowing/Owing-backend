@@ -57,4 +57,11 @@ public class Project extends BaseTimeEntity {
             accessedAt = now;
         }
     }
+
+    public void updateAccessedAt(LocalDateTime localDateTime) {
+        if (localDateTime.isBefore(this.accessedAt)) {
+            return;
+        }
+        this.accessedAt = localDateTime;
+    }
 }
