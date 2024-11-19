@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 	private final StoryRepository storyRepository;
 	private final StoryDeletedRepository storyDeletedRepository;
-	private final StoryDomainService storyDomainService;
 
 	@Override
 	protected BaseFileRepository<Story, StoryFolder> dndRepository() {
