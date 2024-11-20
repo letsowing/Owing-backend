@@ -30,7 +30,7 @@ public class TrashCanDomainService {
 		TrashCanFolder folder = trashCan.getTrashCanFolder();
 		folder.getTrashCanList().remove(trashCan);
 		trashCanRepository.delete(trashCan);
-		if (folder.getTrashCanList().size() <= 1) {
+		if (folder.getTrashCanList().isEmpty()) {
 			trashCanFolderRepository.delete(folder);
 		}
 	}
