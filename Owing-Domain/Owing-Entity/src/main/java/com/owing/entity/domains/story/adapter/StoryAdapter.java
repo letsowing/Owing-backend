@@ -36,7 +36,7 @@ public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 
 		String content = null;
 
-		if(!storyInfo.content().isEmpty()) {
+		if(storyInfo.content() != null) {
 			content = Jsoup.parse(storyInfo.content()).text();
 		}
 
