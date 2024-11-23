@@ -41,6 +41,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
     }
 
+    @Transactional
     public void restore(Long folderItemId, List<Long> trashCanItemIds) {
         castFolderNodeRepository.restoreById(folderItemId);
         trashCanItemIds

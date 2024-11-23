@@ -33,12 +33,19 @@ public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 
     public StoryInfo findDeletedById(Long itemId) {
 		StoryInfo storyInfo =  storyDeletedRepository.findDeletedById(itemId);
+
+		String content = null;
+
+		if(storyInfo.content() != null) {
+			content = Jsoup.parse(storyInfo.content()).text();
+		}
+
 		return StoryInfo.builder()
 			.storyId(storyInfo.storyId())
 			.name(storyInfo.name())
 			.description(storyInfo.description())
 			.textCount(storyInfo.textCount())
-			.content(Jsoup.parse(storyInfo.content()).text())
+			.content(content)
 			.build();
     }
 }
