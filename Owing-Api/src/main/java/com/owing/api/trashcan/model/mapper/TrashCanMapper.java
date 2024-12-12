@@ -7,6 +7,8 @@ import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
+import com.owing.entity.domains.trashcan.error.TrashCanErrorCode;
+import com.owing.entity.domains.trashcan.error.exception.TrashCanException;
 import com.owing.entity.domains.trashcan.model.TrashCan;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
@@ -81,7 +83,7 @@ public class TrashCanMapper {
 			return FolderType.UNIVERSE;
 		}
 
-		throw new IllegalArgumentException("todo Unknown folder type for class: " + className);
+		throw TrashCanException.of(TrashCanErrorCode.TRASH_CAN_PARENT_NOT_FOUND);
 	}
 
 	private BaseFolder getBaseFolderByRepository(FolderType folderType, Long parentId) {
@@ -89,7 +91,6 @@ public class TrashCanMapper {
 			case UNIVERSE -> universeFolderAdapter.findById(parentId);
 			case STORY -> storyFolderAdapter.findById(parentId);
 			case CAST -> castFolderNodeAdapter.findById(parentId);
-			default -> throw new IllegalArgumentException("todo Unsupported FolderType: " + folderType);
 		};
 	}
 }
