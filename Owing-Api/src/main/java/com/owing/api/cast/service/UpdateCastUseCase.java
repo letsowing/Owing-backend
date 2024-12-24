@@ -8,7 +8,7 @@ import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.UpdateFileUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastNodeInfo;
 import com.owing.node.domains.cast.model.Coordinate;
@@ -77,12 +77,12 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
     }
 
     @Override
-    protected BaseDndDomainService<CastNode> baseDndDomainService() {
+    protected DndDomainService<CastNode> baseDndDomainService() {
         return this.castNodeDomainService;
     }
 
     @Override
-    protected BaseDndDomainService<CastFolderNode> fBaseDndDomainService() {
+    protected DndDomainService<CastFolderNode> fBaseDndDomainService() {
         return this.castFolderNodeDomainService;
     }
 

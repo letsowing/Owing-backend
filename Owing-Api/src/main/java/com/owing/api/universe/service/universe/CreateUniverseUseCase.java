@@ -9,8 +9,8 @@ import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -40,7 +40,7 @@ public class CreateUniverseUseCase extends CreateFileUseCase<Universe, UniverseF
 	}
 
 	@Override
-	protected BaseDndDomainService<Universe> baseDndDomainService() {
+	protected DndDomainService<Universe> baseDndDomainService() {
 		return universeDomainService;
 	}
 
@@ -50,7 +50,7 @@ public class CreateUniverseUseCase extends CreateFileUseCase<Universe, UniverseF
 	}
 
 	@Override
-	protected BaseDndAdapter<UniverseFolder> folderAdapter() {
+	protected DndAdapter<UniverseFolder> folderAdapter() {
 		return universeFolderAdaptor;
 	}
 }

@@ -8,7 +8,7 @@ import com.owing.api.dnd.file.service.UpdateFileUseCase;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.mapper.StoryMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.service.StoryDomainService;
@@ -31,12 +31,12 @@ public class UpdateStoryUseCase extends UpdateFileUseCase<Story, StoryFolder> {
     }
 
     @Override
-    protected BaseDndDomainService<Story> baseDndDomainService() {
+    protected DndDomainService<Story> baseDndDomainService() {
         return baseDndDomainService;
     }
 
     @Override
-    protected BaseDndDomainService<StoryFolder> fBaseDndDomainService() {
+    protected DndDomainService<StoryFolder> fBaseDndDomainService() {
         return folderBaseDndDomainService;
     }
 

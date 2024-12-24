@@ -1,7 +1,7 @@
 package com.owing.api.dnd.file.model.dto.response;
 
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
-import com.owing.core.dnd.file.model.BaseFile;
+import com.owing.core.dnd.file.model.DndFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class FileInfoResponse implements DndInfoResponse {
 	protected String description;
 	protected Long folderId;
 
-	public static FileInfoResponse from(BaseFile entity) {
+	public static FileInfoResponse from(DndFile entity) {
 		return FileInfoResponse.builder()
 			.id(entity.getId())
 			.name(entity.getName())

@@ -4,19 +4,18 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.service.DeleteFileUseCase;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.story.model.Story;
-import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteStoryUseCase extends DeleteFileUseCase<Story, StoryFolder> {
+public class DeleteStoryUseCase extends DeleteFileUseCase<Story> {
 
     private final MemberUtils memberUtils;
-    private final BaseDndDomainService<Story> baseDndDomainService;
+    private final DndDomainService<Story> dndDomainService;
     private final TrashCanDomainService trashCanDomainService;
     private final TrashCanMapper trashCanMapper;
 
@@ -26,8 +25,8 @@ public class DeleteStoryUseCase extends DeleteFileUseCase<Story, StoryFolder> {
     }
 
     @Override
-    protected BaseDndDomainService<Story> baseDndDomainService() {
-        return baseDndDomainService;
+    protected DndDomainService<Story> baseDndDomainService() {
+        return dndDomainService;
     }
 
     @Override
