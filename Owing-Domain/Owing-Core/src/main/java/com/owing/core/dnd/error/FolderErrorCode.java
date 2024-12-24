@@ -1,4 +1,4 @@
-package com.owing.core.dnd.base.error;
+package com.owing.core.dnd.error;
 
 import org.springframework.http.HttpStatus;
 

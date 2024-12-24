@@ -1,7 +1,7 @@
-package com.owing.core.dnd.base.error.exception;
+package com.owing.core.dnd.error.exception;
 
 import com.owing.common.error.exception.OwingException;
-import com.owing.core.dnd.base.error.DndErrorCode;
+import com.owing.core.dnd.error.DndErrorCode;
 
 public class DndException extends OwingException {
 

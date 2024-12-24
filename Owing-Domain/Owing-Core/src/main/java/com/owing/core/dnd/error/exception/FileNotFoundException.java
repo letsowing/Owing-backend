@@ -1,7 +1,7 @@
-package com.owing.core.dnd.base.error.exception;
+package com.owing.core.dnd.error.exception;
 
 import com.owing.common.error.exception.OwingException;
-import com.owing.core.dnd.base.error.FileErrorCode;
+import com.owing.core.dnd.error.FileErrorCode;
 
 public class FileNotFoundException extends OwingException {
 
