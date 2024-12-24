@@ -4,10 +4,10 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
 import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
@@ -39,7 +39,7 @@ public class DeleteCastFolderUseCase extends DeleteFolderUseCase<CastFolderNode>
     }
 
     @Override
-    protected BaseDndDomainService<CastFolderNode> baseDndDomainService() {
+    protected DndDomainService<CastFolderNode> baseDndDomainService() {
         return this.castFolderNodeDomainService;
     }
 

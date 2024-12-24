@@ -6,13 +6,13 @@ import com.owing.api.dnd.base.service.ReadDndUseCase;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoListResponse;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class ReadFolderUseCase<T extends BaseFolder>  implements
+public abstract class ReadFolderUseCase<T extends DndFolder>  implements
 	ReadDndUseCase {
 	protected abstract BaseFolderMapper<T> dndMapper();
-	protected abstract BaseDndDomainService<T> baseDndDomainService();
+	protected abstract DndDomainService<T> baseDndDomainService();
 
 	public FolderInfoResponse executeRetrieve(Long dndId){
 		T entity = baseDndDomainService().getEntity(dndId);

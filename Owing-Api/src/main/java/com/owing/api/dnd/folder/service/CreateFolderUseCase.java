@@ -7,13 +7,13 @@ import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class CreateFolderUseCase<T extends BaseFolder> implements
+public abstract class CreateFolderUseCase<T extends DndFolder> implements
     CreateDndUseCase<AddFolderRequest> {
     protected abstract MemberUtils memberUtils();
-    protected abstract BaseDndDomainService<T> baseDndDomainService();
+    protected abstract DndDomainService<T> baseDndDomainService();
     protected abstract BaseFolderMapper<T> dndMapper();
 
     @Transactional("jpaTransactionManager")

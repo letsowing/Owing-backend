@@ -4,7 +4,7 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.CreateFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class CreateUniverseFolderUseCase extends CreateFolderUseCase<UniverseFolder> {
 
     private final MemberUtils memberUtils;
-    private final BaseDndDomainService<UniverseFolder> baseDndDomainService;
+    private final DndDomainService<UniverseFolder> dndDomainService;
     private final BaseFolderMapper<UniverseFolder> dndMapper;
 
     @Override
@@ -23,8 +23,8 @@ public class CreateUniverseFolderUseCase extends CreateFolderUseCase<UniverseFol
     }
 
     @Override
-    protected BaseDndDomainService<UniverseFolder> baseDndDomainService() {
-        return baseDndDomainService;
+    protected DndDomainService<UniverseFolder> baseDndDomainService() {
+        return dndDomainService;
     }
 
     @Override

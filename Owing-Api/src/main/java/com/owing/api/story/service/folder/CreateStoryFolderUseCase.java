@@ -5,7 +5,7 @@ import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.CreateFolderUseCase;
 import com.owing.api.story.model.mapper.StoryFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.service.StoryFolderDomainService;
 
@@ -25,7 +25,7 @@ public class CreateStoryFolderUseCase extends CreateFolderUseCase<StoryFolder> {
     }
 
     @Override
-    protected BaseDndDomainService<StoryFolder> baseDndDomainService() {
+    protected DndDomainService<StoryFolder> baseDndDomainService() {
         return baseDndDomainService;
     }
 

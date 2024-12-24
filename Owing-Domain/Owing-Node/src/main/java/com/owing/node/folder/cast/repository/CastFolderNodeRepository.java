@@ -1,14 +1,15 @@
 package com.owing.node.folder.cast.repository;
 
-import com.owing.node.common.repository.BaseFolderNodeRepository;
-import com.owing.node.folder.cast.model.CastFolderNode;
-import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Optional;
 
-public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastFolderNode> {
+import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.owing.node.common.repository.DndFolderNodeRepository;
+import com.owing.node.folder.cast.model.CastFolderNode;
+
+public interface CastFolderNodeRepository extends DndFolderNodeRepository<CastFolderNode> {
 
     @Query("""
             MATCH
@@ -38,7 +39,7 @@ public interface CastFolderNodeRepository extends BaseFolderNodeRepository<CastF
             RETURN
               cf, r, p
             """)
-    Optional<CastFolderNode> findOneById(Long folderId);
+    Optional<CastFolderNode> findById(Long folderId);
 
     /**
      * 해당 노드, 직접적으로 연관된 관계까지 조회하는 메서드입니다.

@@ -7,9 +7,9 @@ import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoListResponse;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class BaseFolderMapper<T extends BaseFolder> implements DndMapper<T> {
+public abstract class BaseFolderMapper<T extends DndFolder> implements DndMapper<T> {
 	public abstract T toEntity(AddFolderRequest addDndRequest);
 	public abstract T toEntity(UpdateFolderTitleRequest updateDndRequest);
 

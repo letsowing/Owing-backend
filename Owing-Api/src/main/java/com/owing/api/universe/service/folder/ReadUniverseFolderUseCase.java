@@ -3,7 +3,7 @@ package com.owing.api.universe.service.folder;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReadUniverseFolderUseCase extends ReadFolderUseCase<UniverseFolder> {
     private final BaseFolderMapper<UniverseFolder> dndMapper;
-    private final BaseDndDomainService<UniverseFolder> baseDndDomainService;
+    private final DndDomainService<UniverseFolder> dndDomainService;
 
     @Override
     protected BaseFolderMapper<UniverseFolder> dndMapper() {
@@ -20,7 +20,7 @@ public class ReadUniverseFolderUseCase extends ReadFolderUseCase<UniverseFolder>
     }
 
     @Override
-    protected BaseDndDomainService<UniverseFolder> baseDndDomainService() {
-        return baseDndDomainService;
+    protected DndDomainService<UniverseFolder> baseDndDomainService() {
+        return dndDomainService;
     }
 }

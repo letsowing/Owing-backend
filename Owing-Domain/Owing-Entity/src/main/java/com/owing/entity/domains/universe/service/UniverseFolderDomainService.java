@@ -1,41 +1,30 @@
 package com.owing.entity.domains.universe.service;
 
-import com.owing.entity.domains.story.repository.StoryFolderRepository;
-import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
-import com.owing.entity.domains.universe.repository.UniverseRepository;
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
-import com.owing.core.dnd.folder.adapter.BaseFolderAdapter;
-import com.owing.core.dnd.folder.repository.BaseFolderRepository;
-import com.owing.core.dnd.folder.service.BaseFolderDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.folder.service.DndFolderDomainService;
+import com.owing.core.dnd.orderStrategy.OrderingStrategy;
+import com.owing.entity.domains.universe.adapter.UniverseAdapter;
+import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @DomainService
 @Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 @RequiredArgsConstructor
-public class UniverseFolderDomainService extends BaseFolderDomainService<UniverseFolder> {
+public class UniverseFolderDomainService extends DndFolderDomainService<UniverseFolder> {
 
-	private final BaseFolderRepository<UniverseFolder> dndRepository;
-	private final BaseFolderAdapter<UniverseFolder> dndAdapter;
+	private final UniverseFolderAdapter dndAdapter;
+	private final UniverseAdapter fileAdapter;
 	private final OrderingStrategy<UniverseFolder> orderingStrategy;
-	private final UniverseFolderRepository universeFolderRepository;
-	private final UniverseRepository universeRepository;
 
 	@Override
-	protected BaseDndRepository<UniverseFolder> dndRepository() {
-		return dndRepository;
-	}
-
-	@Override
-	protected BaseDndAdapter<UniverseFolder> dndEntityAdapter() {
+	protected DndAdapter<UniverseFolder> dndAdapter() {
 		return dndAdapter;
 	}
 
@@ -46,8 +35,7 @@ public class UniverseFolderDomainService extends BaseFolderDomainService<Univers
 
 	@Transactional("jpaTransactionManager")
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
-		universeFolderRepository.restoreById(folderItemId);
-		trashCanItemIds
-				.forEach(universeRepository::restoreById);
+		dndAdapter.restoreById(folderItemId);
+		trashCanItemIds.forEach(fileAdapter::restoreById);
 	}
 }

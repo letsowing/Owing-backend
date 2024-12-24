@@ -2,34 +2,27 @@ package com.owing.entity.domains.story.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
-import com.owing.core.dnd.folder.service.BaseFolderDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.folder.service.DndFolderDomainService;
+import com.owing.core.dnd.orderStrategy.OrderingStrategy;
+import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.repository.StoryFolderRepository;
 
-import com.owing.entity.domains.story.repository.StoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolder> {
+public class StoryFolderDomainService extends DndFolderDomainService<StoryFolder> {
 	private final StoryFolderAdapter dndAdapter;
+	private final StoryAdapter storyAdapter;
 	private final StoryFolderShiftOrderingStrategy orderingStrategy;
-	private final StoryFolderRepository storyFolderRepository;
-	private final StoryRepository storyRepository;
 
 	@Override
-	protected BaseDndRepository<StoryFolder> dndRepository() {
-		return storyFolderRepository;
-	}
-
-	@Override
-	protected BaseDndAdapter<StoryFolder> dndEntityAdapter() {
+	protected DndAdapter<StoryFolder> dndAdapter() {
 		return dndAdapter;
 	}
 
@@ -40,8 +33,7 @@ public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolde
 
 	@Transactional("jpaTransactionManager")
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
-		storyFolderRepository.restoreById(folderItemId);
-		trashCanItemIds
-			.forEach(storyRepository::restoreById);
+		dndAdapter.restoreById(folderItemId);
+		trashCanItemIds.forEach(storyAdapter::restoreById);
 	}
 }
