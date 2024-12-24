@@ -1,18 +1,15 @@
-package com.owing.core.dnd.base.orderStrategy.shift;
+package com.owing.core.dnd.orderStrategy.shift;
 
-import com.owing.core.dnd.base.model.BaseDnd;
-import com.owing.core.dnd.folder.adapter.BaseFolderAdapter;
-import com.owing.core.dnd.folder.model.BaseFolder;
-import com.owing.core.dnd.folder.repository.BaseFolderRepository;
+import com.owing.core.dnd.base.model.Dnd;
+import com.owing.core.dnd.folder.adapter.DndFolderAdapter;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends ShiftOrderingStrategy<T>{
+public abstract class FolderShiftOrderingStrategy<T extends DndFolder> extends ShiftOrderingStrategy<T>{
 
-	public FolderShiftOrderingStrategy(BaseFolderAdapter<T> dndAdapter, BaseFolderRepository<T> dndRepository) {
-		super(dndAdapter, dndRepository);
-	}
+	protected abstract DndFolderAdapter<T> dndAdapter();
 
 	@Override
-	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, BaseDnd newParent) {
+	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, Dnd newParent) {
 		return updatePosition(dndEntity, beforeEntity, afterEntity);
 	}
 
@@ -42,6 +39,6 @@ public abstract class FolderShiftOrderingStrategy<T extends BaseFolder> extends 
 			moveFolderUp(newPosition, entity.getPosition(), entity.getParentId());
 		}
 		entity.updatePosition(newPosition);
-		return dndAdapter.save(entity);
+		return dndAdapter().updatePosition(entity);
 	}
 }
