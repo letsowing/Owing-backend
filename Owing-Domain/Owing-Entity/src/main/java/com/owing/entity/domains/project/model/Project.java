@@ -2,9 +2,7 @@ package com.owing.entity.domains.project.model;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.SoftDelete;
-
-import com.owing.entity.common.model.BaseTimeEntity;
+import com.owing.core.BaseEntity;
 import com.owing.entity.domains.member.model.Member;
 
 import jakarta.persistence.Column;
@@ -27,8 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@SoftDelete
-public class Project extends BaseTimeEntity {
+public class Project extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

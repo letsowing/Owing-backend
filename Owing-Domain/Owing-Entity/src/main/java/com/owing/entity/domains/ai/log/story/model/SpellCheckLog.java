@@ -1,6 +1,6 @@
 package com.owing.entity.domains.ai.log.story.model;
 
-import com.owing.entity.common.model.BaseTimeEntity;
+import com.owing.core.BaseEntity;
 import com.owing.entity.domains.story.model.Story;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SpellCheckLog extends BaseTimeEntity {
+public class SpellCheckLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
