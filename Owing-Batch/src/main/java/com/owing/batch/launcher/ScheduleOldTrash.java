@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.owing.entity.domains.trashcan.repository.TrashCanRepository;
-import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.entity.domains.trashcan.repository.TrashCanFolderRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
