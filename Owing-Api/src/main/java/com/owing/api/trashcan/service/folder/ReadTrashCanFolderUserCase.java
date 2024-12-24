@@ -3,11 +3,9 @@ package com.owing.api.trashcan.service.folder;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
-import com.owing.entity.domains.trashcan.model.Folder;
-import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
 
 import lombok.RequiredArgsConstructor;
 
