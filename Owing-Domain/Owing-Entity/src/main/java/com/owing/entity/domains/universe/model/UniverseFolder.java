@@ -1,8 +1,9 @@
 package com.owing.entity.domains.universe.model;
 
-import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import com.owing.core.dnd.folder.model.BaseFolderEntity;
+import com.owing.entity.dnd.folder.model.DndFolderEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +16,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@SoftDelete
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UniverseFolder extends BaseFolderEntity<Universe> {
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE universe_folder SET deleted = true where id = ?")
+public class UniverseFolder extends DndFolderEntity<Universe> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
