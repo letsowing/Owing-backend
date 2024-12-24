@@ -1,18 +1,17 @@
-package com.owing.entity.folders.trashcan.service;
+package com.owing.entity.domains.trashcan.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.entity.domains.trashcan.model.TrashCan;
-import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
-import com.owing.entity.folders.trashcan.error.TrashCanFolderErrorCode;
-import com.owing.entity.folders.trashcan.error.exception.TrashCanFolderException;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
+import com.owing.entity.domains.trashcan.error.TrashCanFolderErrorCode;
+import com.owing.entity.domains.trashcan.error.exception.TrashCanFolderException;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.repository.TrashCanFolderRepository;
 
 import lombok.RequiredArgsConstructor;
 

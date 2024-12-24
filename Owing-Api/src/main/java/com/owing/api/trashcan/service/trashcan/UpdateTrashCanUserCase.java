@@ -4,8 +4,7 @@ import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.story.service.StoryDomainService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.model.FolderType;
 import com.owing.node.domains.cast.service.CastNodeDomainService;
 
 import lombok.RequiredArgsConstructor;

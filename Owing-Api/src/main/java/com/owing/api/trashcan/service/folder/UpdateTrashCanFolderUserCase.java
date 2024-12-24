@@ -4,12 +4,9 @@ import java.util.List;
 
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.story.service.StoryFolderDomainService;
-import com.owing.entity.domains.trashcan.model.TrashCan;
-import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 import com.owing.entity.domains.universe.service.UniverseFolderDomainService;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
-import com.owing.node.domains.cast.service.CastNodeDomainService;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
 
 import lombok.RequiredArgsConstructor;

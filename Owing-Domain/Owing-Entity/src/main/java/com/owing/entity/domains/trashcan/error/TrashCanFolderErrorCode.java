@@ -1,4 +1,4 @@
-package com.owing.entity.folders.trashcan.error;
+package com.owing.entity.domains.trashcan.error;
 
 import org.springframework.http.HttpStatus;
 

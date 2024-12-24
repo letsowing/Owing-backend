@@ -1,4 +1,4 @@
-package com.owing.entity.folders.trashcan.repository;
+package com.owing.entity.domains.trashcan.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
 
 public interface TrashCanFolderRepository extends JpaRepository<TrashCanFolder, Long> {
 

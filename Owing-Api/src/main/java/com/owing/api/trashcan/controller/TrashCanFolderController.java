@@ -16,7 +16,7 @@ import com.owing.api.trashcan.service.folder.CreateTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.DeleteTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.ReadTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.UpdateTrashCanFolderUserCase;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
 
 import lombok.RequiredArgsConstructor;
 

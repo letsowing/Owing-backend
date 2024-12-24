@@ -2,24 +2,21 @@ package com.owing.api.trashcan.model.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.common.annotation.Mapper;
-import com.owing.core.dnd.file.model.BaseFile;
-import com.owing.core.dnd.file.model.BaseFileEntity;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.entity.dnd.file.model.DndFileEntity;
+import com.owing.core.dnd.folder.model.DndFolder;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
 import com.owing.entity.domains.trashcan.model.File;
 import com.owing.entity.domains.trashcan.model.Folder;
 import com.owing.entity.domains.trashcan.model.TrashCan;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
-import com.owing.entity.folders.trashcan.adaptor.TrashCanFolderAdaptor;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
 
-import com.owing.node.common.model.BaseFileNode;
+import com.owing.node.common.model.DndFileNode;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import lombok.RequiredArgsConstructor;
 
@@ -64,7 +61,7 @@ public class TrashCanFolderMapper {
 		);
 	}
 
-	public <T extends BaseFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
+	public <T extends DndFolder> TrashCanFolder toFolderEntity(T entity, Project project) {
 		FolderType folderType = determineTableName(entity);
 		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findByItemIdAndTableName(entity.getId(), folderType)
 			.orElse(newTrashCanFolder(entity, project));
@@ -80,7 +77,7 @@ public class TrashCanFolderMapper {
 		return trashCanFolder;
 	}
 
-	private <T extends BaseFolder> TrashCanFolder newTrashCanFolder(T entity, Project project){
+	private <T extends DndFolder> TrashCanFolder newTrashCanFolder(T entity, Project project){
 		return TrashCanFolder.builder()
 			.itemId(entity.getId())
 			.tableName(determineTableName(entity))
@@ -91,11 +88,11 @@ public class TrashCanFolderMapper {
 			.build();
 	}
 
-	private <T extends BaseFolder> FolderType determineTableName(T entity) {
+	private <T extends DndFolder> FolderType determineTableName(T entity) {
 		return FolderType.fromClassName(entity.getClass().getSimpleName());
 	}
 
-	private TrashCan toEntity(BaseFileEntity<?> entity, TrashCanFolder trashCanFolder) {
+	private TrashCan toEntity(DndFileEntity<?> entity, TrashCanFolder trashCanFolder) {
 		String imageUrl = GetImageUrl(trashCanFolder.getTableName(), entity.getId());
 		return TrashCan.builder()
 			.trashCanFolder(trashCanFolder)
@@ -114,7 +111,7 @@ public class TrashCanFolderMapper {
 		};
 	}
 
-	private TrashCan toNode(BaseFileNode<?> node, TrashCanFolder trashCanFolder) {
+	private TrashCan toNode(DndFileNode<?> node, TrashCanFolder trashCanFolder) {
 		String imageUrl = castNodeAdapter.findImageUrlById(node.getId());
 		return TrashCan.builder()
 				.trashCanFolder(trashCanFolder)
@@ -126,10 +123,10 @@ public class TrashCanFolderMapper {
 	}
 
 	private TrashCan processFileAsNode(Object file, TrashCanFolder trashCanFolder) {
-		return toNode((BaseFileNode<?>) file, trashCanFolder);
+		return toNode((DndFileNode<?>) file, trashCanFolder);
 	}
 
 	private TrashCan processFileAsEntity(Object file, TrashCanFolder trashCanFolder) {
-		return toEntity((BaseFileEntity<?>) file, trashCanFolder);
+		return toEntity((DndFileEntity<?>) file, trashCanFolder);
 	}
 }

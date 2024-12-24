@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.owing.entity.domains.trashcan.adaptor.TrashCanAdaptor;
 import com.owing.entity.domains.trashcan.model.TrashCan;
 import com.owing.entity.domains.trashcan.repository.TrashCanRepository;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.repository.TrashCanFolderRepository;
 
 import lombok.RequiredArgsConstructor;
 
