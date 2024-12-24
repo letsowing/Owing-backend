@@ -1,12 +1,11 @@
-package com.owing.entity.folders.trashcan.model;
+package com.owing.entity.domains.trashcan.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.entity.common.model.BaseTimeEntity;
+import com.owing.core.BaseEntity;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.trashcan.model.TrashCan;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class TrashCanFolder extends BaseTimeEntity {
+public class TrashCanFolder extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

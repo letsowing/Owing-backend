@@ -1,4 +1,4 @@
-package com.owing.entity.folders.trashcan.model;
+package com.owing.entity.domains.trashcan.model;
 
 public enum FolderType {
 	STORY,

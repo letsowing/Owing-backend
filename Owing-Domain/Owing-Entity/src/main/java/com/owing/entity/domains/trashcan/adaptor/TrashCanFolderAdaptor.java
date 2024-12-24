@@ -1,14 +1,14 @@
-package com.owing.entity.folders.trashcan.adaptor;
+package com.owing.entity.domains.trashcan.adaptor;
 
 import java.util.List;
 import java.util.Optional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.entity.folders.trashcan.error.TrashCanFolderErrorCode;
-import com.owing.entity.folders.trashcan.error.exception.TrashCanFolderException;
-import com.owing.entity.folders.trashcan.model.FolderType;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
+import com.owing.entity.domains.trashcan.error.TrashCanFolderErrorCode;
+import com.owing.entity.domains.trashcan.error.exception.TrashCanFolderException;
+import com.owing.entity.domains.trashcan.model.FolderType;
+import com.owing.entity.domains.trashcan.model.TrashCanFolder;
+import com.owing.entity.domains.trashcan.repository.TrashCanFolderRepository;
 
 import lombok.RequiredArgsConstructor;
 

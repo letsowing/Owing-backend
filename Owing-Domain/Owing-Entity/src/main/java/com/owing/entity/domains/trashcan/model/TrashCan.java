@@ -1,7 +1,7 @@
 package com.owing.entity.domains.trashcan.model;
 
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

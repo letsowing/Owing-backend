@@ -1,8 +1,7 @@
-package com.owing.entity.folders.trashcan.error.exception;
+package com.owing.entity.domains.trashcan.error.exception;
 
 import com.owing.common.error.exception.OwingException;
-import com.owing.entity.domains.universe.error.UniverseErrorCode;
-import com.owing.entity.folders.trashcan.error.TrashCanFolderErrorCode;
+import com.owing.entity.domains.trashcan.error.TrashCanFolderErrorCode;
 
 public class TrashCanFolderException extends OwingException {
 
