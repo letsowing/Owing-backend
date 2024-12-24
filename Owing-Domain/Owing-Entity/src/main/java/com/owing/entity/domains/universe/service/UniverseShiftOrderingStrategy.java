@@ -2,16 +2,20 @@ package com.owing.entity.domains.universe.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.core.dnd.base.orderStrategy.shift.FileShiftOrderingStrategy;
+import com.owing.core.dnd.file.adapter.DndFileAdapter;
+import com.owing.core.dnd.orderStrategy.shift.FileShiftOrderingStrategy;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
-import com.owing.entity.domains.universe.model.UniverseFolder;
-import com.owing.entity.domains.universe.repository.UniverseRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
-public class UniverseShiftOrderingStrategy extends FileShiftOrderingStrategy<Universe, UniverseFolder> {
-	public UniverseShiftOrderingStrategy(UniverseAdapter dndAdapter,
-										 UniverseRepository dndRepository) {
-		super(dndAdapter, dndRepository);
+@RequiredArgsConstructor
+public class UniverseShiftOrderingStrategy extends FileShiftOrderingStrategy<Universe> {
+	private final UniverseAdapter dndAdapter;
+
+	@Override
+	protected DndFileAdapter<Universe> dndAdapter() {
+		return dndAdapter;
 	}
 }

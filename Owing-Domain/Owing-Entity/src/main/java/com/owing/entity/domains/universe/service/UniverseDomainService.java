@@ -3,13 +3,11 @@ package com.owing.entity.domains.universe.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
-import com.owing.core.dnd.file.service.BaseFileDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.file.service.DndFileDomainService;
+import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
-import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @DomainService
 @Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 @RequiredArgsConstructor
-public class UniverseDomainService extends BaseFileDomainService<Universe, UniverseFolder> {
+public class UniverseDomainService extends DndFileDomainService<Universe> {
 
 	private final UniverseRepository universeRepository;
 	private final UniverseAdapter universeAdapter;
@@ -35,13 +33,9 @@ public class UniverseDomainService extends BaseFileDomainService<Universe, Unive
 		return updatedUniverse;
 	}
 
-	@Override
-	protected BaseDndRepository<Universe> dndRepository() {
-		return universeRepository;
-	}
 
 	@Override
-	protected BaseDndAdapter<Universe> dndEntityAdapter() {
+	protected DndAdapter<Universe> dndAdapter() {
 		return universeAdapter;
 	}
 

@@ -2,9 +2,10 @@ package com.owing.entity.domains.story.model;
 
 import java.util.Optional;
 
-import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import com.owing.core.dnd.file.model.BaseFileEntity;
+import com.owing.entity.dnd.file.model.DndFileEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,8 +22,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SoftDelete
-public class Story extends BaseFileEntity<StoryFolder> {
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE story SET deleted = true where id = ?")
+public class Story extends DndFileEntity<StoryFolder> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -30,7 +32,7 @@ public class Story extends BaseFileEntity<StoryFolder> {
 	@Column(columnDefinition = "int default 0", nullable = false)
 	private int textCount;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private StoryContent storyContent;
 
 	@Builder
