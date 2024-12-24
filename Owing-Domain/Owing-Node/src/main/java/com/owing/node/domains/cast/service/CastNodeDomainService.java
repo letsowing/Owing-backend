@@ -1,32 +1,41 @@
 package com.owing.node.domains.cast.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.springframework.data.neo4j.core.Neo4jTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
-import com.owing.core.dnd.file.service.BaseFileDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.file.service.DndFileDomainService;
+import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeRelationshipException;
-import com.owing.node.domains.cast.model.*;
-import com.owing.node.domains.cast.model.projection.*;
+import com.owing.node.domains.cast.model.CastNode;
+import com.owing.node.domains.cast.model.CastNodeInfo;
+import com.owing.node.domains.cast.model.CastRelationship;
+import com.owing.node.domains.cast.model.ConnectionHandle;
+import com.owing.node.domains.cast.model.ConnectionType;
+import com.owing.node.domains.cast.model.Coordinate;
+import com.owing.node.domains.cast.model.projection.CastCoordinateProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
+import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
+import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.neo4j.core.Neo4jTemplate;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
-public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastFolderNode> {
+public class CastNodeDomainService extends DndFileDomainService<CastNode> {
 
     private final CastNodeAdapter castNodeAdapter;
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
@@ -94,7 +103,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
         return castNodeAdapter.findConnection(relationship.getSourceId(), relationship.getTargetId());
     }
 
-    @Transactional("neo4jTransactionManager")
+	@Transactional("neo4jTransactionManager")
     protected CastRelationshipProjection createBiconnection(CastRelationship relationship) {
         Boolean exists = castNodeRepository.existsCastRelationshipForBiconnection(relationship.getSourceId(), relationship.getTargetId());
         if (exists) {
@@ -141,11 +150,6 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
 
     // =====super() Cast CRUD=====
     @Override
-    public CastNode getEntity(Long castId) {
-        return castNodeAdapter.findOneById(castId);
-    }
-
-    @Override
     @Transactional("neo4jTransactionManager")
     public CastNode createEntity(CastNode entity) {
         long position = orderingStrategy().getNewPosition(entity.getParentId());
@@ -163,7 +167,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     }
 
     @Override
-    @Transactional("neo4jTransactionManager")
+	@Transactional("neo4jTransactionManager")
     public CastNode updateName(CastNode entity, CastNode newEntity) {
         entity.updateName(newEntity.getName());
         CastTitleProjection titleProjection = CastTitleProjection.from(entity);
@@ -172,7 +176,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
     }
 
     @Override
-    @Transactional("neo4jTransactionManager")
+	@Transactional("neo4jTransactionManager")
     public void deleteEntity(CastNode castNode) {
         castShiftOrderingStrategy.reorderEntity(castNode);
         castNode.delete();
@@ -182,12 +186,7 @@ public class CastNodeDomainService extends BaseFileDomainService<CastNode, CastF
 
     // Bean Setting
     @Override
-    protected BaseDndRepository<CastNode> dndRepository() {
-        return this.castNodeRepository;
-    }
-
-    @Override
-    protected BaseDndAdapter<CastNode> dndEntityAdapter() {
+    protected DndAdapter<CastNode> dndAdapter() {
         return this.castNodeAdapter;
     }
 

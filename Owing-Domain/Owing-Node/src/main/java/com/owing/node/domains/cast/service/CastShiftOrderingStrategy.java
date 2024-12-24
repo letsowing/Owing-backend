@@ -1,24 +1,22 @@
 package com.owing.node.domains.cast.service;
 
-import com.owing.core.dnd.base.orderStrategy.shift.FileShiftOrderingStrategy;
-import com.owing.node.domains.cast.adapter.CastNodeAdapter;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.repository.CastNodeRepository;
-import com.owing.node.folder.cast.model.CastFolderNode;
 import org.springframework.stereotype.Component;
 
+import com.owing.core.dnd.file.adapter.DndFileAdapter;
+import com.owing.core.dnd.orderStrategy.shift.FileShiftOrderingStrategy;
+import com.owing.node.domains.cast.adapter.CastNodeAdapter;
+import com.owing.node.domains.cast.model.CastNode;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
-public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNode, CastFolderNode> {
+@RequiredArgsConstructor
+public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNode> {
 
-	CastNodeAdapter castNodeAdapter;
-
-	public CastShiftOrderingStrategy(CastNodeAdapter dndAdapter, CastNodeRepository dndRepository) {
-		super(dndAdapter, dndRepository);
-		this.castNodeAdapter = dndAdapter;
-	}
+	private final CastNodeAdapter castNodeAdapter;
 
 	@Override
-	protected void shiftFolderDown(long targetPosition, Long projectId) {
-		castNodeAdapter.incrementPositionAfter(targetPosition, projectId);
+	protected DndFileAdapter<CastNode> dndAdapter() {
+		return castNodeAdapter;
 	}
 }
