@@ -9,7 +9,7 @@ import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
@@ -42,12 +42,12 @@ public class UpdateUniverseUseCase extends UpdateFileUseCase<Universe, UniverseF
 	}
 
 	@Override
-	protected BaseDndDomainService<Universe> baseDndDomainService() {
+	protected DndDomainService<Universe> baseDndDomainService() {
 		return baseDndDomainService;
 	}
 
 	@Override
-	protected BaseDndDomainService<UniverseFolder> fBaseDndDomainService() {
+	protected DndDomainService<UniverseFolder> fBaseDndDomainService() {
 		return universeFolderBaseDndDomainService;
 	}
 

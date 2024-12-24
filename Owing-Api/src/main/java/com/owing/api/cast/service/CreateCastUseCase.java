@@ -8,8 +8,8 @@ import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.CreateFileUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.service.CastNodeDomainService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
@@ -28,7 +28,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
 
     @Override
     public CastInfoResponse execute(AddFileRequest addFileRequest) {
-        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(addFileRequest.folderId());
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findById(addFileRequest.folderId());
         CastNode castNode = castNodeMapper.toEntity(addFileRequest, castFolderNode);
 
         CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
@@ -37,7 +37,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
 
     public CastInfoResponse executeFull(CreateCastRequest createCastRequest) {
         CastNode castNode = castNodeMapper.toEntity(createCastRequest);
-        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(createCastRequest.folderId());
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findById(createCastRequest.folderId());
 
         castNode.connectFolder(castFolderNode);
         CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
@@ -50,7 +50,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
     }
 
     @Override
-    protected BaseDndDomainService<CastNode> baseDndDomainService() {
+    protected DndDomainService<CastNode> baseDndDomainService() {
         return this.castNodeDomainService;
     }
 
@@ -60,7 +60,7 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
     }
 
     @Override
-    protected BaseDndAdapter<CastFolderNode> folderAdapter() {
+    protected DndAdapter<CastFolderNode> folderAdapter() {
         return null;
     }
 }

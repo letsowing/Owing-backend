@@ -7,18 +7,18 @@ import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.file.model.BaseFile;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.file.model.DndFile;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class CreateFileUseCase<T extends BaseFile<F>, F extends BaseFolder>
+public abstract class CreateFileUseCase<T extends DndFile, F extends DndFolder>
     implements CreateDndUseCase<AddFileRequest>{
 
     protected abstract MemberUtils memberUtils();
-    protected abstract BaseDndDomainService<T> baseDndDomainService();
+    protected abstract DndDomainService<T> baseDndDomainService();
     protected abstract BaseFileMapper<T, F> dndMapper();
-    protected abstract BaseDndAdapter<F> folderAdapter();
+    protected abstract DndAdapter<F> folderAdapter();
 
     @Transactional("jpaTransactionManager")
     public DndInfoResponse execute(AddFileRequest dto) {

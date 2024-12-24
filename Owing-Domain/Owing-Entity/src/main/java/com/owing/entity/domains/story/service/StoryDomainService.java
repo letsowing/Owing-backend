@@ -6,35 +6,26 @@ import org.jsoup.Jsoup;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.base.repository.BaseDndRepository;
-import com.owing.core.dnd.file.service.BaseFileDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.file.service.DndFileDomainService;
+import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryContent;
-import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.model.dto.StoryVO;
-import com.owing.entity.domains.story.repository.StoryRepository;
 import com.owing.entity.domains.story.textCount.TextCounter;
 
 import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder> {
+public class StoryDomainService extends DndFileDomainService<Story> {
 
 	private final StoryAdapter dndAdapter;
 	private final StoryShiftOrderingStrategy orderingStrategy;
-	private final StoryRepository storyRepository;
 
 	@Override
-	protected BaseDndRepository<Story> dndRepository() {
-		return storyRepository;
-	}
-
-	@Override
-	protected BaseDndAdapter<Story> dndEntityAdapter() {
+	protected DndAdapter<Story> dndAdapter() {
 		return dndAdapter;
 	}
 
@@ -47,7 +38,7 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		story.createOrUpdateStoryText(storyContent);
 		int textCnt = TextCounter.countText(storyContent.getContent(), false, true); // fixme
 		story.updateTextCount(textCnt);
-		storyRepository.save(story);
+		dndAdapter.save(story);
 	}
 
 	public List<StoryVO> findAllByProjectId(Long projectId) {
@@ -56,7 +47,7 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 
 	@Transactional("jpaTransactionManager")
 	public void restoreById(Long itemId) {
-		storyRepository.restoreById(itemId);
+		dndAdapter.restoreById(itemId);
 	}
 
 	@Transactional("jpaTransactionManager")

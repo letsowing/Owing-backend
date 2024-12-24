@@ -1,20 +1,29 @@
 package com.owing.node.domains.cast.model;
 
+import java.util.Set;
+
+import org.springframework.data.neo4j.core.schema.CompositeProperty;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.util.ObjectUtils;
+
 import com.owing.node.common.converter.CoordinateConverter;
-import com.owing.node.common.model.BaseFileNode;
+import com.owing.node.common.model.DndFileNode;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeRelationshipException;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import lombok.*;
-import org.springframework.data.neo4j.core.schema.*;
-import org.springframework.util.ObjectUtils;
 
-import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Node("Cast")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CastNode extends BaseFileNode<CastFolderNode> {
+public class CastNode extends DndFileNode<CastFolderNode> {
     @Id
     @GeneratedValue
     private Long id;
@@ -48,20 +57,6 @@ public class CastNode extends BaseFileNode<CastFolderNode> {
         this.position = position;
         this.folder = folder;
     }
-
-    @Override
-    public void connectFolder(CastFolderNode castFolderNode) {
-        if (!ObjectUtils.isEmpty(this.folder)) {
-            throw CastNodeRelationshipException.of(
-                    CastNodeErrorCode.RELATED_FOLDER_ALREADY_EXISTS,
-                    "castFolder Id: %d, Connected Project Id: %d, Requested Folder Id: %d"
-                            .formatted(this.id, this.folder.getId(), castFolderNode.getId())
-            );
-        }
-
-        this.folder = castFolderNode;
-    }
-
     /**
      * 단방향 관계를 추가하는 메서드<p>
      * (A)-->(B)

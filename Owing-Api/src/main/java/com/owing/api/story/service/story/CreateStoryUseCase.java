@@ -7,8 +7,8 @@ import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.model.mapper.StoryContentMapper;
 import com.owing.api.story.model.mapper.StoryMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.adapter.BaseDndAdapter;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.statistics.service.DashboardService;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.Story;
@@ -47,7 +47,7 @@ public class CreateStoryUseCase extends CreateFileUseCase<Story, StoryFolder> {
     }
 
     @Override
-    protected BaseDndDomainService<Story> baseDndDomainService() {
+    protected DndDomainService<Story> baseDndDomainService() {
         return storyDomainService;
     }
 
@@ -57,7 +57,7 @@ public class CreateStoryUseCase extends CreateFileUseCase<Story, StoryFolder> {
     }
 
     @Override
-    protected BaseDndAdapter<StoryFolder> folderAdapter() {
+    protected DndAdapter<StoryFolder> folderAdapter() {
         return folderAdapter;
     }
 

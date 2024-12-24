@@ -8,16 +8,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.owing.node.common.model.projection.CastRelationshipProjection;
-import com.owing.node.common.repository.BaseFileNodeRepository;
+import com.owing.node.common.repository.DndFileNodeRepository;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
-import com.owing.node.folder.cast.model.CastFolderNode;
 
 @Repository
-public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, CastFolderNode> {
+public interface CastNodeRepository extends DndFileNodeRepository<CastNode> {
 
     @Query("""
             MATCH
@@ -27,7 +26,7 @@ public interface CastNodeRepository extends BaseFileNodeRepository<CastNode, Cas
             RETURN
                 c, r, cf
             """)
-    Optional<CastNode> findOneById(Long castId);
+    Optional<CastNode> findById(Long castId);
 
 	@Query("""
         MATCH

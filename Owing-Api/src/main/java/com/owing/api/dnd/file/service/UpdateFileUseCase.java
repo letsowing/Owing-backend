@@ -7,15 +7,15 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
-import com.owing.core.dnd.file.model.BaseFile;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.file.model.DndFile;
+import com.owing.core.dnd.folder.model.DndFolder;
 
-public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFolder> implements
+public abstract class UpdateFileUseCase<T extends DndFile, F extends DndFolder> implements
     UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> {
     protected abstract MemberUtils memberUtils();
-    protected abstract BaseDndDomainService<T> baseDndDomainService();
-    protected abstract BaseDndDomainService<F> fBaseDndDomainService();
+    protected abstract DndDomainService<T> baseDndDomainService();
+    protected abstract DndDomainService<F> fBaseDndDomainService();
     protected abstract BaseFileMapper<T, F> dndMapper();
 
     @Transactional("jpaTransactionManager")

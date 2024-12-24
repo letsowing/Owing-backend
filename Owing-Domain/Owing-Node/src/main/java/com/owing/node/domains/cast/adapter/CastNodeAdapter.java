@@ -2,9 +2,12 @@ package com.owing.node.domains.cast.adapter;
 
 import java.util.List;
 
+import org.springframework.data.neo4j.core.Neo4jTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.BaseFileAdapter;
-import com.owing.core.dnd.file.repository.BaseFileRepository;
+import com.owing.core.dnd.file.adapter.DndFileAdapter;
+import com.owing.core.dnd.file.repository.DndFileRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -12,28 +15,27 @@ import com.owing.node.domains.cast.error.exception.CastRelationshipNotFoundExcep
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.dto.CastInfo;
 import com.owing.node.domains.cast.model.projection.CastAiProjection;
+import com.owing.node.domains.cast.model.projection.CastDeleteProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
+import com.owing.node.domains.cast.model.projection.CastPositionProjection;
 import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection;
+import com.owing.node.domains.cast.model.projection.CastTitleProjection;
 import com.owing.node.domains.cast.repository.CastNodeDeletedRepository;
-import com.owing.node.domains.cast.model.projection.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
-import com.owing.node.folder.cast.model.CastFolderNode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.neo4j.core.Neo4jTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
+public class CastNodeAdapter extends DndFileAdapter<CastNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
     private final CastNodeDeletedRepository castNodeDeletedRepository;
 
-    public CastNode findOneById(Long castId) {
-        return castNodeRepository.findOneById(castId)
+    public CastNode findById(Long castId) {
+        return castNodeRepository.findById(castId)
                 .orElseThrow(() -> CastNodeNotFoundException.of(
                         CastNodeErrorCode.CAST_NODE_NOT_FOUND,
                         "Requested Cast Node Id: %d".formatted(castId)
@@ -104,18 +106,29 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
         return this.savePosition(entity);
     }
 
-    @Transactional("neo4jTransactionManager")
-    public void incrementPositionAfter(long targetPosition, Long projectId) {
-        castNodeRepository.incrementPositionAfter(targetPosition, projectId);
-    }
-    // Bean Setting
 
     @Override
-    protected BaseFileRepository<CastNode, CastFolderNode> dndRepository() {
+    protected DndFileRepository<CastNode> dndRepository() {
         return this.castNodeRepository;
     }
 
     public String findImageUrlById(Long id) {
         return castNodeRepository.findImageUrlById(id);
+    }
+
+
+    @Transactional
+    public CastNode updateName(CastNode entity) {
+        CastTitleProjection titleProjection = CastTitleProjection.from(entity);
+        neo4jTemplate.save(CastNode.class).one(titleProjection);
+        return entity;
+    }
+
+
+    @Transactional
+    public void delete(CastNode castNode) {
+        castNode.delete();
+        CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
+        neo4jTemplate.save(CastNode.class).one(deleteProjection);
     }
 }

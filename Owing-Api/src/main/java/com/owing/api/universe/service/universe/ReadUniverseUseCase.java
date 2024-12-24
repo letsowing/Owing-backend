@@ -4,7 +4,7 @@ import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.ReadFileUseCase;
 import com.owing.api.universe.model.mapper.UniverseMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -26,7 +26,7 @@ public class ReadUniverseUseCase extends ReadFileUseCase<Universe, UniverseFolde
 	}
 
 	@Override
-	protected BaseDndDomainService<Universe> baseDndDomainService() {
+	protected DndDomainService<Universe> baseDndDomainService() {
 		return baseDndDomainService;
 	}
 }

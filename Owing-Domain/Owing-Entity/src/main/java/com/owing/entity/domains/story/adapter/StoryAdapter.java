@@ -5,25 +5,23 @@ import java.util.List;
 import org.jsoup.Jsoup;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.BaseFileAdapter;
-import com.owing.core.dnd.file.repository.BaseFileRepository;
+import com.owing.core.dnd.file.adapter.DndFileAdapter;
+import com.owing.core.dnd.file.repository.DndFileRepository;
 import com.owing.entity.domains.story.model.Story;
-import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.model.dto.StoryInfo;
 import com.owing.entity.domains.story.repository.StoryDeletedRepository;
 import com.owing.entity.domains.story.repository.StoryRepository;
-import com.owing.entity.domains.story.service.StoryDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
+public class StoryAdapter extends DndFileAdapter<Story> {
 	private final StoryRepository storyRepository;
 	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
-	protected BaseFileRepository<Story, StoryFolder> dndRepository() {
+	protected DndFileRepository<Story> dndRepository() {
 		return storyRepository;
 	}
 
@@ -48,4 +46,8 @@ public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 			.content(content)
 			.build();
     }
+
+	public void restoreById(Long itemId) {
+		storyRepository.restoreById(itemId);
+	}
 }

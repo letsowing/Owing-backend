@@ -4,18 +4,16 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.file.service.DeleteFileUseCase;
 import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
-import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
-import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteUniverseUseCase extends DeleteFileUseCase<Universe, UniverseFolder> {
+public class DeleteUniverseUseCase extends DeleteFileUseCase<Universe> {
 
 	private final MemberUtils memberUtils;
 	private final UniverseDomainService universeDomainService;
@@ -28,7 +26,7 @@ public class DeleteUniverseUseCase extends DeleteFileUseCase<Universe, UniverseF
 	}
 
 	@Override
-	protected BaseDndDomainService<Universe> baseDndDomainService() {
+	protected DndDomainService<Universe> baseDndDomainService() {
 		return universeDomainService;
 	}
 
