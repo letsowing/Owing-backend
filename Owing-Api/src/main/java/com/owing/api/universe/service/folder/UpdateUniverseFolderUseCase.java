@@ -5,7 +5,7 @@ import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.UpdateFolderUseCase;
 import com.owing.api.universe.model.mapper.UniverseFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseFolderDomainService;
 
@@ -24,7 +24,7 @@ public class UpdateUniverseFolderUseCase extends UpdateFolderUseCase<UniverseFol
     }
 
     @Override
-    protected BaseDndDomainService<UniverseFolder> baseDndDomainService() {
+    protected DndDomainService<UniverseFolder> baseDndDomainService() {
         return baseDndDomainService;
     }
 

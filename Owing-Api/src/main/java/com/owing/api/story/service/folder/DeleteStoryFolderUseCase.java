@@ -3,13 +3,12 @@ package com.owing.api.story.service.folder;
 import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
 import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
-import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.service.StoryFolderDomainService;
-import com.owing.entity.folders.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +28,7 @@ public class DeleteStoryFolderUseCase extends DeleteFolderUseCase<StoryFolder> {
     }
 
     @Override
-    protected BaseDndDomainService<StoryFolder> baseDndDomainService() {
+    protected DndDomainService<StoryFolder> baseDndDomainService() {
         return baseDndDomainService;
     }
 

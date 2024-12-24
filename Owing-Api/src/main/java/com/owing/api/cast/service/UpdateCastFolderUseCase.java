@@ -6,7 +6,7 @@ import com.owing.api.common.util.MemberUtils;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.UpdateFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
@@ -22,7 +22,7 @@ public class UpdateCastFolderUseCase extends UpdateFolderUseCase<CastFolderNode>
     private final CastFolderNodeMapper castFolderNodeMapper;
 
     public void executeInfoUpdate(Long folderId, UpdateCastFolderInfo updateCastFolderInfo) {
-        CastFolderNode castFolderNode = castFolderNodeAdapter.findOneById(folderId);
+        CastFolderNode castFolderNode = castFolderNodeAdapter.findById(folderId);
         castFolderNodeDomainService.updateCastFolderNodeInfo(
                 castFolderNode,
                 updateCastFolderInfo.name(),
@@ -37,7 +37,7 @@ public class UpdateCastFolderUseCase extends UpdateFolderUseCase<CastFolderNode>
     }
 
     @Override
-    protected BaseDndDomainService<CastFolderNode> baseDndDomainService() {
+    protected DndDomainService<CastFolderNode> baseDndDomainService() {
         return this.castFolderNodeDomainService;
     }
 

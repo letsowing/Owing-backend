@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
-import com.owing.core.dnd.folder.model.BaseFolder;
+import com.owing.core.dnd.folder.model.DndFolder;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -48,7 +48,7 @@ public class FolderInfoResponse<T extends FileInfoResponse> implements DndInfoRe
 		this.files = files;
 	}
 
-	public static FolderInfoResponse from(BaseFolder entity) {
+	public static FolderInfoResponse from(DndFolder entity) {
 		List<FileInfoResponse> files = entity.getFiles().stream()
 			.map(FileInfoResponse::from)
 			.toList();

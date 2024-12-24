@@ -7,7 +7,7 @@ import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.CreateFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.BaseDndDomainService;
+import com.owing.core.dnd.base.service.DndDomainService;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -41,7 +41,7 @@ public class CreateCastFolderUseCase extends CreateFolderUseCase<CastFolderNode>
     }
 
     @Override
-    protected BaseDndDomainService<CastFolderNode> baseDndDomainService() {
+    protected DndDomainService<CastFolderNode> baseDndDomainService() {
         return this.castFolderDomainService;
     }
 
