@@ -4,12 +4,12 @@ spring:
 
   profiles:
     default: local
+    active: local
     include:
       - infrastructure
       - domain-entity
       - domain-node
       - common
-    active: local
 
 ---
 
