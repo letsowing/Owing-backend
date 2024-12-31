@@ -2,7 +2,7 @@ package com.owing.infrastructure.config.redis;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "redis")
+@ConfigurationProperties(prefix = "spring.data.redis")
 record RedisProperties(
         String host,
         String port,

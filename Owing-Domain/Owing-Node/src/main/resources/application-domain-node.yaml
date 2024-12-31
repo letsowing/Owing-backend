@@ -1,9 +1,25 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+    activate:
+      on-profile: local
 
   neo4j:
     uri: bolt://${NEO4J_HOST}:${NEO4J_PORT}
     authentication:
       username: ${NEO4J_USERNAME}
       password: ${NEO4J_PASSWORD}
+
+---
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+    activate:
+      on-profile: test
+
+  neo4j:
+    uri: bolt://${NEO4J_HOST_TEST}:${NEO4J_PORT_TEST}
+    authentication:
+      username: ${NEO4J_USERNAME_TEST}
+      password: ${NEO4J_PASSWORD_TEST}
