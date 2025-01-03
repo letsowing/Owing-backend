@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @DomainService
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 @RequiredArgsConstructor
 public class UniverseFolderDomainService extends BaseFolderDomainService<UniverseFolder> {
 
@@ -44,7 +44,7 @@ public class UniverseFolderDomainService extends BaseFolderDomainService<Univers
 		return orderingStrategy;
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
 		universeFolderRepository.restoreById(folderItemId);
 		trashCanItemIds

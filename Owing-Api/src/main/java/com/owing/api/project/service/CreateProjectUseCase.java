@@ -41,7 +41,7 @@ public class CreateProjectUseCase {
     private final UniverseFolderMapper universeFolderMapper;
     private final UniverseFolderDomainService universeFolderDomainService;
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public ProjectShortInfoResponse execute(AddProjectRequest addProjectRequest) {
         Member memberReference = memberUtils.getCurrentMemberReference();
 
