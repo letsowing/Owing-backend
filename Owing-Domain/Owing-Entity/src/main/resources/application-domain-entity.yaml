@@ -8,6 +8,7 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/owing
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -27,6 +28,7 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST_TEST}:${POSTGRES_PORT_TEST}/owing
     username: ${POSTGRES_USERNAME_TEST}
     password: ${POSTGRES_PASSWORD_TEST}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

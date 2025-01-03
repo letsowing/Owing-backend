@@ -5,11 +5,9 @@ spring:
   profiles:
     default: local
     active: local
-    include:
-      - infrastructure
-      - domain-entity
-      - domain-node
-      - common
+    group:
+      local: infrastructure, domain-entity, domain-node, common
+      test: infrastructure, domain-entity, domain-node, common
 
 ---
 
