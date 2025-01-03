@@ -15,7 +15,7 @@ import com.owing.entity.domains.universe.repository.UniverseRepository;
 import lombok.RequiredArgsConstructor;
 
 @DomainService
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 @RequiredArgsConstructor
 public class UniverseDomainService extends BaseFileDomainService<Universe, UniverseFolder> {
 
@@ -23,13 +23,13 @@ public class UniverseDomainService extends BaseFileDomainService<Universe, Unive
 	private final UniverseAdapter universeAdapter;
 	private final UniverseShiftOrderingStrategy orderingStrategy;
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public Universe createUniverse(Universe universe) {
 		Universe savedUniverse = universeRepository.save(universe);
 		return savedUniverse;
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public Universe updateUniverse(Universe oldUniverse, Universe newUniverse) {
 		Universe updatedUniverse = oldUniverse.updateUniverse(newUniverse);
 		return updatedUniverse;
