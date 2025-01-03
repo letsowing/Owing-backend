@@ -17,7 +17,7 @@ public class GenerateProjectImageUseCase {
 	private final ProjectMapper projectMapper;
 	private final OwingAiClient owingAiClient;
 
-	@Transactional(transactionManager = "transactionManager")
+	@Transactional(transactionManager = "jpaTransactionManager")
 	public ProjectImageResponse execute(GenerateProjectImageRequest generateProjectImageRequest) {
 
 		/* FeignClient 를 이용해 AI 서버로 이미지 생성 요청 */
