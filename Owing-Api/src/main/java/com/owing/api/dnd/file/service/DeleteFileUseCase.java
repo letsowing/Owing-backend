@@ -16,7 +16,7 @@ public abstract class DeleteFileUseCase<T extends BaseFile<F>, F extends BaseFol
     protected abstract TrashCanDomainService trashCanDomainService();
     protected abstract TrashCanMapper trashCanMapper();
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void execute(Long dndId) {
         // Long memberId = memberUtils.getCurrentMemberId();
         T entity = baseDndDomainService().getEntity(dndId);

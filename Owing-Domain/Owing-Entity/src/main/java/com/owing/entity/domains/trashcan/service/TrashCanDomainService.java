@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(transactionManager = "jpaTransactionManager")
 public class TrashCanDomainService {
 	private final TrashCanRepository trashCanRepository;
 	private final TrashCanFolderRepository trashCanFolderRepository;

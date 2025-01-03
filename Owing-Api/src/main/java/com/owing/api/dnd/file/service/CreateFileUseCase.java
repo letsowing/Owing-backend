@@ -20,7 +20,7 @@ public abstract class CreateFileUseCase<T extends BaseFile<F>, F extends BaseFol
     protected abstract BaseFileMapper<T, F> dndMapper();
     protected abstract BaseDndAdapter<F> folderAdapter();
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public DndInfoResponse execute(AddFileRequest dto) {
         F folder = folderAdapter().findById(dto.folderId());
         T entity = dndMapper().toEntity(dto, folder);
