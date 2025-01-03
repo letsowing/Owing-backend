@@ -45,7 +45,7 @@ public class UpdateStoryUseCase extends UpdateFileUseCase<Story, StoryFolder> {
         return dndMapper;
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void execute(Long id, UpdateStoryRequest dto){
         Story entity = baseDndDomainService.getEntity(id);
         Story newEntity = dndMapper.toEntity(dto);
