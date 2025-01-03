@@ -16,7 +16,7 @@ public abstract class CreateFolderUseCase<T extends BaseFolder> implements
     protected abstract BaseDndDomainService<T> baseDndDomainService();
     protected abstract BaseFolderMapper<T> dndMapper();
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public FolderInfoResponse execute(AddFolderRequest dto) {
         T entity = dndMapper().toEntity(dto);
         entity = baseDndDomainService().createEntity(entity);
