@@ -22,7 +22,7 @@ public class UpdateConnectionUseCase {
     private final CastNodeAdapter castNodeAdapter;
     private final CastNodeMapper castNodeMapper;
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public Optional<CastRelationshipInfoResponse> execute(Long relationshipId, UpdateCastRelationshipRequest updateRequest) {
         CastRelationshipProjection castRelationshipProjection = castNodeAdapter.findCastRelationshipById(relationshipId);
         CastRelationship castRelationship = castNodeMapper.toCastRelationship(castRelationshipProjection);

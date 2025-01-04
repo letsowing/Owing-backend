@@ -17,7 +17,7 @@ public class GenerateCastImageUseCase {
 	private final CastMapper castMapper;
 	private final OwingAiClient owingAiClient;
 
-	@Transactional(transactionManager = "transactionManager")
+	@Transactional(transactionManager = "jpaTransactionManager")
 	public CastImageResponse execute(GenerateCastImageRequest generateCastImageRequest) {
 
 		/* FeignClient 를 이용해 AI 서버로 이미지 생성 요청 */
