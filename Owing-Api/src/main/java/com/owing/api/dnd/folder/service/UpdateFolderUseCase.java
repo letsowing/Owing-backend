@@ -22,7 +22,7 @@ public abstract class UpdateFolderUseCase<T extends BaseFolder> implements
         T updatedEntity = baseDndDomainService().updateName(entity, newEntity);
     }
 
-    @Transactional("jpaTransactionManager")
+    @Transactional("jpaTransactionManager")  // TODO neo4jTransactionManager 와 switching이 되어야 할듯 합니다
     public void executeUpdatePosition(Long id, UpdateFolderPositionRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());
