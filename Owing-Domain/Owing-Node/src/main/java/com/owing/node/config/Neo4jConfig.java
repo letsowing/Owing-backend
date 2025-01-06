@@ -13,7 +13,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableNeo4jAuditing
-@EnableNeo4jRepositories("com.owing.node")
+@EnableNeo4jRepositories(
+        value = "com.owing.node",
+        transactionManagerRef = "neo4jTransactionManager"
+)
 public class Neo4jConfig {
 
     @Bean
@@ -21,8 +24,9 @@ public class Neo4jConfig {
         return org.neo4j.cypherdsl.core.renderer.Configuration.newConfig().withDialect(Dialect.NEO4J_5).build();
     }
 
+    // DB별 txManager를 구분하기 위해 별도의 Bean name으로 지정
     @Bean
-    protected PlatformTransactionManager transactionManager(Driver driver) {
+    protected PlatformTransactionManager neo4jTransactionManager(Driver driver) {
         return new Neo4jTransactionManager(driver);
     }
 }

@@ -38,7 +38,7 @@ public class StoryFolderDomainService extends BaseFolderDomainService<StoryFolde
 		return orderingStrategy;
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public void restore(Long folderItemId, List<Long> trashCanItemIds) {
 		storyFolderRepository.restoreById(folderItemId);
 		trashCanItemIds

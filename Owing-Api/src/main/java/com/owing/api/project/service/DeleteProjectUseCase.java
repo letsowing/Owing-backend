@@ -20,7 +20,7 @@ public class DeleteProjectUseCase {
 
     private final ProjectNodeDomainService projectNodeDomainService;
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void execute(Long projectId) {
         Long memberId = memberUtils.getCurrentMemberId();
         Project project = projectAdapter.findById(projectId);

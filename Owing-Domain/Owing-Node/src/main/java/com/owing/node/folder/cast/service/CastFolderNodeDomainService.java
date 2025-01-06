@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
 public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFolderNode> {
 
     private final CastFolderNodeAdapter castFolderNodeAdapter;
@@ -32,7 +32,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void updateCastFolderNodeInfo(CastFolderNode castFolderNode, String name, String description) {
         castFolderNode.updateTitle(name);
         castFolderNode.updateDescription(description);
@@ -41,7 +41,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
         neo4jTemplate.save(CastFolderNode.class).one(castFolderInfoProjection);
     }
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void restore(Long folderItemId, List<Long> trashCanItemIds) {
         castFolderNodeRepository.restoreById(folderItemId);
         trashCanItemIds
@@ -55,7 +55,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     }
 
     @Override
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void deleteEntity(CastFolderNode entity) {
         castFolderNodeRepository.deleteFolderById(entity.getId());
         orderingStrategy().reorderEntity(entity);
@@ -65,7 +65,7 @@ public class CastFolderNodeDomainService extends BaseFolderDomainService<CastFol
     }
 
     @Override
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public CastFolderNode updateName(CastFolderNode entity, CastFolderNode newEntity) {
         entity.updateTitle(newEntity.getName());
         CastFolderTitleProjection titleProjection = CastFolderTitleProjection.from(entity);

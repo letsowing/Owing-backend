@@ -98,13 +98,13 @@ public class CastNodeAdapter extends BaseFileAdapter<CastNode, CastFolderNode> {
         return castNode;
     }
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     @Override
     public CastNode save(CastNode entity) {
         return this.savePosition(entity);
     }
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void incrementPositionAfter(long targetPosition, Long projectId) {
         castNodeRepository.incrementPositionAfter(targetPosition, projectId);
     }

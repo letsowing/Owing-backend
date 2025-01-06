@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Adaptor
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 public class MemberAdapter {
 
     private final MemberRepository memberRepository;
