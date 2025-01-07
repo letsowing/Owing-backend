@@ -18,14 +18,14 @@ public abstract class UpdateFileUseCase<T extends BaseFile<F>, F extends BaseFol
     protected abstract BaseDndDomainService<F> fBaseDndDomainService();
     protected abstract BaseFileMapper<T, F> dndMapper();
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void executeUpdateTitle(Long id, UpdateFileTitleRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T newEntity = dndMapper().toEntity(dto);
         T updatedEntity = baseDndDomainService().updateName(entity, newEntity);
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
         T entity = baseDndDomainService().getEntity(id);
         T beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());

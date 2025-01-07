@@ -54,12 +54,12 @@ public class StoryDomainService extends BaseFileDomainService<Story, StoryFolder
 		 return dndAdapter.findByProjectId(projectId).stream().map(s -> StoryVO.from(s, Jsoup.parse(s.getContent()).text())).toList();
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public void restoreById(Long itemId) {
 		storyRepository.restoreById(itemId);
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public void update(Story oldStory, Story newStory) {
 		oldStory.update(newStory);
 	}

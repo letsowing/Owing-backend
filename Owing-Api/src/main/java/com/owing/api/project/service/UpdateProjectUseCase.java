@@ -21,7 +21,7 @@ public class UpdateProjectUseCase {
     private final ProjectMapper projectMapper;
     private final ProjectAdapter projectAdapter;
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void execute(Long projectId, UpdateProjectRequest updateProjectRequest) {
         Long memberId = memberUtils.getCurrentMemberId();
         Project oldProject = projectAdapter.findById(projectId);

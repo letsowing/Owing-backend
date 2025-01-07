@@ -45,6 +45,9 @@ subprojects {
 
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+		// Dotenv 파일 관리
+		implementation 'io.github.cdimascio:dotenv-java:3.1.0'
 	}
 
 	test {

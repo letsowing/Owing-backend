@@ -26,7 +26,7 @@ public class CreateUniverseUseCase extends CreateFileUseCase<Universe, UniverseF
 	private final UniverseFolderAdapter universeFolderAdaptor;
 	private final UniverseMapper universeMapper;
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public UniverseShortInfoResponse execute(AddUniverseRequest addUniverseRequest) {
 		UniverseFolder universeFolder = universeFolderAdaptor.findById(addUniverseRequest.folderId());
 		Universe universe = universeMapper.toEntity(addUniverseRequest, universeFolder);

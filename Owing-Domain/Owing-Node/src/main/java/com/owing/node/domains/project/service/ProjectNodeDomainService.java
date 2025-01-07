@@ -9,18 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
 public class ProjectNodeDomainService {
 
     private final ProjectNodeRepository projectNodeRepository;
     private final ProjectNodeAdapter projectNodeAdapter;
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public ProjectNode createProjectNode(ProjectNode projectNode) {
         return projectNodeRepository.save(projectNode);
     }
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void deleteProjectNode(Long projectId) {
         ProjectNode projectNode = projectNodeAdapter.findById(projectId);
         projectNode.delete();

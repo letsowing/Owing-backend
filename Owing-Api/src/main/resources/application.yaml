@@ -3,11 +3,28 @@ spring:
     name: Owing-Api
 
   profiles:
-    include:
-      - infrastructure
-      - domain-entity
-      - domain-node
-      - common
+    default: local
+    active: local
+    group:
+      local: infrastructure, domain-entity, domain-node, common
+      test: infrastructure, domain-entity, domain-node, common
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+---
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

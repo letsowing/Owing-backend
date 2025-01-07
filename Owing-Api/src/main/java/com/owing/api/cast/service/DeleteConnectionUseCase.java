@@ -22,7 +22,7 @@ public class DeleteConnectionUseCase {
     private final CastNodeAdapter castNodeAdapter;
     private final CastNodeMapper castNodeMapper;
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void execute(Long relationshipId) {
         CastRelationshipProjection castRelationshipProjection = castNodeAdapter.findCastRelationshipById(relationshipId);
         CastRelationship castRelationship = castNodeMapper.toCastRelationship(castRelationshipProjection);

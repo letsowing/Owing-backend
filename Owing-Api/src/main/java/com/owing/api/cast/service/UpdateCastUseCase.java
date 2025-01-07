@@ -27,7 +27,7 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
     private final MemberUtils memberUtils;
     private final CastFolderNodeDomainService castFolderNodeDomainService;
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void executeUpdateInfo(Long castId, UpdateCastInfoRequest updateCastInfoRequest) {
         CastNode castNode = castNodeDomainService.getEntity(castId);
 
@@ -58,7 +58,7 @@ public class UpdateCastUseCase extends UpdateFileUseCase<CastNode, CastFolderNod
 
     // relationship 수정을 위한 재정의
     @Override
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     public void executeUpdatePosition(Long id, UpdateFilePositionRequest dto) {
         CastNode entity = baseDndDomainService().getEntity(id);
         CastNode beforeEntity = baseDndDomainService().getOptionalEntity(dto.beforeId());

@@ -13,18 +13,18 @@ import java.time.LocalDateTime;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 public class ProjectDomainService {
 
     private final ProjectAdapter projectAdapter;
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public Project createProject(Project project) {
         Project savedProject = projectAdapter.save(project);
         return savedProject;
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
         oldProject.getProjectInfo().updateProjectInfo(projectInfo);
         projectAdapter.save(oldProject);
@@ -34,12 +34,12 @@ public class ProjectDomainService {
         return projectAdapter.findAllByMemberId(memberId, pageable);
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void deleteProject(Project project) {
         projectAdapter.deleteProject(project);
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public void updateAccessedAt(Project project, LocalDateTime localDateTime) {
         project.updateAccessedAt(localDateTime);
         projectAdapter.save(project);

@@ -8,7 +8,6 @@ import com.owing.node.folder.cast.error.exception.CastFolderNodeNotFoundExceptio
 import com.owing.node.folder.cast.model.CastFolderNode;
 import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
-import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +48,7 @@ public class CastFolderNodeAdapter extends BaseFolderAdapter<CastFolderNode> {
         return castFolderNode;
     }
 
-    @Transactional
+    @Transactional("neo4jTransactionManager")
     @Override
     public CastFolderNode save(CastFolderNode entity) {
         return this.savePosition(entity);

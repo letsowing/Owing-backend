@@ -27,7 +27,7 @@ public class UpdateUniverseUseCase extends UpdateFileUseCase<Universe, UniverseF
 	private final UniverseMapper dndMapper;
 
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public UniverseShortInfoResponse execute(Long universeId, UpdateUniverseRequest updateUniverseRequest) {
 
 		Universe oldUniverse = baseDndDomainService.getEntity(universeId);
