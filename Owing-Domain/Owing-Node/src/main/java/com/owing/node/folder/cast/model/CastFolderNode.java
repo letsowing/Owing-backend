@@ -65,6 +65,7 @@ public class CastFolderNode extends BaseFolderNode {
         this.project = projectNode;
     }
 
+    @Deprecated
     public boolean updateDescription(String description) {
         if (ObjectUtils.isEmpty(description)) {
             return false;
