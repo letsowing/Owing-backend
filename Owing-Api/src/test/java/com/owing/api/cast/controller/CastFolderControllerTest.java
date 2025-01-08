@@ -1,7 +1,10 @@
 package com.owing.api.cast.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
+import com.owing.common.error.code.GlobalErrorCode;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -33,7 +37,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @Transactional("jpaTransactionManager")
@@ -59,6 +66,8 @@ class CastFolderControllerTest {
     private CastFolderNodeRepository castFolderNodeRepository;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @DynamicPropertySource
     static void loadProperties(DynamicPropertyRegistry registry) {
@@ -133,6 +142,83 @@ class CastFolderControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode));
+    }
+
+    @DisplayName("CastFolder 정보를 수정한다.")
+    @Test
+    void updateCastFolderInfo() throws Exception{
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+
+        UpdateCastFolderInfo body = new UpdateCastFolderInfo("updated name", "updated description");
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        Optional<CastFolderNode> updatedFolder = castFolderNodeRepository.findById(savedFolder.getId());
+        assertThat(updatedFolder).isPresent();
+        assertThat(updatedFolder.get().getId()).isEqualTo(savedFolder.getId());
+        assertThat(updatedFolder.get().getName()).isEqualTo(body.name());
+        assertThat(updatedFolder.get().getDescription()).isEqualTo(body.description());
+    }
+
+    @DisplayName("CastFolder 정보를 수정할 때에는 null이 아닌 이름이 필수입니다.")
+    @Test
+    void updateCastFolderInfoWithNullName() throws Exception{
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+
+        UpdateCastFolderInfo body = new UpdateCastFolderInfo(null, "updated description");
+        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("CastFolder 이름은 필수입니다."))
+        ;
+    }
+
+    @DisplayName("CastFolder 정보를 수정할 때에는 blank가 아닌 이름이 필수입니다.")
+    @Test
+    void updateCastFolderInfoWithBlankName() throws Exception{
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+
+        UpdateCastFolderInfo body = new UpdateCastFolderInfo(" ", "updated description");
+        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("CastFolder 이름은 필수입니다."))
+        ;
     }
 
     private CastFolderNode createCastFolder(ProjectNode projectNode, String folderName, Long position) {
