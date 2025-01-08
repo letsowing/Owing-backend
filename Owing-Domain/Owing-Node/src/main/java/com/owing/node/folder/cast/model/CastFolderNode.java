@@ -42,8 +42,9 @@ public class CastFolderNode extends BaseFolderNode {
     private List<CastNode> cast = new ArrayList<>();
 
     @Builder
-    public CastFolderNode(String name) {
+    public CastFolderNode(String name, Long position) {
         this.name = name;
+        this.position = position;
     }
 
     @Override

@@ -16,19 +16,19 @@ import com.owing.node.folder.cast.model.CastFolderNode;
 public class CastFolderNodeMapper extends BaseFolderMapper<CastFolderNode> {
 
     public CastFolderNode toEntity(String name) {
-        return new CastFolderNode(name);
+        return CastFolderNode.builder()
+                .name(name)
+                .build();
     }
 
     @Override
     public CastFolderNode toEntity(AddFolderRequest addDndRequest) {
-        return new CastFolderNode(addDndRequest.name());
+        return this.toEntity(addDndRequest.name());
     }
 
     @Override
     public CastFolderNode toEntity(UpdateFolderTitleRequest updateDndRequest) {
-        return CastFolderNode.builder()
-                .name(updateDndRequest.name())
-                .build();
+        return this.toEntity(updateDndRequest.name());
     }
 
     public CastFolderResponse toFolderResponse(CastFolderNode castFolderNode, List<CastFileResponse> castFileResponseList) {
