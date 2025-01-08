@@ -10,7 +10,9 @@ public enum GlobalErrorCode implements OwingErrorCode{
 	ILLEGAL_PATH(HttpStatus.BAD_REQUEST, "003", "잘못된 주소입니다."),
 	ILLEGAL_PATH_ARGS(HttpStatus.BAD_REQUEST, "004", "잘못된 주소 ARGS 입력값입니다."),
 	JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "005", "JSON 파싱 오류"),
-	JSON_SERIALIZATION_ERROR(HttpStatus.BAD_REQUEST, "006", "JSON 직렬화 오류");
+	JSON_SERIALIZATION_ERROR(HttpStatus.BAD_REQUEST, "006", "JSON 직렬화 오류"),
+	ILLEGAL_ARGUMENT(HttpStatus.BAD_REQUEST, "007", "올바르지 않은 인자입니다."),
+	;
 
 	private final HttpStatus status;
 	private final String code;
