@@ -1,10 +1,20 @@
-package com.owing.api.universe;
+package com.owing.api.universe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.OwingApiApplication;
+import com.owing.api.common.util.JwtUtils;
+import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
+import com.owing.api.project.service.CreateProjectUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
+import com.owing.api.universe.model.mapper.UniverseFolderMapper;
+import com.owing.api.universe.service.folder.CreateUniverseFolderUseCase;
+import com.owing.core.dnd.base.repository.BaseDndRepository;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.member.model.OauthProvider;
+import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.entity.domains.project.repository.ProjectRepository;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
@@ -22,8 +32,11 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.owing.api.common.constant.TokenConst.BEARER_TYPE_SPACE;
+import static com.owing.api.common.constant.TokenConst.REQUEST_HEADER_AUTH;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
@@ -41,20 +54,35 @@ class UniverseIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
     private UniverseRepository universeRepository;
 
     @Autowired
     private UniverseFolderRepository universeFolderRepository;
 
-    private Long testUniverseId;
-    private UniverseFolder testFolder;
+    @Autowired
+    private MemberRepository memberRepository;
 
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String FIXED_JWT_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwibmlja25hbWUiOiLsobDrsJXsgqwiLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbS9pbWFnZXM_cT10Ym46QU5kOUdjUmFfaUdQcDhsRUo1ZWpaSEg3a1dfS1FCLTk4UkRab2Ewb0ZBJnMiLCJleHAiOjQ4ODY3MDQ2NzV9.04woMcXQTjKEG4bf4C1fmJeOic7DFYaElectsbDKlFtKtH7IsKZkxzSSbPtCWDvQG9ZRuDRpRgMZwlQqVsjC0w";
-    private static final int NO_CONTENT = 204;
-    private static final int OK = 200;
-    private static final int CREATED = 201;
-    private static final int NOT_FOUND = 404;
+    @Autowired
+    private BaseDndRepository<UniverseFolder> dndRepository;
+
+    @Autowired
+    private CreateUniverseFolderUseCase createUniverseFolderUseCase;
+
+    @Autowired
+    private CreateProjectUseCase createProjectUseCase;
+
+    @Autowired
+    private UniverseFolderMapper universeFolderMapper;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    private String jwtToken;
+    private long testUniverseId;
+    private UniverseFolder testFolder;
 
     @DynamicPropertySource
     static void loadProperties(DynamicPropertyRegistry registry) {
@@ -71,6 +99,40 @@ class UniverseIntegrationTest {
     @BeforeEach
     void setUp() {
 
+        // test 맴버 생성
+        Member member = Member.builder()
+                .id(1L)
+                .email("user@example.com")
+                .password("securePassword123")
+                .name("홍길동")
+                .nickname("hongGilDong")
+                .phoneNumber("010-1234-5678")
+                .profileUrl("http://example.com/profile/honggildong")
+                .provider(OauthProvider.KAKAO) // 예시로 GitHub OAuth 사용
+                .build();
+
+        memberRepository.save(member);
+
+        jwtToken = BEARER_TYPE_SPACE + jwtUtils.generateAccessToken(member);
+
+//        AddProjectRequest addProjectRequest = new AddProjectRequest(
+//                "Test Project",
+//                "This is a test project description",
+//                Category.OTHER,
+//                Set.of(Genre.ACTION, Genre.ADVENTURE),
+//                "http://example.com/cover.jpg"
+//        );
+//
+//        createProjectUseCase.execute(addProjectRequest);
+
+        // 기본 폴더를 생성하는 AddFolderRequest 생성
+        AddFolderRequest addFolderRequest = AddFolderRequest.initialFolder(1L);
+
+        UniverseFolder testEntity = universeFolderMapper.toEntity(addFolderRequest);
+
+        dndRepository.save(testEntity);
+
+        // Test 폴더 저장
         testFolder = UniverseFolder.builder()
                 .id(1L)
                 .name("Test Folder")
@@ -83,6 +145,7 @@ class UniverseIntegrationTest {
 
     @AfterEach
     void clean() {
+        projectRepository.deleteAll();
         universeRepository.deleteAll();
         universeFolderRepository.deleteAll();
     }
@@ -97,6 +160,12 @@ class UniverseIntegrationTest {
     @DisplayName("새로운 세계관 생성 기능 테스트")
     void testCreateUniverse() throws Exception {
 
+        UniverseFolder testTestFolder = universeFolderRepository.findById(testFolder.getId())
+                .orElseThrow(() -> new RuntimeException("Test folder not found"));
+
+        System.out.println(testTestFolder.getName());
+        System.out.println(testTestFolder.getDescription());
+
         String requestUri = "/v1/universes";
 
         // UniverseFolder 객체가 있어야 findById 가능
@@ -109,11 +178,15 @@ class UniverseIntegrationTest {
 
         String jsonContent = new ObjectMapper().writeValueAsString(request);
 
-        //todo 수정 예정 repository 테스트로
         mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("New Universe"))
+                .andExpect(jsonPath("$.description").value("This is a test universe"))
+                .andExpect(jsonPath("$.imageUrl").value("http://example.com/new_universe_image.png"))
+                .andExpect(jsonPath("$.folderId").value(testFolder.getId()));
     }
 
     @Test
@@ -133,6 +206,7 @@ class UniverseIntegrationTest {
 
         //todo 수정 예정 repository 테스트로
         mockMvc.perform(put(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -145,7 +219,7 @@ class UniverseIntegrationTest {
         String requestUri = "/v1/universes/files/png";
 
         mockMvc.perform(get(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN))
+                    .header(REQUEST_HEADER_AUTH, jwtToken))
                 .andExpect(status().isOk());
     }
 
@@ -163,6 +237,7 @@ class UniverseIntegrationTest {
         String jsonContent = new ObjectMapper().writeValueAsString(request);
 
         mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
