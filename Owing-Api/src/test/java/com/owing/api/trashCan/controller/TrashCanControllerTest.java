@@ -1,8 +1,22 @@
 package com.owing.api.trashCan.controller;
 
-import com.owing.OwingApiApplication;
+import com.owing.api.common.util.JwtUtils;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.member.model.OauthProvider;
+import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.entity.domains.project.model.Category;
+import com.owing.entity.domains.project.model.Genre;
+import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.project.model.ProjectInfo;
+import com.owing.entity.domains.project.repository.ProjectRepository;
+import com.owing.entity.domains.story.model.Story;
+import com.owing.entity.domains.story.model.StoryContent;
+import com.owing.entity.domains.story.model.StoryFolder;
+import com.owing.entity.domains.story.repository.StoryFolderRepository;
+import com.owing.entity.domains.story.repository.StoryRepository;
 import com.owing.entity.domains.trashcan.model.TrashCan;
 import com.owing.entity.domains.trashcan.repository.TrashCanRepository;
+import com.owing.entity.folders.trashcan.model.FolderType;
 import com.owing.entity.folders.trashcan.model.TrashCanFolder;
 import com.owing.entity.folders.trashcan.repository.TrashCanFolderRepository;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -10,7 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -19,21 +33,24 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 
+import static com.owing.api.common.constant.TokenConst.BEARER_TYPE_SPACE;
+import static com.owing.api.common.constant.TokenConst.REQUEST_HEADER_AUTH;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(
-        classes = OwingApiApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest
 @AutoConfigureMockMvc
-@ConfigurationPropertiesScan
-@Transactional
+@Transactional("jpaTransactionManager")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class TrashCanControllerTest {
 
     @Autowired
@@ -43,19 +60,42 @@ class TrashCanControllerTest {
     private TrashCanRepository trashCanRepository;
 
     @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private StoryRepository storyRepository;
+
+    @Autowired
+    private StoryFolderRepository storyFolderRepository;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private TrashCanFolderRepository trashCanFolderRepository;
 
-    private static final String AUTHORIZATION = "Authorization";
-    // 제공된 고정 JWT 토큰
-    private static final String FIXED_JWT_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwibmlja25hbWUiOiLsobDrsJXsgqwiLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbS9pbWFnZXM_cT10Ym46QU5kOUdjUmFfaUdQcDhsRUo1ZWpaSEg3a1dfS1FCLTk4UkRab2Ewb0ZBJnMiLCJleHAiOjQ4ODY3MDQ2NzV9.04woMcXQTjKEG4bf4C1fmJeOic7DFYaElectsbDKlFtKtH7IsKZkxzSSbPtCWDvQG9ZRuDRpRgMZwlQqVsjC0w";
-    private static final int NO_CONTENT = 204;
-    private static final int OK = 200;
-    private static final int CREATED = 201;
-    private static final int NOT_FOUND = 404;
-
-    private Long userId;
+    private String jwtToken;
     private Long trashCanId;
     private String randomString;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private DataSource dataSource; // DataSource 주입 추가
+
+    // 데이터베이스 정보 출력 메서드 추가
+    private void printDatabaseInfo() {
+        try (Connection connection = dataSource.getConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            String dbProductName = metaData.getDatabaseProductName();
+            String dbProductVersion = metaData.getDatabaseProductVersion();
+            System.out.println("JPA가 사용 중인 데이터베이스: " + dbProductName + " " + dbProductVersion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("데이터베이스 정보를 가져오는 데 실패했습니다.");
+        }
+    }
 
     // @DynamicPropertySource를 사용하여 .env 파일 로드
     @DynamicPropertySource
@@ -72,20 +112,78 @@ class TrashCanControllerTest {
 
     @BeforeEach
     void setUp() {
+        printDatabaseInfo();
         // 랜덤 문자열 생성
         randomString = UUID.randomUUID().toString().substring(0, 6);
 
-        userId = 1L;
+        // StoryFolder 생성 및 저장
+        StoryFolder storyFolder = StoryFolder.builder()
+                .projectId(1L)
+                .name("Sample Story Folder " + randomString)
+                .description("This is a sample story folder description")
+                .position(1L)
+                .build();
+        storyFolderRepository.save(storyFolder);
 
-        // TrashCanFolder 생성 및 저장
+        // StoryContent 생성
+        StoryContent storyContent = StoryContent.builder()
+                .content("This is a sample story content. " + randomString)
+                .build();
+
+        // Story 엔티티 생성 및 저장
+        Story story = Story.builder()
+                .name("Sample Story " + randomString)
+                .description("This is a sample story description")
+                .position(1L)
+                .textCount(100)
+                .folder(storyFolder)
+                .storyContent(storyContent)
+                .build();
+        storyRepository.save(story);
+
+        // test 맴버 생성
+        Member member = Member.builder()
+                .email("user@example.com")
+                .password("securePassword123")
+                .name("홍길동")
+                .nickname("honggildong")
+                .phoneNumber("010-1234-5678")
+                .profileUrl("http://example.com/profile/honggildong")
+                .provider(OauthProvider.KAKAO) // 예시로 GitHub OAuth 사용
+                .build();
+
+        memberRepository.save(member);
+
+        assertThat(member.getId()).isNotNull();
+
+        jwtToken = BEARER_TYPE_SPACE + jwtUtils.generateAccessToken(member);
+
+        // 1. Project 먼저 저장
+        Project project = Project.builder()
+                .projectInfo(ProjectInfo.builder()
+                        .title("Test Project Title")
+                        .description("Test Project Description")
+                        .category(Category.ESSAY)
+                        .genres(Set.of(Genre.ACTION))
+                        .coverUrl("http://test-cover.url")
+                        .build())
+                .member(member)
+                .build();
+        projectRepository.save(project);  // 먼저 저장
+
+        // 2. TrashCanFolder 저장
         TrashCanFolder trashCanFolder = TrashCanFolder.builder()
+                .itemId(story.getId())
+                .tableName(FolderType.CAST)
                 .name("Test Folder " + randomString)
+                .project(project)
+                .trashCanList(new ArrayList<>())
                 .build();
         trashCanFolderRepository.save(trashCanFolder);
 
         // TrashCan 엔티티 생성 및 저장
         TrashCan trashCan = TrashCan.builder()
-                .itemId(100L) // 예시 itemId, 실제 값으로 수정
+                .itemId(story.getId()) // 예시 itemId, 실제 값으로 수정
                 .name("Sample Trash Name " + randomString)
                 .description("Sample Trash Description")
                 .imageUrl("http://example.com/image.jpg")
@@ -95,9 +193,6 @@ class TrashCanControllerTest {
 
         // TRASHCAN_ID 설정 (ID를 인코딩)
         trashCanId = trashCan.getId();
-
-        //todo trashCanId가 null로 설정되어서 해결해야 함
-        System.out.println(trashCanId);
     }
 
     @Test
@@ -114,7 +209,7 @@ class TrashCanControllerTest {
 
         // when & then
         mockMvc.perform(delete(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
@@ -127,7 +222,7 @@ class TrashCanControllerTest {
 
         // when & then
         mockMvc.perform(post(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
@@ -139,9 +234,9 @@ class TrashCanControllerTest {
         String requestUri = "/v1/trashcans/" + trashCanId + "/story";
 
         // when
-        String expectedContent = "Sample Trash Content"; // 실제 기대하는 내용으로 수정
+        String expectedContent = "This is a sample story"; // 실제 기대하는 내용으로 수정
         mockMvc.perform(get(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getContentAsString())
@@ -155,9 +250,9 @@ class TrashCanControllerTest {
         String requestUri = "/v1/trashcans/" + trashCanId + "/cast";
 
         // when
-        String expectedContent = "Sample Trash Content"; // 실제 기대하는 내용으로 수정
+        String expectedContent = "This is a sample cast"; // 실제 기대하는 내용으로 수정
         mockMvc.perform(get(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getContentAsString())
@@ -171,9 +266,9 @@ class TrashCanControllerTest {
         String requestUri = "/v1/trashcans/" + trashCanId + "/universe";
 
         // when
-        String expectedContent = "Sample Trash Content"; // 실제 기대하는 내용으로 수정
+        String expectedContent = "This is a sample universe"; // 실제 기대하는 내용으로 수정
         mockMvc.perform(get(requestUri)
-                        .header(AUTHORIZATION, FIXED_JWT_TOKEN)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getContentAsString())
