@@ -2,6 +2,7 @@ package com.owing.api.cast.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
 import com.owing.common.error.code.GlobalErrorCode;
@@ -13,6 +14,7 @@ import com.owing.entity.domains.project.model.Genre;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import com.owing.entity.domains.project.repository.ProjectRepository;
+import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.Coordinate;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.domains.project.model.ProjectNode;
@@ -41,7 +43,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 //@Transactional("jpaTransactionManager")
@@ -53,6 +58,7 @@ class CastControllerTest {
 
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER_TYPE_SPACE = "Bearer ";
+    private static final String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
 
     @Autowired
     private MockMvc mockMvc;
@@ -185,7 +191,6 @@ class CastControllerTest {
                 null,
                 null
         );
-        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
@@ -219,7 +224,6 @@ class CastControllerTest {
                 null,
                 null
         );
-        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
@@ -252,7 +256,7 @@ class CastControllerTest {
                 null,
                 null
         );
-        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
@@ -266,6 +270,96 @@ class CastControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("캐릭터의 나이는 음수일 수 없습니다."))
         ;
+    }
+
+    @DisplayName("cast 정보를 수정한다.")
+    @Test
+    void updateCastInfo() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode savedCast = createCast(savedFolder);
+        UpdateCastInfoRequest request = new UpdateCastInfoRequest(
+                savedFolder.getId(),
+                "이름 업데이트",
+                0L,
+                "성별 업데이트",
+                "역할 업데이트",
+                "설명 업데이트",
+                "http://update-test"
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/%d", savedCast.getId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+        ;
+
+        Optional<CastNode> optionalUpdatedCast = castNodeRepository.findById(savedCast.getId());
+        assertThat(optionalUpdatedCast).isPresent();
+        CastNode updatedCast = optionalUpdatedCast.get();
+        assertThat(updatedCast.getName()).isEqualTo(request.name());
+        assertThat(updatedCast.getAge()).isEqualTo(request.age());
+        assertThat(updatedCast.getGender()).isEqualTo(request.gender());
+        assertThat(updatedCast.getRole()).isEqualTo(request.role());
+        assertThat(updatedCast.getDescription()).isEqualTo(request.description());
+        assertThat(updatedCast.getImageUrl()).isEqualTo(request.imageUrl());
+    }
+
+    @DisplayName("cast 정보를 수정할 때 이름, 나이, 역할은 필수이다.")
+    @CsvSource({
+            "   ,   1,   역할,    캐릭터의 이름은 필수입니다.",
+            "이름,    ,   역할,    캐릭터의 나이는 필수입니다.",
+            "이름,   1,      ,    캐릭터의 역할은 필수입니다.",
+    })
+    @ParameterizedTest
+    void updateCastInfoWithoutNameOrAgeOrRole(String name, Long age, String role, String expectedDescription) throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode savedCast = createCast(savedFolder);
+        UpdateCastInfoRequest request = new UpdateCastInfoRequest(
+                savedFolder.getId(),
+                name,
+                age,
+                "성별 업데이트",
+                role,
+                "설명 업데이트",
+                "http://update-test"
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/%d", savedCast.getId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedDescription))
+        ;
+    }
+
+
+    private CastNode createCast(CastFolderNode castFolderNode) {
+        CastNode castNode = CastNode.builder()
+                .name("캐릭터 이름")
+                .age(100L)
+                .gender("캐릭터 성별")
+                .role("캐릭터 직업, 역할")
+                .description("캐릭터 설명")
+                .build();
+        castNode.connectFolder(castFolderNode);
+        return castNodeRepository.save(castNode);
     }
 
     private CastFolderNode createCastFolder(ProjectNode projectNode, String folderName, Long position) {
