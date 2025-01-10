@@ -1,0 +1,310 @@
+package com.owing.api.cast.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.common.util.JwtUtils;
+import com.owing.api.project.model.mapper.ProjectNodeMapper;
+import com.owing.common.error.code.GlobalErrorCode;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.member.model.OauthProvider;
+import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.entity.domains.project.model.Category;
+import com.owing.entity.domains.project.model.Genre;
+import com.owing.entity.domains.project.model.Project;
+import com.owing.entity.domains.project.model.ProjectInfo;
+import com.owing.entity.domains.project.repository.ProjectRepository;
+import com.owing.node.domains.cast.model.Coordinate;
+import com.owing.node.domains.cast.repository.CastNodeRepository;
+import com.owing.node.domains.project.model.ProjectNode;
+import com.owing.node.domains.project.repository.ProjectNodeRepository;
+import com.owing.node.folder.cast.model.CastFolderNode;
+import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+
+@ActiveProfiles("test")
+//@Transactional("jpaTransactionManager")
+@Transactional("neo4jTransactionManager")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureMockMvc
+@SpringBootTest
+class CastControllerTest {
+
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER_TYPE_SPACE = "Bearer ";
+
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private CastFolderNodeRepository castFolderNodeRepository;
+    @Autowired
+    private ProjectNodeMapper projectNodeMapper;
+    @Autowired
+    private ProjectNodeRepository projectNodeRepository;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private CastNodeRepository castNodeRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @DynamicPropertySource
+    static void loadProperties(DynamicPropertyRegistry registry) {
+        Dotenv dotenv = Dotenv.configure()
+                .directory("../")
+                .filename(".env") // .env 파일의 경로를 필요에 따라 지정
+                .ignoreIfMissing() // .env 파일이 없으면 무시
+                .load();
+
+        dotenv.entries().forEach(entry -> {
+            registry.add(entry.getKey(), entry.getValue()::toString);
+        });
+    }
+
+    @AfterEach
+    void cleanDatabase() {
+        projectRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
+//        castNodeRepository.deleteAll();
+//        castFolderNodeRepository.deleteAll();
+//        projectNodeRepository.deleteAll();
+    }
+
+    @DisplayName("cast를 생성한다.")
+    @Test
+    void createCast() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+
+        CreateCastRequest requestBody = new CreateCastRequest(
+                savedFolder.getId(),
+                "캐릭터 이름",
+                0L,
+                "캐릭터 성별",
+                "캐릭터 직업, 역할",
+                "캐릭터 설명",
+                "http://test-image-url/test-primary-key",
+                new Coordinate(  // 내부에서 무조건 기본값(0, 0)으로 초기화됨
+                        100,
+                        100
+                )
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(requestBody.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(requestBody.age()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(requestBody.gender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(requestBody.description()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrl").value(requestBody.imageUrl()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.coordinate.x").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.coordinate.y").value(0))
+        ;
+    }
+
+    @DisplayName("cast 생성시 coordinate를 입력하지 않으면 기본값(0, 0)으로 저장된다.")
+    @Test
+    void createCastWithoutCoordinate() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+
+        CreateCastRequest requestBody = new CreateCastRequest(
+                savedFolder.getId(),
+                "캐릭터 이름",
+                0L,
+                "캐릭터 성별",
+                "캐릭터 직업, 역할",
+                "캐릭터 설명",
+                null,
+                null
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(requestBody.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.coordinate.x").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.coordinate.y").value(0))
+        ;
+    }
+
+    @DisplayName("cast 생성시 folderId는 필수이다.")
+    @Test
+    void createCastWithoutFolderId() throws Exception {
+        // given
+        Member member = createMember("member1");
+        CreateCastRequest requestBody = new CreateCastRequest(
+                null,
+                "캐릭터 이름",
+                0L,
+                "캐릭터 성별",
+                "캐릭터 직업, 역할",
+                "캐릭터 설명",
+                null,
+                null
+        );
+        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("소속되는 folderId는 필수입니다."))
+        ;
+    }
+
+    @DisplayName("cast 생성시 blank가 아닌 이름이 필수이다.")
+    @NullSource @ValueSource(strings = {"", " "})
+    @ParameterizedTest
+    void createCastWithBlankName(String blankCastName) throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CreateCastRequest requestBody = new CreateCastRequest(
+                savedFolder.getId(),
+                blankCastName,
+                0L,
+                "캐릭터 성별",
+                "캐릭터 직업, 역할",
+                "캐릭터 설명",
+                null,
+                null
+        );
+        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("캐릭터의 이름은 필수입니다."))
+        ;
+    }
+
+    @DisplayName("cast 생성시 age는 0 이상이 필수입니다.")
+    @Test
+    void createCastWithNegativeAge() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CreateCastRequest requestBody = new CreateCastRequest(
+                savedFolder.getId(),
+                "캐릭터 이름",
+                -1L,
+                "캐릭터 성별",
+                "캐릭터 직업, 역할",
+                "캐릭터 설명",
+                null,
+                null
+        );
+        String expectedErrorCode = GlobalErrorCode.ILLEGAL_ARGUMENT.getCode();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("캐릭터의 나이는 음수일 수 없습니다."))
+        ;
+    }
+
+    private CastFolderNode createCastFolder(ProjectNode projectNode, String folderName, Long position) {
+        CastFolderNode castFolderNode = CastFolderNode.builder()
+                .name(folderName)
+                .position(position)
+                .build();
+        castFolderNode.connectProject(projectNode);
+        return castFolderNodeRepository.save(castFolderNode);
+    }
+
+    private ProjectNode createProject(Member savedMember) {
+        if (savedMember.getId() == null) {
+            throw new IllegalArgumentException("영속화된 멤버가 필요합니다.");
+        }
+        Project project = Project.builder()
+                .projectInfo(new ProjectInfo("test_title", "test_desc", Category.ESSAY, Set.of(Genre.ADVENTURE), null))
+                .member(savedMember)
+                .build();
+        Project savedProject = projectRepository.save(project);
+
+        ProjectNode nodeProject = projectNodeMapper.toNode(savedProject.getId());
+        return projectNodeRepository.save(nodeProject);
+    }
+
+    private Member createMember(String memberName) {
+        Member member = Member.builder()
+                .email("test")
+                .password("1234")
+                .name(memberName)
+                .nickname("nickname")
+                .phoneNumber("")
+                .provider(OauthProvider.GOOGLE)
+                .build();
+        return memberRepository.save(member);
+    }
+
+    private String getAccessToken(Member member) {
+        return BEARER_TYPE_SPACE + jwtUtils.generateAccessToken(member);
+    }
+
+}
