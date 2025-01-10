@@ -49,7 +49,7 @@ public class CastController extends BaseFileController {
 
     @PutMapping("/{castId}")
     @Operation(summary = "✨ 일반: 캐릭터 정보 수정", description = "캐릭터 정보 수정")
-    public ResponseEntity<Void> updateCastInfo(@PathVariable Long castId, @RequestBody UpdateCastInfoRequest updateCastInfoRequest) {
+    public ResponseEntity<Void> updateCastInfo(@PathVariable Long castId, @Valid @RequestBody UpdateCastInfoRequest updateCastInfoRequest) {
         updateCastUseCase.executeUpdateInfo(castId, updateCastInfoRequest);
         return ResponseEntity.noContent().build();
     }
