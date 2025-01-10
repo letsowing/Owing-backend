@@ -85,6 +85,7 @@ class CastFolderControllerTest {
     @AfterEach
     void cleanDatabase() {
         // JpaTxManager사용으로 인해 neo4j의 rollback이 되지 않아 임의로 클렌징을 진행
+        castFolderNodeRepository.deleteAll();
         projectNodeRepository.deleteAll();
     }
 
