@@ -2,6 +2,7 @@ package com.owing.api.cast.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
@@ -14,8 +15,8 @@ import com.owing.entity.domains.project.model.Genre;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import com.owing.entity.domains.project.repository.ProjectRepository;
-import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.model.Coordinate;
+import com.owing.node.common.model.projection.CastRelationshipProjection;
+import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
@@ -349,6 +350,133 @@ class CastControllerTest {
         ;
     }
 
+    @DisplayName("단방향 cast1 -> cast2 관계를 생성한다.")
+    @Test
+    void createDirectionalRelationship() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+
+        CreateConnectionRequest request = new CreateConnectionRequest(
+                "단방향 관계",
+                ConnectionType.DIRECTIONAL,
+                sourceCast.getId(),
+                ConnectionHandle.TOP,
+                targetCast.getId(),
+                ConnectionHandle.LEFT
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast/relationships")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.label").value(request.label()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(request.type().name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.source").value(request.sourceId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.target").value(request.targetId()))
+        ;
+        Optional<CastRelationshipProjection> optionalConnection = castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId());
+        assertThat(optionalConnection).isPresent();
+    }
+
+    @DisplayName("양방향 cast1 <-> cast2 관계를 생성한다.")
+    @Test
+    void createBiDirectionalRelationship() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+
+        CreateConnectionRequest request = new CreateConnectionRequest(
+                "단방향 관계",
+                ConnectionType.BIDIRECTIONAL,
+                sourceCast.getId(),
+                ConnectionHandle.TOP,
+                targetCast.getId(),
+                ConnectionHandle.LEFT
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast/relationships")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.label").value(request.label()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(request.type().name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.source").value(request.sourceId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.target").value(request.targetId()))
+        ;
+        Optional<CastRelationshipProjection> optionalConnection = castNodeRepository.findBiconnection(sourceCast.getId(), targetCast.getId());
+        assertThat(optionalConnection).isPresent();
+    }
+
+    @DisplayName("CreateConnectionRequest의 모든 요소는 필수이다.")
+    @CsvSource({
+            "          , DIRECTIONAL, 0, top, 1, bottom, 관계 라벨은 필수입니다.",
+            "test label,            , 0, top, 1, bottom, 관계 연결 타입은 필수입니다.",
+            "test label, DIRECTIONAL,  , top, 1, bottom, 관계의 시작 노드는 필수입니다.",
+            "test label, DIRECTIONAL, 0,    , 1, bottom, 시작 노드의 관계 시작 위치는 필수입니다.",
+            "test label, DIRECTIONAL, 0, top,  , bottom, 관계의 대상 노드는 필수입니다.",
+            "test label, DIRECTIONAL, 0, top, 1,       , 대상 노드의 관계 시작 위치는 필수입니다."
+    })
+    @ParameterizedTest
+    void createRelationshipWithoutNullRequestField(
+            String label,
+            String typeStr,
+            Long sourceId,
+            String sourceHandleStr,
+            Long targetId,
+            String targetHandleStr,
+            String expectedDescription
+    ) throws Exception {
+        // given
+        ConnectionType type = typeStr == null ? null : ConnectionType.valueOf(typeStr);
+        ConnectionHandle sourceHandle = sourceHandleStr == null ? null : ConnectionHandle.fromString(sourceHandleStr);
+        ConnectionHandle targetHandle = targetHandleStr == null ? null : ConnectionHandle.fromString(targetHandleStr);
+
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        sourceId = sourceId == null ? null : sourceCast.getId();
+        CastNode targetCast = createCast(savedFolder);
+        targetId = targetId == null ? null : targetCast.getId();
+
+        CreateConnectionRequest request = new CreateConnectionRequest(
+                label,
+                type,
+                sourceId,
+                sourceHandle,
+                targetId,
+                targetHandle
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/cast/relationships")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedDescription))
+        ;
+    }
 
     private CastNode createCast(CastFolderNode castFolderNode) {
         CastNode castNode = CastNode.builder()
