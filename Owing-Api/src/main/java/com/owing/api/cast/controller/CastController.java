@@ -69,7 +69,7 @@ public class CastController extends BaseFileController {
 
     @PostMapping("/relationships")
     @Operation(summary = "✨ 관계도: 인물 관계 생성", description = "인물 관계 생성")
-    public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@RequestBody CreateConnectionRequest createConnectionRequest) {
+    public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@Valid @RequestBody CreateConnectionRequest createConnectionRequest) {
         return ResponseEntity.ok(createConnectionUseCase.execute(createConnectionRequest));
     }
 
