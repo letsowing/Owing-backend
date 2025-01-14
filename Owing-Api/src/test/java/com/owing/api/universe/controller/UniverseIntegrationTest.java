@@ -178,6 +178,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
+    @Order(4)
     @DisplayName("Presigned URL 생성 기능 테스트")
     void testCreatePresignedUrl() throws Exception {
 
