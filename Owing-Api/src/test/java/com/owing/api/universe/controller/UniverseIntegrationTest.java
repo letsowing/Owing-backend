@@ -9,13 +9,12 @@ import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
 import com.owing.entity.domains.universe.repository.UniverseRepository;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ConfigurationPropertiesScan
 @Transactional("jpaTransactionManager")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UniverseIntegrationTest {
 
     @Autowired
@@ -61,8 +61,8 @@ class UniverseIntegrationTest {
     private JwtUtils jwtUtils;
 
     private String jwtToken;
-    private long testUniverseId;
-    private UniverseFolder testFolder;
+    private Universe testUniverse;
+    private UniverseFolder testUniverseFolder;
 
     @DynamicPropertySource
     static void loadProperties(DynamicPropertyRegistry registry) {
@@ -96,23 +96,35 @@ class UniverseIntegrationTest {
         jwtToken = BEARER_TYPE_SPACE + jwtUtils.generateAccessToken(member);
 
         // Test 폴더 저장
-        testFolder = UniverseFolder.positionBuilder()
+        testUniverseFolder = UniverseFolder.positionBuilder()
                 .name("Test Folder")
                 .description("Test folder description")
                 .projectId(1L)
                 .position(1L)
                 .build();
 
-        universeFolderRepository.save(testFolder);
+        universeFolderRepository.save(testUniverseFolder);
+
+        testUniverse = Universe.builder()
+                .name("Test Universe")
+                .description("This is a test universe description.")
+                .imageUrl("http://example.com/test_universe_image.png")
+                .position(1L)
+                .folder(testUniverseFolder)
+                .build();
+
+        universeRepository.save(testUniverse);
     }
 
     @Test
+    @Order(1)
     @DisplayName("ApplicationContext 가 제대로 로드되는지 확인")
     void contextLoads() {
         assertThat(mockMvc).isNotNull();
     }
 
     @Test
+    @Order(2)
     @DisplayName("새로운 세계관 생성 기능 테스트")
     void testCreateUniverse() throws Exception {
 
@@ -120,7 +132,7 @@ class UniverseIntegrationTest {
 
         // UniverseFolder 객체가 있어야 findById 가능
         AddUniverseRequest request = new AddUniverseRequest(
-                testFolder.getId(), // setup 에서 저장한 폴더 ID
+                testUniverseFolder.getId(), // setup 에서 저장한 폴더 ID
                 "New Universe",
                 "This is a test universe",
                 "http://example.com/new_universe_image.png"
@@ -135,15 +147,17 @@ class UniverseIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("New Universe"))
                 .andExpect(jsonPath("$.description").value("This is a test universe"))
-                .andExpect(jsonPath("$.imageUrl").value("http://example.com/new_universe_image.png"));
+                .andExpect(jsonPath("$.imageUrl").value("http://example.com/new_universe_image.png"))
+                .andReturn();
     }
 
     @Test
+    @Order(3)
     @DisplayName("기존 세계관 수정 기능 테스트")
     void testUpdateUniverse() throws Exception {
 
-        //todo 세계관 생성을 통해 만들어진 testUniverseId 가져와서 사용
-        String requestUri = "/v1/universes" + testUniverseId;
+        // 세계관 생성을 통해 만들어진 testUniverseId 가져와서 사용
+        String requestUri = "/v1/universes/" + testUniverse.getId();
 
         UpdateUniverseRequest request = new UpdateUniverseRequest(
                 "Updated Universe",
@@ -153,12 +167,14 @@ class UniverseIntegrationTest {
 
         String jsonContent = new ObjectMapper().writeValueAsString(request);
 
-        //todo 수정 예정 repository 테스트로
         mockMvc.perform(put(requestUri)
                         .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Updated Universe"))
+                .andExpect(jsonPath("$.description").value("Updated description"))
+                .andExpect(jsonPath("$.imageUrl").value("http://example.com/update_universe_image.png"));
     }
 
     @Test
