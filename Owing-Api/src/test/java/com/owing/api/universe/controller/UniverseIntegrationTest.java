@@ -190,6 +190,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
+    @Order(5)
     @DisplayName("세계관 이미지 생성 기능 테스트")
     void testGenerateUniverseImage() throws Exception {
 
