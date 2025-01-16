@@ -75,7 +75,7 @@ public class CastController extends BaseFileController {
 
     @PatchMapping("/relationships/{relationshipId}/label")
     @Operation(summary = "✨ 관계도: 인물 관계 수정", description = "인물 관계의 라벨을 수정")
-    public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
+    public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @Valid @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
         updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
         return ResponseEntity.noContent().build();
     }
