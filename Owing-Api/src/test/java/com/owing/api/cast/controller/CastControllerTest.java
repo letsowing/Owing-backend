@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastRelationshipLabelRequest;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
 import com.owing.common.error.code.GlobalErrorCode;
@@ -476,6 +477,93 @@ class CastControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedDescription))
         ;
+    }
+
+    @DisplayName("updateRelationshipLabel")
+    @Test
+    void updateRelationshipLabel() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label");
+
+        UpdateCastRelationshipLabelRequest requestBody = new UpdateCastRelationshipLabelRequest("updated label");
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch(String.format("/v1/cast/relationships/%d/label", savedRelationship.relationshipId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+        ;
+
+        Optional<CastRelationshipProjection> optionalUpdatedRelationship = castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId());
+        assertThat(optionalUpdatedRelationship).isPresent();
+
+        CastRelationshipProjection updatedRelationship = optionalUpdatedRelationship.get();
+        assertThat(updatedRelationship.relationshipId()).isEqualTo(savedRelationship.relationshipId());
+        assertThat(updatedRelationship.sourceId()).isEqualTo(sourceCast.getId());
+        assertThat(updatedRelationship.targetId()).isEqualTo(targetCast.getId());
+        assertThat(updatedRelationship.label()).isEqualTo(requestBody.label());
+    }
+
+    @DisplayName("label 수정 시 수정할 label은 필수이다.")
+    @Test
+    void updateRelationshipLabelWithoutUpdateLabel() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label");
+
+        UpdateCastRelationshipLabelRequest requestBody = new UpdateCastRelationshipLabelRequest(null);
+        String expectedDescription = "관계의 이름은 필수입니다.";
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch(String.format("/v1/cast/relationships/%d/label", savedRelationship.relationshipId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedDescription))
+        ;
+
+        Optional<CastRelationshipProjection> optionalResult = castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId());
+        assertThat(optionalResult).isPresent();
+
+        CastRelationshipProjection result = optionalResult.get();
+        assertThat(result.relationshipId()).isEqualTo(savedRelationship.relationshipId());
+        assertThat(result.label()).isEqualTo(savedRelationship.label());
+    }
+
+    private CastRelationshipProjection createRelationship(CastNode sourceCast, CastNode targetCast, String label) {
+        CastRelationship relationship = CastRelationship.builder()
+                .label(label)
+                .sourceId(sourceCast.getId())
+                .sourceHandle(ConnectionHandle.TOP)
+                .targetId(targetCast.getId())
+                .targetHandle(ConnectionHandle.RIGHT)
+                .targetNode(targetCast)
+                .build();
+        castNodeRepository.createCastRelationship(
+                relationship.getSourceId(), relationship.getTargetId(),
+                ConnectionType.DIRECTIONAL.getValue(), relationship.getLabel(),
+                relationship.getSourceHandle().name(), relationship.getTargetHandle().name()
+        );
+        return castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId())
+                .orElseThrow(() -> new RuntimeException("조건을 만족하는 relationship이 없습니다."));
     }
 
     private CastNode createCast(CastFolderNode castFolderNode) {
