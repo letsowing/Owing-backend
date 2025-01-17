@@ -5,7 +5,6 @@ import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
 import com.owing.common.error.code.GlobalErrorCode;
-import com.owing.entity.domains.cast.error.CastErrorCode;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
@@ -292,7 +291,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/%d", savedCast.getId()))
+                        .put("/v1/cast/{castId}", savedCast.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -337,7 +336,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/%d", savedCast.getId()))
+                        .put("/v1/cast/{castId}", savedCast.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -492,7 +491,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch(String.format("/v1/cast/relationships/%d/label", savedRelationship.relationshipId()))
+                        .patch("/v1/cast/relationships/{relationshipId}/label", savedRelationship.relationshipId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(requestBody))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -527,7 +526,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch(String.format("/v1/cast/relationships/%d/label", savedRelationship.relationshipId()))
+                        .patch("/v1/cast/relationships/{relationshipId}/label", savedRelationship.relationshipId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(requestBody))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -567,7 +566,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .put("/v1/cast/relationships/{relationshipId}", savedRelationship.relationshipId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(requestBody))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -608,7 +607,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .put("/v1/cast/relationships/{relationshipId}", savedRelationship.relationshipId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(requestBody))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -672,7 +671,7 @@ class CastControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .put("/v1/cast/relationships/{relationshipId}", savedRelationship.relationshipId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(requestBody))
                         .contentType(MediaType.APPLICATION_JSON)

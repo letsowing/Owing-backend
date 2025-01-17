@@ -8,7 +8,6 @@ import com.owing.common.error.code.GlobalErrorCode;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
-import com.owing.entity.domains.project.error.ProjectErrorCode;
 import com.owing.entity.domains.project.model.Category;
 import com.owing.entity.domains.project.model.Genre;
 import com.owing.entity.domains.project.model.Project;
@@ -98,7 +97,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(String.format("/v1/cast/folders/%d/dropdown", projectNode.getId()))
+                        .get("/v1/cast/folders/{projectId}/dropdown", projectNode.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -118,7 +117,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(String.format("/v1/cast/folders/%d/dropdown", projectNode.getId()))
+                        .get("/v1/cast/folders/{projectId}/dropdown", projectNode.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -137,7 +136,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(String.format("/v1/cast/folders/%d/dropdown", 0L))
+                        .get("/v1/cast/folders/{projectId}/dropdown", 0L)
                         .header(AUTHORIZATION, getAccessToken(member))
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -157,7 +156,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .put("/v1/cast/folders/{castFolderId}", savedFolder.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(body))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -185,7 +184,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .put("/v1/cast/folders/{castFolderId}", savedFolder.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(body))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -210,7 +209,7 @@ class CastFolderControllerTest {
 
         // when // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(String.format("/v1/cast/folders/%d", savedFolder.getId()))
+                        .put("/v1/cast/folders/{castFolderId}", savedFolder.getId())
                         .header(AUTHORIZATION, getAccessToken(member))
                         .content(objectMapper.writeValueAsString(body))
                         .contentType(MediaType.APPLICATION_JSON)
