@@ -488,7 +488,7 @@ class CastControllerTest {
         CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
         CastNode sourceCast = createCast(savedFolder);
         CastNode targetCast = createCast(savedFolder);
-        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label");
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
 
         UpdateCastRelationshipLabelRequest requestBody = new UpdateCastRelationshipLabelRequest("updated label");
 
@@ -522,7 +522,7 @@ class CastControllerTest {
         CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
         CastNode sourceCast = createCast(savedFolder);
         CastNode targetCast = createCast(savedFolder);
-        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label");
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
 
         UpdateCastRelationshipLabelRequest requestBody = new UpdateCastRelationshipLabelRequest(null);
         String expectedDescription = "관계의 이름은 필수입니다.";
@@ -548,7 +548,7 @@ class CastControllerTest {
         assertThat(result.label()).isEqualTo(savedRelationship.label());
     }
 
-    private CastRelationshipProjection createRelationship(CastNode sourceCast, CastNode targetCast, String label) {
+    private CastRelationshipProjection createRelationship(CastNode sourceCast, CastNode targetCast, String label, ConnectionType connectionType) {
         CastRelationship relationship = CastRelationship.builder()
                 .label(label)
                 .sourceId(sourceCast.getId())
@@ -559,7 +559,7 @@ class CastControllerTest {
                 .build();
         castNodeRepository.createCastRelationship(
                 relationship.getSourceId(), relationship.getTargetId(),
-                ConnectionType.DIRECTIONAL.getValue(), relationship.getLabel(),
+                connectionType.getValue(), relationship.getLabel(),
                 relationship.getSourceHandle().name(), relationship.getTargetHandle().name()
         );
         return castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId())
