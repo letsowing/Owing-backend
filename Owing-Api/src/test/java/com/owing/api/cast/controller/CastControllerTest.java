@@ -1,13 +1,11 @@
 package com.owing.api.cast.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.owing.api.cast.model.dto.request.CreateCastRequest;
-import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
-import com.owing.api.cast.model.dto.request.UpdateCastRelationshipLabelRequest;
+import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.common.util.JwtUtils;
 import com.owing.api.project.model.mapper.ProjectNodeMapper;
 import com.owing.common.error.code.GlobalErrorCode;
+import com.owing.entity.domains.cast.error.CastErrorCode;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.OauthProvider;
 import com.owing.entity.domains.member.repository.MemberRepository;
@@ -17,6 +15,7 @@ import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.model.ProjectInfo;
 import com.owing.entity.domains.project.repository.ProjectRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
+import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.model.*;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.domains.project.model.ProjectNode;
@@ -28,9 +27,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.NullSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -548,6 +546,144 @@ class CastControllerTest {
         assertThat(result.label()).isEqualTo(savedRelationship.label());
     }
 
+    @DisplayName("관계 정보를 수정할 때 기존의 source & target과 같다면 수정만 진행한다.")
+    @Test
+    void updateRelationship1() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
+
+        UpdateCastRelationshipRequest requestBody = new UpdateCastRelationshipRequest(
+                ConnectionType.BIDIRECTIONAL,
+                sourceCast.getId(),
+                targetCast.getId(),
+                ConnectionHandle.RIGHT,
+                ConnectionHandle.LEFT
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+        ;
+
+        Optional<CastRelationshipProjection> optionalRelationship;
+        optionalRelationship = castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId());  // 기존 관계 삭제 확인
+        assertThat(optionalRelationship).isPresent();
+
+        CastRelationshipProjection updatedRelationship = optionalRelationship.get();
+        assertThat(updatedRelationship.relationshipId()).isEqualTo(savedRelationship.relationshipId());
+        assertThat(updatedRelationship.sourceHandle()).isEqualTo(requestBody.sourceHandle());
+        assertThat(updatedRelationship.targetHandle()).isEqualTo(requestBody.targetHandle());
+    }
+
+    @DisplayName("관계 정보를 수정할 때 기존의 source & target과 다르다면 새로운 관계로 교체된다.")
+    @Test
+    void updateRelationship2() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
+
+        CastNode updatedTargetCast = createCast(savedFolder);
+        UpdateCastRelationshipRequest requestBody = new UpdateCastRelationshipRequest(
+                ConnectionType.BIDIRECTIONAL,
+                sourceCast.getId(),
+                updatedTargetCast.getId(),
+                ConnectionHandle.RIGHT,
+                ConnectionHandle.LEFT
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.source").value(requestBody.sourceId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.target").value(requestBody.targetId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(requestBody.type().name()))
+        ;
+
+        Optional<CastRelationshipProjection> optionalRelationship;
+        optionalRelationship = castNodeRepository.findConnection(sourceCast.getId(), targetCast.getId());  // 기존 관계 삭제 확인
+        assertThat(optionalRelationship).isNotPresent();
+
+        optionalRelationship = castNodeRepository.findBiconnection(sourceCast.getId(), updatedTargetCast.getId());
+        assertThat(optionalRelationship).isPresent();
+
+        CastRelationshipProjection updatedRelationship = optionalRelationship.get();
+        assertThat(updatedRelationship.relationshipId()).isNotEqualTo(savedRelationship.relationshipId());
+        assertThat(updatedRelationship.label()).isEqualTo(savedRelationship.label());
+        assertThat(updatedRelationship.sourceHandle()).isEqualTo(requestBody.sourceHandle());
+        assertThat(updatedRelationship.targetHandle()).isEqualTo(requestBody.targetHandle());
+    }
+
+    private static Stream<Arguments> provideUpdateRelationshipRequestForCheckingValid() {
+        return Stream.of(
+                Arguments.of(                      null,    1L,    2L, ConnectionHandle.RIGHT, ConnectionHandle.RIGHT, "관계의 타입은 필수입니다."),
+                Arguments.of(ConnectionType.DIRECTIONAL,  null,    2L, ConnectionHandle.RIGHT, ConnectionHandle.RIGHT, "관계의 시작 노드 id값은 필수입니다."),
+                Arguments.of(ConnectionType.DIRECTIONAL,    1L,  null, ConnectionHandle.RIGHT, ConnectionHandle.RIGHT, "관계의 대상 노드 id값은 필수입니다."),
+                Arguments.of(ConnectionType.DIRECTIONAL,    1L,    2L,                   null, ConnectionHandle.RIGHT, "시작 노드의 관계 핸들은 필수입니다."),
+                Arguments.of(ConnectionType.DIRECTIONAL,    1L,    2L, ConnectionHandle.RIGHT,                   null, "대상 노드의 관계 핸들은 필수입니다.")
+        );
+    }
+    @DisplayName("관계 정보를 수정할 때 모든 필드는 필수이다.")
+    @MethodSource("provideUpdateRelationshipRequestForCheckingValid")
+    @ParameterizedTest
+    void updateRelationshipWithNullRequestField(
+            ConnectionType connectionType,
+            Long sourceCastId,
+            Long updatedTargetCastId,
+            ConnectionHandle sourceHandle,
+            ConnectionHandle targetHandle,
+            String expectedDescription
+    ) throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
+
+        UpdateCastRelationshipRequest requestBody = new UpdateCastRelationshipRequest(
+                connectionType,
+                sourceCastId == null ? null : sourceCast.getId(),  // 인자값이 null이 아닐경우 현재 테스트에서 저장한 cast의 id 사용
+                updatedTargetCastId == null ? null : targetCast.getId(),
+                sourceHandle,
+                targetHandle
+        );
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(String.format("/v1/cast/relationships/%d", savedRelationship.relationshipId()))
+                        .header(AUTHORIZATION, getAccessToken(member))
+                        .content(objectMapper.writeValueAsString(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(expectedErrorCode))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedDescription))
+        ;
+    }
+
     private CastRelationshipProjection createRelationship(CastNode sourceCast, CastNode targetCast, String label, ConnectionType connectionType) {
         CastRelationship relationship = CastRelationship.builder()
                 .label(label)
@@ -616,5 +752,4 @@ class CastControllerTest {
     private String getAccessToken(Member member) {
         return BEARER_TYPE_SPACE + jwtUtils.generateAccessToken(member);
     }
-
 }
