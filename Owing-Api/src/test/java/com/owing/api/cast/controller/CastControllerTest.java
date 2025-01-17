@@ -684,6 +684,67 @@ class CastControllerTest {
         ;
     }
 
+    @DisplayName("관계를 삭제한다.")
+    @Test
+    void deleteRelationship() throws Exception {
+        // given
+        Member member = createMember("member1");
+        ProjectNode projectNode = createProject(member);
+        CastFolderNode savedFolder = createCastFolder(projectNode, "folder1", 0L);
+        CastNode sourceCast = createCast(savedFolder);
+        CastNode targetCast = createCast(savedFolder);
+        CastRelationshipProjection savedRelationship = createRelationship(sourceCast, targetCast, "test label", ConnectionType.DIRECTIONAL);
+
+        Long targetRelationshipId = savedRelationship.relationshipId();
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/v1/cast/relationships/{relationshipId}", targetRelationshipId)
+                        .header(AUTHORIZATION, getAccessToken(member))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+        ;
+
+        Optional<CastRelationshipProjection> optionalResult = castNodeRepository.findCastRelationshipById(targetRelationshipId);
+        assertThat(optionalResult).isNotPresent();
+    }
+
+    @DisplayName("관계 삭제 시 존재하는 관계 id는 필수이다.")
+    @Test
+    void deleteNonExistentRelationship() throws Exception {
+        // given
+        Member member = createMember("member1");
+        Long invalidRelationshipId = 999L; // 존재하지 않는 ID
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/v1/cast/relationships/{relationshipId}", invalidRelationshipId)
+                        .header(AUTHORIZATION, getAccessToken(member))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(CastNodeErrorCode.RELATIONSHIP_NOT_FOUND.getCode()))
+                ;
+    }
+
+    @Test
+    @DisplayName("관계 삭제 시 관계 id는 정수 타입이어야 한다.")
+    void deleteRelationshipWithInvalidIdFormat() throws Exception {
+        // given
+        Member member = createMember("member1");
+
+        // when // then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/v1/cast/relationships/{relationshipId}", "invalidId")
+                        .header(AUTHORIZATION, getAccessToken(member))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(GlobalErrorCode.ILLEGAL_PATH_ARGS.getCode()))
+        ;
+    }
+
     private CastRelationshipProjection createRelationship(CastNode sourceCast, CastNode targetCast, String label, ConnectionType connectionType) {
         CastRelationship relationship = CastRelationship.builder()
                 .label(label)
