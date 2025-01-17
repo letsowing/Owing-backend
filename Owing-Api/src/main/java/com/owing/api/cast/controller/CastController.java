@@ -86,7 +86,7 @@ public class CastController extends BaseFileController {
             @ApiResponse(responseCode = "204", description = "기존 관계와 source & target이 같다면 handle만 수정"),
             @ApiResponse(responseCode = "200", description = "기존 관계와 source & target이 다르다면 기존 관계 삭제 & 새로운 관계 추가. 응답은 생성과 같음")
     })
-    public ResponseEntity<?> updateRelationship(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipRequest updateCastRelationshipRequest) {
+    public ResponseEntity<?> updateRelationship(@PathVariable Long relationshipId, @Valid @RequestBody UpdateCastRelationshipRequest updateCastRelationshipRequest) {
         Optional<CastRelationshipInfoResponse> optional = updateConnectionUseCase.execute(relationshipId, updateCastRelationshipRequest);
         if (optional.isEmpty()) {
             return ResponseEntity.noContent().build();
