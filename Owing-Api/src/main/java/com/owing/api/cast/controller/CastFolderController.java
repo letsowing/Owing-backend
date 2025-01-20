@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
-import com.owing.api.cast.service.CreateCastFolderUseCase;
-import com.owing.api.cast.service.DeleteCastFolderUseCase;
-import com.owing.api.cast.service.ReadCastFolderUseCase;
-import com.owing.api.cast.service.UpdateCastFolderUseCase;
+import com.owing.api.cast.service.folder.CreateCastFolderUseCase;
+import com.owing.api.cast.service.folder.DeleteCastFolderUseCase;
+import com.owing.api.cast.service.folder.ReadCastFolderUseCase;
+import com.owing.api.cast.service.folder.UpdateCastFolderUseCase;
 import com.owing.api.dnd.base.controller.BaseFolderController;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;

@@ -1,23 +1,24 @@
-package com.owing.api.cast.service;
+package com.owing.api.cast.service.folder;
 
-import com.owing.api.common.util.MemberUtils;
+import com.owing.common.util.MemberUtils;
 import com.owing.api.dnd.folder.service.DeleteFolderUseCase;
 import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
+import com.owing.node.folder.cast.service.CastFolderNodeService;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
 public class DeleteCastFolderUseCase extends DeleteFolderUseCase<CastFolderNode> {
 
-    private final CastFolderNodeDomainService castFolderNodeDomainService;
+    private final CastFolderNodeService castFolderNodeDomainService;
     private final TrashCanFolderDomainService trashCanFolderDomainService;
     private final TrashCanFolderMapper trashCanFolderMapper;
     private final ProjectAdapter projectAdapter;
@@ -30,7 +31,7 @@ public class DeleteCastFolderUseCase extends DeleteFolderUseCase<CastFolderNode>
         CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
         Project project = projectAdapter().findById(castFolderNode.getProjectId());
         trashCanFolderDomainService().createTrashCanFolder(trashCanFolderMapper().toFolderEntity(castFolderNode, project));
-        baseDndDomainService().deleteEntity(castFolderNode);
+        folderService().delete(castFolderNode);
     }
 
     @Override
@@ -39,8 +40,13 @@ public class DeleteCastFolderUseCase extends DeleteFolderUseCase<CastFolderNode>
     }
 
     @Override
-    protected DndDomainService<CastFolderNode> baseDndDomainService() {
+    protected DndService<CastFolderNode> folderService() {
         return this.castFolderNodeDomainService;
+    }
+
+    @Override
+    protected DndAdapter<CastFolderNode> folderAdapter() {
+        return castFolderNodeAdapter;
     }
 
     @Override

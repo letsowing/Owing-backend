@@ -1,17 +1,16 @@
-package com.owing.api.cast.service;
+package com.owing.api.cast.service.file;
 
 import com.owing.api.cast.model.dto.request.CreateCastRequest;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
-import com.owing.api.common.util.MemberUtils;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.CreateFileUseCase;
 import com.owing.common.annotation.UseCase;
+import com.owing.common.util.MemberUtils;
 import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.node.domains.cast.model.CastNode;
-import com.owing.node.domains.cast.service.CastNodeDomainService;
+import com.owing.node.domains.cast.service.CastNodeService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 
@@ -21,26 +20,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNode> {
 
-    private final CastNodeDomainService castNodeDomainService;
+    private final CastNodeService castNodeDomainService;
     private final CastNodeMapper castNodeMapper;
     private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final MemberUtils memberUtils;
-
-    @Override
-    public CastInfoResponse execute(AddFileRequest addFileRequest) {
-        CastFolderNode castFolderNode = castFolderNodeAdapter.findById(addFileRequest.folderId());
-        CastNode castNode = castNodeMapper.toEntity(addFileRequest, castFolderNode);
-
-        CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
-        return castNodeMapper.toInfoResponse(savedCastNode);
-    }
 
     public CastInfoResponse executeFull(CreateCastRequest createCastRequest) {
         CastNode castNode = castNodeMapper.toEntity(createCastRequest);
         CastFolderNode castFolderNode = castFolderNodeAdapter.findById(createCastRequest.folderId());
 
         castNode.connectFolder(castFolderNode);
-        CastNode savedCastNode = castNodeDomainService.createEntity(castNode);
+        CastNode savedCastNode = castNodeDomainService.create(castNode);
         return castNodeMapper.toInfoResponse( savedCastNode);
     }
 
@@ -50,17 +40,17 @@ public class CreateCastUseCase extends CreateFileUseCase<CastNode, CastFolderNod
     }
 
     @Override
-    protected DndDomainService<CastNode> baseDndDomainService() {
+    protected DndService<CastNode> fileService() {
         return this.castNodeDomainService;
     }
 
     @Override
-    protected BaseFileMapper<CastNode, CastFolderNode> dndMapper() {
+    protected BaseFileMapper<CastNode, CastFolderNode> fileMapper() {
         return this.castNodeMapper;
     }
 
     @Override
     protected DndAdapter<CastFolderNode> folderAdapter() {
-        return null;
+        return castFolderNodeAdapter;
     }
 }

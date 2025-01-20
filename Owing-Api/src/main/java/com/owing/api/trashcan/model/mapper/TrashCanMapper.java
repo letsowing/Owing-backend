@@ -1,8 +1,8 @@
 package com.owing.api.trashcan.model.mapper;
 
 import com.owing.common.annotation.Mapper;
-import com.owing.core.dnd.file.model.DndFile;
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFile;
+import com.owing.core.dnd.base.model.DndFolder;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;

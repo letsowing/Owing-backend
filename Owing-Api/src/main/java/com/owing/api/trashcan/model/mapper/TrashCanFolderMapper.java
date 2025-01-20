@@ -6,7 +6,7 @@ import java.util.List;
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.dnd.file.model.DndFileEntity;
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFolder;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.trashcan.model.File;
 import com.owing.entity.domains.trashcan.model.Folder;

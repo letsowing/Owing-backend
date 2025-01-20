@@ -4,9 +4,9 @@ import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 import com.owing.api.story.model.mapper.StoryFolderMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.service.StoryFolderDomainService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,15 +14,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReadStoryFolderUseCase extends ReadFolderUseCase<StoryFolder> {
     private final StoryFolderMapper dndMapper;
-    private final StoryFolderDomainService baseDndDomainService;
+    private final StoryFolderAdapter storyFolderAdapter;
 
     @Override
-    protected BaseFolderMapper<StoryFolder> dndMapper() {
-        return dndMapper;
+    protected DndAdapter<StoryFolder> folderAdapter() {
+        return storyFolderAdapter;
     }
 
     @Override
-    protected DndDomainService<StoryFolder> baseDndDomainService() {
-        return baseDndDomainService;
+    protected BaseFolderMapper<StoryFolder> folderMapper() {
+        return dndMapper;
     }
 }

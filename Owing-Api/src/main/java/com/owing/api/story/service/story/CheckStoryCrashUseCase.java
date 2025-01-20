@@ -3,7 +3,7 @@ package com.owing.api.story.service.story;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.owing.api.openfeign.OwingAiClient;
+import com.owing.openfeign.OwingAiClient;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.ai.crashCheck.CastInfo;
 import com.owing.api.story.model.dto.request.ai.crashCheck.CastList;
@@ -26,7 +26,7 @@ import com.owing.entity.domains.story.error.StoryErrorCode;
 import com.owing.entity.domains.story.error.exception.StoryException;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.dto.StoryVO;
-import com.owing.entity.domains.story.service.StoryDomainService;
+import com.owing.entity.domains.story.service.StoryService;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
@@ -49,7 +49,7 @@ public class CheckStoryCrashUseCase {
 	// logging
 	private final CrashCheckLogDomainService crashCheckLogDomainService;
 	private final CrashCheckLogMapper crashCheckLogMapper;
-	private final StoryDomainService storyDomainService;
+	private final StoryService storyDomainService;
 
 
 	public CrashCheckLogResponse execute(Long storyId, StoryCrashRequest dto) throws JsonProcessingException {
@@ -73,7 +73,7 @@ public class CheckStoryCrashUseCase {
 		StoryCrashCheckRequest request = StoryCrashCheckRequest.of(pdto, sdto, udto, castInfo, thisEpisode, dto.projectId());
 		CrashCheckResponse crashCheckResponse = owingAiClient.crashCheck(request);
 
-		return logging(storyDomainService.getEntity(storyId), crashCheckResponse);
+		return logging(storyAdapter.findById(storyId), crashCheckResponse);
 	}
 
 

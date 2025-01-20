@@ -4,26 +4,26 @@ import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.file.service.ReadFileUseCase;
 import com.owing.api.story.model.mapper.StoryMapper;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
+import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.service.StoryDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
 public class ReadStoryUseCase extends ReadFileUseCase<Story, StoryFolder> {
-    private final StoryMapper dndMapper;
-    private final StoryDomainService baseDndDomainService;
+    private final StoryMapper storyMapper;
+    private final StoryAdapter storyAdapter;
 
     @Override
-    protected BaseFileMapper<Story, StoryFolder> dndMapper() {
-        return dndMapper;
+    protected BaseFileMapper<Story, StoryFolder> fileMapper() {
+        return storyMapper;
     }
 
     @Override
-    protected DndDomainService<Story> baseDndDomainService() {
-        return baseDndDomainService;
+    protected DndAdapter<Story> fileAdapter() {
+        return storyAdapter;
     }
 }

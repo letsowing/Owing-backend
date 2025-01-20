@@ -1,11 +1,11 @@
 package com.owing.api.trashcan.service.trashcan;
 
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.story.service.StoryDomainService;
+import com.owing.entity.domains.story.service.StoryService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
-import com.owing.entity.domains.universe.service.UniverseDomainService;
+import com.owing.entity.domains.universe.service.UniverseService;
 import com.owing.entity.domains.trashcan.model.FolderType;
-import com.owing.node.domains.cast.service.CastNodeDomainService;
+import com.owing.node.domains.cast.service.CastNodeService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateTrashCanUserCase {
 	private final TrashCanDomainService trashCanDomainService;
-	private final CastNodeDomainService castNodeDomainService;
-	private final StoryDomainService storyDomainService;
-	private final UniverseDomainService universeDomainService;
+	private final CastNodeService castNodeDomainService;
+	private final StoryService storyDomainService;
+	private final UniverseService universeDomainService;
 
 	public void executeRestore(Long trashId) {
 		FolderType tableName = trashCanDomainService.findTableNameById(trashId);

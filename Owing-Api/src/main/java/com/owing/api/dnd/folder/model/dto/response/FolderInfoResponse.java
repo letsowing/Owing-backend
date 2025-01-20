@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
 import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFolder;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
