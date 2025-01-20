@@ -1,4 +1,4 @@
-package com.owing.api.openfeign;
+package com.owing.openfeign;
 
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;

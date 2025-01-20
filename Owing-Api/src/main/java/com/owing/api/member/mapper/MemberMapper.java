@@ -1,5 +1,7 @@
 package com.owing.api.member.mapper;
 
+import static com.owing.common.constant.TokenConst.*;
+
 import com.google.api.client.json.webtoken.JsonWebToken;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.member.model.Member;
@@ -8,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
-
-import static com.owing.api.common.constant.TokenConst.*;
 
 @Mapper
 @RequiredArgsConstructor

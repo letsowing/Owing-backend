@@ -1,4 +1,4 @@
-package com.owing.api.config;
+package com.owing.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
-import com.owing.api.common.util.JwtUtils;
-import com.owing.api.config.securitypath.WebSecurityPath;
-import com.owing.api.filter.JwtAuthenticationFilter;
-import com.owing.api.filter.JwtExceptionFilter;
+import com.owing.common.util.JwtUtils;
+import com.owing.config.securitypath.WebSecurityPath;
+import com.owing.filter.JwtAuthenticationFilter;
+import com.owing.filter.JwtExceptionFilter;
 
 @Configuration
 @EnableWebSecurity

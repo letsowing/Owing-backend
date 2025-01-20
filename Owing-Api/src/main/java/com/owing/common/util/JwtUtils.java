@@ -1,7 +1,7 @@
-package com.owing.api.common.util;
+package com.owing.common.util;
 
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
-import com.owing.api.common.properties.JwtProperties;
+import com.owing.common.properties.JwtProperties;
 import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
 import io.jsonwebtoken.Claims;
@@ -16,7 +16,7 @@ import java.security.Key;
 import java.util.Date;
 
 import static com.owing.api.auth.error.AuthErrorCode.*;
-import static com.owing.api.common.constant.TokenConst.*;
+import static com.owing.common.constant.TokenConst.*;
 
 @Component
 public class JwtUtils {

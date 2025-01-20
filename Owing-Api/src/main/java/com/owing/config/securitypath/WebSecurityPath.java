@@ -1,4 +1,4 @@
-package com.owing.api.config.securitypath;
+package com.owing.config.securitypath;
 
 import lombok.Getter;
 

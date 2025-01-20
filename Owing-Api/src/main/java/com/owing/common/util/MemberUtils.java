@@ -1,4 +1,4 @@
-package com.owing.api.common.util;
+package com.owing.common.util;
 
 import com.owing.api.auth.error.AuthErrorCode;
 import com.owing.api.auth.error.exception.AuthException;

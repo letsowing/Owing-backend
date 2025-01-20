@@ -1,4 +1,4 @@
-package com.owing.api.filter;
+package com.owing.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owing.api.auth.error.AuthErrorCode;

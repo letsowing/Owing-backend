@@ -1,11 +1,10 @@
 package com.owing.api.auth.service.helper;
 
-import com.owing.api.auth.model.dto.response.TokenResponse;
+import static com.owing.common.constant.TokenConst.*;
+
 import com.owing.common.annotation.Helper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-
-import static com.owing.api.common.constant.TokenConst.*;
 
 @Helper
 public class CookieHelper {

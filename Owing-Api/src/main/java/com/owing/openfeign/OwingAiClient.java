@@ -1,4 +1,4 @@
-package com.owing.api.openfeign;
+package com.owing.openfeign;
 
 import java.util.List;
 

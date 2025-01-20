@@ -1,4 +1,4 @@
-package com.owing.api.common.constant;
+package com.owing.common.constant;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;

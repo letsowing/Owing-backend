@@ -1,4 +1,4 @@
-package com.owing.api.error;
+package com.owing.error;
 
 import com.owing.common.error.code.GlobalErrorCode;
 import com.owing.common.error.dto.ErrorResponse;

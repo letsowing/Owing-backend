@@ -1,6 +1,7 @@
-package com.owing.api.filter;
+package com.owing.filter;
 
 import static com.owing.api.auth.error.AuthErrorCode.*;
+import static com.owing.common.constant.TokenConst.*;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -18,9 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
-import com.owing.api.common.util.JwtUtils;
-
-import static com.owing.api.common.constant.TokenConst.*;
+import com.owing.common.util.JwtUtils;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
