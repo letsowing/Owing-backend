@@ -1,4 +1,4 @@
-package com.owing.core.dnd.folder.model;
+package com.owing.core.dnd.base.model;
 
 import java.util.List;
 
@@ -7,11 +7,9 @@ import org.springframework.util.StringUtils;
 
 import com.owing.core.BaseEntity;
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.core.dnd.base.model.Dnd;
 import com.owing.core.dnd.error.DndErrorCode;
 import com.owing.core.dnd.error.exception.DndException;
 import com.owing.core.dnd.error.exception.DndInvalidPositionException;
-import com.owing.core.dnd.file.model.DndFile;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -64,6 +62,25 @@ public abstract class DndFolder extends BaseEntity implements Dnd {
 		}
 		this.description = description;
 		return true;
+	}
+	public boolean isInSameParent(Dnd dnd) {
+        return this.getProjectId().equals(dnd.getParentId());
+    }
+
+	public boolean isAfter(Dnd dnd){
+		return this.getPosition() > dnd.getPosition();
+	}
+
+	public boolean isAfter(long position){
+		return this.getPosition() > position;
+	}
+
+	public boolean isBefore(Dnd dnd){
+		return this.getPosition() < dnd.getPosition();
+	}
+
+	public boolean isBefore(long position){
+		return this.getPosition() < position;
 	}
 
 }

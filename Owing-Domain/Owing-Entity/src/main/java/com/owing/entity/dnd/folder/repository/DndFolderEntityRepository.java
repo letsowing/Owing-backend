@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.owing.core.dnd.folder.repository.DndFolderRepository;
+import com.owing.core.dnd.orderStrategy.shift.repository.FolderShiftRepository;
 import com.owing.entity.dnd.folder.model.DndFolderEntity;
 
 @NoRepositoryBean
-public interface DndFolderEntityRepository<T extends DndFolderEntity> extends DndFolderRepository<T>, JpaRepository<T, Long> {
+public interface DndFolderEntityRepository<T extends DndFolderEntity> extends FolderShiftRepository<T>, JpaRepository<T, Long> {
 
 	@Query("select f from #{#entityName} f where f.projectId = :projectId and f.deleted = false order by f.position")
 	List<T> findByParentId(Long projectId);

@@ -9,4 +9,9 @@ public interface Dnd {
 	boolean validatePosition(long newPosition);
 	void updatePosition(long newPosition);
 	void updateName(String newName);
+	boolean isInSameParent(Dnd dnd);
+	boolean isAfter(Dnd dnd);
+	boolean isBefore(Dnd dnd);
+	boolean isAfter(long position);
+	boolean isBefore(long position);
 }

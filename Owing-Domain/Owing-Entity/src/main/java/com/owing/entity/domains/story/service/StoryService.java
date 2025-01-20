@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.file.service.DndFileDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class StoryDomainService extends DndFileDomainService<Story> {
+public class StoryService extends DndService<Story> {
 
 	private final StoryAdapter dndAdapter;
 	private final StoryShiftOrderingStrategy orderingStrategy;
@@ -45,14 +45,15 @@ public class StoryDomainService extends DndFileDomainService<Story> {
 		 return dndAdapter.findByProjectId(projectId).stream().map(s -> StoryVO.from(s, Jsoup.parse(s.getContent()).text())).toList();
 	}
 
-	@Transactional("jpaTransactionManager")
+	@Transactional
 	public void restoreById(Long itemId) {
 		dndAdapter.restoreById(itemId);
 	}
 
-	@Transactional("jpaTransactionManager")
-	public void update(Story oldStory, Story newStory) {
+	@Transactional
+	public Story update(Story oldStory, Story newStory) {
 		oldStory.update(newStory);
+		return oldStory;
 	}
 
 	public String getParsedContent(Story story) {

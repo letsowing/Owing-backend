@@ -2,8 +2,8 @@ package com.owing.node.domains.cast.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
 import com.owing.core.dnd.orderStrategy.shift.FileShiftOrderingStrategy;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.CastNode;
 
@@ -16,7 +16,7 @@ public class CastShiftOrderingStrategy extends FileShiftOrderingStrategy<CastNod
 	private final CastNodeAdapter castNodeAdapter;
 
 	@Override
-	protected DndFileAdapter<CastNode> dndAdapter() {
+	protected FileShiftAdapter<CastNode> dndAdapter() {
 		return castNodeAdapter;
 	}
 }

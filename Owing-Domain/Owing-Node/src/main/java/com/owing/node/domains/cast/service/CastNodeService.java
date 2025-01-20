@@ -10,7 +10,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.file.service.DndFileDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.node.common.constant.CastConstant;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
@@ -150,8 +150,8 @@ public class CastNodeDomainService extends DndFileDomainService<CastNode> {
 
     // =====super() Cast CRUD=====
     @Override
-    @Transactional("neo4jTransactionManager")
-    public CastNode createEntity(CastNode entity) {
+	@Transactional("neo4jTransactionManager")
+    public CastNode create(CastNode entity) {
         long position = orderingStrategy().getNewPosition(entity.getParentId());
         entity.updatePosition(position);
         entity.updateCoordinate(
@@ -163,25 +163,8 @@ public class CastNodeDomainService extends DndFileDomainService<CastNode> {
 
         entity.updateFolder(null);
         CastNode savedCastNode = castNodeRepository.save(entity);
+        // castNode.connectFolder(castFolderNode);
         return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
-    }
-
-    @Override
-	@Transactional("neo4jTransactionManager")
-    public CastNode updateName(CastNode entity, CastNode newEntity) {
-        entity.updateName(newEntity.getName());
-        CastTitleProjection titleProjection = CastTitleProjection.from(entity);
-        neo4jTemplate.save(CastNode.class).one(titleProjection);
-        return entity;
-    }
-
-    @Override
-	@Transactional("neo4jTransactionManager")
-    public void deleteEntity(CastNode castNode) {
-        castShiftOrderingStrategy.reorderEntity(castNode);
-        castNode.delete();
-        CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
-        neo4jTemplate.save(CastNode.class).one(deleteProjection);
     }
 
     // Bean Setting
