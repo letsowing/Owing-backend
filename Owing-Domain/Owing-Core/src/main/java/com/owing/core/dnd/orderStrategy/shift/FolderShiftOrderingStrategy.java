@@ -1,44 +1,42 @@
 package com.owing.core.dnd.orderStrategy.shift;
 
 import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.folder.adapter.DndFolderAdapter;
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.error.DndErrorCode;
+import com.owing.core.dnd.error.exception.DndInvalidPositionException;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FolderShiftAdapter;
 
 public abstract class FolderShiftOrderingStrategy<T extends DndFolder> extends ShiftOrderingStrategy<T>{
 
-	protected abstract DndFolderAdapter<T> dndAdapter();
+	protected abstract FolderShiftAdapter<T> dndAdapter();
 
+	/** 엔티티 위치 변경 */
 	@Override
-	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, Dnd newParent) {
-		return updatePosition(dndEntity, beforeEntity, afterEntity);
-	}
-
-	protected boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity) {
-		if (beforeEntity == null && afterEntity == null) {
-			return false;
+	public T updatePosition(T entity, T before, T after, Dnd newParent) {
+		if (!validatePosition(entity, before, after)) {
+			throw DndInvalidPositionException.of(DndErrorCode.INVALID_POSITION);
 		}
+		long newPosition = getUpdatePosition(entity, before, after, null);
 
-		if (beforeEntity == null) {
-			// isFirstPosition(afterEntity);
-			return hasSameParentFolder(entity, afterEntity);
-		}
-		if (afterEntity == null) {
-			// isLastPosition(beforeEntity);
-			return hasSameParentFolder(entity, beforeEntity);
-		}
-		return isSequentialPosition(beforeEntity, afterEntity);
-	}
-
-	@Override
-	protected T handleEntityUpdate(T entity, T beforeEntity, T afterEntity) {
-		long newPosition = getUpdatePosition(entity, beforeEntity, afterEntity);
-
-		if (entity.getPosition() < newPosition) {
-			moveFolderDown(newPosition, entity.getPosition(), entity.getParentId());
-		} else {
-			moveFolderUp(newPosition, entity.getPosition(), entity.getParentId());
-		}
+		updatePositionInSameFolder(entity, newPosition);
 		entity.updatePosition(newPosition);
 		return dndAdapter().updatePosition(entity);
 	}
+
+	protected boolean validatePosition(T entity, T before, T after) {
+		if (before == null && after == null) {
+			return false;
+		}
+
+		if (before == null) {
+			// isFirstPosition(afterEntity);
+			return entity.isInSameParent(after);
+		}
+		if (after == null) {
+			// isLastPosition(beforeEntity);
+			return entity.isInSameParent(before);
+		}
+		return isSequentialPosition(before, after);
+	}
+
 }

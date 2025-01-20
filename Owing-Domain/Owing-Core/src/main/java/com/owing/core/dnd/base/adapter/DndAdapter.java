@@ -18,22 +18,6 @@ public abstract class DndAdapter<T extends Dnd> {
 		return dndRepository().findByParentId(parentId);
 	}
 
-	public long getMaxPositionByParentId(Long parentId){
-		return dndRepository().getMaxPositionByParentId(parentId);
-	}
-
-	public void decrementPositionAfter(long position, Long parentId) {
-		dndRepository().decrementPositionAfter(position, parentId);
-	}
-
-	public void decrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
-		dndRepository().decrementPositionBetween(fromPosition, toPosition, parentId);
-	}
-
-	public void incrementPositionBetween(long fromPosition, long toPosition, Long parentId) {
-		dndRepository().incrementPositionBetween(fromPosition, toPosition, parentId);
-	}
-
 	public T save(T entity) {
 		return dndRepository().save(entity);
 	}

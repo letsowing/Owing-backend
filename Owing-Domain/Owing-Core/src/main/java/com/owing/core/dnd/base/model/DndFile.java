@@ -1,14 +1,12 @@
-package com.owing.core.dnd.file.model;
+package com.owing.core.dnd.base.model;
 
 import org.springframework.util.StringUtils;
 
 import com.owing.core.BaseEntity;
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.core.dnd.base.model.Dnd;
 import com.owing.core.dnd.error.DndErrorCode;
 import com.owing.core.dnd.error.exception.DndException;
 import com.owing.core.dnd.error.exception.DndInvalidPositionException;
-import com.owing.core.dnd.folder.model.DndFolder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -32,6 +30,30 @@ public abstract class DndFile extends BaseEntity implements Dnd {
 	public Long getParentId(){
 		return getFolder().getId();
 	}
+
+	public boolean isParentFolder(Dnd folder){
+		return this.getParentId().equals(folder.getId());
+	}
+
+	public boolean isInSameParent(DndFile file){
+		return this.getParentId().equals(file.getParentId());
+	}
+
+	public boolean isAfter(Dnd dnd){
+		return this.getPosition() > dnd.getPosition();
+	}
+
+	public boolean isAfter(long position){
+		return this.getPosition() > position;
+	}
+
+    public boolean isBefore(Dnd dnd){
+        return this.getPosition() < dnd.getPosition();
+    }
+
+    public boolean isBefore(long position){
+        return this.getPosition() < position;
+    }
 
 	public boolean validatePosition(long newPosition) {
 		return newPosition >= 0;

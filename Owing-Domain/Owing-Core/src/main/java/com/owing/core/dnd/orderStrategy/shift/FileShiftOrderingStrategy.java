@@ -1,75 +1,68 @@
 package com.owing.core.dnd.orderStrategy.shift;
 
-import java.util.Objects;
-
 import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
-import com.owing.core.dnd.file.model.DndFile;
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFile;
+import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.error.DndErrorCode;
+import com.owing.core.dnd.error.exception.DndInvalidPositionException;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
 
-public abstract class FileShiftOrderingStrategy<T extends DndFile> extends ShiftOrderingStrategy<T>{
-
-	@Override
-	protected abstract DndFileAdapter<T> dndAdapter();
-
-	protected boolean validateEntityPosition(T entity, T beforeEntity, T afterEntity) {
-		if (beforeEntity == null && afterEntity == null) {
-			return false;
-		}
-		if (beforeEntity != null && afterEntity != null){
-			return hasSameParentFolder(beforeEntity, afterEntity) && isSequentialPosition(beforeEntity, afterEntity);
-		}
-		return true;
-	}
+public abstract class FileShiftOrderingStrategy<T extends DndFile> extends ShiftOrderingStrategy<T> {
 
 	@Override
-	public T updatePosition(T dndEntity, T beforeEntity, T afterEntity, Dnd newParent) {
-		if(beforeEntity == null && afterEntity == null){
-			long newPosition = getNewPosition(newParent.getId());
-			updatePositionInDifferentFolder(dndEntity, newPosition, dndEntity.getFolder(), (DndFolder)newParent);
-			dndEntity.updatePosition(newPosition);
-			System.out.println(dndEntity.getParentId());
-			return dndAdapter().updatePosition(dndEntity);
+	protected abstract FileShiftAdapter<T> dndAdapter();
+
+	@Override
+	public T updatePosition(T entity, T before, T after, Dnd newParent) {
+		if (!validatePosition(entity, before, after, newParent)) {
+			throw DndInvalidPositionException.of(DndErrorCode.INVALID_POSITION);
+		}
+
+		long newPosition = getUpdatePosition(entity, before, after, newParent);
+
+		if (moveToSameFolder(entity, before, after, newParent)) { // 같은 폴더면
+			updatePositionInSameFolder(entity, newPosition); // 같은 폴더에서 위치바꾸기
 		} else {
-			return updatePosition(dndEntity, beforeEntity, afterEntity);
-		}
-
-	}
-
-	private DndFolder getParentFolder(T beforeEntity, T afterEntity) {
-		return beforeEntity!= null? beforeEntity.getFolder() : afterEntity.getFolder();
-	}
-
-	@Override
-	protected T handleEntityUpdate(T entity, T beforeEntity, T afterEntity) {
-		long newPosition = getUpdatePosition(entity, beforeEntity, afterEntity);
-		DndFolder newParent = getParentFolder(beforeEntity, afterEntity);
-
-		if(Objects.equals(entity.getParentId(), newParent.getId())){ // fixme
-			updatePositionInSameFolder(entity, newPosition);
-		}else {
-			updatePositionInDifferentFolder(entity, newPosition, entity.getFolder(), newParent);
+			updatePositionInDifferentFolder(entity, newPosition, entity.getFolder(), (DndFolder)newParent); // 다른 폴더에서 위치바꾸기
 		}
 		entity.updatePosition(newPosition);
 		return dndAdapter().updatePosition(entity);
 	}
 
-	private void updatePositionInSameFolder(T entity, long newPosition){
-		if (entity.getPosition() < newPosition) {
-			moveFolderDown(newPosition, entity.getPosition(), entity.getParentId());
-		} else {
-			moveFolderUp(newPosition, entity.getPosition(), entity.getParentId());
+	protected boolean validatePosition(T entity, T before, T after, Dnd newParent) {
+		if (before == null && after == null) {
+			return newParent != null;
 		}
 
+		if (before != null && after != null) {
+			boolean isSequential = isSequentialPosition(before, after) && before.isInSameParent(after);
+
+			if (newParent == null)
+				return isSequential;
+
+			return isSequential && before.isParentFolder(newParent);
+		}
+		return true;
 	}
 
-	private void updatePositionInDifferentFolder(T entity, long newPosition, DndFolder oldFolder, DndFolder newFolder){
-        shiftFolderUp(entity.getPosition(), oldFolder.getId());
+	/** 같은 폴더로 이동하는지 확인 */
+	protected boolean moveToSameFolder(T entity, T before, T after, Dnd newParent) {
+		if (newParent != null) {
+			return entity.isParentFolder(newParent);
+		}
+		T targetFile = (before != null) ? before : after;
+		return entity.isInSameParent(targetFile);
+	}
+
+	/** 다른 폴더에서 위치 바꾸기*/
+	private void updatePositionInDifferentFolder(T entity, long newPosition, DndFolder oldFolder, DndFolder newFolder) {
+		shiftFolderUp(entity.getPosition(), oldFolder.getId());
 		shiftFolderDown(newPosition, newFolder.getId());
 		entity.updateFolder(newFolder);
-    }
+	}
 
-	protected void shiftFolderDown(long targetPosition, Long projectId) {
-		dndAdapter().incrementPositionAfter(targetPosition, projectId);
+	/** 다른 폴더 - 옮긴 후 바뀐 위치의 밑에 있는 파일들을 아래로 내린다.(+1) */
+	protected void shiftFolderDown(long targetPosition, Long folderId) {
+		dndAdapter().incrementPositionAfter(targetPosition, folderId);
 	}
 }
