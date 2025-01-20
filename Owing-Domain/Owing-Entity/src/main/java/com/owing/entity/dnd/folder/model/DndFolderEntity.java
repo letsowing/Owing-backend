@@ -3,7 +3,7 @@ package com.owing.entity.dnd.folder.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.owing.core.dnd.folder.model.DndFolder;
+import com.owing.core.dnd.base.model.DndFolder;
 import com.owing.entity.dnd.file.model.DndFileEntity;
 
 import jakarta.persistence.CascadeType;

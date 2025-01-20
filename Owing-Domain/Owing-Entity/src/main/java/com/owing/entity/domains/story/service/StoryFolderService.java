@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.folder.service.DndFolderDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class StoryFolderDomainService extends DndFolderDomainService<StoryFolder> {
+public class StoryFolderService extends DndService<StoryFolder> {
 	private final StoryFolderAdapter dndAdapter;
 	private final StoryAdapter storyAdapter;
 	private final StoryFolderShiftOrderingStrategy orderingStrategy;

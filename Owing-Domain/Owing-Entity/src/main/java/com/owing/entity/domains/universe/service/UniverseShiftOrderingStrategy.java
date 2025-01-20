@@ -2,8 +2,8 @@ package com.owing.entity.domains.universe.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
 import com.owing.core.dnd.orderStrategy.shift.FileShiftOrderingStrategy;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
 import com.owing.entity.domains.universe.adapter.UniverseAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 
@@ -15,7 +15,7 @@ public class UniverseShiftOrderingStrategy extends FileShiftOrderingStrategy<Uni
 	private final UniverseAdapter dndAdapter;
 
 	@Override
-	protected DndFileAdapter<Universe> dndAdapter() {
+	protected FileShiftAdapter<Universe> dndAdapter() {
 		return dndAdapter;
 	}
 }

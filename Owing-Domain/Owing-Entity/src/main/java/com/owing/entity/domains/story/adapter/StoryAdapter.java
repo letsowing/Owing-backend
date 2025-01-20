@@ -5,8 +5,8 @@ import java.util.List;
 import org.jsoup.Jsoup;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
-import com.owing.core.dnd.file.repository.DndFileRepository;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.dto.StoryInfo;
 import com.owing.entity.domains.story.repository.StoryDeletedRepository;
@@ -16,12 +16,12 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryAdapter extends DndFileAdapter<Story> {
+public class StoryAdapter extends FileShiftAdapter<Story> {
 	private final StoryRepository storyRepository;
 	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
-	protected DndFileRepository<Story> dndRepository() {
+	protected FileShiftRepository<Story> dndRepository() {
 		return storyRepository;
 	}
 

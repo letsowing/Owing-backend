@@ -3,8 +3,8 @@ package com.owing.entity.domains.universe.adapter;
 import java.util.List;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
-import com.owing.core.dnd.file.repository.DndFileRepository;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
@@ -16,12 +16,12 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class UniverseAdapter extends DndFileAdapter<Universe> {
+public class UniverseAdapter extends FileShiftAdapter<Universe> {
 	private final UniverseRepository universeRepository;
 	private final UniverseDeletedRepository universeDeletedRepository;
 
 	@Override
-	protected DndFileRepository<Universe> dndRepository() {
+	protected FileShiftRepository<Universe> dndRepository() {
 		return universeRepository;
 	}
 

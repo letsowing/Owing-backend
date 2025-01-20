@@ -2,8 +2,8 @@ package com.owing.entity.domains.universe.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.core.dnd.folder.adapter.DndFolderAdapter;
 import com.owing.core.dnd.orderStrategy.shift.FolderShiftOrderingStrategy;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FolderShiftAdapter;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
@@ -15,7 +15,7 @@ public class UniverseFolderShiftOrderingStrategy extends FolderShiftOrderingStra
 	private final UniverseFolderAdapter dndAdapter;
 
 	@Override
-	protected DndFolderAdapter<UniverseFolder> dndAdapter() {
+	protected FolderShiftAdapter<UniverseFolder> dndAdapter() {
 		return dndAdapter;
 	}
 }
