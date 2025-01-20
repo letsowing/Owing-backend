@@ -2,11 +2,10 @@ package com.owing.api.project.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.openfeign.OwingAiClient;
+import com.owing.openfeign.OwingAiClient;
 import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
 import com.owing.api.project.model.dto.response.ProjectImageResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;
-import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.common.annotation.UseCase;
 
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.owing.api.story.service.story;
 
 import java.util.List;
 
-import com.owing.api.openfeign.OwingAiClient;
+import com.owing.openfeign.OwingAiClient;
 import com.owing.api.story.model.dto.request.StorySpellCheckRequest;
 import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckResponse;
@@ -12,7 +12,7 @@ import com.owing.entity.domains.ai.log.story.model.SpellCheckLog;
 import com.owing.entity.domains.ai.log.story.service.SpellCheckLogDomainService;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.model.Story;
-import com.owing.entity.domains.story.service.StoryDomainService;
+import com.owing.entity.domains.story.service.StoryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CheckStorySpellUseCase {
 
-	private final StoryDomainService storyDomainService;
+	private final StoryService storyDomainService;
 
 	private final OwingAiClient owingAiClient;
 	private final StoryAdapter storyAdapter;

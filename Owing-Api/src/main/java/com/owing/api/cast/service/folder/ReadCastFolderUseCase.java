@@ -1,4 +1,6 @@
-package com.owing.api.cast.service;
+package com.owing.api.cast.service.folder;
+
+import java.util.List;
 
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
@@ -7,15 +9,13 @@ import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.ReadFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.adapter.DndAdapter;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
-import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
@@ -24,7 +24,6 @@ public class ReadCastFolderUseCase extends ReadFolderUseCase<CastFolderNode> {
     private final ProjectNodeAdapter projectNodeAdapter;
     private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderNodeMapper castFolderNodeMapper;
-    private final CastFolderNodeDomainService castFolderNodeDomainService;
 
     @Override
     public FolderInfoResponse executeRetrieve(Long folderId) {
@@ -45,15 +44,15 @@ public class ReadCastFolderUseCase extends ReadFolderUseCase<CastFolderNode> {
         return castFolderNodeMapper.toDropdownListResponse(castFolderNodeList);
     }
 
-    // Bean Setting
     @Override
-    protected BaseFolderMapper<CastFolderNode> dndMapper() {
-        return this.castFolderNodeMapper;
+    protected DndAdapter<CastFolderNode> folderAdapter() {
+        return castFolderNodeAdapter;
     }
 
+    // Bean Setting
     @Override
-    protected DndDomainService<CastFolderNode> baseDndDomainService() {
-        return this.castFolderNodeDomainService;
+    protected BaseFolderMapper<CastFolderNode> folderMapper() {
+        return this.castFolderNodeMapper;
     }
 
 }

@@ -1,17 +1,17 @@
-package com.owing.api.cast.service;
+package com.owing.api.cast.service.folder;
 
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
-import com.owing.api.common.util.MemberUtils;
+import com.owing.common.util.MemberUtils;
 import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
 import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.folder.service.CreateFolderUseCase;
 import com.owing.common.annotation.UseCase;
-import com.owing.core.dnd.base.service.DndDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
+import com.owing.node.folder.cast.service.CastFolderNodeService;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -20,7 +20,7 @@ public class CreateCastFolderUseCase extends CreateFolderUseCase<CastFolderNode>
 
     private final ProjectNodeAdapter projectNodeAdapter;
     private final CastFolderNodeMapper castFolderNodeMapper;
-    private final CastFolderNodeDomainService castFolderDomainService;
+    private final CastFolderNodeService castFolderDomainService;
     private final MemberUtils memberUtils;
 
     @Override
@@ -30,7 +30,7 @@ public class CreateCastFolderUseCase extends CreateFolderUseCase<CastFolderNode>
                 createCastFolderRequest.name());
 
         castFolderNode.connectProject(projectNode);
-        CastFolderNode savedCastFolder = castFolderDomainService.createEntity(castFolderNode);
+        CastFolderNode savedCastFolder = castFolderDomainService.create(castFolderNode);
 
         return castFolderNodeMapper.toInfoResponse(savedCastFolder);
     }
@@ -41,12 +41,12 @@ public class CreateCastFolderUseCase extends CreateFolderUseCase<CastFolderNode>
     }
 
     @Override
-    protected DndDomainService<CastFolderNode> baseDndDomainService() {
-        return this.castFolderDomainService;
+    protected DndService<CastFolderNode> folderService() {
+        return castFolderDomainService;
     }
 
     @Override
-    protected BaseFolderMapper<CastFolderNode> dndMapper() {
-        return this.castFolderNodeMapper;
+    protected BaseFolderMapper<CastFolderNode> folderMapper() {
+        return castFolderNodeMapper;
     }
 }

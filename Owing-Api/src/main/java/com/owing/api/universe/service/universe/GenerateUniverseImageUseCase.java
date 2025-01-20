@@ -2,7 +2,7 @@ package com.owing.api.universe.service.universe;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.openfeign.OwingAiClient;
+import com.owing.openfeign.OwingAiClient;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;

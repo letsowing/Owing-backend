@@ -3,11 +3,11 @@ package com.owing.api.trashcan.service.folder;
 import java.util.List;
 
 import com.owing.common.annotation.UseCase;
-import com.owing.entity.domains.story.service.StoryFolderDomainService;
-import com.owing.entity.domains.universe.service.UniverseFolderDomainService;
+import com.owing.entity.domains.story.service.StoryFolderService;
+import com.owing.entity.domains.universe.service.UniverseFolderService;
 import com.owing.entity.domains.trashcan.model.FolderType;
 import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
-import com.owing.node.folder.cast.service.CastFolderNodeDomainService;
+import com.owing.node.folder.cast.service.CastFolderNodeService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateTrashCanFolderUserCase {
 	private final TrashCanFolderDomainService trashCanFolderDomainService;
-	private final CastFolderNodeDomainService castFolderNodeDomainService;
-	private final StoryFolderDomainService storyFolderDomainService;
-	private final UniverseFolderDomainService universeFolderDomainService;
+	private final CastFolderNodeService castFolderNodeDomainService;
+	private final StoryFolderService storyFolderDomainService;
+	private final UniverseFolderService universeFolderDomainService;
 
 	public void executeRestoreFolder(Long trashId) {
 		FolderType tableName = trashCanFolderDomainService.findTableNameById(trashId);

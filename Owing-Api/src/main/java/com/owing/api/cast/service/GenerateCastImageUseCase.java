@@ -6,7 +6,7 @@ import com.owing.api.cast.model.dto.request.GenerateCastImageRequest;
 import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.cast.model.mapper.CastMapper;
 
-import com.owing.api.openfeign.OwingAiClient;
+import com.owing.openfeign.OwingAiClient;
 import com.owing.common.annotation.UseCase;
 
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.owing.api.project.service;
 
-import com.owing.api.common.util.MemberUtils;
+import com.owing.common.util.MemberUtils;
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.error.ProjectErrorCode;
