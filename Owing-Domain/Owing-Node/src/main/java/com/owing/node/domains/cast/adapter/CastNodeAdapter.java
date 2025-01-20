@@ -6,8 +6,8 @@ import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.DndFileAdapter;
-import com.owing.core.dnd.file.repository.DndFileRepository;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdapter extends DndFileAdapter<CastNode> {
+public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
@@ -108,7 +108,7 @@ public class CastNodeAdapter extends DndFileAdapter<CastNode> {
 
 
     @Override
-    protected DndFileRepository<CastNode> dndRepository() {
+    protected FileShiftRepository<CastNode> dndRepository() {
         return this.castNodeRepository;
     }
 

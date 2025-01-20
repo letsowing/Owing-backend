@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.DomainService;
 import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.folder.service.DndFolderDomainService;
+import com.owing.core.dnd.base.service.DndService;
 import com.owing.core.dnd.orderStrategy.OrderingStrategy;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CastFolderNodeDomainService extends DndFolderDomainService<CastFolderNode> {
+public class CastFolderNodeService extends DndService<CastFolderNode> {
 
     private final CastFolderNodeAdapter castFolderNodeAdapter;
     private final CastFolderShiftOrderingStrategy castFolderShiftOrderingStrategy;

@@ -1,11 +1,12 @@
 package com.owing.node.common.repository;
 
-import com.owing.core.dnd.folder.repository.DndFolderRepository;
-import com.owing.node.common.model.DndFolderNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import com.owing.core.dnd.orderStrategy.shift.repository.FolderShiftRepository;
+import com.owing.node.common.model.DndFolderNode;
+
 @NoRepositoryBean
-public interface DndFolderNodeRepository<T extends DndFolderNode> extends DndFolderRepository<T>, Neo4jRepository<T, Long> {
+public interface DndFolderNodeRepository<T extends DndFolderNode> extends FolderShiftRepository<T>, Neo4jRepository<T, Long> {
 
 }

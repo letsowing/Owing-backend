@@ -2,8 +2,8 @@ package com.owing.node.folder.cast.service;
 
 import org.springframework.stereotype.Component;
 
-import com.owing.core.dnd.folder.adapter.DndFolderAdapter;
 import com.owing.core.dnd.orderStrategy.shift.FolderShiftOrderingStrategy;
+import com.owing.core.dnd.orderStrategy.shift.adapter.FolderShiftAdapter;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 
@@ -16,7 +16,7 @@ public class CastFolderShiftOrderingStrategy extends FolderShiftOrderingStrategy
 	private final CastFolderNodeAdapter adapter;
 
 	@Override
-	protected DndFolderAdapter<CastFolderNode> dndAdapter() {
+	protected FolderShiftAdapter<CastFolderNode> dndAdapter() {
 		return adapter;
 	}
 }
