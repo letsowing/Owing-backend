@@ -1,6 +1,6 @@
 package com.owing.api.project.controller;
 
-import static com.owing.api.common.constant.OwingApiConst.*;
+import static com.owing.common.constant.OwingApiConst.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.common.constant.ProjectSort;
+import com.owing.common.constant.ProjectSort;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.request.GenerateProjectImageRequest;
 import com.owing.api.project.model.dto.request.UpdateProjectRequest;
@@ -28,8 +28,6 @@ import com.owing.api.project.service.GenerateProjectImageUseCase;
 import com.owing.api.project.service.ReadProjectListUseCase;
 import com.owing.api.project.service.ReadProjectUseCase;
 import com.owing.api.project.service.UpdateProjectUseCase;
-import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
-import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -2,7 +2,7 @@ package com.owing.api.auth.service;
 
 import com.owing.api.auth.model.dto.response.TokenResponse;
 import com.owing.api.auth.model.mapper.AuthMapper;
-import com.owing.api.common.util.JwtUtils;
+import com.owing.common.util.JwtUtils;
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.member.adapter.MemberAdapter;
 import com.owing.entity.domains.member.adapter.RefreshTokenAdapter;
@@ -11,7 +11,7 @@ import com.owing.entity.domains.member.model.RefreshToken;
 import com.owing.entity.domains.member.service.RefreshTokenDomainService;
 import lombok.RequiredArgsConstructor;
 
-import static com.owing.api.common.constant.TokenConst.BEARER_TYPE;
+import static com.owing.common.constant.TokenConst.BEARER_TYPE;
 
 @UseCase
 @RequiredArgsConstructor

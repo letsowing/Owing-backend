@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.owing.api.common.constant.TokenConst.*;
+import static com.owing.common.constant.TokenConst.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
