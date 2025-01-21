@@ -25,11 +25,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
 
     // test security
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-
-    // dotenv
-    implementation group: 'io.github.cdimascio', name: 'java-dotenv', version: '5.2.2'
 
     // google oauth
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.29.0'

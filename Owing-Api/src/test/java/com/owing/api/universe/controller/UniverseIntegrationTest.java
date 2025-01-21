@@ -138,7 +138,7 @@ class UniverseIntegrationTest {
                 "http://example.com/new_universe_image.png"
         );
 
-        String jsonContent = new ObjectMapper().writeValueAsString(request);
+        String jsonContent = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(requestUri)
                         .header(REQUEST_HEADER_AUTH, jwtToken)
@@ -165,7 +165,7 @@ class UniverseIntegrationTest {
                 "http://example.com/update_universe_image.png"
         );
 
-        String jsonContent = new ObjectMapper().writeValueAsString(request);
+        String jsonContent = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(put(requestUri)
                         .header(REQUEST_HEADER_AUTH, jwtToken)
@@ -201,7 +201,7 @@ class UniverseIntegrationTest {
                 "Generate an image for AI universe"
         );
 
-        String jsonContent = new ObjectMapper().writeValueAsString(request);
+        String jsonContent = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(requestUri)
                         .header(REQUEST_HEADER_AUTH, jwtToken)
