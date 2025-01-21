@@ -22,7 +22,7 @@ public class UniverseFolder extends BaseFolderEntity<Universe> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Builder
+    @Builder(builderClassName = "BasicBuilder", builderMethodName = "basicBuilder")
     public UniverseFolder(Long id, String name, String description, Long projectId) {
         this.id = id;
         this.name = name;
@@ -30,4 +30,12 @@ public class UniverseFolder extends BaseFolderEntity<Universe> {
         this.projectId = projectId;
     }
 
+    @Builder(builderClassName = "PositionBuilder", builderMethodName = "positionBuilder")
+    public UniverseFolder(Long id, String name, String description, Long projectId, Long position) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.projectId = projectId;
+        this.position = position;
+    }
 }
