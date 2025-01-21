@@ -1,14 +1,5 @@
 package com.owing.api.universe.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.owing.api.dnd.base.controller.BaseFileController;
 import com.owing.api.dnd.base.service.CreateDndUseCase;
 import com.owing.api.dnd.base.service.DeleteDndUseCase;
@@ -17,22 +8,18 @@ import com.owing.api.dnd.base.service.UpdateDndUseCase;
 import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
 import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.file.service.CreatePresignedUrlUseCase;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
-import com.owing.api.universe.service.universe.CreateUniversePresignedUrlUseCase;
-import com.owing.api.universe.service.universe.CreateUniverseUseCase;
-import com.owing.api.universe.service.universe.DeleteUniverseUseCase;
-import com.owing.api.universe.service.universe.GenerateUniverseImageUseCase;
-import com.owing.api.universe.service.universe.ReadUniverseUseCase;
-import com.owing.api.universe.service.universe.UpdateUniverseUseCase;
-
+import com.owing.api.universe.service.universe.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/universes")
@@ -50,7 +37,7 @@ public class UniverseController extends BaseFileController {
 	/* 세계관 생성 */
 	@PostMapping
 	@Operation(summary = "✨일반: 세계관 생성", description = "세계관을 생성합니다.")
-	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@RequestBody AddUniverseRequest addUniverseRequest) {
+	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@Valid @RequestBody AddUniverseRequest addUniverseRequest) {
 		return ResponseEntity.ok(createUniverseUseCase.execute(addUniverseRequest));
 	}
 
@@ -59,7 +46,7 @@ public class UniverseController extends BaseFileController {
 	@Operation(summary = "✨일반: 세계관 수정", description = "세계관을 수정합니다.")
 	public ResponseEntity<UniverseShortInfoResponse> updateUniverse(
 		@PathVariable Long universeId,
-		@RequestBody UpdateUniverseRequest updateUniverseRequest) {
+		@Valid @RequestBody UpdateUniverseRequest updateUniverseRequest) {
 		return ResponseEntity.ok(updateUniverseUseCase.execute(universeId, updateUniverseRequest));
 	}
 
@@ -73,7 +60,7 @@ public class UniverseController extends BaseFileController {
 	/* OpenAI - 세계관 이미지 생성 요청 후 S3 업로드 */
 	@PostMapping("/images")
 	@Operation(summary = "✨ OpenAI: 세계관 이미지 생성 요청 후 S3 업로드", description = "세계관 이미지 생성 요청 후 S3 업로드")
-	public ResponseEntity<UniverseImageResponse> generateUniverseImage(@RequestBody GenerateUniverseImageRequest generateUniverseImageRequest) {
+	public ResponseEntity<UniverseImageResponse> generateUniverseImage(@Valid @RequestBody GenerateUniverseImageRequest generateUniverseImageRequest) {
 		return ResponseEntity.ok(generateUniverseImageUseCase.execute(generateUniverseImageRequest));
 	}
 
