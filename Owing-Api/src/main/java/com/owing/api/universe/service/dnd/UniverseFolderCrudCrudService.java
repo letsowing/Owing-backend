@@ -10,7 +10,7 @@ import com.owing.common.util.MemberUtils;
 import com.owing.core.dnd.base.adapter.DndAdapter;
 import com.owing.core.dnd.base.service.DndService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
-import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseFolderService;
@@ -24,7 +24,7 @@ public class UniverseFolderCrudCrudService extends DndFolderCrudService<Universe
 	private final MemberUtils memberUtils;
 	private final UniverseFolderService universeFolderService;
 	private final UniverseFolderMapper universeFolderMapper;
-	private final TrashCanFolderDomainService trashCanFolderDomainService;
+	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 	private final ProjectAdapter projectAdapter;
 	private final TrashCanFolderMapper trashCanFolderMapper;
 	private final UniverseFolderAdapter universeFolderAdapter;
@@ -45,7 +45,7 @@ public class UniverseFolderCrudCrudService extends DndFolderCrudService<Universe
 	}
 
 	@Override
-	protected TrashCanFolderDomainService trashCanFolderDomainService() { return this.trashCanFolderDomainService; }
+	protected TrashCanFolderAdaptor trashCanFolderAdaptor() { return this.trashCanFolderAdaptor; }
 
 	@Override
 	protected ProjectAdapter projectAdapter() { return this.projectAdapter; }

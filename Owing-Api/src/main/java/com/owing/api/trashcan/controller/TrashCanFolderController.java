@@ -1,7 +1,5 @@
 package com.owing.api.trashcan.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.trashcan.model.dto.response.TrashCanFolderResponse;
-import com.owing.api.trashcan.service.folder.CreateTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.DeleteTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.ReadTrashCanFolderUserCase;
 import com.owing.api.trashcan.service.folder.UpdateTrashCanFolderUserCase;
 import com.owing.entity.domains.trashcan.model.TrashCanFolder;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name="쓰레기_폴더 /trashcans/folders", description="쓰레기_폴더 API")
 public class TrashCanFolderController {
-	private final CreateTrashCanFolderUserCase createTrashCanFolderUserCase;
 	private final ReadTrashCanFolderUserCase readTrashCanFolderUserCase;
 	private final UpdateTrashCanFolderUserCase updateTrashCanFolderUserCase;
 	private final DeleteTrashCanFolderUserCase deleteTrashCanFolderUserCase;

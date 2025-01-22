@@ -18,7 +18,7 @@ import com.owing.core.dnd.base.adapter.DndAdapter;
 import com.owing.core.dnd.base.service.DndService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
@@ -36,7 +36,7 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 	private final CastFolderNodeService castFolderDomainService;
 	private final MemberUtils memberUtils;
 	private final CastFolderNodeService castFolderNodeDomainService;
-	private final TrashCanFolderDomainService trashCanFolderDomainService;
+	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 	private final TrashCanFolderMapper trashCanFolderMapper;
 	private final ProjectAdapter projectAdapter;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
@@ -86,7 +86,7 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 		// Long memberId = memberUtils.getCurrentMemberId();
 		CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
 		Project project = projectAdapter().findById(castFolderNode.getProjectId());
-		trashCanFolderDomainService().createTrashCanFolder(trashCanFolderMapper().toFolderEntity(castFolderNode, project));
+		trashCanFolderAdaptor().save(trashCanFolderMapper().toFolderEntity(castFolderNode, project));
 		folderService().delete(castFolderNode);
 	}
 
@@ -106,7 +106,7 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 	}
 
 	@Override
-	protected TrashCanFolderDomainService trashCanFolderDomainService() { return this.trashCanFolderDomainService; }
+	protected TrashCanFolderAdaptor trashCanFolderAdaptor() { return this.trashCanFolderAdaptor; }
 
 	@Override
 	protected ProjectAdapter projectAdapter() { return this.projectAdapter; }
