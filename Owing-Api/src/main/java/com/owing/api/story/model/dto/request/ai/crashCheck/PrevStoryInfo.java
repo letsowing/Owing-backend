@@ -2,7 +2,7 @@ package com.owing.api.story.model.dto.request.ai.crashCheck;
 
 import java.time.LocalDateTime;
 
-import com.owing.entity.domains.story.model.dto.StoryVO;
+import com.owing.entity.domains.story.model.Story;
 
 public record PrevStoryInfo(
 	Long id,
@@ -11,13 +11,13 @@ public record PrevStoryInfo(
 	String episode,
 	LocalDateTime updatedAt
 ) {
-	public static PrevStoryInfo from(StoryVO story) {
+	public static PrevStoryInfo from(Story story) {
 		return new PrevStoryInfo(
-			story.id(),
-			story.name(),
-			story.description(),
-			story.episode(),
-			story.updatedAt()
+			story.getId(),
+			story.getName(),
+			story.getDescription(),
+			story.getParsedContent(),
+			story.getUpdatedAt()
 		);
 	}
 }

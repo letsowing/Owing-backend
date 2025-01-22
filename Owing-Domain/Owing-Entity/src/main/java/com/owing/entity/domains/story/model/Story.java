@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.jsoup.Jsoup;
 
 import com.owing.entity.dnd.file.model.DndFileEntity;
 
@@ -66,4 +67,13 @@ public class Story extends DndFileEntity<StoryFolder> {
 				.map(StoryContent::getContent)
 				.orElse("");
 	}
+
+	public String getParsedContent() {
+		return Jsoup.parse(this.getContent()).text();
+	}
+
+	public boolean isBlank() {
+		return storyContent == null || getParsedContent().isBlank();
+	}
+
 }
