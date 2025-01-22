@@ -1,8 +1,8 @@
 package com.owing.api.story.model.mapper;
 
-import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
+import com.owing.api.dnd.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
+import com.owing.api.dnd.model.mapper.BaseFolderMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.story.model.StoryFolder;
 

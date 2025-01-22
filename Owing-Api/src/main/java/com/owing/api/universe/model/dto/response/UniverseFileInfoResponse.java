@@ -1,6 +1,6 @@
 package com.owing.api.universe.model.dto.response;
 
-import com.owing.api.dnd.file.model.dto.response.FileInfoResponse;
+import com.owing.api.dnd.model.dto.response.FileInfoResponse;
 import com.owing.entity.domains.universe.model.Universe;
 
 import lombok.Getter;

@@ -25,23 +25,19 @@ import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
+import com.owing.api.cast.service.dnd.CastCrudCrudService;
 import com.owing.api.cast.service.CreateCastPresignedUrlUseCase;
 import com.owing.api.cast.service.CreateConnectionUseCase;
 import com.owing.api.cast.service.DeleteConnectionUseCase;
 import com.owing.api.cast.service.GenerateCastImageUseCase;
+import com.owing.api.cast.service.ReadCastUseCase;
+import com.owing.api.cast.service.UpdateCastUseCase;
 import com.owing.api.cast.service.UpdateConnectionUseCase;
-import com.owing.api.cast.service.file.CreateCastUseCase;
-import com.owing.api.cast.service.file.DeleteCastUseCase;
-import com.owing.api.cast.service.file.ReadCastUseCase;
-import com.owing.api.cast.service.file.UpdateCastUseCase;
-import com.owing.api.dnd.base.controller.BaseFileController;
-import com.owing.api.dnd.base.service.CreateDndUseCase;
-import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.ReadDndUseCase;
-import com.owing.api.dnd.base.service.UpdateDndUseCase;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.controller.BaseFileController;
+import com.owing.api.dnd.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.service.DndCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,10 +54,9 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="캐릭터 /cast", description="캐릭터 API")
 public class CastController extends BaseFileController {
 
-    private final CreateCastUseCase createCastUseCase;
-    private final ReadCastUseCase readCastUseCase;
+    private final CastCrudCrudService castCrudService;
     private final UpdateCastUseCase updateCastUseCase;
-    private final DeleteCastUseCase deleteCastUseCase;
+    private final ReadCastUseCase readCastUseCase;
     private final CreateConnectionUseCase createConnectionUseCase;
     private final UpdateConnectionUseCase updateConnectionUseCase;
     private final DeleteConnectionUseCase deleteConnectionUseCase;
@@ -91,7 +86,7 @@ public class CastController extends BaseFileController {
     @PostMapping
     @Operation(summary = "✨ 일반: 캐릭터 생성", description = "캐릭터 생성")
     public ResponseEntity<CastInfoResponse> createCast(@Valid @RequestBody CreateCastRequest createCastRequest) {
-        return ResponseEntity.ok(createCastUseCase.executeFull(createCastRequest));
+        return ResponseEntity.ok(castCrudService.executeFull(createCastRequest));
     }
 
     @PostMapping("/relationships")
@@ -128,27 +123,6 @@ public class CastController extends BaseFileController {
         return ResponseEntity.noContent().build();
     }
 
-    // Bean Setting
-    @Override
-    protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
-        return this.createCastUseCase;
-    }
-
-    @Override
-    protected ReadDndUseCase readDndUseCase() {
-        return this.readCastUseCase;
-    }
-
-    @Override
-    protected DeleteDndUseCase deleteDndUseCase() {
-        return this.deleteCastUseCase;
-    }
-
-    @Override
-    protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
-        return this.updateCastUseCase;
-    }
-
     /* presigned url 생성 */
     @GetMapping("/files/{fileExtension}")
     @Operation(summary = "✨ 일반: 인물 presignedUrl", description = "presigned url 생성합니다.")
@@ -163,4 +137,8 @@ public class CastController extends BaseFileController {
         return ResponseEntity.ok(generateCastImageUseCase.execute(generateCastImageRequest));
     }
 
+    @Override
+    protected DndCrudService<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest> dndCrudService() {
+        return castCrudService;
+    }
 }

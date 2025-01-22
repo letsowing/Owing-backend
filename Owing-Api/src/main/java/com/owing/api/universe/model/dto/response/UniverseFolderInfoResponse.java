@@ -2,7 +2,7 @@ package com.owing.api.universe.model.dto.response;
 
 import java.util.List;
 
-import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
+import com.owing.api.dnd.model.dto.response.FolderInfoResponse;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
 import lombok.Getter;
