@@ -1,8 +1,8 @@
 package com.owing.api.universe.model.mapper;
 
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.model.mapper.BaseFileMapper;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;

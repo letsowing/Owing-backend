@@ -3,7 +3,7 @@ package com.owing.api.project.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
-import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.model.dto.request.AddFolderRequest;
 import com.owing.api.project.model.dto.request.AddProjectRequest;
 import com.owing.api.project.model.dto.response.ProjectShortInfoResponse;
 import com.owing.api.project.model.mapper.ProjectMapper;

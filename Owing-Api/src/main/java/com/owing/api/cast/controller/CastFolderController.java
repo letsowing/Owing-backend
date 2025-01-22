@@ -1,29 +1,25 @@
 package com.owing.api.cast.controller;
 
+import java.util.List;
+
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
-import com.owing.api.cast.service.folder.CreateCastFolderUseCase;
-import com.owing.api.cast.service.folder.DeleteCastFolderUseCase;
-import com.owing.api.cast.service.folder.ReadCastFolderUseCase;
-import com.owing.api.cast.service.folder.UpdateCastFolderUseCase;
-import com.owing.api.dnd.base.controller.BaseFolderController;
-import com.owing.api.dnd.base.service.CreateDndUseCase;
-import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.UpdateDndUseCase;
-import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderPositionRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.folder.service.ReadFolderUseCase;
-import com.owing.node.folder.cast.model.CastFolderNode;
+import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
+import com.owing.api.cast.service.dnd.CastFolderCrudCrudService;
+import com.owing.api.dnd.controller.BaseFolderController;
+import com.owing.api.dnd.service.DndFolderCrudService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/cast/folders")
@@ -31,41 +27,24 @@ import java.util.List;
 @Tag(name = "캐릭터 폴더 /cast/folders", description = "캐릭터 폴더 API")
 public class CastFolderController extends BaseFolderController {
 
-    private final CreateCastFolderUseCase createCastFolderUseCase;
-    private final ReadCastFolderUseCase readCastFolderUseCase;
-    private final UpdateCastFolderUseCase updateCastFolderUseCase;
-    private final DeleteCastFolderUseCase deleteCastFolderUseCase;
+    private final CastFolderCrudCrudService castFolderCrudService;
 
     // TODO BaseFolderController의 공통 구현으로 분리
     @GetMapping("/{projectId}/dropdown")
     public ResponseEntity<List<CastFolderDropdownItemResponse>> getFolderDropdownList(@PathVariable Long projectId) {
-        return ResponseEntity.ok(readCastFolderUseCase.executeDropdownList(projectId));
+        return ResponseEntity.ok(castFolderCrudService.executeDropdownList(projectId));
     }
 
     @PutMapping("/{folderId}")
     public ResponseEntity<Void> updateCastFolderInfo(@PathVariable Long folderId, @Valid @RequestBody UpdateCastFolderInfo updateCastFolderInfo) {
-        updateCastFolderUseCase.executeInfoUpdate(folderId, updateCastFolderInfo);
+        castFolderCrudService.executeInfoUpdate(folderId, updateCastFolderInfo);
         return ResponseEntity.noContent().build();
     }
 
     // Bean Setting
     @Override
-    protected CreateDndUseCase<AddFolderRequest> createDndUseCase() {
-        return this.createCastFolderUseCase;
+    protected DndFolderCrudService dndCrudService() {
+        return castFolderCrudService;
     }
 
-    @Override
-    protected ReadFolderUseCase<CastFolderNode> readDndUseCase() {
-        return this.readCastFolderUseCase;
-    }
-
-    @Override
-    protected DeleteDndUseCase deleteDndUseCase() {
-        return this.deleteCastFolderUseCase;
-    }
-
-    @Override
-    protected UpdateDndUseCase<UpdateFolderTitleRequest, UpdateFolderPositionRequest> updateDndUseCase() {
-        return this.updateCastFolderUseCase;
-    }
 }

@@ -2,9 +2,9 @@ package com.owing.api.cast.model.mapper;
 
 import com.owing.api.cast.model.dto.request.*;
 import com.owing.api.cast.model.dto.response.*;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.model.mapper.BaseFileMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.model.*;

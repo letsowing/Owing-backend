@@ -1,8 +1,8 @@
 package com.owing.api.story.model.mapper;
 
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.model.mapper.BaseFileMapper;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.dto.response.StoryInfoResponse;
 import com.owing.common.annotation.Mapper;

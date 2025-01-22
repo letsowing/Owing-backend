@@ -1,6 +1,6 @@
 package com.owing.api.universe.model.dto.response;
 
-import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
+import com.owing.api.dnd.model.dto.response.DndInfoResponse;
 
 import lombok.Builder;
 

@@ -1,19 +1,29 @@
 package com.owing.api.universe.controller;
 
-import com.owing.api.dnd.base.controller.BaseFileController;
-import com.owing.api.dnd.base.service.CreateDndUseCase;
-import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.ReadDndUseCase;
-import com.owing.api.dnd.base.service.UpdateDndUseCase;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.owing.api.dnd.controller.BaseFileController;
+import com.owing.api.dnd.model.dto.request.AddFileRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.dnd.service.DndCrudService;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.service.universe.*;
+import com.owing.api.universe.service.dnd.UniverseCrudCrudService;
+import com.owing.api.universe.service.CreateUniversePresignedUrlUseCase;
+import com.owing.api.universe.service.GenerateUniverseImageUseCase;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,10 +37,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="세계관 /universes", description="세계관 API")
 public class UniverseController extends BaseFileController {
 
-	private final CreateUniverseUseCase createUniverseUseCase;
-	private final UpdateUniverseUseCase updateUniverseUseCase;
-	private final ReadUniverseUseCase readUniverseUseCase;
-	private final DeleteUniverseUseCase deleteUniverseUseCase;
+	private final UniverseCrudCrudService universeCrudService;
 	private final CreateUniversePresignedUrlUseCase createUniversePresignedUrlUseCase;
 	private final GenerateUniverseImageUseCase generateUniverseImageUseCase;
 
@@ -38,7 +45,7 @@ public class UniverseController extends BaseFileController {
 	@PostMapping
 	@Operation(summary = "✨일반: 세계관 생성", description = "세계관을 생성합니다.")
 	public ResponseEntity<UniverseShortInfoResponse> createUniverse(@Valid @RequestBody AddUniverseRequest addUniverseRequest) {
-		return ResponseEntity.ok(createUniverseUseCase.execute(addUniverseRequest));
+		return ResponseEntity.ok(universeCrudService.create(addUniverseRequest));
 	}
 
 	/* 세계관 수정 */
@@ -47,7 +54,7 @@ public class UniverseController extends BaseFileController {
 	public ResponseEntity<UniverseShortInfoResponse> updateUniverse(
 		@PathVariable Long universeId,
 		@Valid @RequestBody UpdateUniverseRequest updateUniverseRequest) {
-		return ResponseEntity.ok(updateUniverseUseCase.execute(universeId, updateUniverseRequest));
+		return ResponseEntity.ok(universeCrudService.update(universeId, updateUniverseRequest));
 	}
 
 	/* presigned url 생성 */
@@ -65,22 +72,7 @@ public class UniverseController extends BaseFileController {
 	}
 
 	@Override
-	protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
-		return createUniverseUseCase;
-	}
-
-	@Override
-	protected ReadDndUseCase readDndUseCase() {
-		return readUniverseUseCase;
-	}
-
-	@Override
-	protected DeleteDndUseCase deleteDndUseCase() {
-		return deleteUniverseUseCase;
-	}
-
-	@Override
-	protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
-		return updateUniverseUseCase;
+	protected DndCrudService<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest> dndCrudService() {
+		return universeCrudService;
 	}
 }

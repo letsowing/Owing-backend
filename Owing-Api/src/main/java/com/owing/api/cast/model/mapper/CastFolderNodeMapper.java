@@ -5,10 +5,9 @@ import java.util.List;
 import com.owing.api.cast.model.dto.response.CastFileResponse;
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.dto.response.CastFolderResponse;
-import com.owing.api.dnd.folder.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.folder.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
-import com.owing.api.dnd.folder.model.mapper.BaseFolderMapper;
+import com.owing.api.dnd.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
+import com.owing.api.dnd.model.mapper.BaseFolderMapper;
 import com.owing.common.annotation.Mapper;
 import com.owing.node.folder.cast.model.CastFolderNode;
 
