@@ -1,4 +1,4 @@
-package com.owing.entity.domains.story.textCount;
+package com.owing.common.util;
 
 import org.jsoup.Jsoup;
 
