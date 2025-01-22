@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
-public class CastNodeDomainService extends DndFileDomainService<CastNode> {
+public class CastNodeService extends DndService<CastNode> {
 
     private final CastNodeAdapter castNodeAdapter;
     private final CastShiftOrderingStrategy castShiftOrderingStrategy;
@@ -72,11 +72,6 @@ public class CastNodeDomainService extends DndFileDomainService<CastNode> {
         if (isUpdated) {
             neo4jTemplate.save(CastNode.class).one(CastCoordinateProjection.from(castNode));
         }
-    }
-
-    @Transactional("neo4jTransactionManager")
-    public void restoreById(Long castId) {
-        castNodeRepository.restoreById(castId);
     }
 
     // =====Cast Relationship=====
