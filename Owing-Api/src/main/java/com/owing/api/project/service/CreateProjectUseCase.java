@@ -13,8 +13,8 @@ import com.owing.api.universe.model.mapper.UniverseFolderMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.common.util.MemberUtils;
 import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.project.service.ProjectDomainService;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.service.StoryFolderService;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CreateProjectUseCase {
     private final MemberUtils memberUtils;
-    private final ProjectDomainService projectDomainService;
     private final ProjectMapper projectMapper;
 
     private final ProjectNodeDomainService projectNodeDomainService;
@@ -41,6 +40,7 @@ public class CreateProjectUseCase {
     private final StoryFolderService storyFolderDomainService;
     private final UniverseFolderMapper universeFolderMapper;
     private final UniverseFolderService universeFolderDomainService;
+    private final ProjectAdapter projectAdapter;
 
     @Transactional("jpaTransactionManager")
     public ProjectShortInfoResponse execute(AddProjectRequest addProjectRequest) {
@@ -56,7 +56,7 @@ public class CreateProjectUseCase {
 
     private Project createEntity(AddProjectRequest addProjectRequest, Member memberReference) {
         Project project = projectMapper.toEntity(addProjectRequest, memberReference);
-        return projectDomainService.createProject(project);
+        return projectAdapter.save(project);
     }
 
     private ProjectNode createNode(Project savedProject) {

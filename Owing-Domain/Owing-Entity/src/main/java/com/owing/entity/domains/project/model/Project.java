@@ -2,6 +2,9 @@ package com.owing.entity.domains.project.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import com.owing.core.BaseEntity;
 import com.owing.entity.domains.member.model.Member;
 
@@ -25,6 +28,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE Project SET deleted = true where id = ?")
 public class Project extends BaseEntity {
 
     @Id
@@ -55,10 +60,11 @@ public class Project extends BaseEntity {
         }
     }
 
-    public void updateAccessedAt(LocalDateTime localDateTime) {
-        if (localDateTime.isBefore(this.accessedAt)) {
-            return;
-        }
-        this.accessedAt = localDateTime;
+    public void updateAccessed() {
+        this.accessedAt = LocalDateTime.now();
+    }
+
+    public void updateProjectInfo(ProjectInfo projectInfo) {
+        this.projectInfo.updateProjectInfo(projectInfo);
     }
 }
