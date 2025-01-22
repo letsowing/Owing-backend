@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class TrashCanFolderAdaptor {
 	private final TrashCanFolderRepository trashCanFolderRepository;
 
-	public List<TrashCanFolder> findAllByProject_Id(Long projectId) {
+	public List<TrashCanFolder> getTrashCanFolder(Long projectId) {
 		return trashCanFolderRepository.findAllByProject_Id(projectId);
 	}
 
@@ -28,5 +28,21 @@ public class TrashCanFolderAdaptor {
 
 	public Optional<TrashCanFolder> findByItemIdAndTableName(Long itemId, FolderType folderType) {
 		return trashCanFolderRepository.findByItemIdAndTableName(itemId, folderType);
+	}
+
+	public void deleteAllTrashCan(Long projectId) {
+		trashCanFolderRepository.deleteAllByProject_Id(projectId);
+	}
+
+	public TrashCanFolder save(TrashCanFolder trashCanFolder) {
+		return trashCanFolderRepository.save(trashCanFolder);
+	}
+
+	public void delete(TrashCanFolder trashCanFolder) {
+		trashCanFolderRepository.delete(trashCanFolder);
+	}
+
+	public void deleteTrashCanFolderById(Long trashId) {
+		trashCanFolderRepository.deleteById(trashId);
 	}
 }

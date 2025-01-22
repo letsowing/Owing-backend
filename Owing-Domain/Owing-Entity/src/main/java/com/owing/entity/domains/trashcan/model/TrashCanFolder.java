@@ -52,4 +52,11 @@ public class TrashCanFolder extends BaseEntity {
 
     @OneToMany(mappedBy = "trashCanFolder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TrashCan> trashCanList = new ArrayList<>();
+
+    public List<Long> getTrashCanItemIds() {
+        return trashCanList.stream()
+            .map(TrashCan::getItemId)
+            .toList();
+    }
+
 }

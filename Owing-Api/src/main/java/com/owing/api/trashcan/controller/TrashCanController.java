@@ -1,7 +1,5 @@
 package com.owing.api.trashcan.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.trashcan.service.trashcan.CreateTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.DeleteTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.ReadTrashCanUserCase;
 import com.owing.api.trashcan.service.trashcan.UpdateTrashCanUserCase;
-import com.owing.entity.domains.story.model.Story;
-import com.owing.entity.domains.universe.model.Universe;
-import com.owing.node.domains.cast.model.CastNode;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="쓰레기파일 /trashcans", description="쓰레기파일 API")
 public class TrashCanController {
 
-	private final CreateTrashCanUserCase createTrashCanUserCase;
 	private final ReadTrashCanUserCase readTrashCanUserCase;
 	private final UpdateTrashCanUserCase updateTrashCanUserCase;
 	private final DeleteTrashCanUserCase deleteTrashCanUserCase;

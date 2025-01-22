@@ -17,14 +17,14 @@ import com.owing.core.dnd.base.model.DndFolder;
 import com.owing.core.dnd.base.service.DndService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
 
 public abstract class DndFolderCrudService<T extends DndFolder> implements DndCrudService<AddFolderRequest, UpdateFolderTitleRequest, UpdateFolderPositionRequest> {
 	protected abstract MemberUtils memberUtils();
 	protected abstract DndService<T> folderService();
 	protected abstract BaseFolderMapper<T> folderMapper();
 	protected abstract DndAdapter<T> folderAdapter();
-	protected abstract TrashCanFolderDomainService trashCanFolderDomainService();
+	protected abstract TrashCanFolderAdaptor trashCanFolderAdaptor();
 	protected abstract ProjectAdapter projectAdapter();
 	protected abstract TrashCanFolderMapper trashCanFolderMapper();
 
@@ -40,7 +40,7 @@ public abstract class DndFolderCrudService<T extends DndFolder> implements DndCr
 		// Long memberId = memberUtils.getCurrentMemberId();
 		T entity = folderAdapter().findById(folderId);
 		Project project = projectAdapter().findById(entity.getProjectId());
-		trashCanFolderDomainService().createTrashCanFolder(trashCanFolderMapper().toFolderEntity(entity, project));
+		trashCanFolderAdaptor().save(trashCanFolderMapper().toFolderEntity(entity, project));
 		folderService().delete(entity);
 	}
 

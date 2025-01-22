@@ -35,7 +35,7 @@ public abstract class DndFile extends BaseEntity implements Dnd {
 		return this.getParentId().equals(folder.getId());
 	}
 
-	public boolean isInSameParent(DndFile file){
+	public boolean isInSameParent(Dnd file){
 		return this.getParentId().equals(file.getParentId());
 	}
 

@@ -13,7 +13,7 @@ import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.service.StoryFolderService;
-import com.owing.entity.domains.trashcan.service.TrashCanFolderDomainService;
+import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ public class StoryFolderCrudCrudService extends DndFolderCrudService<StoryFolder
 	private final MemberUtils memberUtils;
 	private final StoryFolderService storyFolderService;
 	private final StoryFolderMapper storyFolderMapper;
-	private final TrashCanFolderDomainService trashCanFolderDomainService;
+	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 	private final ProjectAdapter projectAdapter;
 	private final TrashCanFolderMapper trashCanFolderMapper;
 	private final StoryFolderAdapter storyFolderAdapter;
@@ -49,7 +49,7 @@ public class StoryFolderCrudCrudService extends DndFolderCrudService<StoryFolder
 	}
 
 	@Override
-	protected TrashCanFolderDomainService trashCanFolderDomainService() { return this.trashCanFolderDomainService; }
+	protected TrashCanFolderAdaptor trashCanFolderAdaptor() { return this.trashCanFolderAdaptor; }
 
 	@Override
 	protected ProjectAdapter projectAdapter() { return this.projectAdapter; }
