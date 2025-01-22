@@ -131,4 +131,9 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
         CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
         neo4jTemplate.save(CastNode.class).one(deleteProjection);
     }
+
+    @Transactional
+    public void restoreById(Long id) {
+        castNodeRepository.restoreById(id);
+    }
 }
