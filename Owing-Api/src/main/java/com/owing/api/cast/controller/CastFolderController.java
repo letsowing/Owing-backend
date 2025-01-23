@@ -1,6 +1,7 @@
 package com.owing.api.cast.controller;
 
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,7 @@ public class CastFolderController extends BaseFolderController {
     }
 
     @PutMapping("/{folderId}")
-    public ResponseEntity<Void> updateCastFolderInfo(@PathVariable Long folderId, @RequestBody UpdateCastFolderInfo updateCastFolderInfo) {
+    public ResponseEntity<Void> updateCastFolderInfo(@PathVariable Long folderId, @Valid @RequestBody UpdateCastFolderInfo updateCastFolderInfo) {
         updateCastFolderUseCase.executeInfoUpdate(folderId, updateCastFolderInfo);
         return ResponseEntity.noContent().build();
     }

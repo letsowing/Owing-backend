@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class CastController extends BaseFileController {
 
     @PutMapping("/{castId}")
     @Operation(summary = "✨ 일반: 캐릭터 정보 수정", description = "캐릭터 정보 수정")
-    public ResponseEntity<Void> updateCastInfo(@PathVariable Long castId, @RequestBody UpdateCastInfoRequest updateCastInfoRequest) {
+    public ResponseEntity<Void> updateCastInfo(@PathVariable Long castId, @Valid @RequestBody UpdateCastInfoRequest updateCastInfoRequest) {
         updateCastUseCase.executeUpdateInfo(castId, updateCastInfoRequest);
         return ResponseEntity.noContent().build();
     }
@@ -62,19 +63,19 @@ public class CastController extends BaseFileController {
 
     @PostMapping
     @Operation(summary = "✨ 일반: 캐릭터 생성", description = "캐릭터 생성")
-    public ResponseEntity<CastInfoResponse> createCast(@RequestBody CreateCastRequest createCastRequest) {
+    public ResponseEntity<CastInfoResponse> createCast(@Valid @RequestBody CreateCastRequest createCastRequest) {
         return ResponseEntity.ok(createCastUseCase.executeFull(createCastRequest));
     }
 
     @PostMapping("/relationships")
     @Operation(summary = "✨ 관계도: 인물 관계 생성", description = "인물 관계 생성")
-    public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@RequestBody CreateConnectionRequest createConnectionRequest) {
+    public ResponseEntity<CastRelationshipInfoResponse> createRelationship(@Valid @RequestBody CreateConnectionRequest createConnectionRequest) {
         return ResponseEntity.ok(createConnectionUseCase.execute(createConnectionRequest));
     }
 
     @PatchMapping("/relationships/{relationshipId}/label")
     @Operation(summary = "✨ 관계도: 인물 관계 수정", description = "인물 관계의 라벨을 수정")
-    public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
+    public ResponseEntity<Void> updateRelationshipLabel(@PathVariable Long relationshipId, @Valid @RequestBody UpdateCastRelationshipLabelRequest updateCastRelationshipLabelRequest) {
         updateConnectionUseCase.executeLabel(relationshipId, updateCastRelationshipLabelRequest);
         return ResponseEntity.noContent().build();
     }
@@ -85,7 +86,7 @@ public class CastController extends BaseFileController {
             @ApiResponse(responseCode = "204", description = "기존 관계와 source & target이 같다면 handle만 수정"),
             @ApiResponse(responseCode = "200", description = "기존 관계와 source & target이 다르다면 기존 관계 삭제 & 새로운 관계 추가. 응답은 생성과 같음")
     })
-    public ResponseEntity<?> updateRelationship(@PathVariable Long relationshipId, @RequestBody UpdateCastRelationshipRequest updateCastRelationshipRequest) {
+    public ResponseEntity<?> updateRelationship(@PathVariable Long relationshipId, @Valid @RequestBody UpdateCastRelationshipRequest updateCastRelationshipRequest) {
         Optional<CastRelationshipInfoResponse> optional = updateConnectionUseCase.execute(relationshipId, updateCastRelationshipRequest);
         if (optional.isEmpty()) {
             return ResponseEntity.noContent().build();
