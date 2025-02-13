@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.owing.core.constant.OwingPersistenceConst;
+import com.owing.core.dnd.model.DndFile;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,5 +64,14 @@ public class TrashCan {
 
 	public FolderType getTableName() {
 		return trashCanFolder.getTableName();
+	}
+
+	public static TrashCan fromFile(DndFile file, TrashCanFolder trashCanFolder) {
+		return TrashCan.builder()
+			.itemId(file.getId())
+			.name(file.getName())
+			.description(file.getDescription())
+			.trashCanFolder(trashCanFolder)
+			.build();
 	}
 }
