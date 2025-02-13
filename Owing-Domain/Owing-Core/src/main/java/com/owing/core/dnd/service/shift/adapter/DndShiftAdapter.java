@@ -1,8 +1,8 @@
-package com.owing.core.dnd.orderStrategy.shift.adapter;
+package com.owing.core.dnd.service.shift.adapter;
 
-import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.orderStrategy.shift.repository.DndShiftRepository;
+import com.owing.core.dnd.adapter.DndAdapter;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.service.shift.repository.DndShiftRepository;
 
 public abstract class DndShiftAdapter<T extends Dnd> extends DndAdapter<T> {
 	protected abstract DndShiftRepository<T> dndRepository();

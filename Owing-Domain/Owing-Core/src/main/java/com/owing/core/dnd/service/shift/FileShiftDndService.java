@@ -1,13 +1,15 @@
-package com.owing.core.dnd.orderStrategy.shift;
+package com.owing.core.dnd.service.shift;
 
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.base.model.DndFile;
-import com.owing.core.dnd.base.model.DndFolder;
+import java.util.Objects;
+
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.model.DndFile;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.core.dnd.error.DndErrorCode;
 import com.owing.core.dnd.error.exception.DndInvalidPositionException;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
 
-public abstract class FileShiftOrderingStrategy<T extends DndFile> extends ShiftOrderingStrategy<T> {
+public abstract class FileShiftDndService<T extends DndFile> extends ShiftDndService<T> {
 
 	@Override
 	protected abstract FileShiftAdapter<T> dndAdapter();
@@ -41,6 +43,10 @@ public abstract class FileShiftOrderingStrategy<T extends DndFile> extends Shift
 				return isSequential;
 
 			return isSequential && before.isParentFolder(newParent);
+		}
+
+		if (newParent != null) {
+			return Objects.requireNonNullElse(before, after).isParentFolder(newParent);
 		}
 		return true;
 	}

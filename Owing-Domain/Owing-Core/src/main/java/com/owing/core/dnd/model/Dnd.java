@@ -1,4 +1,4 @@
-package com.owing.core.dnd.base.model;
+package com.owing.core.dnd.model;
 
 public interface Dnd {
 	Long getId();
@@ -14,4 +14,5 @@ public interface Dnd {
 	boolean isBefore(Dnd dnd);
 	boolean isAfter(long position);
 	boolean isBefore(long position);
+	void delete();
 }

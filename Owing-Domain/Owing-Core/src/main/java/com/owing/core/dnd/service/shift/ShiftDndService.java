@@ -1,13 +1,13 @@
-package com.owing.core.dnd.orderStrategy.shift;
+package com.owing.core.dnd.service.shift;
 
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.orderStrategy.OrderingStrategy;
-import com.owing.core.dnd.orderStrategy.shift.adapter.DndShiftAdapter;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.service.DndService;
+import com.owing.core.dnd.service.shift.adapter.DndShiftAdapter;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class ShiftOrderingStrategy<T extends Dnd> implements OrderingStrategy<T> {
+public abstract class ShiftDndService<T extends Dnd> implements DndService<T> {
 	protected abstract DndShiftAdapter<T> dndAdapter();
 
 	/** 새로운 위치  */
@@ -67,6 +67,18 @@ public abstract class ShiftOrderingStrategy<T extends Dnd> implements OrderingSt
 	/** 붙어있는지 */
 	protected boolean isSequentialPosition(T before, T after) {
 		return after.getPosition() - before.getPosition() == 1;
+	}
+
+	public T create(T entity) {
+		long position = getNewPosition(entity.getParentId());
+		entity.updatePosition(position);
+		return dndAdapter().save(entity);
+	}
+
+	public T delete(T entity) {
+		reorderEntity(entity);
+		dndAdapter().delete(entity);
+		return entity;
 	}
 
 }

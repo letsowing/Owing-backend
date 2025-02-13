@@ -1,7 +1,7 @@
-package com.owing.core.dnd.orderStrategy.shift.adapter;
+package com.owing.core.dnd.service.shift.adapter;
 
-import com.owing.core.dnd.base.model.DndFile;
-import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.model.DndFile;
+import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
 
 public abstract class FileShiftAdapter<T extends DndFile> extends DndShiftAdapter<T>{
 	@Override

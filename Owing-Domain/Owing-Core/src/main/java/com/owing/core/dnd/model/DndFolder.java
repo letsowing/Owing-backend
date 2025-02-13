@@ -1,4 +1,4 @@
-package com.owing.core.dnd.base.model;
+package com.owing.core.dnd.model;
 
 import java.util.List;
 

@@ -1,13 +1,13 @@
-package com.owing.core.dnd.orderStrategy.lexorank;
+package com.owing.core.dnd.service.lexorank;
 
-import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.orderStrategy.OrderingStrategy;
+import com.owing.core.dnd.adapter.DndAdapter;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.service.DndService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class LexoRankOrderingStrategy<T extends Dnd> implements OrderingStrategy<T> {
+public class LexoRankDndService<T extends Dnd> implements DndService<T> {
 	protected final DndAdapter<T> dndAdapter;
 
 	@Override
@@ -28,6 +28,16 @@ public class LexoRankOrderingStrategy<T extends Dnd> implements OrderingStrategy
 	@Override
 	public long getUpdatePosition(T entity, T beforeEntity, T afterEntity, Dnd newParent) {
 		return 0;
+	}
+
+	@Override
+	public T create(T entity) {
+		return null;
+	}
+
+	@Override
+	public T delete(T entity) {
+		return null;
 	}
 
 }

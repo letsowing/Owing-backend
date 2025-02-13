@@ -1,12 +1,12 @@
-package com.owing.core.dnd.orderStrategy.shift;
+package com.owing.core.dnd.service.shift;
 
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.core.dnd.error.DndErrorCode;
 import com.owing.core.dnd.error.exception.DndInvalidPositionException;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FolderShiftAdapter;
+import com.owing.core.dnd.service.shift.adapter.FolderShiftAdapter;
 
-public abstract class FolderShiftOrderingStrategy<T extends DndFolder> extends ShiftOrderingStrategy<T>{
+public abstract class FolderShiftDndService<T extends DndFolder> extends ShiftDndService<T> {
 
 	protected abstract FolderShiftAdapter<T> dndAdapter();
 

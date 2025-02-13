@@ -1,7 +1,7 @@
-package com.owing.core.dnd.orderStrategy.shift.repository;
+package com.owing.core.dnd.service.shift.repository;
 
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.base.repository.DndRepository;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.repository.DndRepository;
 
 public interface DndShiftRepository<T extends Dnd> extends DndRepository<T> {
 	void decrementPositionAfter(Long position, Long projectId);

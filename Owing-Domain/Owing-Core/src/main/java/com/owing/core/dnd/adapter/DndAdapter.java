@@ -1,11 +1,11 @@
-package com.owing.core.dnd.base.adapter;
+package com.owing.core.dnd.adapter;
 
 import java.util.List;
 
 import com.owing.core.dnd.error.DndErrorCode;
 import com.owing.core.dnd.error.exception.DndNotFoundException;
-import com.owing.core.dnd.base.model.Dnd;
-import com.owing.core.dnd.base.repository.DndRepository;
+import com.owing.core.dnd.model.Dnd;
+import com.owing.core.dnd.repository.DndRepository;
 
 public abstract class DndAdapter<T extends Dnd> {
 	protected abstract DndRepository<T> dndRepository();
