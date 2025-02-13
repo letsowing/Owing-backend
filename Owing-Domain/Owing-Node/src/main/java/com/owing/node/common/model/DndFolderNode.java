@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
-import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.story.error.code.StoryFolderNodeErrorCode;
 import com.owing.node.folder.story.error.exception.StoryFolderNodeRelationshipException;

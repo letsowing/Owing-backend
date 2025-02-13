@@ -5,12 +5,11 @@ import java.util.List;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FolderShiftAdapter;
-import com.owing.core.dnd.orderStrategy.shift.repository.DndShiftRepository;
+import com.owing.core.dnd.service.shift.adapter.FolderShiftAdapter;
+import com.owing.core.dnd.service.shift.repository.DndShiftRepository;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeNotFoundException;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import com.owing.node.folder.cast.model.projection.CastFolderDeleteProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderPositionProjection;
 import com.owing.node.folder.cast.model.projection.CastFolderTitleProjection;
 import com.owing.node.folder.cast.repository.CastFolderNodeRepository;
@@ -53,10 +52,10 @@ public class CastFolderNodeAdapter extends FolderShiftAdapter<CastFolderNode> {
 
     @Override
     public void delete(CastFolderNode entity) {
-        // castFolderNodeRepository.deleteFolderById(entity.getId());
-        entity.delete();
-        CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(entity);
-        neo4jTemplate.save(CastFolderNode.class).one(deleteProjection);
+        castFolderNodeRepository.deleteFolderById(entity.getId());
+        // entity.delete();
+        // CastFolderDeleteProjection deleteProjection = CastFolderDeleteProjection.from(entity);
+        // neo4jTemplate.save(CastFolderNode.class).one(deleteProjection);
     }
 
     @Override
