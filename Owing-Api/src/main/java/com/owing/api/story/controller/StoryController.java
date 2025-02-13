@@ -22,10 +22,11 @@ import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
-import com.owing.api.story.service.dnd.StoryFileCrudCrudService;
+import com.owing.api.story.service.UpdateStoryUseCase;
+import com.owing.api.story.service.dnd.StoryCrudService;
 import com.owing.api.story.service.CheckStoryCrashUseCase;
 import com.owing.api.story.service.CheckStorySpellUseCase;
-import com.owing.api.story.service.CreateStoryUseCase;
+import com.owing.api.story.service.WriteStoryUseCase;
 import com.owing.api.story.service.ReadStoryCrashLogUseCase;
 import com.owing.api.story.service.ReadStorySpellLogUseCase;
 
@@ -38,12 +39,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name="원고 /stories", description="원고 API")
 public class StoryController extends BaseFileController {
-	private final CreateStoryUseCase createDndUseCase;
-	private final StoryFileCrudCrudService storyFileCrudService;
+	private final WriteStoryUseCase createDndUseCase;
+	private final StoryCrudService storyFileCrudService;
 	private final CheckStoryCrashUseCase checkStoryCrashUseCase;
 	private final CheckStorySpellUseCase checkStorySpellUseCase;
 	private final ReadStorySpellLogUseCase readStorySpellLogUseCase;
 	private final ReadStoryCrashLogUseCase readStoryCrashLogUseCase;
+	private final UpdateStoryUseCase updateStoryUseCase;
 
 	@PostMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
@@ -55,7 +57,7 @@ public class StoryController extends BaseFileController {
 	@PutMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 정보 수정", description = "원고 정보를 수정합니다.")
 	public ResponseEntity<?> updateStory(@PathVariable Long storyId, @RequestBody UpdateStoryRequest request) {
-		// storyFileCrudService.updateTitle(storyId, request);
+		updateStoryUseCase.execute(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

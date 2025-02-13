@@ -1,5 +1,7 @@
 package com.owing.api.story.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.model.mapper.StoryContentMapper;
 import com.owing.common.annotation.UseCase;
@@ -14,13 +16,14 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateStoryUseCase {
+public class WriteStoryUseCase {
     private final MemberUtils memberUtils;
     private final StoryService storyService;
     private final StoryContentMapper storyContentMapper;
     private final StoryAdapter storyAdapter;
     private final DashboardService dashboardService;
 
+    @Transactional("jpaTransactionManager")
     public void executeText(Long storyId, AddStoryContentRequest request) {
         Long memberId = memberUtils.getCurrentMemberId();
         Story story = storyAdapter.findById(storyId);

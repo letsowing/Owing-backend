@@ -1,5 +1,7 @@
 package com.owing.api.cast.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
 import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
@@ -8,11 +10,11 @@ import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastNodeInfo;
 import com.owing.node.domains.cast.model.Coordinate;
+import com.owing.node.domains.cast.service.CastDndService;
 import com.owing.node.domains.cast.service.CastNodeService;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -22,8 +24,9 @@ public class UpdateCastUseCase {
 	private final CastNodeService castNodeDomainService;
 	private final CastNodeMapper castNodeMapper;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
+	private final CastDndService castDndService;
 
-	@Transactional
+	@Transactional("neo4jTransactionManager")
 	public void executeUpdateInfo(Long castId, UpdateCastInfoRequest updateCastInfoRequest) {
 		CastNode castNode = castNodeAdapter.findById(castId);
 
@@ -38,14 +41,14 @@ public class UpdateCastUseCase {
 
 			// update file position, update folder(parent)
 			CastNode lastCastNode = castNodeDomainService.getLastPositionCastNodeInFolder(attachCandidateFolder.getId());
-			castNodeDomainService.updatePosition(castNode, lastCastNode, null, attachCandidateFolder);
+			castDndService.updatePosition(castNode, lastCastNode, null, attachCandidateFolder);
 
 			// attach candidate folder
 			castNodeDomainService.attachFolder(castNode, castNode.getParentId());
 		}
 	}
 
-	@Transactional
+	@Transactional("neo4jTransactionManager")
 	public void executeUpdateCoordinate(Long castId, UpdateCastCoordinateRequest updateCastCoordinateRequest) {
 		CastNode castNode = castNodeAdapter.findById(castId);
 

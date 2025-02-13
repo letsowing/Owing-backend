@@ -3,48 +3,51 @@ package com.owing.api.cast.service.dnd;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.cast.model.dto.request.UpdateCastFolderInfo;
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
 import com.owing.api.dnd.model.dto.request.AddFolderRequest;
+import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
 import com.owing.api.dnd.model.dto.response.FolderInfoListResponse;
 import com.owing.api.dnd.model.dto.response.FolderInfoResponse;
 import com.owing.api.dnd.model.mapper.BaseFolderMapper;
 import com.owing.api.dnd.service.DndFolderCrudService;
-import com.owing.api.trashcan.model.mapper.TrashCanFolderMapper;
 import com.owing.common.util.MemberUtils;
-import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.service.DndService;
-import com.owing.entity.domains.project.adapter.ProjectAdapter;
-import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.trashcan.adaptor.TrashCanFolderAdaptor;
+import com.owing.core.dnd.adapter.DndAdapter;
+import com.owing.core.dnd.service.DndService;
+import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
-import com.owing.node.folder.cast.service.CastFolderNodeService;
+import com.owing.node.folder.cast.service.CastFolderDndService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNode> {
+public class CastFolderCrudService extends DndFolderCrudService<CastFolderNode> {
 
 	private final ProjectNodeAdapter projectNodeAdapter;
 	private final CastFolderNodeMapper castFolderNodeMapper;
-	private final CastFolderNodeService castFolderDomainService;
 	private final MemberUtils memberUtils;
-	private final CastFolderNodeService castFolderNodeDomainService;
-	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
-	private final TrashCanFolderMapper trashCanFolderMapper;
-	private final ProjectAdapter projectAdapter;
+	private final CastFolderDndService castFolderDndService;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
+	private final TrashCanDomainService trashCanDomainService;
 
 	@Override
 	public FolderInfoResponse get(Long folderId) {
 		CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
 		return castFolderNodeMapper.toInfoResponse(castFolderNode);
+	}
+
+	@Override
+	@Transactional("neo4jTransactionManager")
+	public void updateName(Long folderId, UpdateFolderTitleRequest dto) {
+		CastFolderNode castFolderNode = castFolderNodeAdapter.findById(folderId);
+		castFolderNode.updateName(dto.name());
+		castFolderNodeAdapter.updateName(castFolderNode);
 	}
 
 	@Override
@@ -61,33 +64,26 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 	}
 
 	@Override
+	@Transactional("neo4jTransactionManager")
 	public FolderInfoResponse create(AddFolderRequest createCastFolderRequest) {
 		ProjectNode projectNode = projectNodeAdapter.findById(createCastFolderRequest.projectId());
 		CastFolderNode castFolderNode = castFolderNodeMapper.toEntity(
 			createCastFolderRequest.name());
 
 		castFolderNode.connectProject(projectNode);
-		CastFolderNode savedCastFolder = castFolderDomainService.create(castFolderNode);
+		CastFolderNode savedCastFolder = castFolderDndService.create(castFolderNode);
 
 		return castFolderNodeMapper.toInfoResponse(savedCastFolder);
 	}
 
-	public void executeInfoUpdate(Long folderId, UpdateCastFolderInfo updateCastFolderInfo) {
-		CastFolderNode castFolderNode = castFolderNodeAdapter.findById(folderId);
-		castFolderNodeDomainService.updateCastFolderNodeInfo(
-			castFolderNode,
-			updateCastFolderInfo.name(),
-			updateCastFolderInfo.description()
-		);
-	}
 
 	@Override
+	@Transactional("neo4jTransactionManager")
 	public void delete(Long folderId) {
 		// Long memberId = memberUtils.getCurrentMemberId();
 		CastFolderNode castFolderNode = castFolderNodeAdapter.findOneWithRelationshipById(folderId);
-		Project project = projectAdapter().findById(castFolderNode.getProjectId());
-		trashCanFolderAdaptor().save(trashCanFolderMapper().toFolderEntity(castFolderNode, project));
-		folderService().delete(castFolderNode);
+		castFolderDndService.delete(castFolderNode);
+		trashCanDomainService().trash(castFolderNode);
 	}
 
 	@Override
@@ -96,8 +92,8 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 	}
 
 	@Override
-	protected DndService<CastFolderNode> folderService() {
-		return this.castFolderNodeDomainService;
+	protected DndService<CastFolderNode> dndService() {
+		return castFolderDndService;
 	}
 
 	@Override
@@ -106,14 +102,9 @@ public class CastFolderCrudCrudService extends DndFolderCrudService<CastFolderNo
 	}
 
 	@Override
-	protected TrashCanFolderAdaptor trashCanFolderAdaptor() { return this.trashCanFolderAdaptor; }
-
-	@Override
-	protected ProjectAdapter projectAdapter() { return this.projectAdapter; }
-
-	@Override
-	protected TrashCanFolderMapper trashCanFolderMapper() { return this.trashCanFolderMapper; }
-
+	protected TrashCanDomainService trashCanDomainService() {
+		return trashCanDomainService;
+	}
 	protected BaseFolderMapper<CastFolderNode> folderMapper() {
 		return this.castFolderNodeMapper;
 	}

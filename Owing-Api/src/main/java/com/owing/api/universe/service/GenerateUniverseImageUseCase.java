@@ -16,7 +16,7 @@ public class GenerateUniverseImageUseCase {
 	private final UniverseMapper universeMapper;
 	private final OwingAiClient owingAiClient;
 
-	@Transactional(transactionManager = "jpaTransactionManager")
+	@Transactional("jpaTransactionManager")
 	public UniverseImageResponse execute(GenerateUniverseImageRequest generateUniverseImageRequest) {
 
 		/* FeignClient 를 이용해 AI 서버로 이미지 생성 요청 */

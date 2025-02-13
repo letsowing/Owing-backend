@@ -43,6 +43,14 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
                 ));
     }
 
+	public CastNode findByIdWithPjt(Long castId) {
+		return castNodeRepository.findById(castId)
+			.orElseThrow(() -> CastNodeNotFoundException.of(
+				CastNodeErrorCode.CAST_NODE_NOT_FOUND,
+				"Requested Cast Node Id: %d".formatted(castId)
+			));
+	}
+
     public List<CastNode> findByFolderIdOrderByPositionDescLimit(Long castFolderId, Long limit) {
         return castNodeRepository.findByFolderIdOrderByPositionDescLimit(castFolderId, limit);
     }

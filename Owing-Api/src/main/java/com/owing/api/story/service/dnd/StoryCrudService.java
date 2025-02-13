@@ -5,30 +5,27 @@ import org.springframework.stereotype.Service;
 import com.owing.api.dnd.model.mapper.BaseFileMapper;
 import com.owing.api.dnd.service.DndFileCrudService;
 import com.owing.api.story.model.mapper.StoryMapper;
-import com.owing.api.trashcan.model.mapper.TrashCanMapper;
 import com.owing.common.util.MemberUtils;
-import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.service.DndService;
+import com.owing.core.dnd.adapter.DndAdapter;
+import com.owing.core.dnd.service.DndService;
 import com.owing.entity.domains.story.adapter.StoryAdapter;
 import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
-import com.owing.entity.domains.story.service.StoryService;
+import com.owing.entity.domains.story.service.StoryDndService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class StoryFileCrudCrudService extends DndFileCrudService<Story, StoryFolder> {
+public class StoryCrudService extends DndFileCrudService<Story, StoryFolder> {
 	private final MemberUtils memberUtils;
-	private final StoryService storyService;
 	private final StoryMapper storyMapper;
 	private final StoryFolderAdapter folderAdapter;
 	private final StoryAdapter storyAdapter;
 	private final TrashCanDomainService trashCanDomainService;
-	private final TrashCanMapper trashCanMapper;
-
+	private final StoryDndService storyDndService;
 
 	@Override
 	protected MemberUtils memberUtils() {
@@ -36,8 +33,8 @@ public class StoryFileCrudCrudService extends DndFileCrudService<Story, StoryFol
 	}
 
 	@Override
-	protected DndService fileService() {
-		return storyService;
+	protected DndService<Story> orderService() {
+		return storyDndService;
 	}
 
 	@Override
@@ -60,8 +57,4 @@ public class StoryFileCrudCrudService extends DndFileCrudService<Story, StoryFol
 		return trashCanDomainService;
 	}
 
-	@Override
-	protected TrashCanMapper trashCanMapper() {
-		return trashCanMapper;
-	}
 }
