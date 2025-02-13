@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.trashcan.service.trashcan.DeleteTrashCanUserCase;
-import com.owing.api.trashcan.service.trashcan.ReadTrashCanUserCase;
-import com.owing.api.trashcan.service.trashcan.UpdateTrashCanUserCase;
+import com.owing.api.trashcan.service.trashcan.DeleteTrashCanUseCase;
+import com.owing.api.trashcan.service.trashcan.ReadTrashCanUseCase;
+import com.owing.api.trashcan.service.trashcan.UpdateTrashCanUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,39 +22,39 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="쓰레기파일 /trashcans", description="쓰레기파일 API")
 public class TrashCanController {
 
-	private final ReadTrashCanUserCase readTrashCanUserCase;
-	private final UpdateTrashCanUserCase updateTrashCanUserCase;
-	private final DeleteTrashCanUserCase deleteTrashCanUserCase;
+	private final ReadTrashCanUseCase readTrashCanUseCase;
+	private final UpdateTrashCanUseCase updateTrashCanUseCase;
+	private final DeleteTrashCanUseCase deleteTrashCanUseCase;
 
 	@DeleteMapping("/{trashId}")
 	@Operation(summary = "✨일반: 쓰레기 영구 삭제", description = "쓰레기통에서 쓰레기를 영구 삭제합니다.")
 	public ResponseEntity<?> deleteTrashCan(@PathVariable Long trashId) {
-		deleteTrashCanUserCase.execute(trashId);
+		deleteTrashCanUseCase.execute(trashId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/{trashId}")
 	@Operation(summary = "✨일반: 쓰레기 복원", description = "쓰래기를 복원합니다.")
 	public ResponseEntity<?> restoreTrashCan(@PathVariable Long trashId) {
-		updateTrashCanUserCase.executeRestore(trashId);
+		updateTrashCanUseCase.executeRestore(trashId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{trashId}/story")
 	@Operation(summary = "✨일반: 원고 쓰레기 상세보기", description = "원고 쓰레기를 상세 봅니다.")
 	public ResponseEntity<?> getStoryTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok(readTrashCanUserCase.executeStory(trashId));
+		return ResponseEntity.ok(readTrashCanUseCase.executeStory(trashId));
 	}
 
 	@GetMapping("/{trashId}/cast")
 	@Operation(summary = "✨일반: 인물 쓰레기 상세보기", description = "인물 쓰레기를 상세 봅니다.")
 	public ResponseEntity<?> getCastTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok(readTrashCanUserCase.executeCast(trashId));
+		return ResponseEntity.ok(readTrashCanUseCase.executeCast(trashId));
 	}
 
 	@GetMapping("/{trashId}/universe")
 	@Operation(summary = "✨일반: 세계관 쓰레기 상세보기", description = "세계관 쓰레기를 상세 봅니다.")
 	public ResponseEntity<?> getUniverseTrashCan(@PathVariable Long trashId) {
-		return ResponseEntity.ok(readTrashCanUserCase.executeUniverse(trashId));
+		return ResponseEntity.ok(readTrashCanUseCase.executeUniverse(trashId));
 	}
 }

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteTrashCanUserCase {
+public class DeleteTrashCanUseCase {
 	private final TrashCanDomainService trashCanDomainService;
 
 	public void execute(Long trashId) {

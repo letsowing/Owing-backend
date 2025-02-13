@@ -10,14 +10,14 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class DeleteTrashCanFolderUserCase {
+public class DeleteTrashCanFolderUseCase {
 	private final TrashCanFolderAdaptor trashCanFolderAdaptor;
 
 	public void executeAll(Long projectId) {
 		trashCanFolderAdaptor.deleteAllTrashCan(projectId);
 	}
 
-	@Transactional
+	@Transactional("jpaTransactionManager")
 	public void executeFolder(Long trashId) {
 		TrashCanFolder trashCanFolder = trashCanFolderAdaptor.findById(trashId);
 		trashCanFolderAdaptor.delete(trashCanFolder);

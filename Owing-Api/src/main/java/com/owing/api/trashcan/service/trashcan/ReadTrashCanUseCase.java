@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-public class ReadTrashCanUserCase {
+public class ReadTrashCanUseCase {
 	private final TrashCanAdaptor trashCanAdaptor;
 	private final StoryAdapter storyAdapter;
 	private final CastNodeAdapter castNodeAdapter;
