@@ -5,6 +5,8 @@ import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
 import com.owing.api.universe.service.universe.CreateUniverseUseCase;
+import com.owing.core.dnd.base.error.DndErrorCode;
+import com.owing.core.dnd.base.error.exception.DndNotFoundException;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -18,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -95,7 +98,7 @@ public class UniverseUseCaseTest {
     @DisplayName("유효한 요청으로 Universe 생성 성공")
     void testExecute_Success() {
 
-        // Mock 동작 정의
+        // Mock 동작
         when(universeFolderAdapter.findById(folderId)).thenReturn(mockFolder);
         when(universeMapper.toEntity(addUniverseRequest, mockFolder)).thenReturn(mockUniverse);
         when(universeDomainService.createEntity(mockUniverse)).thenReturn(savedUniverse);
@@ -116,5 +119,35 @@ public class UniverseUseCaseTest {
         verify(universeMapper).toEntity(addUniverseRequest, mockFolder);
         verify(universeDomainService).createEntity(mockUniverse);
         verify(universeMapper).toInfoResponse(savedUniverse);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 폴더 ID로 Universe 생성 시 예외 발생")
+    void testExecute_FolderNotFound() {
+
+        // 존재하지 않는 ID 설정
+        Long nonExistentFolderId = -1L;
+
+        // AddUniverseRequest의 folderId를 nonExistentFolderId로 설정
+        addUniverseRequest = new AddUniverseRequest(
+                nonExistentFolderId, // 변경된 folderId
+                "Test Universe",
+                "A test description",
+                "http://image.url"
+        );
+
+        when(universeFolderAdapter.findById(nonExistentFolderId))
+                .thenThrow(DndNotFoundException.of(DndErrorCode.DND_NOT_FOUND));
+
+        // Act & Assert
+        DndNotFoundException exception = assertThrows(DndNotFoundException.class, () -> {
+            createUniverseUseCase.execute(addUniverseRequest);
+        });
+
+        // 예외 메시지 검증
+        assertEquals(DndErrorCode.DND_NOT_FOUND.getMessage(), exception.getMessage());
+
+        // Verify
+        verify(universeFolderAdapter).findById(nonExistentFolderId);
     }
 }
