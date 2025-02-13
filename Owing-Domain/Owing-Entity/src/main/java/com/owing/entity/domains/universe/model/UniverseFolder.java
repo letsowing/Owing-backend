@@ -40,4 +40,12 @@ public class UniverseFolder extends DndFolderEntity<Universe> {
         this.projectId = projectId;
         this.position = position;
     }
+
+    public static UniverseFolder init(Long projectId) {
+        return UniverseFolder.positionBuilder()
+            .projectId(projectId)
+            .name("기본 폴더")
+            .position(0L)
+            .build();
+    }
 }

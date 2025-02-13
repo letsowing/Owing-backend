@@ -43,4 +43,12 @@ public class StoryFolder extends DndFolderEntity<Story> {
 		this.position = position;
 	}
 
+	public static StoryFolder init(Long projectId) {
+		return StoryFolder.builder()
+			.projectId(projectId)
+			.name("기본 폴더")
+			.position(0L)
+			.build();
+	}
+
 }
