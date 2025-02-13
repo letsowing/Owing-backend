@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftRepository;
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class UniverseAdapter extends FileShiftAdapter<Universe> {
+public class UniverseAdapter extends DndShiftAdapter<Universe> {
 	private final UniverseRepository universeRepository;
 	private final UniverseDeletedRepository universeDeletedRepository;
 
 	@Override
-	protected FileShiftRepository<Universe> dndRepository() {
+	protected DndShiftRepository<Universe> dndRepository() {
 		return universeRepository;
 	}
 

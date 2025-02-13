@@ -24,7 +24,7 @@ public class WriteStoryUseCase {
     private final DashboardService dashboardService;
 
     @Transactional("jpaTransactionManager")
-    public void executeText(Long storyId, AddStoryContentRequest request) {
+    public void execute(Long storyId, AddStoryContentRequest request) {
         Long memberId = memberUtils.getCurrentMemberId();
         Story story = storyAdapter.findById(storyId);
         StoryContent storyContent = storyContentMapper.toEntity(request.content(), story);

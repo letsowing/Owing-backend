@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.core.dnd.service.shift.FolderShiftDndService;
-import com.owing.core.dnd.service.shift.adapter.FolderShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftService;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 import com.owing.node.folder.cast.adapter.CastFolderNodeAdapter;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class CastFolderDndService extends FolderShiftDndService<CastFolderNode> {
+public class CastFolderDndService extends DndShiftService<CastFolderNode> {
 
 	private final CastFolderNodeAdapter adapter;
 	private final CastFolderNodeRepository castFolderNodeRepository;
@@ -30,7 +30,7 @@ public class CastFolderDndService extends FolderShiftDndService<CastFolderNode> 
 	}
 
 	@Override
-	protected FolderShiftAdapter<CastFolderNode> dndAdapter() {
+	protected DndShiftAdapter<CastFolderNode> dndAdapter() {
 		return adapter;
 	}
 }

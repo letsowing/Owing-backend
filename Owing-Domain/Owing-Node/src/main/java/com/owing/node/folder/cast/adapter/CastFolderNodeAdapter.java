@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.service.shift.adapter.FolderShiftAdapter;
-import com.owing.core.dnd.service.shift.repository.DndShiftRepository;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftRepository;
 import com.owing.node.folder.cast.error.code.CastFolderNodeErrorCode;
 import com.owing.node.folder.cast.error.exception.CastFolderNodeNotFoundException;
 import com.owing.node.folder.cast.model.CastFolderNode;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastFolderNodeAdapter extends FolderShiftAdapter<CastFolderNode> {
+public class CastFolderNodeAdapter extends DndShiftAdapter<CastFolderNode> {
 
     private final CastFolderNodeRepository castFolderNodeRepository;
     private final Neo4jTemplate neo4jTemplate;

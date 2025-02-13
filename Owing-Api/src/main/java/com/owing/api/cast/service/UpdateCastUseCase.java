@@ -35,16 +35,7 @@ public class UpdateCastUseCase {
 
 		if (!updateCastInfoRequest.folderId().equals(castNode.getParentId())) {
 			CastFolderNode attachCandidateFolder = castFolderNodeAdapter.findById(updateCastInfoRequest.folderId());
-
-			// detach current folder
-			castNodeDomainService.detachFolder(castNode, castNode.getParentId());
-
-			// update file position, update folder(parent)
-			CastNode lastCastNode = castNodeDomainService.getLastPositionCastNodeInFolder(attachCandidateFolder.getId());
-			castDndService.updatePosition(castNode, lastCastNode, null, attachCandidateFolder);
-
-			// attach candidate folder
-			castNodeDomainService.attachFolder(castNode, castNode.getParentId());
+			castDndService.updatePosition(castNode, null, null, attachCandidateFolder);
 		}
 	}
 

@@ -1,6 +1,5 @@
 package com.owing.node.domains.cast.service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -20,8 +19,6 @@ import com.owing.node.domains.cast.model.ConnectionHandle;
 import com.owing.node.domains.cast.model.ConnectionType;
 import com.owing.node.domains.cast.model.Coordinate;
 import com.owing.node.domains.cast.model.projection.CastCoordinateProjection;
-import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
-import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
 
@@ -40,19 +37,6 @@ public class CastNodeService{
             ConnectionType.DIRECTIONAL, this::createConnection,
             ConnectionType.BIDIRECTIONAL, this::createBiconnection
     );
-
-    public List<CastGraphNodeProjection> getGraphNode(Long projectId) {
-        return castNodeAdapter.findGraphCastByProjectId(projectId);
-    }
-
-    public List<CastGraphRelationshipProjection> getGraphRelationship(Long projectId) {
-        return castNodeAdapter.findGraphCastRelationshipByProjectId(projectId);
-    }
-
-    public CastNode getLastPositionCastNodeInFolder(Long castFolderId) {
-        List<CastNode> castNodeList = castNodeAdapter.findByFolderIdOrderByPositionDescLimit(castFolderId, 1L);
-        return castNodeList.isEmpty() ? null : castNodeList.getFirst();
-    }
 
     @Transactional("neo4jTransactionManager")
     public void updateCastNodeInfo(CastNode castNode, CastNodeInfo castNodeInfo) {
