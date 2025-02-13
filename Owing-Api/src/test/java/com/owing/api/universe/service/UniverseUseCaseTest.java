@@ -11,9 +11,15 @@ import com.owing.entity.domains.universe.model.UniverseFolder;
 import com.owing.entity.domains.universe.service.UniverseDomainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UniverseUseCaseTest {
 
@@ -83,5 +89,32 @@ public class UniverseUseCaseTest {
                 savedUniverse.getDescription(),
                 savedUniverse.getImageUrl()
         );
+    }
+
+    @Test
+    @DisplayName("유효한 요청으로 Universe 생성 성공")
+    void testExecute_Success() {
+
+        // Mock 동작 정의
+        when(universeFolderAdapter.findById(folderId)).thenReturn(mockFolder);
+        when(universeMapper.toEntity(addUniverseRequest, mockFolder)).thenReturn(mockUniverse);
+        when(universeDomainService.createEntity(mockUniverse)).thenReturn(savedUniverse);
+        when(universeMapper.toInfoResponse(savedUniverse)).thenReturn(universeShortInfoResponse);
+
+        // Act
+        UniverseShortInfoResponse result = createUniverseUseCase.execute(addUniverseRequest);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(savedUniverse.getId(), result.id());
+        assertEquals(savedUniverse.getName(), result.name());
+        assertEquals(savedUniverse.getDescription(), result.description());
+        assertEquals(savedUniverse.getImageUrl(), result.imageUrl());
+
+        // Verify
+        verify(universeFolderAdapter).findById(folderId);
+        verify(universeMapper).toEntity(addUniverseRequest, mockFolder);
+        verify(universeDomainService).createEntity(mockUniverse);
+        verify(universeMapper).toInfoResponse(savedUniverse);
     }
 }
