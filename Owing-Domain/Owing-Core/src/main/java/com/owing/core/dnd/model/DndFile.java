@@ -31,29 +31,18 @@ public abstract class DndFile extends BaseEntity implements Dnd {
 		return getFolder().getId();
 	}
 
-	public boolean isParentFolder(Dnd folder){
-		return this.getParentId().equals(folder.getId());
-	}
-
 	public boolean isInSameParent(Dnd file){
 		return this.getParentId().equals(file.getParentId());
+	}
+
+	public boolean isChildOf(DndFolder folder){
+		return this.getParentId().equals(folder.getId());
 	}
 
 	public boolean isAfter(Dnd dnd){
 		return this.getPosition() > dnd.getPosition();
 	}
 
-	public boolean isAfter(long position){
-		return this.getPosition() > position;
-	}
-
-    public boolean isBefore(Dnd dnd){
-        return this.getPosition() < dnd.getPosition();
-    }
-
-    public boolean isBefore(long position){
-        return this.getPosition() < position;
-    }
 
 	public boolean validatePosition(long newPosition) {
 		return newPosition >= 0;

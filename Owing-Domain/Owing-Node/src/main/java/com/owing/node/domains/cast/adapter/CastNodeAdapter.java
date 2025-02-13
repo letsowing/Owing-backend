@@ -6,8 +6,8 @@ import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
+public class CastNodeAdapter extends DndShiftAdapter<CastNode> {
 
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
@@ -50,10 +50,6 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
 				"Requested Cast Node Id: %d".formatted(castId)
 			));
 	}
-
-    public List<CastNode> findByFolderIdOrderByPositionDescLimit(Long castFolderId, Long limit) {
-        return castNodeRepository.findByFolderIdOrderByPositionDescLimit(castFolderId, limit);
-    }
 
     public CastRelationshipProjection findConnection(Long sourceId, Long targetId) {
         return castNodeRepository.findConnection(sourceId, targetId)
@@ -79,11 +75,11 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
                 ));
     }
 
-    public List<CastGraphNodeProjection> findGraphCastByProjectId(Long projectId) {
+    public List<CastGraphNodeProjection> getGraphNode(Long projectId) {
         return castNodeRepository.findGraphCastByProjectId(projectId);
     }
 
-    public List<CastGraphRelationshipProjection> findGraphCastRelationshipByProjectId(Long projectId) {
+    public List<CastGraphRelationshipProjection> getGraphRelationship(Long projectId) {
         return castNodeRepository.findGraphCastRelationshipByProjectId(projectId);
     }
 
@@ -111,13 +107,9 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
 	}
 
 	@Override
-	protected FileShiftRepository<CastNode> dndRepository() {
+	protected DndShiftRepository<CastNode> dndRepository() {
 		return this.castNodeRepository;
 	}
-
-    public String findImageUrlById(Long id) {
-        return castNodeRepository.findImageUrlById(id);
-    }
 
 	@Transactional("neo4jTransactionManager")
 	public CastNode updateName(CastNode entity) {

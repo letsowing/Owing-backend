@@ -50,7 +50,7 @@ public class StoryController extends BaseFileController {
 	@PostMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 내용 작성", description = "원고 내용을 작성합니다. 생성 & 수정시 사용합니다.")
 	public ResponseEntity<?> createStory(@PathVariable Long storyId, @RequestBody AddStoryContentRequest request) {
-        createDndUseCase.executeText(storyId, request);
+        createDndUseCase.execute(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();
     }
 

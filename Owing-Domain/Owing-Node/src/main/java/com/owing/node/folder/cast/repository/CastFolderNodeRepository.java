@@ -84,6 +84,17 @@ public interface CastFolderNodeRepository extends DndFolderNodeRepository<CastFo
 			""")
     void decrementPositionAfter(Long position, Long projectId);
 
+	@Override
+	@Query("""
+			MATCH
+			  (p:Project{id:$projectId, deleted:false})-[r:INCLUDE]->(t:CastFolder{deleted:false})
+			WHERE
+			  t.position >= $position
+			SET
+			  t.position = t.position + 1
+			""")
+	void incrementPositionAfter(Long position, Long projectId);
+
     @Override
     @Query("""
 			MATCH

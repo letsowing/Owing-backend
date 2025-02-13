@@ -6,8 +6,8 @@ import org.jsoup.Jsoup;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftRepository;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.dto.StoryInfo;
 import com.owing.entity.domains.story.repository.StoryDeletedRepository;
@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryAdapter extends FileShiftAdapter<Story> {
+public class StoryAdapter extends DndShiftAdapter<Story> {
 	private final StoryRepository storyRepository;
 	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
-	protected FileShiftRepository<Story> dndRepository() {
+	protected DndShiftRepository<Story> dndRepository() {
 		return storyRepository;
 	}
 
