@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.owing.core.constant.OwingPersistenceConst;
 import com.owing.core.BaseEntity;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.entity.domains.project.model.Project;
 
 import jakarta.persistence.CascadeType;
@@ -59,4 +60,27 @@ public class TrashCanFolder extends BaseEntity {
             .toList();
     }
 
+    public static TrashCanFolder fromFolder(DndFolder folder, Project project) {
+        return TrashCanFolder.builder()
+            .itemId(folder.getId())
+            .name(folder.getName())
+            .description(folder.getDescription())
+            .tableName(FolderType.fromClassName(folder))
+            .project(project)
+            .build();
+    }
+
+    public void addTrashCan(TrashCan trashCan) {
+        if (trashCanList == null) {
+            trashCanList = new ArrayList<>();
+        }
+        trashCanList.add(trashCan);
+    }
+
+    public void addTrashCan(List<TrashCan> trashCan) {
+        if (trashCanList == null) {
+            trashCanList = new ArrayList<>();
+        }
+        trashCanList.addAll(trashCan);
+    }
 }
