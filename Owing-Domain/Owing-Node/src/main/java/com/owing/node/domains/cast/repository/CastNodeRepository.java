@@ -29,6 +29,16 @@ public interface CastNodeRepository extends DndFileNodeRepository<CastNode> {
     Optional<CastNode> findById(Long castId);
 
 	@Query("""
+            MATCH
+                (c:Cast{deleted:false})<-[r:INCLUDE]-(cf:CastFolder{deleted:false})<-[r2:INCLUDE]-(p:Project)
+            WHERE
+                id(c)=$castId
+            RETURN
+                c, r, cf, p, r2
+            """)
+	Optional<CastNode> findByIdWithPjt(Long castId);
+
+	@Query("""
         MATCH
           (c:Cast {deleted: true})<-[r:INCLUDE]-(cf:CastFolder)
         WHERE
