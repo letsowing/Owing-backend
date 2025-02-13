@@ -31,8 +31,8 @@ public abstract class DndController<A extends AddDndRequest, U, P>{
 
     @PatchMapping("/{id}/title")
     @Operation(summary = "✨ DnD: 파일 or 폴더 이름 수정", description = "폴더탭에서 파일이나 폴더의 이름을 변경합니다.")
-    public ResponseEntity<Void> updateDndTitle(@PathVariable Long id, @RequestBody U updateDndRequest) {
-        dndCrudService().updateTitle(id, updateDndRequest);
+    public ResponseEntity<Void> updateDndName(@PathVariable Long id, @RequestBody U updateDndRequest) {
+        dndCrudService().updateName(id, updateDndRequest);
         return ResponseEntity.noContent().build();
     }
 
