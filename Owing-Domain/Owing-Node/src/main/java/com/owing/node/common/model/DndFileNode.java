@@ -3,8 +3,8 @@ package com.owing.node.common.model;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.util.ObjectUtils;
 
-import com.owing.core.dnd.base.model.DndFile;
-import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.model.DndFile;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.node.domains.story.error.code.StoryNodeErrorCode;
 import com.owing.node.domains.story.error.exception.StoryNodeRelationshipException;
 

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.owing.core.dnd.orderStrategy.shift.repository.FolderShiftRepository;
+import com.owing.core.dnd.service.shift.repository.FolderShiftRepository;
 import com.owing.entity.dnd.folder.model.DndFolderEntity;
 
 @NoRepositoryBean

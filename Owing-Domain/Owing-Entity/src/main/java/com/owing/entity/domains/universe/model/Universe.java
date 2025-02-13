@@ -33,7 +33,7 @@ public class Universe extends DndFileEntity<UniverseFolder> {
 	@Column(length = OwingPersistenceConst.URL_LEN)
 	private String imageUrl;
 
-	public Universe updateUniverse(Universe newUniverse) {
+	public Universe update(Universe newUniverse) {
 		this.name = newUniverse.name;
 		this.description = newUniverse.description;
 		this.imageUrl = newUniverse.imageUrl;

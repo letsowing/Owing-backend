@@ -19,17 +19,14 @@ import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
-import com.owing.api.universe.service.universe.*;
-import com.owing.api.universe.service.dnd.UniverseCrudCrudService;
 import com.owing.api.universe.service.CreateUniversePresignedUrlUseCase;
 import com.owing.api.universe.service.GenerateUniverseImageUseCase;
+import com.owing.api.universe.service.dnd.UniverseCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/universes")
@@ -37,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="세계관 /universes", description="세계관 API")
 public class UniverseController extends BaseFileController {
 
-	private final UniverseCrudCrudService universeCrudService;
+	private final UniverseCrudService universeCrudService;
 	private final CreateUniversePresignedUrlUseCase createUniversePresignedUrlUseCase;
 	private final GenerateUniverseImageUseCase generateUniverseImageUseCase;
 

@@ -25,14 +25,15 @@ import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
-import com.owing.api.cast.service.dnd.CastCrudCrudService;
 import com.owing.api.cast.service.CreateCastPresignedUrlUseCase;
+import com.owing.api.cast.service.CreateCastUseCase;
 import com.owing.api.cast.service.CreateConnectionUseCase;
 import com.owing.api.cast.service.DeleteConnectionUseCase;
 import com.owing.api.cast.service.GenerateCastImageUseCase;
 import com.owing.api.cast.service.ReadCastUseCase;
 import com.owing.api.cast.service.UpdateCastUseCase;
 import com.owing.api.cast.service.UpdateConnectionUseCase;
+import com.owing.api.cast.service.dnd.CastCrudService;
 import com.owing.api.dnd.controller.BaseFileController;
 import com.owing.api.dnd.model.dto.request.AddFileRequest;
 import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
@@ -45,8 +46,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/cast")
@@ -54,7 +53,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="캐릭터 /cast", description="캐릭터 API")
 public class CastController extends BaseFileController {
 
-    private final CastCrudCrudService castCrudService;
+    private final CastCrudService castCrudService;
     private final UpdateCastUseCase updateCastUseCase;
     private final ReadCastUseCase readCastUseCase;
     private final CreateConnectionUseCase createConnectionUseCase;
@@ -62,6 +61,7 @@ public class CastController extends BaseFileController {
     private final DeleteConnectionUseCase deleteConnectionUseCase;
     private final CreateCastPresignedUrlUseCase createCastPresignedUrlUseCase;
     private final GenerateCastImageUseCase generateCastImageUseCase;
+    private final CreateCastUseCase createCastUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -86,7 +86,7 @@ public class CastController extends BaseFileController {
     @PostMapping
     @Operation(summary = "✨ 일반: 캐릭터 생성", description = "캐릭터 생성")
     public ResponseEntity<CastInfoResponse> createCast(@Valid @RequestBody CreateCastRequest createCastRequest) {
-        return ResponseEntity.ok(castCrudService.executeFull(createCastRequest));
+        return ResponseEntity.ok(createCastUseCase.executeFull(createCastRequest));
     }
 
     @PostMapping("/relationships")

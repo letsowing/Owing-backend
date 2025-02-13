@@ -133,7 +133,8 @@ public interface CastFolderNodeRepository extends DndFolderNodeRepository<CastFo
 		WHERE
 		  id(cf)=$itemId
 		SET
-		  c.deleted = true
+		  c.deleted = true,
+		  cf.deleted = true
 		""")
 	void deleteFolderById(Long itemId);
 }

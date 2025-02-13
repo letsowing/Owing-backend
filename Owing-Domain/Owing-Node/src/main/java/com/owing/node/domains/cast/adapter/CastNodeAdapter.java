@@ -6,8 +6,8 @@ import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
 import com.owing.node.domains.cast.error.exception.CastNodeNotFoundException;
@@ -23,6 +23,7 @@ import com.owing.node.domains.cast.model.projection.CastRelationshipAiProjection
 import com.owing.node.domains.cast.model.projection.CastTitleProjection;
 import com.owing.node.domains.cast.repository.CastNodeDeletedRepository;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
+import com.owing.node.folder.cast.model.CastFolderNode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +42,14 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
                         "Requested Cast Node Id: %d".formatted(castId)
                 ));
     }
+
+	public CastNode findByIdWithPjt(Long castId) {
+		return castNodeRepository.findById(castId)
+			.orElseThrow(() -> CastNodeNotFoundException.of(
+				CastNodeErrorCode.CAST_NODE_NOT_FOUND,
+				"Requested Cast Node Id: %d".formatted(castId)
+			));
+	}
 
     public List<CastNode> findByFolderIdOrderByPositionDescLimit(Long castFolderId, Long limit) {
         return castNodeRepository.findByFolderIdOrderByPositionDescLimit(castFolderId, limit);
@@ -93,47 +102,44 @@ public class CastNodeAdapter extends FileShiftAdapter<CastNode> {
         return castNodeDeletedRepository.findDeletedById(itemId);
     }
 
-    /* TODO DomainService로 위치이동 고려 */
-    private CastNode savePosition(CastNode castNode) {
-        CastPositionProjection castPositionProjection = CastPositionProjection.from(castNode);
-        neo4jTemplate.save(CastNode.class).one(castPositionProjection);
-        return castNode;
-    }
+	@Transactional("neo4jTransactionManager")
+	@Override
+	public CastNode updatePosition(CastNode castNode) {
+		CastPositionProjection castPositionProjection = CastPositionProjection.from(castNode);
+		neo4jTemplate.save(CastNode.class).one(castPositionProjection);
+		return castNode;
+	}
 
-    @Transactional("neo4jTransactionManager")
-    @Override
-    public CastNode save(CastNode entity) {
-        return this.savePosition(entity);
-    }
-
-
-    @Override
-    protected FileShiftRepository<CastNode> dndRepository() {
-        return this.castNodeRepository;
-    }
+	@Override
+	protected FileShiftRepository<CastNode> dndRepository() {
+		return this.castNodeRepository;
+	}
 
     public String findImageUrlById(Long id) {
         return castNodeRepository.findImageUrlById(id);
     }
 
+	@Transactional("neo4jTransactionManager")
+	public CastNode updateName(CastNode entity) {
+		CastTitleProjection titleProjection = CastTitleProjection.from(entity);
+		neo4jTemplate.save(CastNode.class).one(titleProjection);
+		return entity;
+	}
 
-    @Transactional
-    public CastNode updateName(CastNode entity) {
-        CastTitleProjection titleProjection = CastTitleProjection.from(entity);
-        neo4jTemplate.save(CastNode.class).one(titleProjection);
-        return entity;
-    }
+	@Transactional("neo4jTransactionManager")
+	public void delete(CastNode castNode) {
+		castNode.delete();
+		CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
+		neo4jTemplate.save(CastNode.class).one(deleteProjection);
+	}
 
+	@Transactional("neo4jTransactionManager")
+	public void restoreById(Long id) {
+		castNodeRepository.restoreById(id);
+	}
 
-    @Transactional
-    public void delete(CastNode castNode) {
-        castNode.delete();
-        CastDeleteProjection deleteProjection = CastDeleteProjection.from(castNode);
-        neo4jTemplate.save(CastNode.class).one(deleteProjection);
-    }
+	public CastNode connectFolder(CastNode castNode, CastFolderNode castFolderNode) {
+		return castNodeRepository.connectFolder(castNode.getId(), castFolderNode.getId());
+	}
 
-    @Transactional
-    public void restoreById(Long id) {
-        castNodeRepository.restoreById(id);
-    }
 }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.dnd.controller.BaseFolderController;
 import com.owing.api.dnd.service.DndFolderCrudService;
-import com.owing.api.universe.service.dnd.UniverseFolderCrudCrudService;
+import com.owing.api.universe.service.dnd.UniverseFolderCrudService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="세계관 폴더 /universes/folders", description="세계관 폴더 API")
 public class UniverseFolderController extends BaseFolderController {
 
-	private final UniverseFolderCrudCrudService universeFolderCrudService;
+	private final UniverseFolderCrudService universeFolderCrudService;
 
 	@Override
 	protected DndFolderCrudService dndCrudService() {

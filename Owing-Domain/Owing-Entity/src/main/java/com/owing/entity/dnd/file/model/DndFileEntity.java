@@ -1,7 +1,7 @@
 package com.owing.entity.dnd.file.model;
 
-import com.owing.core.dnd.base.model.DndFile;
-import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.model.DndFile;
+import com.owing.core.dnd.model.DndFolder;
 import com.owing.entity.dnd.folder.model.DndFolderEntity;
 
 import jakarta.persistence.JoinColumn;

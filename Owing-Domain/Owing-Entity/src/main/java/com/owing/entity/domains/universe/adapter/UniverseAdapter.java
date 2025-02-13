@@ -2,9 +2,11 @@ package com.owing.entity.domains.universe.adapter;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
 import com.owing.entity.domains.universe.error.UniverseErrorCode;
 import com.owing.entity.domains.universe.error.exception.UniverseNotFoundException;
 import com.owing.entity.domains.universe.model.Universe;
@@ -42,6 +44,7 @@ public class UniverseAdapter extends FileShiftAdapter<Universe> {
 		return universeRepository.findImageUrlById(id);
 	}
 
+	@Transactional("jpaTransactionManager")
 	public void restoreById(Long aLong) {
 		universeRepository.restoreById(aLong);
 	}

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.owing.api.dnd.controller.BaseFolderController;
 import com.owing.api.dnd.service.DndFolderCrudService;
-import com.owing.api.story.service.dnd.StoryFolderCrudCrudService;
+import com.owing.api.story.service.dnd.StoryFolderCrudService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="원고 폴더 /stories/folders", description="원고 폴더 API")
 public class StoryFolderController extends BaseFolderController {
 
-	private final StoryFolderCrudCrudService storyFolderCrudService;
+	private final StoryFolderCrudService storyFolderCrudService;
 
 	@Override
 	protected DndFolderCrudService dndCrudService() {

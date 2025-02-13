@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import com.owing.common.annotation.DomainService;
-import com.owing.core.dnd.base.adapter.DndAdapter;
-import com.owing.core.dnd.base.service.DndService;
-import com.owing.core.dnd.orderStrategy.OrderingStrategy;
-import com.owing.node.common.constant.CastConstant;
 import com.owing.node.common.model.projection.CastRelationshipProjection;
 import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.error.code.CastNodeErrorCode;
@@ -28,17 +24,15 @@ import com.owing.node.domains.cast.model.projection.CastGraphNodeProjection;
 import com.owing.node.domains.cast.model.projection.CastGraphRelationshipProjection;
 import com.owing.node.domains.cast.model.projection.CastInfoProjection;
 import com.owing.node.domains.cast.repository.CastNodeRepository;
-import com.owing.node.folder.cast.model.CastFolderNode;
 
 import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
-public class CastNodeService extends DndService<CastNode> {
+public class CastNodeService{
 
     private final CastNodeAdapter castNodeAdapter;
-    private final CastShiftOrderingStrategy castShiftOrderingStrategy;
     private final CastNodeRepository castNodeRepository;
     private final Neo4jTemplate neo4jTemplate;
 
@@ -143,34 +137,6 @@ public class CastNodeService extends DndService<CastNode> {
         castNodeRepository.deleteIncludeRelationship(castNode.getId(), castFolderId);
     }
 
-    // =====super() Cast CRUD=====
-    @Override
-	@Transactional("neo4jTransactionManager")
-    public CastNode create(CastNode entity) {
-        long position = orderingStrategy().getNewPosition(entity.getParentId());
-        entity.updatePosition(position);
-        entity.updateCoordinate(
-                CastConstant.DEFAULT_COORDINATE_X,
-                CastConstant.DEFAULT_COORDINATE_Y
-        );
 
-        CastFolderNode castFolderNode = entity.getFolder();
-
-        entity.updateFolder(null);
-        CastNode savedCastNode = castNodeRepository.save(entity);
-        // castNode.connectFolder(castFolderNode);
-        return castNodeRepository.connectFolder(savedCastNode.getId(), castFolderNode.getId());
-    }
-
-    // Bean Setting
-    @Override
-    protected DndAdapter<CastNode> dndAdapter() {
-        return this.castNodeAdapter;
-    }
-
-    @Override
-    protected OrderingStrategy<CastNode> orderingStrategy() {
-        return this.castShiftOrderingStrategy;
-    }
 
 }

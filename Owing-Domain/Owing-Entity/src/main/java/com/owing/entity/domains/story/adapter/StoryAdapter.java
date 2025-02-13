@@ -3,10 +3,11 @@ package com.owing.entity.domains.story.adapter;
 import java.util.List;
 
 import org.jsoup.Jsoup;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.orderStrategy.shift.adapter.FileShiftAdapter;
-import com.owing.core.dnd.orderStrategy.shift.repository.FileShiftRepository;
+import com.owing.core.dnd.service.shift.adapter.FileShiftAdapter;
+import com.owing.core.dnd.service.shift.repository.FileShiftRepository;
 import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.dto.StoryInfo;
 import com.owing.entity.domains.story.repository.StoryDeletedRepository;
@@ -47,6 +48,7 @@ public class StoryAdapter extends FileShiftAdapter<Story> {
 			.build();
     }
 
+	@Transactional("jpaTransactionManager")
 	public void restoreById(Long itemId) {
 		storyRepository.restoreById(itemId);
 	}

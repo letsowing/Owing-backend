@@ -2,7 +2,7 @@ package com.owing.api.dnd.model.dto.response;
 
 import java.util.List;
 
-import com.owing.core.dnd.base.model.DndFolder;
+import com.owing.core.dnd.model.DndFolder;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
