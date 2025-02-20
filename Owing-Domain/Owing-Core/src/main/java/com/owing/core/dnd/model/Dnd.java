@@ -12,4 +12,5 @@ public interface Dnd {
 	boolean isInSameParent(Dnd dnd);
 	boolean isAfter(Dnd dnd);
 	void delete();
+
 }

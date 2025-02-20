@@ -44,7 +44,7 @@ public class CastNodeAdapter extends DndShiftAdapter<CastNode> {
     }
 
 	public CastNode findByIdWithPjt(Long castId) {
-		return castNodeRepository.findById(castId)
+		return castNodeRepository.findByIdWithPjt(castId)
 			.orElseThrow(() -> CastNodeNotFoundException.of(
 				CastNodeErrorCode.CAST_NODE_NOT_FOUND,
 				"Requested Cast Node Id: %d".formatted(castId)

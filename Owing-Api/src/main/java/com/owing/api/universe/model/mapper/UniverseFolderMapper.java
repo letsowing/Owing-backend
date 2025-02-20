@@ -1,8 +1,12 @@
 package com.owing.api.universe.model.mapper;
 
-import com.owing.api.dnd.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.model.mapper.BaseFolderMapper;
+import java.util.List;
+
+import com.owing.api.dnd.dto.request.AddFolderRequest;
+import com.owing.api.dnd.dto.request.UpdateFolderNameRequest;
+import com.owing.api.dnd.dto.response.FolderInfoListResponse;
+import com.owing.api.dnd.mapper.DndFolderMapper;
+import com.owing.api.universe.model.dto.response.UniverseFolderInfoListResponse;
 import com.owing.api.universe.model.dto.response.UniverseFolderInfoResponse;
 import com.owing.common.annotation.Mapper;
 import com.owing.entity.domains.universe.model.UniverseFolder;
@@ -11,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Mapper
 @RequiredArgsConstructor
-public class UniverseFolderMapper extends BaseFolderMapper<UniverseFolder> {
+public class UniverseFolderMapper implements DndFolderMapper<UniverseFolder> {
 
 	@Override
 	public UniverseFolder toEntity(AddFolderRequest addDndRequest) {
@@ -21,8 +25,7 @@ public class UniverseFolderMapper extends BaseFolderMapper<UniverseFolder> {
 			.build();
 	}
 
-	@Override
-	public UniverseFolder toEntity(UpdateFolderTitleRequest updateDndRequest) {
+	public UniverseFolder toEntity(UpdateFolderNameRequest updateDndRequest) {
 		return UniverseFolder.basicBuilder()
 			.name(updateDndRequest.name())
 			.build();
@@ -31,6 +34,11 @@ public class UniverseFolderMapper extends BaseFolderMapper<UniverseFolder> {
 	@Override
 	public UniverseFolderInfoResponse toInfoResponse(UniverseFolder entity) {
 		return UniverseFolderInfoResponse.from(entity);
+	}
+
+	@Override
+	public FolderInfoListResponse toListResponse(List<UniverseFolder> entity) {
+		return UniverseFolderInfoListResponse.from(entity);
 	}
 
 }

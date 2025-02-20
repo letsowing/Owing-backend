@@ -3,7 +3,7 @@ package com.owing.api.universe.service.dnd;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.dnd.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.mapper.DndFileMapper;
 import com.owing.api.dnd.service.DndFileCrudService;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
@@ -42,7 +42,6 @@ public class UniverseCrudService extends DndFileCrudService<Universe, UniverseFo
 
 	@Transactional("jpaTransactionManager")
 	public UniverseShortInfoResponse update(Long universeId, UpdateUniverseRequest updateUniverseRequest) {
-
 		Universe oldUniverse = universeAdapter.findById(universeId);
 		Universe newUniverse = universeMapper.toEntity(oldUniverse, updateUniverseRequest);
 		Universe updatedUniverse = oldUniverse.update(newUniverse);
@@ -50,17 +49,12 @@ public class UniverseCrudService extends DndFileCrudService<Universe, UniverseFo
 	}
 
 	@Override
-	protected MemberUtils memberUtils() {
-		return memberUtils;
-	}
-
-	@Override
-	protected DndService<Universe> orderService() {
+	protected DndService<Universe> dndService() {
 		return universeDndService;
 	}
 
 	@Override
-	protected BaseFileMapper<Universe, UniverseFolder> fileMapper() {
+	protected DndFileMapper<Universe, UniverseFolder> fileMapper() {
 		return universeMapper;
 	}
 

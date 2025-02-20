@@ -4,23 +4,21 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.owing.api.dnd.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFolderPositionRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.model.dto.response.FolderInfoListResponse;
-import com.owing.api.dnd.model.dto.response.FolderInfoResponse;
-import com.owing.api.dnd.model.mapper.BaseFolderMapper;
-import com.owing.common.util.MemberUtils;
+import com.owing.api.dnd.dto.request.AddFolderRequest;
+import com.owing.api.dnd.dto.request.UpdateFolderNameRequest;
+import com.owing.api.dnd.dto.request.UpdateFolderPositionRequest;
+import com.owing.api.dnd.dto.response.FolderInfoListResponse;
+import com.owing.api.dnd.dto.response.FolderInfoResponse;
+import com.owing.api.dnd.mapper.DndFolderMapper;
 import com.owing.core.dnd.adapter.DndAdapter;
 import com.owing.core.dnd.model.DndFolder;
 import com.owing.core.dnd.service.DndService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
 
-public abstract class DndFolderCrudService<T extends DndFolder> implements DndCrudService<AddFolderRequest, UpdateFolderTitleRequest, UpdateFolderPositionRequest> {
-	protected abstract MemberUtils memberUtils();
+public abstract class DndFolderCrudService<T extends DndFolder> {
 	protected abstract DndService<T> dndService();
-	protected abstract BaseFolderMapper<T> folderMapper();
 	protected abstract DndAdapter<T> folderAdapter();
+	protected abstract DndFolderMapper<T> folderMapper();
 	protected abstract TrashCanDomainService trashCanDomainService();
 
 	public FolderInfoResponse get(Long folderId){
@@ -41,9 +39,10 @@ public abstract class DndFolderCrudService<T extends DndFolder> implements DndCr
 	}
 
 	@Transactional("jpaTransactionManager")
-	public void updateName(Long folderId, UpdateFolderTitleRequest dto) {
+	public void updateName(Long folderId, UpdateFolderNameRequest dto) {
 		T entity = folderAdapter().findById(folderId);
 		entity.updateName(dto.name());
+		folderAdapter().updateName(entity);
 	}
 
 	@Transactional("jpaTransactionManager")

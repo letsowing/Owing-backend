@@ -5,9 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.cast.model.dto.response.CastInfoWithFolderResponse;
 import com.owing.api.cast.model.mapper.CastNodeMapper;
-import com.owing.api.dnd.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.mapper.DndFileMapper;
 import com.owing.api.dnd.service.DndFileCrudService;
-import com.owing.common.util.MemberUtils;
 import com.owing.core.dnd.adapter.DndAdapter;
 import com.owing.core.dnd.service.DndService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class CastCrudService extends DndFileCrudService<CastNode, CastFolderNode> {
 	private final CastNodeMapper castNodeMapper;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
-	private final MemberUtils memberUtils;
 	private final TrashCanDomainService trashCanDomainService;
 	private final CastNodeAdapter castNodeAdapter;
 	private final CastDndService castDndService;
@@ -39,22 +37,12 @@ public class CastCrudService extends DndFileCrudService<CastNode, CastFolderNode
 		// Long memberId = memberUtils.getCurrentMemberId();
 		CastNode entity = castNodeAdapter.findByIdWithPjt(fileId);
 		trashCanDomainService().trash(entity);
-		orderService().delete(entity);
+		dndService().delete(entity);
 	}
 
 
 	@Override
-	protected MemberUtils memberUtils() {
-		return this.memberUtils;
-	}
-
-	@Override
-	protected DndService<CastNode> orderService() {
-		return castDndService;
-	}
-
-	@Override
-	protected BaseFileMapper<CastNode, CastFolderNode> fileMapper() {
+	protected DndFileMapper<CastNode, CastFolderNode> fileMapper() {
 		return this.castNodeMapper;
 	}
 
@@ -66,6 +54,11 @@ public class CastCrudService extends DndFileCrudService<CastNode, CastFolderNode
 	@Override
 	protected TrashCanDomainService trashCanDomainService() {
 		return trashCanDomainService;
+	}
+
+	@Override
+	protected DndService<CastNode> dndService() {
+		return castDndService;
 	}
 
 	@Override

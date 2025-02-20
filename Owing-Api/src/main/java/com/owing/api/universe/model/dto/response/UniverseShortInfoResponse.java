@@ -1,6 +1,6 @@
 package com.owing.api.universe.model.dto.response;
 
-import com.owing.api.dnd.model.dto.response.DndInfoResponse;
+import com.owing.api.dnd.dto.response.FileInfoResponse;
 
 import lombok.Builder;
 
@@ -10,4 +10,4 @@ public record UniverseShortInfoResponse (
 	String name,
 	String description,
 	String imageUrl
-) implements DndInfoResponse { }
+) implements FileInfoResponse { }

@@ -3,7 +3,7 @@ package com.owing.api.story.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.dnd.controller.BaseFolderController;
+import com.owing.api.dnd.controller.DndFolderController;
 import com.owing.api.dnd.service.DndFolderCrudService;
 import com.owing.api.story.service.dnd.StoryFolderCrudService;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1/stories/folders")
 @RequiredArgsConstructor
 @Tag(name="원고 폴더 /stories/folders", description="원고 폴더 API")
-public class StoryFolderController extends BaseFolderController {
+public class StoryFolderController extends DndFolderController {
 
 	private final StoryFolderCrudService storyFolderCrudService;
 

@@ -2,7 +2,7 @@ package com.owing.api.story.service.dnd;
 
 import org.springframework.stereotype.Service;
 
-import com.owing.api.dnd.model.mapper.BaseFolderMapper;
+import com.owing.api.dnd.mapper.DndFolderMapper;
 import com.owing.api.dnd.service.DndFolderCrudService;
 import com.owing.api.story.model.mapper.StoryFolderMapper;
 import com.owing.common.util.MemberUtils;
@@ -24,10 +24,6 @@ public class StoryFolderCrudService extends DndFolderCrudService<StoryFolder> {
 	private final StoryFolderDndService storyFolderDndService;
 	private final TrashCanDomainService trashCanDomainService;
 
-	@Override
-	protected MemberUtils memberUtils() {
-		return memberUtils;
-	}
 
 	@Override
 	protected DndService<StoryFolder> dndService() {
@@ -35,7 +31,7 @@ public class StoryFolderCrudService extends DndFolderCrudService<StoryFolder> {
 	}
 
 	@Override
-	protected BaseFolderMapper<StoryFolder> folderMapper() {
+	protected DndFolderMapper<StoryFolder> folderMapper() {
 		return storyFolderMapper;
 	}
 

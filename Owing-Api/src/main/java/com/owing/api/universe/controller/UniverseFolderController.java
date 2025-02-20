@@ -3,7 +3,7 @@ package com.owing.api.universe.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.dnd.controller.BaseFolderController;
+import com.owing.api.dnd.controller.DndFolderController;
 import com.owing.api.dnd.service.DndFolderCrudService;
 import com.owing.api.universe.service.dnd.UniverseFolderCrudService;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1/universes/folders")
 @RequiredArgsConstructor
 @Tag(name="세계관 폴더 /universes/folders", description="세계관 폴더 API")
-public class UniverseFolderController extends BaseFolderController {
+public class UniverseFolderController extends DndFolderController {
 
 	private final UniverseFolderCrudService universeFolderCrudService;
 
