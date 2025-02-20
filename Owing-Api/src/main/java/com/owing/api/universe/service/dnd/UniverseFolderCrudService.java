@@ -2,7 +2,7 @@ package com.owing.api.universe.service.dnd;
 
 import org.springframework.stereotype.Service;
 
-import com.owing.api.dnd.model.mapper.BaseFolderMapper;
+import com.owing.api.dnd.mapper.DndFolderMapper;
 import com.owing.api.dnd.service.DndFolderCrudService;
 import com.owing.api.universe.model.mapper.UniverseFolderMapper;
 import com.owing.common.util.MemberUtils;
@@ -25,10 +25,6 @@ public class UniverseFolderCrudService extends DndFolderCrudService<UniverseFold
 	private final UniverseFolderDndService universeFolderDndService;
 	private final TrashCanDomainService trashCanDomainService;
 
-	@Override
-	protected MemberUtils memberUtils() {
-		return memberUtils;
-	}
 
 	@Override
 	protected DndService<UniverseFolder> dndService() {
@@ -45,7 +41,7 @@ public class UniverseFolderCrudService extends DndFolderCrudService<UniverseFold
 		return trashCanDomainService;
 	}
 	@Override
-	protected BaseFolderMapper<UniverseFolder> folderMapper() {
+	protected DndFolderMapper<UniverseFolder> folderMapper() {
 		return universeFolderMapper;
 	}
 }

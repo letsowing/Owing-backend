@@ -2,7 +2,7 @@ package com.owing.api.story.service.dnd;
 
 import org.springframework.stereotype.Service;
 
-import com.owing.api.dnd.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.mapper.DndFileMapper;
 import com.owing.api.dnd.service.DndFileCrudService;
 import com.owing.api.story.model.mapper.StoryMapper;
 import com.owing.common.util.MemberUtils;
@@ -28,33 +28,27 @@ public class StoryCrudService extends DndFileCrudService<Story, StoryFolder> {
 	private final StoryDndService storyDndService;
 
 	@Override
-	protected MemberUtils memberUtils() {
-		return memberUtils;
-	}
-
-	@Override
-	protected DndService<Story> orderService() {
+	protected DndService<Story> dndService() {
 		return storyDndService;
 	}
 
 	@Override
-	protected DndAdapter fileAdapter() {
+	protected DndAdapter<Story> fileAdapter() {
 		return storyAdapter;
 	}
 
 	@Override
-	protected BaseFileMapper fileMapper() {
-		return storyMapper;
+	protected DndAdapter<StoryFolder> folderAdapter() {
+		return folderAdapter;
 	}
 
 	@Override
-	protected DndAdapter folderAdapter() {
-		return folderAdapter;
+	protected DndFileMapper<Story, StoryFolder> fileMapper() {
+		return storyMapper;
 	}
 
 	@Override
 	protected TrashCanDomainService trashCanDomainService() {
 		return trashCanDomainService;
 	}
-
 }

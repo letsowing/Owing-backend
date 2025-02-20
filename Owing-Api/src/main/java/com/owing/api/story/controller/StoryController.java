@@ -12,23 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.dnd.controller.BaseFileController;
-import com.owing.api.dnd.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.service.DndCrudService;
+import com.owing.api.dnd.controller.DndFileController;
+import com.owing.api.dnd.service.DndFileCrudService;
 import com.owing.api.story.model.dto.request.AddStoryContentRequest;
 import com.owing.api.story.model.dto.request.StoryCrashRequest;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.dto.response.CrashCheckLogResponse;
 import com.owing.api.story.model.dto.response.StorySpellCheckLogResponse;
-import com.owing.api.story.service.UpdateStoryUseCase;
-import com.owing.api.story.service.dnd.StoryCrudService;
 import com.owing.api.story.service.CheckStoryCrashUseCase;
 import com.owing.api.story.service.CheckStorySpellUseCase;
-import com.owing.api.story.service.WriteStoryUseCase;
 import com.owing.api.story.service.ReadStoryCrashLogUseCase;
 import com.owing.api.story.service.ReadStorySpellLogUseCase;
+import com.owing.api.story.service.UpdateStoryUseCase;
+import com.owing.api.story.service.WriteStoryUseCase;
+import com.owing.api.story.service.dnd.StoryCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1/stories")
 @RequiredArgsConstructor
 @Tag(name="원고 /stories", description="원고 API")
-public class StoryController extends BaseFileController {
+public class StoryController extends DndFileController {
 	private final WriteStoryUseCase createDndUseCase;
 	private final StoryCrudService storyFileCrudService;
 	private final CheckStoryCrashUseCase checkStoryCrashUseCase;
@@ -86,7 +83,7 @@ public class StoryController extends BaseFileController {
 	}
 
 	@Override
-	protected DndCrudService<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest> dndCrudService() {
+	protected DndFileCrudService dndCrudService() {
 		return storyFileCrudService;
 	}
 }

@@ -1,8 +1,8 @@
 package com.owing.api.story.model.mapper;
 
-import com.owing.api.dnd.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.dto.request.AddFileRequest;
+import com.owing.api.dnd.dto.request.UpdateFileNameRequest;
+import com.owing.api.dnd.mapper.DndFileMapper;
 import com.owing.api.story.model.dto.request.UpdateStoryRequest;
 import com.owing.api.story.model.dto.response.StoryInfoResponse;
 import com.owing.common.annotation.Mapper;
@@ -10,7 +10,7 @@ import com.owing.entity.domains.story.model.Story;
 import com.owing.entity.domains.story.model.StoryFolder;
 
 @Mapper
-public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
+public class StoryMapper implements DndFileMapper<Story, StoryFolder> {
 	public Story toEntity(AddFileRequest addDndRequest, StoryFolder folder) {
 		return Story.builder()
 			.name(addDndRequest.name())
@@ -24,7 +24,7 @@ public class StoryMapper extends BaseFileMapper<Story, StoryFolder> {
 			.build();
 	}
 
-	public Story toEntity(UpdateFileTitleRequest updateDndRequest) {
+	public Story toEntity(UpdateFileNameRequest updateDndRequest) {
 		return Story.builder()
 			.name(updateDndRequest.name())
 			.build();

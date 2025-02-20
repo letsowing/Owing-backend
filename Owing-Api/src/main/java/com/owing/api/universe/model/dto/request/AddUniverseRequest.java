@@ -1,5 +1,7 @@
 package com.owing.api.universe.model.dto.request;
 
+import com.owing.api.dnd.dto.request.AddFileRequest;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,4 +17,4 @@ public record AddUniverseRequest (
 	String description,
 
 	String imageUrl
-) { }
+) implements AddFileRequest { }

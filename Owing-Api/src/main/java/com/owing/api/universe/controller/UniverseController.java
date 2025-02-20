@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.owing.api.dnd.controller.BaseFileController;
-import com.owing.api.dnd.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.service.DndCrudService;
+import com.owing.api.dnd.controller.DndFileController;
+import com.owing.api.dnd.service.DndFileCrudService;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
@@ -32,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1/universes")
 @RequiredArgsConstructor
 @Tag(name="세계관 /universes", description="세계관 API")
-public class UniverseController extends BaseFileController {
+public class UniverseController extends DndFileController {
 
 	private final UniverseCrudService universeCrudService;
 	private final CreateUniversePresignedUrlUseCase createUniversePresignedUrlUseCase;
@@ -69,7 +66,7 @@ public class UniverseController extends BaseFileController {
 	}
 
 	@Override
-	protected DndCrudService<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest> dndCrudService() {
+	protected DndFileCrudService dndCrudService() {
 		return universeCrudService;
 	}
 }

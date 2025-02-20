@@ -7,13 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.api.cast.model.dto.response.CastFolderDropdownItemResponse;
 import com.owing.api.cast.model.mapper.CastFolderNodeMapper;
-import com.owing.api.dnd.model.dto.request.AddFolderRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFolderTitleRequest;
-import com.owing.api.dnd.model.dto.response.FolderInfoListResponse;
-import com.owing.api.dnd.model.dto.response.FolderInfoResponse;
-import com.owing.api.dnd.model.mapper.BaseFolderMapper;
+import com.owing.api.dnd.dto.request.AddFolderRequest;
+import com.owing.api.dnd.dto.request.UpdateFolderNameRequest;
+import com.owing.api.dnd.dto.response.FolderInfoListResponse;
+import com.owing.api.dnd.dto.response.FolderInfoResponse;
+import com.owing.api.dnd.mapper.DndFolderMapper;
 import com.owing.api.dnd.service.DndFolderCrudService;
-import com.owing.common.util.MemberUtils;
 import com.owing.core.dnd.adapter.DndAdapter;
 import com.owing.core.dnd.service.DndService;
 import com.owing.entity.domains.trashcan.service.TrashCanDomainService;
@@ -31,7 +30,6 @@ public class CastFolderCrudService extends DndFolderCrudService<CastFolderNode> 
 
 	private final ProjectNodeAdapter projectNodeAdapter;
 	private final CastFolderNodeMapper castFolderNodeMapper;
-	private final MemberUtils memberUtils;
 	private final CastFolderDndService castFolderDndService;
 	private final CastFolderNodeAdapter castFolderNodeAdapter;
 	private final TrashCanDomainService trashCanDomainService;
@@ -44,7 +42,7 @@ public class CastFolderCrudService extends DndFolderCrudService<CastFolderNode> 
 
 	@Override
 	@Transactional("neo4jTransactionManager")
-	public void updateName(Long folderId, UpdateFolderTitleRequest dto) {
+	public void updateName(Long folderId, UpdateFolderNameRequest dto) {
 		CastFolderNode castFolderNode = castFolderNodeAdapter.findById(folderId);
 		castFolderNode.updateName(dto.name());
 		castFolderNodeAdapter.updateName(castFolderNode);
@@ -87,11 +85,6 @@ public class CastFolderCrudService extends DndFolderCrudService<CastFolderNode> 
 	}
 
 	@Override
-	protected MemberUtils memberUtils() {
-		return this.memberUtils;
-	}
-
-	@Override
 	protected DndService<CastFolderNode> dndService() {
 		return castFolderDndService;
 	}
@@ -105,7 +98,7 @@ public class CastFolderCrudService extends DndFolderCrudService<CastFolderNode> 
 	protected TrashCanDomainService trashCanDomainService() {
 		return trashCanDomainService;
 	}
-	protected BaseFolderMapper<CastFolderNode> folderMapper() {
+	protected DndFolderMapper<CastFolderNode> folderMapper() {
 		return this.castFolderNodeMapper;
 	}
 

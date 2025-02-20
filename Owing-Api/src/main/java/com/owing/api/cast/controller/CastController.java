@@ -34,11 +34,8 @@ import com.owing.api.cast.service.ReadCastUseCase;
 import com.owing.api.cast.service.UpdateCastUseCase;
 import com.owing.api.cast.service.UpdateConnectionUseCase;
 import com.owing.api.cast.service.dnd.CastCrudService;
-import com.owing.api.dnd.controller.BaseFileController;
-import com.owing.api.dnd.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.service.DndCrudService;
+import com.owing.api.dnd.controller.DndFileController;
+import com.owing.api.dnd.service.DndFileCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,7 +48,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1/cast")
 @RequiredArgsConstructor
 @Tag(name="캐릭터 /cast", description="캐릭터 API")
-public class CastController extends BaseFileController {
+public class CastController extends DndFileController {
 
     private final CastCrudService castCrudService;
     private final UpdateCastUseCase updateCastUseCase;
@@ -138,7 +135,7 @@ public class CastController extends BaseFileController {
     }
 
     @Override
-    protected DndCrudService<AddFileRequest, UpdateFileTitleRequest, UpdateFilePositionRequest> dndCrudService() {
+    protected DndFileCrudService dndCrudService() {
         return castCrudService;
     }
 }
