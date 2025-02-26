@@ -282,6 +282,30 @@ class UniverseIntegrationTest {
     }
 
     @Test
+    @Order(7)
+    @DisplayName("유효하지 않은 요청 값으로 Universe 수정 시 예외 발생 확인 - description 이 빈 문자열인 경우")
+    void testInvalidUpdateUniverseRequest_DescriptionEmpty() throws Exception {
+
+        String requestUri = "/v1/universes/" + testUniverse.getId();
+
+        // description 이 빈 문자열인 경우
+        UpdateUniverseRequest invalidRequest = new UpdateUniverseRequest(
+                "Valid Universe Name",
+                "",
+                "http://example.com/test_universe_image.png"
+        );
+
+        String jsonContent = objectMapper.writeValueAsString(invalidRequest);
+
+        mockMvc.perform(put(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야합니다."));  // 오류 메시지 확인
+    }
+
+    @Test
     @Order(6)
     @DisplayName("Presigned URL 생성 기능 테스트")
     void testCreatePresignedUrl() throws Exception {
