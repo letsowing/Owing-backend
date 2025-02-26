@@ -359,4 +359,26 @@ class UniverseIntegrationTest {
                 .andExpect(status().isBadRequest())  // 400 Bad Request
                 .andExpect(jsonPath("$.description").value("세계관 이름은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
     }
+
+    @Test
+    @Order(11)
+    @DisplayName("유효하지 않은 요청 값으로 Universe 이미지 생성 요청 시 예외 발생 확인 - description 이 빈 문자열인 경우")
+    void testInvalidGenerateUniverseImageRequest_DescriptionEmpty() throws Exception {
+
+        String requestUri = "/v1/universes/generate-image";
+
+        // description 이 빈 문자열인 경우
+        GenerateUniverseImageRequest invalidRequest = new GenerateUniverseImageRequest(
+                "Valid Universe Name",
+                ""
+        );
+
+        String jsonContent = objectMapper.writeValueAsString(invalidRequest);
+
+        mockMvc.perform(post(requestUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
+    }
 }
