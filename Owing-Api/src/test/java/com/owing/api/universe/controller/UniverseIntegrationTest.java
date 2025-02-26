@@ -165,7 +165,7 @@ class UniverseIntegrationTest {
 
         // folderId가 null 인 경우
         AddUniverseRequest invalidRequest1 = new AddUniverseRequest(
-                null, // folderId가 null
+                null,
                 "Test Universe",
                 "This is a test universe",
                 "http://example.com/test_universe_image.png"
@@ -174,7 +174,7 @@ class UniverseIntegrationTest {
         // name 이 빈 문자열인 경우
         AddUniverseRequest invalidRequest2 = new AddUniverseRequest(
                 testUniverseFolder.getId(),
-                "", // name 이 빈 문자열
+                "",
                 "This is a test universe",
                 "http://example.com/test_universe_image.png"
         );
@@ -183,7 +183,7 @@ class UniverseIntegrationTest {
         AddUniverseRequest invalidRequest3 = new AddUniverseRequest(
                 testUniverseFolder.getId(),
                 "Test Universe",
-                null, // description 이 null
+                null,
                 "http://example.com/test_universe_image.png"
         );
 
@@ -244,6 +244,47 @@ class UniverseIntegrationTest {
 
     @Test
     @Order(5)
+    @DisplayName("유효하지 않은 요청 값으로 Universe 수정 시 예외 발생 확인")
+    void testInvalidUpdateUniverseRequest() throws Exception {
+
+        String requestUri = "/v1/universes/" + testUniverse.getId();
+
+        // name 이 빈 문자열인 경우
+        UpdateUniverseRequest invalidRequest1 = new UpdateUniverseRequest(
+                "",
+                "Valid Description",
+                "http://example.com/test_universe_image.png"
+        );
+
+        // description 이 빈 문자열인 경우
+        UpdateUniverseRequest invalidRequest2 = new UpdateUniverseRequest(
+                "Valid Universe Name",
+                "",
+                "http://example.com/test_universe_image.png"
+        );
+
+        String jsonContent1 = objectMapper.writeValueAsString(invalidRequest1);
+        String jsonContent2 = objectMapper.writeValueAsString(invalidRequest2);
+
+        // name 이 빈 문자열인 경우
+        mockMvc.perform(put(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent1))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 이름은 필수적으로 들어가야합니다."));  // 오류 메시지 확인
+
+        // description 이 빈 문자열인 경우
+        mockMvc.perform(put(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent2))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야합니다."));  // 오류 메시지 확인
+    }
+
+    @Test
+    @Order(6)
     @DisplayName("Presigned URL 생성 기능 테스트")
     void testCreatePresignedUrl() throws Exception {
 
@@ -255,7 +296,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @DisplayName("세계관 이미지 생성 기능 테스트")
     void testGenerateUniverseImage() throws Exception {
 
