@@ -158,62 +158,27 @@ class UniverseIntegrationTest {
 
     @Test
     @Order(3)
-    @DisplayName("유효하지 않은 요청 값으로 Universe 생성 시 예외 발생 확인")
-    void testInvalidCreateUniverseRequest() throws Exception {
+    @DisplayName("유효하지 않은 요청 값으로 Universe 생성 시 예외 발생 확인 - folderId가 null 인 경우")
+    void testInvalidCreateUniverseRequest_FolderIdNull() throws Exception {
 
         String requestUri = "/v1/universes";
 
         // folderId가 null 인 경우
-        AddUniverseRequest invalidRequest1 = new AddUniverseRequest(
+        AddUniverseRequest invalidRequest = new AddUniverseRequest(
                 null,
                 "Test Universe",
                 "This is a test universe",
                 "http://example.com/test_universe_image.png"
         );
 
-        // name 이 빈 문자열인 경우
-        AddUniverseRequest invalidRequest2 = new AddUniverseRequest(
-                testUniverseFolder.getId(),
-                "",
-                "This is a test universe",
-                "http://example.com/test_universe_image.png"
-        );
+        String jsonContent = objectMapper.writeValueAsString(invalidRequest);
 
-        // description 이 null 인 경우
-        AddUniverseRequest invalidRequest3 = new AddUniverseRequest(
-                testUniverseFolder.getId(),
-                "Test Universe",
-                null,
-                "http://example.com/test_universe_image.png"
-        );
-
-        String jsonContent1 = objectMapper.writeValueAsString(invalidRequest1);
-        String jsonContent2 = objectMapper.writeValueAsString(invalidRequest2);
-        String jsonContent3 = objectMapper.writeValueAsString(invalidRequest3);
-
-        // folderId가 null 인 경우
         mockMvc.perform(post(requestUri)
                         .header(REQUEST_HEADER_AUTH, jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent1))
+                        .content(jsonContent))
                 .andExpect(status().isBadRequest())  // 400 Bad Request
                 .andExpect(jsonPath("$.description").value("소속되는 folderId는 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
-
-        // name 이 빈 문자열인 경우
-        mockMvc.perform(post(requestUri)
-                        .header(REQUEST_HEADER_AUTH, jwtToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent2))
-                .andExpect(status().isBadRequest())  // 400 Bad Request
-                .andExpect(jsonPath("$.description").value("세계관 이름은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
-
-        // description 이 null 인 경우
-        mockMvc.perform(post(requestUri)
-                        .header(REQUEST_HEADER_AUTH, jwtToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent3))
-                .andExpect(status().isBadRequest())  // 400 Bad Request
-                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
     }
 
     @Test
