@@ -158,6 +158,66 @@ class UniverseIntegrationTest {
 
     @Test
     @Order(3)
+    @DisplayName("유효하지 않은 요청 값으로 Universe 생성 시 예외 발생 확인")
+    void testInvalidCreateUniverseRequest() throws Exception {
+
+        String requestUri = "/v1/universes";
+
+        // folderId가 null 인 경우
+        AddUniverseRequest invalidRequest1 = new AddUniverseRequest(
+                null, // folderId가 null
+                "Test Universe",
+                "This is a test universe",
+                "http://example.com/test_universe_image.png"
+        );
+
+        // name 이 빈 문자열인 경우
+        AddUniverseRequest invalidRequest2 = new AddUniverseRequest(
+                testUniverseFolder.getId(),
+                "", // name 이 빈 문자열
+                "This is a test universe",
+                "http://example.com/test_universe_image.png"
+        );
+
+        // description 이 null 인 경우
+        AddUniverseRequest invalidRequest3 = new AddUniverseRequest(
+                testUniverseFolder.getId(),
+                "Test Universe",
+                null, // description 이 null
+                "http://example.com/test_universe_image.png"
+        );
+
+        String jsonContent1 = objectMapper.writeValueAsString(invalidRequest1);
+        String jsonContent2 = objectMapper.writeValueAsString(invalidRequest2);
+        String jsonContent3 = objectMapper.writeValueAsString(invalidRequest3);
+
+        // folderId가 null 인 경우
+        mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent1))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("소속되는 folderId는 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
+
+        // name 이 빈 문자열인 경우
+        mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent2))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 이름은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
+
+        // description 이 null 인 경우
+        mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent3))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
+    }
+
+    @Test
+    @Order(4)
     @DisplayName("기존 세계관 수정 기능 테스트")
     void testUpdateUniverse() throws Exception {
 
@@ -183,7 +243,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("Presigned URL 생성 기능 테스트")
     void testCreatePresignedUrl() throws Exception {
 
@@ -195,7 +255,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @DisplayName("세계관 이미지 생성 기능 테스트")
     void testGenerateUniverseImage() throws Exception {
 

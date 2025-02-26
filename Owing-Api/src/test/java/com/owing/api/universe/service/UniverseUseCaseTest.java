@@ -98,7 +98,6 @@ public class UniverseUseCaseTest {
     @DisplayName("유효한 요청으로 Universe 생성 성공")
     void testExecute_Success() {
 
-        // Mock 동작
         when(universeFolderAdapter.findById(folderId)).thenReturn(mockFolder);
         when(universeMapper.toEntity(addUniverseRequest, mockFolder)).thenReturn(mockUniverse);
         when(universeDomainService.createEntity(mockUniverse)).thenReturn(savedUniverse);
@@ -128,7 +127,7 @@ public class UniverseUseCaseTest {
         // 존재하지 않는 ID 설정
         Long nonExistentFolderId = -1L;
 
-        // AddUniverseRequest의 folderId를 nonExistentFolderId로 설정
+        // AddUniverseRequest 의 folderId를 nonExistentFolderId로 설정
         addUniverseRequest = new AddUniverseRequest(
                 nonExistentFolderId, // 변경된 folderId
                 "Test Universe",
