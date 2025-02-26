@@ -208,6 +208,33 @@ class UniverseIntegrationTest {
 
     @Test
     @Order(5)
+    @DisplayName("세계관 이름이 255자 초과인 경우 예외 발생 확인")
+    void testInvalidCreateUniverseRequest_NameTooLong() throws Exception {
+
+        String requestUri = "/v1/universes";
+
+        // name 이 255자보다 긴 경우
+        String longName = "A".repeat(256);
+
+        AddUniverseRequest invalidRequest = new AddUniverseRequest(
+                testUniverseFolder.getId(),
+                longName,
+                "This is a test universe",
+                "http://example.com/test_universe_image.png"
+        );
+
+        String jsonContent = objectMapper.writeValueAsString(invalidRequest);
+
+        mockMvc.perform(post(requestUri)
+                        .header(REQUEST_HEADER_AUTH, jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isBadRequest())  // 400 Bad Request
+                .andExpect(jsonPath("$.description").value("세계관 이름은 255자 이하여야 합니다."));
+    }
+
+    @Test
+    @Order(5)
     @DisplayName("유효하지 않은 요청 값으로 Universe 생성 시 예외 발생 확인 - description 이 null 인 경우")
     void testInvalidCreateUniverseRequest_DescriptionNull() throws Exception {
 
