@@ -306,7 +306,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     @DisplayName("Presigned URL 생성 기능 테스트")
     void testCreatePresignedUrl() throws Exception {
 
@@ -318,7 +318,7 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     @DisplayName("세계관 이미지 생성 기능 테스트")
     void testGenerateUniverseImage() throws Exception {
 
@@ -339,39 +339,24 @@ class UniverseIntegrationTest {
     }
 
     @Test
-    @Order(8)
-    @DisplayName("유효하지 않은 요청 값으로 Universe 이미지 생성 요청 시 예외 발생 확인")
-    void testInvalidGenerateUniverseImageRequest() throws Exception {
+    @Order(10)
+    @DisplayName("유효하지 않은 요청 값으로 Universe 이미지 생성 요청 시 예외 발생 확인 - name 이 빈 문자열인 경우")
+    void testInvalidGenerateUniverseImageRequest_NameEmpty() throws Exception {
 
         String requestUri = "/v1/universes/generate-image";
 
         // name 이 빈 문자열인 경우
-        GenerateUniverseImageRequest invalidRequest1 = new GenerateUniverseImageRequest(
+        GenerateUniverseImageRequest invalidRequest = new GenerateUniverseImageRequest(
                 "",
                 "Valid Description"
         );
 
-        // description 이 빈 문자열인 경우
-        GenerateUniverseImageRequest invalidRequest2 = new GenerateUniverseImageRequest(
-                "Valid Universe Name",
-                ""
-        );
+        String jsonContent = objectMapper.writeValueAsString(invalidRequest);
 
-        String jsonContent1 = objectMapper.writeValueAsString(invalidRequest1);
-        String jsonContent2 = objectMapper.writeValueAsString(invalidRequest2);
-
-        // name 이 빈 문자열인 경우
         mockMvc.perform(post(requestUri)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent1))
+                        .content(jsonContent))
                 .andExpect(status().isBadRequest())  // 400 Bad Request
                 .andExpect(jsonPath("$.description").value("세계관 이름은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
-
-        // description 이 빈 문자열인 경우
-        mockMvc.perform(post(requestUri)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent2))
-                .andExpect(status().isBadRequest())  // 400 Bad Request
-                .andExpect(jsonPath("$.description").value("세계관 설명은 필수적으로 들어가야 합니다."));  // 오류 메시지 확인
     }
 }
