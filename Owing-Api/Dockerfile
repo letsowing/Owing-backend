@@ -1,5 +1,5 @@
 # 1. 베이스 이미지 선택 (Java 21 사용 예시)
-FROM openjdk:21-slim
+FROM amazoncorretto:21
 
 # 2. JAR 파일을 컨테이너 내부로 복사
 ARG JAR_FILE=build/libs/Owing-Api-0.0.1-SNAPSHOT.jar
