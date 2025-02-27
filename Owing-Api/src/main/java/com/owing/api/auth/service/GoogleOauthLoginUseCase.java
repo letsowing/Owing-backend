@@ -11,8 +11,8 @@ import com.owing.entity.domains.member.model.Member;
 import com.owing.entity.domains.member.model.RefreshToken;
 import com.owing.entity.domains.member.service.MemberDomainService;
 import com.owing.entity.domains.member.service.RefreshTokenDomainService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.google.api.client.json.webtoken.JsonWebToken.*;
 import static com.owing.api.common.constant.TokenConst.*;
@@ -30,7 +30,7 @@ public class GoogleOauthLoginUseCase {
     private final GoogleOauthHelper googleOauthHelper;
     private final JwtUtils jwtUtils;
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     public TokenResponse execute(String idToken) {
         Payload payload = validateGoogleIdToken(idToken);
         Member member = memberAdapter.findByEmailAndProvider(payload.get(GOOGLE_CLAIM_EMAIL).toString(), GOOGLE)
