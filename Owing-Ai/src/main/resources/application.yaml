@@ -3,9 +3,10 @@ spring:
     name: Owing-Ai
 
   profiles:
-    include:
-      - infrastructure
-      - common
+    default: local
+    active: local
+    group:
+      local: infrastructure, common
 
   config:
     import: optional:file:.env[.properties]
