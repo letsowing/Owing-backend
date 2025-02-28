@@ -3,7 +3,7 @@ spring:
     name: Owing-Batch
 
   profiles:
-    include:
-      - infrastructure
-      - domain-entity
-      - common
+    default: local
+    active: local
+    group:
+      local: infrastructure, domain-entity, common
