@@ -38,7 +38,7 @@ public class GoogleOauthLoginUseCase {
         return createTokens(member);
     }
 
-    private Payload validateGoogleIdToken(String idToken) {
+    public Payload validateGoogleIdToken(String idToken) {
         return googleOauthHelper.verifyGoogleIdToken(idToken);
     }
 
