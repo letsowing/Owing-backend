@@ -1,14 +1,20 @@
 package com.owing.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,13 +30,40 @@ import com.owing.filter.JwtExceptionFilter;
 public class SecurityConfig {
     private final JwtUtils jwtUtils;
 
+    @Value("${swagger.user}")
+    private String swaggerUser;
+    @Value("${swagger.password}")
+    private String swaggerPassword;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public UserDetailsService swaggerUserDetailsService() {
+        User.UserBuilder userBuilder = User.builder()
+                .passwordEncoder(pw -> passwordEncoder().encode(pw));
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        manager.createUser(
+                userBuilder.username(swaggerUser).password(swaggerPassword).roles("SWAGGER").build()
+        );
+        return manager;
+    }
+
+    @Bean
+    public SecurityFilterChain swaggerSecurityFilterchain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher(WebSecurityPath.SWAGGER_PATH.getPaths())
+                .authorizeHttpRequests(httpRequest ->
+                        httpRequest.anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatchers((auth) -> auth.requestMatchers(WebSecurityPath.REQUIRE_AUTH_PATH.getPaths()));
         http
@@ -47,14 +80,9 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Profile("local")
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/v1/auth/**",
-                "swagger-ui/index.html",
-                "/swagger-ui/**",
-                "/swagger-resources/**",
-                "/v3/api-docs/**",
-                "/api-docs/**",
-                "/api-docs");
+        return web -> web.ignoring().requestMatchers(WebSecurityPath.SWAGGER_PATH.getPaths());
     }
 }
