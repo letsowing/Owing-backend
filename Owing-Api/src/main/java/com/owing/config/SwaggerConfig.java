@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 		title = "Owing api 명세서",
 		description = """
 			<h3>Owing API Reference for Developers</h3>
-			eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwibmlja25hbWUiOiLsobDrsJXsgqwiLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbS9pbWFnZXM_cT10Ym46QU5kOUdjUmFfaUdQcDhsRUo1ZWpaSEg3a1dfS1FCLTk4UkRab2Ewb0ZBJnMiLCJleHAiOjQ4ODY3MDQ2NzV9.04woMcXQTjKEG4bf4C1fmJeOic7DFYaElectsbDKlFtKtH7IsKZkxzSSbPtCWDvQG9ZRuDRpRgMZwlQqVsjC0w
 			""",
 		version = "v1",
 		contact = @Contact(
