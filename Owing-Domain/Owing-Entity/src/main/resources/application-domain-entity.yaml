@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
     activate:
-      on-profile: local
+      on-profile: local, dev, prod
 
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/owing

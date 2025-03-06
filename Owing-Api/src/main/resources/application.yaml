@@ -6,9 +6,14 @@ spring:
     default: local
     active: local
     group:
+      prod: infrastructure, domain-entity, domain-node, common
+      dev: infrastructure, domain-entity, domain-node, common
       local: infrastructure, domain-entity, domain-node, common
       test: infrastructure, domain-entity, domain-node, common
 
+swagger:
+  user: ${SWAGGER_USER}
+  password: ${SWAGGER_PASSWORD}
 ---
 
 spring:

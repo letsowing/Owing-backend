@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
     activate:
-      on-profile: local
+      on-profile: local, dev, prod
 
   neo4j:
     uri: bolt://${NEO4J_HOST}:${NEO4J_PORT}
