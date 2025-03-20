@@ -17,7 +17,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import java.util.List;
 
 import static com.google.api.client.json.webtoken.JsonWebToken.Payload;
-import static com.owing.api.common.constant.TokenConst.*;
+import static com.owing.common.constant.TokenConst.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
