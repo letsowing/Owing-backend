@@ -3,7 +3,7 @@ package com.owing.api.auth.service;
 import com.owing.api.auth.model.dto.response.TokenResponse;
 import com.owing.api.auth.model.mapper.AuthMapper;
 import com.owing.api.auth.service.helper.GoogleOauthHelper;
-import com.owing.api.common.util.JwtUtils;
+import com.owing.common.util.JwtUtils;
 import com.owing.api.member.mapper.MemberMapper;
 import com.owing.common.annotation.UseCase;
 import com.owing.entity.domains.member.adapter.MemberAdapter;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.google.api.client.json.webtoken.JsonWebToken.*;
-import static com.owing.api.common.constant.TokenConst.*;
+import static com.owing.common.constant.TokenConst.*;
 import static com.owing.entity.domains.member.model.OauthProvider.*;
 
 @UseCase

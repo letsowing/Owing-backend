@@ -1,48 +1,35 @@
 package com.owing.entity.domains.project.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.owing.common.annotation.DomainService;
 import com.owing.entity.domains.project.adapter.ProjectAdapter;
 import com.owing.entity.domains.project.model.Project;
-import com.owing.entity.domains.project.model.ProjectInfo;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
+import com.owing.entity.domains.story.adapter.StoryFolderAdapter;
+import com.owing.entity.domains.story.model.StoryFolder;
+import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
+import com.owing.entity.domains.universe.model.UniverseFolder;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true, transactionManager = "jpaTransactionManager")
 public class ProjectDomainService {
 
-    private final ProjectAdapter projectAdapter;
+	private final ProjectAdapter projectAdapter;
+	private final StoryFolderAdapter storyFolderAdapter;
+	private final UniverseFolderAdapter universeFolderAdapter;
 
-    @Transactional("jpaTransactionManager")
-    public Project createProject(Project project) {
-        Project savedProject = projectAdapter.save(project);
-        return savedProject;
-    }
+	@Transactional("jpaTransactionManager")
+	public Project createProjectEntity(Project project) {
+		project = projectAdapter.save(project);
+		StoryFolder initialStoryFolder = StoryFolder.init(project.getId());
+		UniverseFolder initialUniverseFolder = UniverseFolder.init(project.getId());
 
-    @Transactional("jpaTransactionManager")
-    public void updateProjectInfo(Project oldProject, ProjectInfo projectInfo) {
-        oldProject.getProjectInfo().updateProjectInfo(projectInfo);
-        projectAdapter.save(oldProject);
-    }
+		storyFolderAdapter.save(initialStoryFolder);
+		universeFolderAdapter.save(initialUniverseFolder);
 
-    public Page<Project> getSortedProjectPage(Long memberId, Pageable pageable) {
-        return projectAdapter.findAllByMemberId(memberId, pageable);
-    }
-
-    @Transactional("jpaTransactionManager")
-    public void deleteProject(Project project) {
-        projectAdapter.deleteProject(project);
-    }
-
-    @Transactional("jpaTransactionManager")
-    public void updateAccessedAt(Project project, LocalDateTime localDateTime) {
-        project.updateAccessedAt(localDateTime);
-        projectAdapter.save(project);
-    }
+		return project;
+	}
 
 }

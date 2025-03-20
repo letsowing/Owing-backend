@@ -1,6 +1,6 @@
 package com.owing.api.cast.model.dto.response;
 
-import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
+import com.owing.api.dnd.dto.response.FileInfoResponse;
 import com.owing.node.domains.cast.model.Coordinate;
 
 public record CastInfoResponse(
@@ -12,5 +12,5 @@ public record CastInfoResponse(
         String description,
         String imageUrl,
         Coordinate coordinate
-) implements DndInfoResponse {
+) implements FileInfoResponse {
 }

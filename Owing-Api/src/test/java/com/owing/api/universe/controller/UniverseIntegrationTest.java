@@ -1,20 +1,16 @@
 package com.owing.api.universe.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.owing.OwingApiApplication;
-import com.owing.api.common.util.JwtUtils;
-import com.owing.api.universe.model.dto.request.AddUniverseRequest;
-import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
-import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
-import com.owing.entity.domains.member.model.Member;
-import com.owing.entity.domains.member.model.OauthProvider;
-import com.owing.entity.domains.member.repository.MemberRepository;
-import com.owing.entity.domains.universe.model.Universe;
-import com.owing.entity.domains.universe.model.UniverseFolder;
-import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
-import com.owing.entity.domains.universe.repository.UniverseRepository;
-import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.*;
+import static com.owing.common.constant.TokenConst.*;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,12 +21,21 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.owing.api.common.constant.TokenConst.BEARER_TYPE_SPACE;
-import static com.owing.api.common.constant.TokenConst.REQUEST_HEADER_AUTH;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.owing.OwingApiApplication;
+import com.owing.api.universe.model.dto.request.AddUniverseRequest;
+import com.owing.api.universe.model.dto.request.GenerateUniverseImageRequest;
+import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
+import com.owing.common.util.JwtUtils;
+import com.owing.entity.domains.member.model.Member;
+import com.owing.entity.domains.member.model.OauthProvider;
+import com.owing.entity.domains.member.repository.MemberRepository;
+import com.owing.entity.domains.universe.model.Universe;
+import com.owing.entity.domains.universe.model.UniverseFolder;
+import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseRepository;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootTest(
         classes = OwingApiApplication.class,

@@ -1,7 +1,7 @@
 package com.owing.api.cast.service;
 
-import com.owing.api.file.dto.response.FileResponse;
-import com.owing.api.file.service.CreatePresignedUrlUseCase;
+import com.owing.infrastructure.file.dto.response.FileResponse;
+import com.owing.infrastructure.file.service.CreatePresignedUrlUseCase;
 import com.owing.common.annotation.UseCase;
 import com.owing.infrastructure.config.s3.S3Properties;
 

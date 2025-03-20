@@ -1,16 +1,25 @@
 package com.owing.entity.domains.trashcan.model;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.owing.core.constant.OwingPersistenceConst;
-import com.owing.entity.folders.trashcan.model.TrashCanFolder;
-import jakarta.persistence.*;
+import com.owing.core.dnd.model.DndFile;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity(name = "trash_can")
 @Getter
@@ -51,5 +60,18 @@ public class TrashCan {
 		this.createdAt = createdAt;
 		this.trashCanFolder = trashCanFolder;
 		this.imageUrl = imageUrl;
+	}
+
+	public FolderType getTableName() {
+		return trashCanFolder.getTableName();
+	}
+
+	public static TrashCan fromFile(DndFile file, TrashCanFolder trashCanFolder) {
+		return TrashCan.builder()
+			.itemId(file.getId())
+			.name(file.getName())
+			.description(file.getDescription())
+			.trashCanFolder(trashCanFolder)
+			.build();
 	}
 }

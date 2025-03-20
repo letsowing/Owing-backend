@@ -1,6 +1,6 @@
 package com.owing.api.story.model.dto.response;
 
-import com.owing.api.dnd.base.model.dto.response.DndInfoResponse;
+import com.owing.api.dnd.dto.response.FileInfoResponse;
 import com.owing.entity.domains.story.model.Story;
 
 import lombok.Builder;
@@ -13,7 +13,7 @@ public record StoryInfoResponse(
 	int textCount,
 	String content
 
-) implements DndInfoResponse {
+) implements FileInfoResponse {
 	public static StoryInfoResponse from(Story story){
 		return StoryInfoResponse.builder()
 				.storyId(story.getId())

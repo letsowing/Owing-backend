@@ -1,45 +1,64 @@
 package com.owing.api.cast.controller;
 
-import com.owing.api.cast.model.dto.request.*;
+import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.owing.api.cast.model.dto.request.CreateCastRequest;
+import com.owing.api.cast.model.dto.request.CreateConnectionRequest;
+import com.owing.api.cast.model.dto.request.GenerateCastImageRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastCoordinateRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastInfoRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastRelationshipLabelRequest;
+import com.owing.api.cast.model.dto.request.UpdateCastRelationshipRequest;
 import com.owing.api.cast.model.dto.response.CastGraphResponse;
 import com.owing.api.cast.model.dto.response.CastImageResponse;
 import com.owing.api.cast.model.dto.response.CastInfoResponse;
 import com.owing.api.cast.model.dto.response.CastRelationshipInfoResponse;
-import com.owing.api.cast.service.*;
-import com.owing.api.dnd.base.controller.BaseFileController;
-import com.owing.api.dnd.base.service.CreateDndUseCase;
-import com.owing.api.dnd.base.service.DeleteDndUseCase;
-import com.owing.api.dnd.base.service.ReadDndUseCase;
-import com.owing.api.dnd.base.service.UpdateDndUseCase;
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFilePositionRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
+import com.owing.api.cast.service.CreateCastPresignedUrlUseCase;
+import com.owing.api.cast.service.CreateCastUseCase;
+import com.owing.api.cast.service.CreateConnectionUseCase;
+import com.owing.api.cast.service.DeleteConnectionUseCase;
+import com.owing.api.cast.service.GenerateCastImageUseCase;
+import com.owing.api.cast.service.ReadCastUseCase;
+import com.owing.api.cast.service.UpdateCastUseCase;
+import com.owing.api.cast.service.UpdateConnectionUseCase;
+import com.owing.api.cast.service.dnd.CastCrudService;
+import com.owing.api.dnd.controller.DndFileController;
+import com.owing.api.dnd.service.DndFileCrudService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/cast")
 @RequiredArgsConstructor
 @Tag(name="캐릭터 /cast", description="캐릭터 API")
-public class CastController extends BaseFileController {
+public class CastController extends DndFileController {
 
-    private final CreateCastUseCase createCastUseCase;
-    private final ReadCastUseCase readCastUseCase;
+    private final CastCrudService castCrudService;
     private final UpdateCastUseCase updateCastUseCase;
-    private final DeleteCastUseCase deleteCastUseCase;
+    private final ReadCastUseCase readCastUseCase;
     private final CreateConnectionUseCase createConnectionUseCase;
     private final UpdateConnectionUseCase updateConnectionUseCase;
     private final DeleteConnectionUseCase deleteConnectionUseCase;
     private final CreateCastPresignedUrlUseCase createCastPresignedUrlUseCase;
     private final GenerateCastImageUseCase generateCastImageUseCase;
+    private final CreateCastUseCase createCastUseCase;
 
     @GetMapping("/graph")
     @Operation(summary = "✨ 관계도: 캐릭터 ", description = "인물관계도 조회")
@@ -101,27 +120,6 @@ public class CastController extends BaseFileController {
         return ResponseEntity.noContent().build();
     }
 
-    // Bean Setting
-    @Override
-    protected CreateDndUseCase<AddFileRequest> createDndUseCase() {
-        return this.createCastUseCase;
-    }
-
-    @Override
-    protected ReadDndUseCase readDndUseCase() {
-        return this.readCastUseCase;
-    }
-
-    @Override
-    protected DeleteDndUseCase deleteDndUseCase() {
-        return this.deleteCastUseCase;
-    }
-
-    @Override
-    protected UpdateDndUseCase<UpdateFileTitleRequest, UpdateFilePositionRequest> updateDndUseCase() {
-        return this.updateCastUseCase;
-    }
-
     /* presigned url 생성 */
     @GetMapping("/files/{fileExtension}")
     @Operation(summary = "✨ 일반: 인물 presignedUrl", description = "presigned url 생성합니다.")
@@ -136,4 +134,8 @@ public class CastController extends BaseFileController {
         return ResponseEntity.ok(generateCastImageUseCase.execute(generateCastImageRequest));
     }
 
+    @Override
+    protected DndFileCrudService dndCrudService() {
+        return castCrudService;
+    }
 }

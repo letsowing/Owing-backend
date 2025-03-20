@@ -3,27 +3,26 @@ package com.owing.entity.domains.story.adapter;
 import java.util.List;
 
 import org.jsoup.Jsoup;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.owing.common.annotation.Adaptor;
-import com.owing.core.dnd.file.adapter.BaseFileAdapter;
-import com.owing.core.dnd.file.repository.BaseFileRepository;
+import com.owing.core.dnd.service.shift.DndShiftAdapter;
+import com.owing.core.dnd.service.shift.DndShiftRepository;
 import com.owing.entity.domains.story.model.Story;
-import com.owing.entity.domains.story.model.StoryFolder;
 import com.owing.entity.domains.story.model.dto.StoryInfo;
 import com.owing.entity.domains.story.repository.StoryDeletedRepository;
 import com.owing.entity.domains.story.repository.StoryRepository;
-import com.owing.entity.domains.story.service.StoryDomainService;
 
 import lombok.RequiredArgsConstructor;
 
 @Adaptor
 @RequiredArgsConstructor
-public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
+public class StoryAdapter extends DndShiftAdapter<Story> {
 	private final StoryRepository storyRepository;
 	private final StoryDeletedRepository storyDeletedRepository;
 
 	@Override
-	protected BaseFileRepository<Story, StoryFolder> dndRepository() {
+	protected DndShiftRepository<Story> dndRepository() {
 		return storyRepository;
 	}
 
@@ -48,4 +47,9 @@ public class StoryAdapter extends BaseFileAdapter<Story, StoryFolder> {
 			.content(content)
 			.build();
     }
+
+	@Transactional("jpaTransactionManager")
+	public void restoreById(Long itemId) {
+		storyRepository.restoreById(itemId);
+	}
 }

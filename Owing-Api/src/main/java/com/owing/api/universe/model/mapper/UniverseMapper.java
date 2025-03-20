@@ -1,8 +1,8 @@
 package com.owing.api.universe.model.mapper;
 
-import com.owing.api.dnd.file.model.dto.request.AddFileRequest;
-import com.owing.api.dnd.file.model.dto.request.UpdateFileTitleRequest;
-import com.owing.api.dnd.file.model.mapper.BaseFileMapper;
+import com.owing.api.dnd.dto.request.AddFileRequest;
+import com.owing.api.dnd.dto.request.UpdateFileNameRequest;
+import com.owing.api.dnd.mapper.DndFileMapper;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.request.UpdateUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseImageResponse;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Mapper
 @RequiredArgsConstructor
-public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
+public class UniverseMapper implements DndFileMapper<Universe, UniverseFolder> {
 
 	/**
 	 * 세계관 DnD 생성시 사용
@@ -31,8 +31,7 @@ public class UniverseMapper extends BaseFileMapper<Universe, UniverseFolder> {
 	/**
 	 * 세계관 DnD 수정시 사용
 	 */
-	@Override
-	public Universe toEntity(UpdateFileTitleRequest dto) {
+	public Universe toEntity(UpdateFileNameRequest dto) {
 		return  Universe.builder()
 			.name(dto.name())
 			.build();

@@ -2,7 +2,7 @@ package com.owing.entity.domains.statistics.model;
 
 import java.time.LocalDate;
 
-import com.owing.entity.common.model.BaseTimeEntity;
+import com.owing.core.BaseEntity;
 import com.owing.entity.domains.member.model.Member;
 
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DailyStats extends BaseTimeEntity {
+public class DailyStats extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

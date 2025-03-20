@@ -3,7 +3,7 @@ package com.owing.api.auth.service.helper;
 import com.google.api.client.json.webtoken.JsonWebToken;
 import com.google.auth.oauth2.TokenVerifier;
 import com.owing.api.auth.error.exception.AuthInvalidTokenException;
-import com.owing.api.common.properties.GoogleOauthProperties;
+import com.owing.common.properties.GoogleOauthProperties;
 import com.owing.common.annotation.Helper;
 import lombok.RequiredArgsConstructor;
 

@@ -9,14 +9,14 @@ import com.owing.node.domains.cast.adapter.CastNodeAdapter;
 import com.owing.node.domains.cast.model.CastNode;
 import com.owing.node.domains.cast.model.CastRelationship;
 import com.owing.node.domains.cast.model.ConnectionType;
-import com.owing.node.domains.cast.service.CastNodeDomainService;
+import com.owing.node.domains.cast.service.CastNodeService;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
 public class CreateConnectionUseCase {
 
-    private final CastNodeDomainService castNodeDomainService;
+    private final CastNodeService castNodeDomainService;
     private final CastNodeAdapter castNodeAdapter;
     private final CastNodeMapper castNodeMapper;
 

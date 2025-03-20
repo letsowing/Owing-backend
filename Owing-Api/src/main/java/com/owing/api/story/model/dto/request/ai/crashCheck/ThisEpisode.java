@@ -2,7 +2,7 @@ package com.owing.api.story.model.dto.request.ai.crashCheck;
 
 import java.time.LocalDateTime;
 
-import com.owing.entity.domains.story.model.dto.StoryVO;
+import com.owing.entity.domains.story.model.Story;
 
 public record ThisEpisode(
 	Long id,
@@ -10,11 +10,11 @@ public record ThisEpisode(
 	LocalDateTime updatedAt
 ) {
 
-	public static ThisEpisode from(StoryVO story) {
+	public static ThisEpisode from(Story story) {
         return new ThisEpisode(
-			story.id(),
-			story.episode(),
-			story.updatedAt()
+			story.getId(),
+			story.getParsedContent(),
+			story.getUpdatedAt()
 		);
     }
 }

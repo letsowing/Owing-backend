@@ -2,15 +2,20 @@ package com.owing.api.universe.model.dto.response;
 
 import java.util.List;
 
-import com.owing.api.dnd.folder.model.dto.response.FolderInfoResponse;
+import com.owing.api.dnd.dto.response.FolderInfoResponse;
 import com.owing.entity.domains.universe.model.UniverseFolder;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 
 @Getter
-@SuperBuilder
-public class UniverseFolderInfoResponse extends FolderInfoResponse<UniverseFileInfoResponse> {
+@Builder
+public class UniverseFolderInfoResponse implements FolderInfoResponse {
+	private  Long id;
+	private  String name;
+	private  String description;
+	private  Long projectId;
+	private  List<UniverseFileInfoResponse> files;
 
 	public static UniverseFolderInfoResponse from(UniverseFolder entity) {
 		List<UniverseFileInfoResponse> files = entity.getFiles().stream()

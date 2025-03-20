@@ -1,19 +1,16 @@
 package com.owing.node.domains.project.model;
 
-import com.owing.node.common.model.BaseTimeNeo4j;
-import com.owing.node.folder.story.model.StoryFolderNode;
-import lombok.Getter;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.owing.core.BaseEntity;
+
+import lombok.Getter;
 
 @Node("Project")
 @Getter
-public class ProjectNode extends BaseTimeNeo4j {
+public class ProjectNode extends BaseEntity {
 
     @Id
     private Long id;
