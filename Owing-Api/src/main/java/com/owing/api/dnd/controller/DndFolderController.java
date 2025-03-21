@@ -16,6 +16,7 @@ import com.owing.api.dnd.service.DndFolderCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 
 public abstract class DndFolderController {
 
@@ -29,13 +30,13 @@ public abstract class DndFolderController {
 
 	@PostMapping("/dnd")
 	@Operation(summary = "✨ DnD: 파일 or 폴더 생성", description = "폴더탭에서 파일이나 폴더를 생성합니다. DnD 생성은 Title만 받습니다.")
-	public ResponseEntity<?> createDnd(@RequestBody CommonAddFolderRequest addDndRequest) {
+	public ResponseEntity<?> createDnd(@RequestBody @Valid CommonAddFolderRequest addDndRequest) {
 		return ResponseEntity.ok(dndCrudService().create(addDndRequest));
 	}
 
 	@PatchMapping("/{id}/title")
 	@Operation(summary = "✨ DnD: 파일 or 폴더 이름 수정", description = "폴더탭에서 파일이나 폴더의 이름을 변경합니다.")
-	public ResponseEntity<Void> updateDndName(@PathVariable Long id, @RequestBody CommonUpdateFolderNameRequest updateDndRequest) {
+	public ResponseEntity<Void> updateDndName(@PathVariable Long id, @RequestBody @Valid CommonUpdateFolderNameRequest updateDndRequest) {
 		dndCrudService().updateName(id, updateDndRequest);
 		return ResponseEntity.noContent().build();
 	}
