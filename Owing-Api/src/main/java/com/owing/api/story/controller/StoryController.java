@@ -29,6 +29,7 @@ import com.owing.api.story.service.dnd.StoryCrudService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -53,7 +54,7 @@ public class StoryController extends DndFileController {
 
 	@PutMapping("/{storyId}")
 	@Operation(summary = "✨일반: 원고 정보 수정", description = "원고 정보를 수정합니다.")
-	public ResponseEntity<?> updateStory(@PathVariable Long storyId, @RequestBody UpdateStoryRequest request) {
+	public ResponseEntity<?> updateStory(@PathVariable Long storyId, @RequestBody @Valid UpdateStoryRequest request) {
 		updateStoryUseCase.execute(storyId, request);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
