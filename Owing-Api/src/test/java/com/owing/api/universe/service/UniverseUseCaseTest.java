@@ -1,16 +1,16 @@
 package com.owing.api.universe.service;
 
-import com.owing.api.common.util.MemberUtils;
 import com.owing.api.universe.model.dto.request.AddUniverseRequest;
 import com.owing.api.universe.model.dto.response.UniverseShortInfoResponse;
 import com.owing.api.universe.model.mapper.UniverseMapper;
-import com.owing.api.universe.service.universe.CreateUniverseUseCase;
-import com.owing.core.dnd.base.error.DndErrorCode;
-import com.owing.core.dnd.base.error.exception.DndNotFoundException;
+import com.owing.api.universe.service.dnd.UniverseCrudService;
+import com.owing.common.util.MemberUtils;
+import com.owing.core.dnd.error.DndErrorCode;
+import com.owing.core.dnd.error.exception.DndNotFoundException;
 import com.owing.entity.domains.universe.adapter.UniverseFolderAdapter;
 import com.owing.entity.domains.universe.model.Universe;
 import com.owing.entity.domains.universe.model.UniverseFolder;
-import com.owing.entity.domains.universe.service.UniverseDomainService;
+import com.owing.entity.domains.universe.service.UniverseDndService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class UniverseUseCaseTest {
     private MemberUtils memberUtils;
 
     @Mock
-    private UniverseDomainService universeDomainService;
+    private UniverseDndService universeDndService;
 
     @Mock
     private UniverseFolderAdapter universeFolderAdapter;
@@ -39,7 +39,7 @@ public class UniverseUseCaseTest {
     private UniverseMapper universeMapper;
 
     @InjectMocks
-    private CreateUniverseUseCase createUniverseUseCase;
+    private UniverseCrudService universeCrudService;
 
     private Long folderId;
     private AddUniverseRequest addUniverseRequest;
@@ -100,11 +100,11 @@ public class UniverseUseCaseTest {
 
         when(universeFolderAdapter.findById(folderId)).thenReturn(mockFolder);
         when(universeMapper.toEntity(addUniverseRequest, mockFolder)).thenReturn(mockUniverse);
-        when(universeDomainService.createEntity(mockUniverse)).thenReturn(savedUniverse);
+        when(universeDndService.create(mockUniverse)).thenReturn(savedUniverse);
         when(universeMapper.toInfoResponse(savedUniverse)).thenReturn(universeShortInfoResponse);
 
         // Act
-        UniverseShortInfoResponse result = createUniverseUseCase.execute(addUniverseRequest);
+        UniverseShortInfoResponse result = universeCrudService.create(addUniverseRequest);
 
         // Assert
         assertNotNull(result);
@@ -116,7 +116,7 @@ public class UniverseUseCaseTest {
         // Verify
         verify(universeFolderAdapter).findById(folderId);
         verify(universeMapper).toEntity(addUniverseRequest, mockFolder);
-        verify(universeDomainService).createEntity(mockUniverse);
+        verify(universeDndService).create(mockUniverse);
         verify(universeMapper).toInfoResponse(savedUniverse);
     }
 
@@ -140,7 +140,7 @@ public class UniverseUseCaseTest {
 
         // Act & Assert
         DndNotFoundException exception = assertThrows(DndNotFoundException.class, () -> {
-            createUniverseUseCase.execute(addUniverseRequest);
+            universeCrudService.create(addUniverseRequest);
         });
 
         // 예외 메시지 검증
