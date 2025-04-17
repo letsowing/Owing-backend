@@ -4,6 +4,7 @@ import com.owing.api.dnd.dto.request.AddFileRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record AddUniverseRequest (
 
@@ -11,9 +12,11 @@ public record AddUniverseRequest (
 	Long folderId,
 
 	@NotBlank(message = "세계관 이름은 필수적으로 들어가야 합니다.")
+	@Size(max = 255, message = "세계관 이름은 255자 이하여야 합니다.")
 	String name,
 
 	@NotBlank(message = "세계관 설명은 필수적으로 들어가야 합니다.")
+	@Size(max = 10000, message = "세계관 설명은 10000자 이하여야 합니다.")
 	String description,
 
 	String imageUrl
