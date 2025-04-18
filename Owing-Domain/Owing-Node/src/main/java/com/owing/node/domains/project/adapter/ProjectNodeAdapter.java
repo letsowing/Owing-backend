@@ -7,6 +7,8 @@ import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Adaptor
 @RequiredArgsConstructor
 public class ProjectNodeAdapter {
@@ -14,7 +16,10 @@ public class ProjectNodeAdapter {
     private final ProjectNodeRepository projectNodeRepository;
 
     public ProjectNode findById(Long projectId) {
-        return projectNodeRepository.findById(projectId)
-                .orElseThrow(() -> ProjectNodeNotFoundException.of(ProjectNodeErrorCode.PROJECT_NODE_NOT_FOUND, "Project Node Id: %d".formatted(projectId)));
+        Optional<ProjectNode> projectNode = projectNodeRepository.findById(projectId);
+        if (projectNode.isEmpty() || projectNode.get().isDeleted()) {
+            throw ProjectNodeNotFoundException.of(ProjectNodeErrorCode.PROJECT_NODE_NOT_FOUND, "Project Node Id: %d".formatted(projectId));
+        }
+        return projectNode.get();
     }
 }
