@@ -82,7 +82,7 @@ class CreateProjectUseCaseTest {
                 .build();
         memberRepository.save(testMember);
 
-        Mockito.reset();
+        Mockito.reset(memberUtils, projectNodeRepository);
     }
 
     @Test

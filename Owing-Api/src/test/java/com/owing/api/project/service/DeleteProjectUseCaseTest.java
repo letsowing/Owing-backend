@@ -76,7 +76,6 @@ class DeleteProjectUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        // 테스트 전용 멤버를 직접 DB에 저장
         testMember = Member.builder()
                 .email("test@integration.com")
                 .password("integration1234")
@@ -86,7 +85,7 @@ class DeleteProjectUseCaseTest {
                 .build();
         memberRepository.save(testMember);
 
-        Mockito.reset();
+        Mockito.reset(memberUtils, projectNodeRepository);
     }
 
     @Test
