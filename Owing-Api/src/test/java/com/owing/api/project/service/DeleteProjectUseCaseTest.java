@@ -11,11 +11,14 @@ import com.owing.entity.domains.project.error.exception.ProjectIllegalAccessExce
 import com.owing.entity.domains.project.model.Category;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.repository.ProjectRepository;
+import com.owing.entity.domains.story.repository.StoryFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
 import com.owing.node.domains.project.adapter.ProjectNodeAdapter;
 import com.owing.node.domains.project.error.code.ProjectNodeErrorCode;
 import com.owing.node.domains.project.error.exception.ProjectNodeNotFoundException;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,10 +28,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.neo4j.core.Neo4jClient;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -39,7 +43,6 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional("jpaTransactionManager")
 @SpringBootTest
 class DeleteProjectUseCaseTest {
 
@@ -60,6 +63,14 @@ class DeleteProjectUseCaseTest {
     private Member testMember;
     @Autowired
     private ProjectNodeAdapter projectNodeAdapter;
+    @Autowired
+    private Neo4jClient neo4jClient;
+    @Autowired
+    private StoryFolderRepository storyFolderRepository;
+    @Autowired
+    private UniverseFolderRepository universeFolderRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @DynamicPropertySource
     static void loadProperties(DynamicPropertyRegistry registry) {
@@ -87,6 +98,20 @@ class DeleteProjectUseCaseTest {
 
         Mockito.reset(memberUtils, projectNodeRepository);
     }
+
+    @AfterEach
+    void tearDown() {
+        storyFolderRepository.deleteAllInBatch();
+        universeFolderRepository.deleteAllInBatch();
+        jdbcTemplate.execute("DELETE FROM project");
+        memberRepository.deleteAllInBatch();
+
+        if (neo4jClient == null) {
+            throw new IllegalStateException("Neo4jClient is null, cannot clean up Neo4j DB.");
+        }
+        neo4jClient.query("MATCH (n) DETACH DELETE n;").run();
+    }
+
 
     @Test
     @DisplayName("Project 삭제 시 Entuty와 Node가 함께 삭제된다.")

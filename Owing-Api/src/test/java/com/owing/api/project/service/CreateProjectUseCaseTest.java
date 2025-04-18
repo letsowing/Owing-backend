@@ -9,6 +9,8 @@ import com.owing.entity.domains.member.repository.MemberRepository;
 import com.owing.entity.domains.project.model.Category;
 import com.owing.entity.domains.project.model.Project;
 import com.owing.entity.domains.project.repository.ProjectRepository;
+import com.owing.entity.domains.story.repository.StoryFolderRepository;
+import com.owing.entity.domains.universe.repository.UniverseFolderRepository;
 import com.owing.node.domains.project.model.ProjectNode;
 import com.owing.node.domains.project.repository.ProjectNodeRepository;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -39,7 +42,6 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional("jpaTransactionManager")
 @SpringBootTest
 class CreateProjectUseCaseTest {
 
@@ -56,6 +58,12 @@ class CreateProjectUseCaseTest {
     private ProjectRepository projectRepository;
 
     private Member testMember;
+    @Autowired
+    private Neo4jClient neo4jClient;
+    @Autowired
+    private StoryFolderRepository storyFolderRepository;
+    @Autowired
+    private UniverseFolderRepository universeFolderRepository;
 
     @DynamicPropertySource
     static void loadProperties(DynamicPropertyRegistry registry) {
@@ -83,6 +91,19 @@ class CreateProjectUseCaseTest {
         memberRepository.save(testMember);
 
         Mockito.reset(memberUtils, projectNodeRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        storyFolderRepository.deleteAllInBatch();
+        universeFolderRepository.deleteAllInBatch();
+        projectRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
+
+        if (neo4jClient == null) {
+            throw new IllegalStateException("Neo4jClient is null, cannot clean up Neo4j DB.");
+        }
+        neo4jClient.query("MATCH (n) DETACH DELETE n;").run();
     }
 
     @Test
